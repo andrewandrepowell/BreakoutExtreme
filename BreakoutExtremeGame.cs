@@ -4,6 +4,7 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Input.Touch;
 using Microsoft.Xna.Framework.Media;
+using BreakoutExtreme.Components;
 using System;
 using System.Collections.Generic;
 
@@ -16,12 +17,11 @@ namespace BreakoutExtreme
     {
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
-
+        Text _testText;
         public BreakoutExtremeGame()
         {
             graphics = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";
-
         }
 
         /// <summary>
@@ -32,10 +32,11 @@ namespace BreakoutExtreme
         /// </summary>
         protected override void Initialize()
         {
-            // TODO: Add your initialization logic here
-
+            spriteBatch = new SpriteBatch(GraphicsDevice);
+            Globals.Initialize(spriteBatch: spriteBatch, contentManager: Content);
+            _testText = new Text() { Message = "Hello World" };
+            _testText.Position = _testText.Size / 2;
             base.Initialize();
-
         }
 
         /// <summary>
@@ -45,7 +46,7 @@ namespace BreakoutExtreme
         protected override void LoadContent()
         {
             // Create a new SpriteBatch, which can be used to draw textures.
-            spriteBatch = new SpriteBatch(GraphicsDevice);
+            
 
             // TODO: Use this.Content to load your game content here
         }
@@ -69,6 +70,7 @@ namespace BreakoutExtreme
             MouseState mouseState = Mouse.GetState();
             KeyboardState keyboardState = Keyboard.GetState();
             GamePadState gamePadState = GamePad.GetState(PlayerIndex.One);
+            TouchCollection touchState = TouchPanel.GetState();
 
             if (keyboardState.IsKeyDown(Keys.Escape) ||
                 keyboardState.IsKeyDown(Keys.Back) ||
@@ -78,8 +80,7 @@ namespace BreakoutExtreme
                 catch (PlatformNotSupportedException) { /* ignore */ }
             }
 
-            // TODO: Add your update logic here
-
+            Globals.UpdateGameTime(gameTime);
             base.Update(gameTime);
         }
 
@@ -92,7 +93,9 @@ namespace BreakoutExtreme
             GraphicsDevice.Clear(Color.CornflowerBlue);
 
             // TODO: Add your drawing code here
-
+            spriteBatch.Begin();
+            _testText.Draw();
+            spriteBatch.End();
             base.Draw(gameTime);
         }
     }

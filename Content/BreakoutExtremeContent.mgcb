@@ -10,6 +10,27 @@
 
 #-------------------------------- References --------------------------------#
 
+/reference:..\pipeline-references\Xna.Framework.Game.dll
+/reference:..\pipeline-references\Xna.Framework.Input.dll
+/reference:..\pipeline-references\KNI.Extended.dll
+/reference:..\pipeline-references\KNI.Extended.Content.Pipeline.dll
 
 #---------------------------------- Content ---------------------------------#
+
+#begin fonts/montserrat/montserrat_0.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255, 0, 255, 255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:fonts/montserrat/montserrat_0.png
+
+#begin fonts/montserrat/montserrat.fnt
+/importer:BitmapFontImporter
+/processor:BitmapFontProcessor
+/build:fonts/montserrat/montserrat.fnt
 
