@@ -15,12 +15,12 @@ namespace BreakoutExtreme
     /// </summary>
     public class BreakoutExtremeGame : Game
     {
-        GraphicsDeviceManager graphics;
-        SpriteBatch spriteBatch;
-        Animater _testAnimater;
+        GraphicsDeviceManager _graphics;
+        SpriteBatch _spriteBatch;
+        Controller _controller;
         public BreakoutExtremeGame()
         {
-            graphics = new GraphicsDeviceManager(this);
+            _graphics = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";
         }
 
@@ -42,12 +42,14 @@ namespace BreakoutExtreme
         /// </summary>
         protected override void LoadContent()
         {
-            spriteBatch = new SpriteBatch(GraphicsDevice);
-            Globals.Initialize(spriteBatch: spriteBatch, contentManager: Content);
+            _spriteBatch = new SpriteBatch(GraphicsDevice);
+            _controller = new Controller();
+            Globals.Initialize(
+                spriteBatch: _spriteBatch, 
+                contentManager: Content,
+                controlStates: _controller.GetControlStates());
             Texter.Load();
             Animater.Load();
-            _testAnimater = new() { Position = new Vector2(200, 200), Scale = 4 };
-            _testAnimater.Play(Animater.Animations.Brick2);
         }
 
         /// <summary>
@@ -66,21 +68,8 @@ namespace BreakoutExtreme
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         protected override void Update(GameTime gameTime)
         {
-            MouseState mouseState = Mouse.GetState();
-            KeyboardState keyboardState = Keyboard.GetState();
-            GamePadState gamePadState = GamePad.GetState(PlayerIndex.One);
-            TouchCollection touchState = TouchPanel.GetState();
-
-            if (keyboardState.IsKeyDown(Keys.Escape) ||
-                keyboardState.IsKeyDown(Keys.Back) ||
-                gamePadState.Buttons.Back == ButtonState.Pressed)
-            {
-                try { Exit(); }
-                catch (PlatformNotSupportedException) { /* ignore */ }
-            }
-
             Globals.UpdateGameTime(gameTime);
-            _testAnimater.Update();
+            _controller.Update();
             base.Update(gameTime);
         }
 
@@ -91,9 +80,6 @@ namespace BreakoutExtreme
         protected override void Draw(GameTime gameTime)
         {
             GraphicsDevice.Clear(Color.CornflowerBlue);
-            spriteBatch.Begin();
-            _testAnimater.Draw();
-            spriteBatch.End();
             base.Draw(gameTime);
         }
     }

@@ -24,11 +24,13 @@
 
   <ItemGroup>
     <Compile Include="Components\Animater.cs" />
+    <Compile Include="Components\Controller.cs" />
     <Compile Include="Components\Texter.cs" />
     <Compile Include="Globals.cs" />
     <Compile Include="Pages\Index.razor.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="BreakoutExtremeGame.cs" />
+    <Compile Include="Utility\Enums.cs" />
   </ItemGroup>
 
   <ItemGroup>

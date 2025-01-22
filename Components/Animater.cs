@@ -14,17 +14,20 @@ namespace BreakoutExtreme.Components
         private static readonly ReadOnlyDictionary<Atlases, string> _atlasAssetNames = new(new Dictionary<Atlases, string>
         {
             { Atlases.Ball, "animations/ball_0" },
-            { Atlases.Brick2, "animations/brick_2" },
+            { Atlases.Paddle, "animations/paddle_0" },
+            { Atlases.BrickLarge, "animations/brick_2" },
         });
         private static readonly ReadOnlyDictionary<Atlases, Size> _atlasRegionSizes = new(new Dictionary<Atlases, Size>
         {
             { Atlases.Ball, new Size(80, 80) },
-            { Atlases.Brick2, new Size(112, 80) },
+            { Atlases.Paddle, new Size(128, 80) },
+            { Atlases.BrickLarge, new Size(112, 80) },
         });
         private static readonly ReadOnlyDictionary<Animations, string> _animationNames = new(new Dictionary<Animations, string>
         {
             { Animations.Ball, "ball_0" },
-            { Animations.Brick2, "brick_0" },
+            { Animations.Paddle, "paddle_0" },
+            { Animations.BrickLarge, "brick_0" },
         });
         private static readonly ReadOnlyDictionary<Atlases, Action<SpriteSheet>> _atlasConfigureAnimations = new(new Dictionary<Atlases, Action<SpriteSheet>>
         {
@@ -37,10 +40,18 @@ namespace BreakoutExtreme.Components
                 }
             },
             {
-                Atlases.Brick2,
+                Atlases.Paddle,
                 delegate(SpriteSheet spriteSheet)
                 {
-                    spriteSheet.DefineAnimation(_animationNames[Animations.Brick2], builder => builder
+                    spriteSheet.DefineAnimation(_animationNames[Animations.Paddle], builder => builder
+                        .AddFrame(0, TimeSpan.Zero));
+                }
+            },
+            {
+                Atlases.BrickLarge,
+                delegate(SpriteSheet spriteSheet)
+                {
+                    spriteSheet.DefineAnimation(_animationNames[Animations.BrickLarge], builder => builder
                         .AddFrame(0, TimeSpan.Zero));
                 }
             },
@@ -48,7 +59,8 @@ namespace BreakoutExtreme.Components
         private static readonly ReadOnlyDictionary<Animations, Atlases> _animationAtlases = new(new Dictionary<Animations, Atlases>()
         {
             { Animations.Ball, Atlases.Ball },
-            { Animations.Brick2, Atlases.Brick2 },
+            { Animations.Paddle, Atlases.Paddle },
+            { Animations.BrickLarge, Atlases.BrickLarge },
         });
         private readonly Dictionary<Atlases, AnimatedSprite> _atlasAnimatedSprites = new();
         private AnimatedSprite _atlasAnimatedSprite;
@@ -91,12 +103,14 @@ namespace BreakoutExtreme.Components
         public enum Atlases
         {
             Ball,
-            Brick2
+            Paddle,
+            BrickLarge
         }
         public enum Animations
         {
             Ball,
-            Brick2
+            Paddle,
+            BrickLarge
         }
         public Animations Animation => _animation;
         public Vector2 Position
