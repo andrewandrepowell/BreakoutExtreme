@@ -70,6 +70,7 @@ namespace BreakoutExtreme
         {
             Globals.UpdateGameTime(gameTime);
             _controller.Update();
+            Console.WriteLine($"Paddle Direction: {_controller.GetControlStates().PaddleMoveDirection}");
             base.Update(gameTime);
         }
 
