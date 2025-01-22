@@ -9,7 +9,7 @@ using System;
 
 namespace BreakoutExtreme.Components
 {
-    public class Text
+    public class Texter
     {
         private static readonly ReadOnlyDictionary<Fonts, string> _fontAssetNames = new(new Dictionary<Fonts, string>() 
         {
@@ -74,7 +74,16 @@ namespace BreakoutExtreme.Components
         }
         public SizeF Size => _size;
         public Color Color = Color.Black;
-        public Text() 
+        public static void Load()
+        {
+            var text = new Texter();
+            var fonts = Enum.GetValues<Fonts>();
+            foreach (ref var font in fonts.AsSpan())
+            {
+                text.Font = font;
+            }
+        }
+        public Texter() 
         {
             UpdateBitmapFont();
         }

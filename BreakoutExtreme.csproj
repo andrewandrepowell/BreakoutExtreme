@@ -23,7 +23,8 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Include="Components\Text.cs" />
+    <Compile Include="Components\Animater.cs" />
+    <Compile Include="Components\Texter.cs" />
     <Compile Include="Globals.cs" />
     <Compile Include="Pages\Index.razor.cs" />
     <Compile Include="Program.cs" />
@@ -55,6 +56,10 @@
 
   <ItemGroup>
     <KniContentReference Include="Content\BreakoutExtremeContent.mgcb" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Systems\" />
   </ItemGroup>
 
 </Project>

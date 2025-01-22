@@ -17,7 +17,7 @@ namespace BreakoutExtreme
     {
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
-        Text _testText;
+        Animater _testAnimater;
         public BreakoutExtremeGame()
         {
             graphics = new GraphicsDeviceManager(this);
@@ -32,10 +32,7 @@ namespace BreakoutExtreme
         /// </summary>
         protected override void Initialize()
         {
-            spriteBatch = new SpriteBatch(GraphicsDevice);
-            Globals.Initialize(spriteBatch: spriteBatch, contentManager: Content);
-            _testText = new Text() { Message = "Hello World" };
-            _testText.Position = _testText.Size / 2;
+
             base.Initialize();
         }
 
@@ -45,10 +42,12 @@ namespace BreakoutExtreme
         /// </summary>
         protected override void LoadContent()
         {
-            // Create a new SpriteBatch, which can be used to draw textures.
-            
-
-            // TODO: Use this.Content to load your game content here
+            spriteBatch = new SpriteBatch(GraphicsDevice);
+            Globals.Initialize(spriteBatch: spriteBatch, contentManager: Content);
+            Texter.Load();
+            Animater.Load();
+            _testAnimater = new() { Position = new Vector2(200, 200), Scale = 4 };
+            _testAnimater.Play(Animater.Animations.Brick2);
         }
 
         /// <summary>
@@ -81,6 +80,7 @@ namespace BreakoutExtreme
             }
 
             Globals.UpdateGameTime(gameTime);
+            _testAnimater.Update();
             base.Update(gameTime);
         }
 
@@ -91,10 +91,8 @@ namespace BreakoutExtreme
         protected override void Draw(GameTime gameTime)
         {
             GraphicsDevice.Clear(Color.CornflowerBlue);
-
-            // TODO: Add your drawing code here
             spriteBatch.Begin();
-            _testText.Draw();
+            _testAnimater.Draw();
             spriteBatch.End();
             base.Draw(gameTime);
         }
