@@ -18,6 +18,7 @@ namespace BreakoutExtreme
         GraphicsDeviceManager _graphics;
         SpriteBatch _spriteBatch;
         Controller _controller;
+        Texter _testTexter;
         public BreakoutExtremeGame()
         {
             _graphics = new GraphicsDeviceManager(this);
@@ -47,9 +48,11 @@ namespace BreakoutExtreme
             Globals.Initialize(
                 spriteBatch: _spriteBatch, 
                 contentManager: Content,
-                controlStates: _controller.GetControlStates());
+                controlState: _controller.GetControlState());
             Texter.Load();
             Animater.Load();
+
+            _testTexter = new() { Color = Color.Black };
         }
 
         /// <summary>
@@ -70,7 +73,10 @@ namespace BreakoutExtreme
         {
             Globals.UpdateGameTime(gameTime);
             _controller.Update();
-            Console.WriteLine($"Paddle Direction: {_controller.GetControlStates().PaddleMoveDirection}");
+
+            var controllerState = _controller.GetControlState();
+            _testTexter.Message = $"Cursor Position: {controllerState.CursorPosition}. Cursor State: {controllerState.CursorSelectState}";
+            _testTexter.Position = _testTexter.Size / 2;
             base.Update(gameTime);
         }
 
@@ -81,6 +87,9 @@ namespace BreakoutExtreme
         protected override void Draw(GameTime gameTime)
         {
             GraphicsDevice.Clear(Color.CornflowerBlue);
+            _spriteBatch.Begin();
+            _testTexter.Draw();
+            _spriteBatch.End();
             base.Draw(gameTime);
         }
     }

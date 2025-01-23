@@ -14,11 +14,11 @@ namespace BreakoutExtreme
         public static SpriteBatch SpriteBatch { get; private set; }
         public static ContentManager ContentManager { get; private set; }
         public static GameTime GameTime { get; private set; }
-        public static Controller.ControlStates ControlStates { get; private set; }
+        public static Controller.ControlState ControlState { get; private set; }
         public static void Initialize(
             SpriteBatch spriteBatch, 
             ContentManager contentManager,
-            Controller.ControlStates controlStates)
+            Controller.ControlState controlState)
         {
 #if DEBUG
             Debug.Assert(!_initialized);
@@ -26,7 +26,7 @@ namespace BreakoutExtreme
 #endif
             SpriteBatch = spriteBatch;
             ContentManager = contentManager;
-            ControlStates = controlStates;
+            ControlState = controlState;
         }
         public static void UpdateGameTime(GameTime gameTime)
         {

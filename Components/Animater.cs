@@ -62,8 +62,7 @@ namespace BreakoutExtreme.Components
             { Animations.Paddle, Atlases.Paddle },
             { Animations.BrickLarge, Atlases.BrickLarge },
         });
-        private readonly Dictionary<Atlases, AnimatedSprite> _atlasAnimatedSprites = new();
-        private AnimatedSprite _atlasAnimatedSprite;
+        private readonly Dictionary<Atlases, AnimatedSprite> _atlasAnimatedSprites = [];
         private Animations _animation = Animations.Ball;
         private Vector2 _position, _drawPosition;
         private float _scale = 1;
