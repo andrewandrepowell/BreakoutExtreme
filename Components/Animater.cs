@@ -1,11 +1,13 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using MonoGame.Extended;
+using MonoGame.Extended.Animations;
 using MonoGame.Extended.Graphics;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
+using static BreakoutExtreme.Components.Animater;
 
 namespace BreakoutExtreme.Components
 {
@@ -67,6 +69,7 @@ namespace BreakoutExtreme.Components
         private Vector2 _position, _drawPosition;
         private float _scale = 1;
         private Vector2 _scaleVector;
+        private IAnimationController _animationController;
         private void UpdateAtlasAnimatedSprites()
         {
             var atlas = _animationAtlases[Animation];
@@ -77,6 +80,7 @@ namespace BreakoutExtreme.Components
             var spriteSheet = new SpriteSheet(atlasAssetName, atlasObject);
             _atlasConfigureAnimations[atlas](spriteSheet);
             var animatedSprite = new AnimatedSprite(spriteSheet, _animationNames[Animation]);
+            animatedSprite.OriginNormalized = new Vector2(.5f, .5f);
             Debug.Assert(!_atlasAnimatedSprites.ContainsKey(atlas));
             _atlasAnimatedSprites.Add(atlas, animatedSprite);
         }
@@ -89,6 +93,10 @@ namespace BreakoutExtreme.Components
         {
             _scaleVector.X = _scale;
             _scaleVector.Y = _scale;
+        }
+        private void UpdateAnimationController()
+        {
+            _animationController = _atlasAnimatedSprites[_animationAtlases[Animation]].SetAnimation(_animationNames[Animation]);
         }
         public static void Load()
         {
@@ -135,24 +143,25 @@ namespace BreakoutExtreme.Components
             }
         }
         public float Rotation = 0;
+        public bool IsAnimating => _animationController.IsAnimating;
+        public int CurrentFrame => _animationController.CurrentFrame;
         public Animater()
         {
             UpdateAtlasAnimatedSprites();
             UpdateDrawPosition();
             UpdateScaleVector();
+            UpdateAnimationController();
         }
         public void Play(Animations animation)
         {
             var differentAnimation = Animation != animation;
             _animation = animation;
 
-            var atlas = _animationAtlases[Animation];
-            if (differentAnimation && !_atlasAnimatedSprites.ContainsKey(atlas))
-            {
+            if (differentAnimation && !_atlasAnimatedSprites.ContainsKey(_animationAtlases[Animation]))
                 UpdateAtlasAnimatedSprites();
-            }
 
-            _atlasAnimatedSprites[atlas].SetAnimation(_animationNames[Animation]);
+            UpdateAnimationController();
+            _animationController.Play();
         }
         public void Update()
         {
@@ -160,6 +169,8 @@ namespace BreakoutExtreme.Components
         }
         public void Draw()
         {
+            var k = _atlasAnimatedSprites[_animationAtlases[Animation]];
+            
             Globals.SpriteBatch.Draw(
                 sprite: _atlasAnimatedSprites[_animationAtlases[Animation]], 
                 position: _drawPosition, 

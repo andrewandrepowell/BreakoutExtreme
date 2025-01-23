@@ -2,6 +2,7 @@
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
+using MonoGame.Extended;
 using System.Diagnostics;
 
 namespace BreakoutExtreme
@@ -11,6 +12,7 @@ namespace BreakoutExtreme
 #if DEBUG
         private static bool _initialized = false;
 #endif
+        public static readonly RectangleF PlayAreaBox = new RectangleF(0, 0, 256, 512);
         public static SpriteBatch SpriteBatch { get; private set; }
         public static ContentManager ContentManager { get; private set; }
         public static GameTime GameTime { get; private set; }

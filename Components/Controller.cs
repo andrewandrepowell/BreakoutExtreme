@@ -5,7 +5,6 @@ using Microsoft.Xna.Framework;
 using MonoGame.Extended;
 using System;
 using System.Linq;
-using static BreakoutExtreme.Components.Controller;
 
 namespace BreakoutExtreme.Components
 {

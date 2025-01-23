@@ -24,13 +24,23 @@
 
   <ItemGroup>
     <Compile Include="Components\Animater.cs" />
+    <Compile Include="Components\Ball.cs" />
+    <Compile Include="Components\Collider.cs" />
     <Compile Include="Components\Controller.cs" />
+    <Compile Include="Components\Runner.cs" />
+    <Compile Include="Components\PlayArea.cs" />
     <Compile Include="Components\Texter.cs" />
+    <Compile Include="Components\Wall.cs" />
     <Compile Include="Globals.cs" />
     <Compile Include="Pages\Index.razor.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="BreakoutExtremeGame.cs" />
+    <Compile Include="Systems\ColliderSystem.cs" />
+    <Compile Include="Systems\PlayAreaSystem.cs" />
+    <Compile Include="Systems\PositionSystem.cs" />
+    <Compile Include="Systems\RenderSystem.cs" />
     <Compile Include="Utility\Enums.cs" />
+    <Compile Include="Utility\FloatExtensions.cs" />
   </ItemGroup>
 
   <ItemGroup>
@@ -58,10 +68,6 @@
 
   <ItemGroup>
     <KniContentReference Include="Content\BreakoutExtremeContent.mgcb" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Systems\" />
   </ItemGroup>
 
 </Project>
