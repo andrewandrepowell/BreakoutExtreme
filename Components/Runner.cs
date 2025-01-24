@@ -54,7 +54,7 @@ namespace BreakoutExtreme.Components
             _world = worldBuilder.Build();
 
             {
-                var thickness = 48;
+                var thickness = 32;
                 CreateWall(new RectangleF(Globals.PlayAreaBox.X, Globals.PlayAreaBox.Y, thickness, Globals.PlayAreaBox.Height));
                 CreateWall(new RectangleF(Globals.PlayAreaBox.X + Globals.PlayAreaBox.Width - thickness, Globals.PlayAreaBox.Y, thickness, Globals.PlayAreaBox.Height));
                 CreateWall(new RectangleF(Globals.PlayAreaBox.X + thickness, Globals.PlayAreaBox.Y, Globals.PlayAreaBox.Width - 2 * thickness, thickness));

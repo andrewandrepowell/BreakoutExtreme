@@ -23,25 +23,28 @@ namespace BreakoutExtreme.Components
         public void OnCollision(CollisionEventArgs collisionInfo)
         {
             var otherCollider = collisionInfo.Other as Collider;
-            if (Bounce > 0)
+            if (!Velocity.EqualsWithTolerence(Vector2.Zero))
             {
-                if (!collisionInfo.PenetrationVector.X.EqualsWithTolerance(0))
+                if (Bounce > 0)
                 {
-                    Acceleration.X *= -1;
-                    Velocity.X *= -Bounce;
+                    if (!collisionInfo.PenetrationVector.X.EqualsWithTolerance(0))
+                    {
+                        Acceleration.X *= -1;
+                        Velocity.X *= -Bounce;
+                    }
+                    else if (!collisionInfo.PenetrationVector.Y.EqualsWithTolerance(0))
+                    {
+                        Acceleration.Y *= -1;
+                        Velocity.Y *= -Bounce;
+                    }
                 }
-                else if (!collisionInfo.PenetrationVector.Y.EqualsWithTolerance(0))
+                else
                 {
-                    Acceleration.Y *= -1;
-                    Velocity.Y *= -Bounce;
+                    Velocity = Vector2.Zero;
                 }
+                Position -= collisionInfo.PenetrationVector;
+                Console.WriteLine($"Pena: {collisionInfo.PenetrationVector}. Velo: {otherCollider.Velocity}. Posi: {otherCollider.Position}");
             }
-            else
-            {
-                Velocity = Vector2.Zero; 
-            }
-            Position -= collisionInfo.PenetrationVector;
-            Console.WriteLine($"Pena: {collisionInfo.PenetrationVector}. Velo: {otherCollider.Velocity}. Posi: {otherCollider.Position}");
         }
         public void Update()
         {
