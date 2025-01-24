@@ -18,7 +18,11 @@ namespace BreakoutExtreme
             {
                 BaseAddress = new Uri(builder.HostEnvironment.BaseAddress)
             });
-            await builder.Build().RunAsync();
+            builder.Services.AddScoped<BrowserService>();
+            var host = builder.Build();
+            var browserService = host.Services.GetService<BrowserService>();
+            await browserService.ConfigureBrowserServer();
+            await host.RunAsync();
         }
     }
 }

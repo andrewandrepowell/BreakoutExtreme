@@ -23,6 +23,15 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Content Remove="wwwroot\js\utility.js" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <_ContentIncludedByDefault Remove="wwwroot\js\utility.js" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Include="BrowserService.cs" />
     <Compile Include="Components\Animater.cs" />
     <Compile Include="Components\Ball.cs" />
     <Compile Include="Components\Collider.cs" />
@@ -69,6 +78,10 @@
 
   <ItemGroup>
     <KniContentReference Include="Content\BreakoutExtremeContent.mgcb" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="wwwroot\js\utility.js" />
   </ItemGroup>
 
 </Project>
