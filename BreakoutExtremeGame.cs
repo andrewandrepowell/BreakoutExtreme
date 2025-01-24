@@ -106,10 +106,8 @@ namespace BreakoutExtreme
 
                 var controllerState = _controller.GetControlState();
                 var windowSize = _spriteBatch.GraphicsDevice.Viewport.Bounds.Size;
-                _testTexter.Message = $"Cursor Position: {controllerState.CursorPosition}. Cursor State: {controllerState.CursorSelectState}. Touches: {BrowserService.Touches.Count}"; 
+                _testTexter.Message = $"Cursor Position: {controllerState.CursorPosition}. Cursor State: {controllerState.CursorSelectState}"; 
                 _testTexter.Position = _testTexter.Size / 2;
-
-                BrowserService.Touches.Clear();
 
                 base.Update(gameTime);
 #if DEBUG
