@@ -2,15 +2,17 @@
 using MonoGame.Extended;
 using System;
 using BreakoutExtreme.Utility;
+using MonoGame.Extended.ECS;
 
 namespace BreakoutExtreme.Components
 {
     public class Ball
     {
-        private static readonly CircleF _bounds = new CircleF(Vector2.Zero, 8);
+        private static readonly CircleF _bounds = new CircleF(Vector2.Zero, Globals.GameHalfBlockSize);
         private static readonly Action<Collider.Node> _collideAction = (Collider.Node node) => ((Ball)node.Current.Parent).ServiceCollision(node);
         private Animater _animater;
         private Collider _collider;
+        private Entity _entity;
         private void ServiceCollision(Collider.Node node)
         {
             if (node.Other.Parent is Wall)
@@ -33,11 +35,16 @@ namespace BreakoutExtreme.Components
         }
         public Animater GetAnimater() => _animater;
         public Collider GetCollider() => _collider;
-        public Ball()
+        public Ball(Entity entity)
         {
             _animater = new();
             _animater.Play(Animater.Animations.Ball);
             _collider = new(bounds: _bounds, parent: this, action: _collideAction);
+            _entity = entity;
+        }
+        public void RemoveEntity()
+        {
+            Globals.Runner.RemoveEntity(_entity);
         }
     }
 }

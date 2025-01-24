@@ -1,4 +1,4 @@
 ﻿namespace BreakoutExtreme.Utility
 {
-    public enum Directions { None, Left, Right, Up, Down }
+    public enum Directions { Left, Right, Up, Down }
 }

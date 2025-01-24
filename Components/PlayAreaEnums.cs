@@ -1,0 +1,21 @@
+﻿namespace BreakoutExtreme.Components
+{
+    public partial class PlayArea
+    {
+        public enum Levels
+        {
+            Test
+        }
+        public enum Components
+        {
+            None,
+            Ball
+        }
+        public enum States
+        {
+            Unloaded,
+            PlayerTakingAim,
+            GameRunning
+        }
+    }
+}

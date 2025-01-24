@@ -37,6 +37,9 @@
     <Compile Include="Components\Collider.cs" />
     <Compile Include="Components\Controller.cs" />
     <Compile Include="Components\NinePatcher.cs" />
+    <Compile Include="Components\PlayAreaEnums.cs" />
+    <Compile Include="Components\PlayAreaLevels.cs" />
+    <Compile Include="Components\PlayAreaUpdate.cs" />
     <Compile Include="Components\Runner.cs" />
     <Compile Include="Components\PlayArea.cs" />
     <Compile Include="Components\Texter.cs" />
@@ -46,11 +49,13 @@
     <Compile Include="Program.cs" />
     <Compile Include="BreakoutExtremeGame.cs" />
     <Compile Include="Systems\ColliderSystem.cs" />
+    <Compile Include="Systems\GameWindowSystem.cs" />
     <Compile Include="Systems\PlayAreaSystem.cs" />
     <Compile Include="Systems\PositionSystem.cs" />
     <Compile Include="Systems\RenderSystem.cs" />
     <Compile Include="Utility\Enums.cs" />
     <Compile Include="Utility\FloatExtensions.cs" />
+    <Compile Include="Utility\PointExtensions.cs" />
     <Compile Include="Utility\RectangleExtensions.cs" />
   </ItemGroup>
 

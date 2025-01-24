@@ -5,18 +5,19 @@ using MonoGame.Extended.ECS.Systems;
 
 namespace BreakoutExtreme.Systems
 {
-    public class PlayAreaSystem : EntityUpdateSystem
+    public class PlayAreaSystem : EntityProcessingSystem
     {
-        private ComponentMapper<Ball> _ballMapper;
-        public PlayAreaSystem() : base(Aspect.One(typeof(Ball)))
+        private ComponentMapper<PlayArea> _playAreaMapper;
+        public PlayAreaSystem() : base(Aspect.One(typeof(PlayArea)))
         {
         }
         public override void Initialize(IComponentMapperService mapperService)
         {
-            _ballMapper = mapperService.GetMapper<Ball>();
+            _playAreaMapper = mapperService.GetMapper<PlayArea>();
         }
-        public override void Update(GameTime gameTime)
+        public override void Process(GameTime gameTime, int entityId)
         {
+            _playAreaMapper.Get(entityId).Update();
         }
     }
 }

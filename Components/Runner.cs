@@ -19,7 +19,7 @@ namespace BreakoutExtreme.Components
         public Ball CreateBall()
         {
             var entity = _world.CreateEntity();
-            var ball = new Ball();
+            var ball = new Ball(entity);
             var animator = ball.GetAnimater();
             var collider = ball.GetCollider();
             entity.Attach(ball);
@@ -57,10 +57,12 @@ namespace BreakoutExtreme.Components
             _collisionComponent = new CollisionComponent(Globals.PlayAreaBounds);
 
             var worldBuilder = new WorldBuilder();
+            var gameWindowSystem = new GameWindowSystem();
             var playAreaSystem = new PlayAreaSystem();
             var colliderSystem = new ColliderSystem(_collisionComponent);
             var positionSystem = new PositionSystem();
             var renderSystem = new RenderSystem();
+            worldBuilder.AddSystem(gameWindowSystem);
             worldBuilder.AddSystem(playAreaSystem);
             worldBuilder.AddSystem(colliderSystem);
             worldBuilder.AddSystem(positionSystem);
