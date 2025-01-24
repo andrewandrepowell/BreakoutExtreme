@@ -16,19 +16,6 @@ namespace BreakoutExtreme.Components
         private bool _touchPressed = false;
         private bool _keyboardLeft = false, _keyboardRight = false;
         private Vector2 TransformPosition(Vector2 position) => (position - Globals.GameWindowToResizeOffset) / Globals.GameWindowToResizeScalar;
-        private void DeterminePaddleMoveDirection(Vector2 cursorPosition, ref Directions paddleMoveDirection)
-        {
-            if (PaddleBox.Contains(cursorPosition))
-            {
-                var xDistance = Math.Abs(PaddlePosition.X - cursorPosition.X);
-                if (xDistance <= PaddleCursorThreshold)
-                    paddleMoveDirection = Directions.None;
-                else if (PaddlePosition.X < cursorPosition.X)
-                    paddleMoveDirection = Directions.Left;
-                else
-                    paddleMoveDirection = Directions.Right;
-            }
-        }
         public RectangleF PaddleBox = RectangleF.Empty;
         public Vector2 PaddlePosition = Vector2.Zero;
         public float PaddleCursorThreshold = 8;
@@ -38,12 +25,10 @@ namespace BreakoutExtreme.Components
         {
             public Vector2 CursorPosition { get; private set; } = Vector2.Zero;
             public SelectStates CursorSelectState { get; private set; } = SelectStates.None;
-            public Directions PaddleMoveDirection { get; private set; } = Directions.None;
-            public void Update(Vector2 cursorPosition, SelectStates cursorSelectState,  Directions paddleMoveDirection)
+            public void Update(Vector2 cursorPosition, SelectStates cursorSelectState)
             {
                 CursorPosition = cursorPosition;
                 CursorSelectState = cursorSelectState;
-                PaddleMoveDirection = paddleMoveDirection;
             }
         }
         public ControlState GetControlState() => _controlState;
@@ -53,12 +38,10 @@ namespace BreakoutExtreme.Components
             // Update controls
             {
                 MouseState mouseState = Mouse.GetState();
-                KeyboardState keyboardState = Keyboard.GetState();
                 TouchCollection touchCollection = TouchPanel.GetState();
 
                 var cursorPosition = _controlState.CursorPosition;
                 var cursorSelectState = _controlState.CursorSelectState;
-                var paddleMoveDirection = _controlState.PaddleMoveDirection;
 
                 // Mouse controls.
                 {
@@ -66,7 +49,6 @@ namespace BreakoutExtreme.Components
                     if (mousePosition != _mousePosition)
                     {
                         cursorPosition = TransformPosition(mouseState.Position.ToVector2());
-                        DeterminePaddleMoveDirection(cursorPosition, ref paddleMoveDirection);
                         Input = Inputs.Mouse;
                         _mousePosition = mousePosition;
                     }
@@ -93,27 +75,6 @@ namespace BreakoutExtreme.Components
                     }
                 }
 
-                // Keyboard controls
-                {
-                    var pressedKeys = keyboardState.GetPressedKeys();
-                    var keyboardLeft = pressedKeys.Contains(Keys.A) || pressedKeys.Contains(Keys.Left);
-                    var keyboardRight = pressedKeys.Contains(Keys.D) || pressedKeys.Contains(Keys.Right);
-                    if (keyboardLeft && (!_keyboardLeft || !keyboardRight))
-                    {
-                        paddleMoveDirection = Directions.Left;
-                    }
-                    else if (keyboardRight && (!_keyboardRight || !keyboardLeft))
-                    {
-                        paddleMoveDirection = Directions.Right;
-                    }
-                    else if (!keyboardLeft && !keyboardRight && (_keyboardLeft ^ _keyboardRight))
-                    {
-                        paddleMoveDirection = Directions.None;
-                    }
-                    _keyboardLeft = keyboardLeft;
-                    _keyboardRight = keyboardRight;
-                }
-
                 // Touch controls
                 {
                     var touchPressed = touchCollection.Count > 0;
@@ -126,7 +87,6 @@ namespace BreakoutExtreme.Components
                         if (touchPosition != _touchPosition)
                         {
                             cursorPosition = touchPosition;
-                            DeterminePaddleMoveDirection(cursorPosition, ref paddleMoveDirection);
                             Input = Inputs.Touch;
                             _touchPosition = touchPosition;
                         }
@@ -156,8 +116,7 @@ namespace BreakoutExtreme.Components
 
                 _controlState.Update(
                     cursorPosition: cursorPosition,
-                    cursorSelectState: cursorSelectState,
-                    paddleMoveDirection: paddleMoveDirection);
+                    cursorSelectState: cursorSelectState);
             }
         }
     }
