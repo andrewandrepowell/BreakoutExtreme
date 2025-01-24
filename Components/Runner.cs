@@ -9,17 +9,12 @@ namespace BreakoutExtreme.Components
     {
         private World _world;
         private CollisionComponent _collisionComponent;
-        public void CreatePlayAreaWalls()
+        public PlayArea CreatePlayArea()
         {
-            var thickness = 16;
-            CreateWall(new RectangleF(Globals.PlayAreaBox.X, Globals.PlayAreaBox.Y, thickness, Globals.PlayAreaBox.Height));
-            CreateWall(new RectangleF(Globals.PlayAreaBox.X + Globals.PlayAreaBox.Width - thickness, Globals.PlayAreaBox.Y, thickness, Globals.PlayAreaBox.Height));
-            CreateWall(new RectangleF(Globals.PlayAreaBox.X + thickness, Globals.PlayAreaBox.Y, Globals.PlayAreaBox.Width - 2 * thickness, thickness));
-            CreateWall(new RectangleF(Globals.PlayAreaBox.X + thickness, Globals.PlayAreaBox.Y + Globals.PlayAreaBox.Height - thickness, Globals.PlayAreaBox.Width - 2 * thickness, thickness));
-
-            var ninePatcher = CreateNinePatcher();
-            ninePatcher.Texture = NinePatcher.Textures.PlayArea;
-            ninePatcher.Bounds = Globals.PlayAreaBox;
+            var entity = _world.CreateEntity();
+            var playArea = new PlayArea();
+            entity.Attach(playArea);
+            return playArea;
         }
         public Ball CreateBall()
         {
@@ -59,7 +54,7 @@ namespace BreakoutExtreme.Components
         }
         public Runner()
         {
-            _collisionComponent = new CollisionComponent(Globals.PlayAreaBox);
+            _collisionComponent = new CollisionComponent(Globals.PlayAreaBounds);
 
             var worldBuilder = new WorldBuilder();
             var playAreaSystem = new PlayAreaSystem();
@@ -71,8 +66,6 @@ namespace BreakoutExtreme.Components
             worldBuilder.AddSystem(positionSystem);
             worldBuilder.AddSystem(renderSystem);
             _world = worldBuilder.Build();
-
-            //ConfigurePlayAreaWalls();
         }
         public void Update()
         {

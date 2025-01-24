@@ -51,18 +51,20 @@ namespace BreakoutExtreme
 #endif
                 _spriteBatch = new SpriteBatch(GraphicsDevice);
                 _controller = new Controller();
+                _runner = new Runner();
+
                 Globals.Initialize(
                     spriteBatch: _spriteBatch, 
                     contentManager: Content,
-                    controlState: _controller.GetControlState());
-                _runner = new Runner();
-
+                    controlState: _controller.GetControlState(),
+                    runner: _runner);
+                
                 var ball = _runner.CreateBall();
                 var ballCollider = ball.GetCollider();
                 ballCollider.Acceleration = new Vector2(2000, -1000);
-                ballCollider.Position = Globals.PlayAreaBox.Size / 2;
+                ballCollider.Position = Globals.PlayAreaBounds.Size / 2;
 
-                _runner.CreatePlayAreaWalls();
+                _runner.CreatePlayArea();
 
                 Texter.Load();
                 Animater.Load();
@@ -103,7 +105,8 @@ namespace BreakoutExtreme
                 _runner.Update();
 
                 var controllerState = _controller.GetControlState();
-                _testTexter.Message = $"Cursor Position: {controllerState.CursorPosition}. Cursor State: {controllerState.CursorSelectState}";
+                var windowSize = _spriteBatch.GraphicsDevice.Viewport.Bounds.Size;
+                _testTexter.Message = $"Cursor Position: {controllerState.CursorPosition}. Cursor State: {controllerState.CursorSelectState}. Window Size: {windowSize}"; 
                 _testTexter.Position = _testTexter.Size / 2;
 
                 base.Update(gameTime);
