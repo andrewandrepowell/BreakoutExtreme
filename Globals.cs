@@ -13,8 +13,12 @@ namespace BreakoutExtreme
 #if DEBUG
         private static bool _initialized = false;
 #endif
-        public static readonly RectangleF GameWindowBounds = new RectangleF(0, 0, 352, 640);
-        public static readonly RectangleF PlayAreaBounds = new RectangleF(0, 0, 352, 640);
+        public const int GameBlockSize = 16;
+        public const int GameHalfBlockSize = GameBlockSize / 2;
+        public static readonly Rectangle GameWindowBlockBounds = new Rectangle(0, 0, 22, 40);
+        public static readonly Rectangle PlayAreaBlockBounds = new Rectangle(0, 0, 22, 40);
+        public static readonly RectangleF GameWindowBounds = GameWindowBlockBounds.ToBounds();
+        public static readonly RectangleF PlayAreaBounds = PlayAreaBlockBounds.ToBounds();
         public static float GameWindowToResizeScalar = 1;
         public static Vector2 GameWindowToResizeOffset = Vector2.Zero;
         public static SpriteBatch SpriteBatch { get; private set; }

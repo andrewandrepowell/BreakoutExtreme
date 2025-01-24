@@ -3,48 +3,49 @@ using Microsoft.Xna.Framework;
 using MonoGame.Extended;
 using MonoGame.Extended.Collisions;
 using System;
+using System.Diagnostics;
 
 namespace BreakoutExtreme.Components
 {
     public class Collider : ICollisionActor
     {
+        private Action<Node> _action;
         public Vector2 Position { get => Bounds.Position; set => Bounds.Position = value; }
         public Vector2 Velocity;
         public Vector2 Acceleration;
         public float Slick = 0.80f;
-        public float Bounce = 1f;
         public IShapeF Bounds { get; }
         public object Parent { get; }
-        public Collider(IShapeF bounds, object parent)
+        public Collider(IShapeF bounds, object parent, Action<Node> action = null)
         {
             Bounds = bounds;
             Parent = parent;
+            _action = action;
+        }
+        public struct Node
+        {
+            public readonly Vector2 PenetrationVector;
+            public readonly Collider Current;
+            public readonly Collider Other;
+            public Node(Collider current, Collider other, Vector2 penetrationVector)
+            {
+                Current = current;
+                Other = other;
+                PenetrationVector = penetrationVector;
+            }
+            public void CorrectPosition()
+            {
+                Current.Position -= PenetrationVector;
+            }
         }
         public void OnCollision(CollisionEventArgs collisionInfo)
         {
-            var otherCollider = collisionInfo.Other as Collider;
-            if (!Velocity.EqualsWithTolerence(Vector2.Zero))
-            {
-                if (Bounce > 0)
-                {
-                    if (!collisionInfo.PenetrationVector.X.EqualsWithTolerance(0))
-                    {
-                        Acceleration.X *= -1;
-                        Velocity.X *= -Bounce;
-                    }
-                    else if (!collisionInfo.PenetrationVector.Y.EqualsWithTolerance(0))
-                    {
-                        Acceleration.Y *= -1;
-                        Velocity.Y *= -Bounce;
-                    }
-                }
-                else
-                {
-                    Velocity = Vector2.Zero;
-                }
-                Position -= collisionInfo.PenetrationVector;
-                Console.WriteLine($"Pena: {collisionInfo.PenetrationVector}. Velo: {otherCollider.Velocity}. Posi: {otherCollider.Position}");
-            }
+            if (_action == null)
+                return;
+            _action(new Node(
+                current: this,
+                other: (Collider)collisionInfo.Other,
+                penetrationVector: collisionInfo.PenetrationVector));
         }
         public void Update()
         {
@@ -57,13 +58,12 @@ namespace BreakoutExtreme.Components
             }
             else
             {
-                //var displacement = Velocity * elapsedTime;
-                //var displacementMagnitude = displacement.Length();
-                //var displacementDirection = displacement / displacementMagnitude;
-                //if (displacementMagnitude >= 8)
-                //    displacementMagnitude = 8;
-                //Position += displacementDirection * displacementMagnitude;
-                Position += Velocity * elapsedTime;
+                var displacement = Velocity * elapsedTime;
+#if DEBUG
+                var displacementMagnitude = displacement.Length();
+                Debug.Assert(displacementMagnitude <= Globals.GameHalfBlockSize);
+#endif
+                Position += displacement;
             }
         }
     }

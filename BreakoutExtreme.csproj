@@ -51,6 +51,7 @@
     <Compile Include="Systems\RenderSystem.cs" />
     <Compile Include="Utility\Enums.cs" />
     <Compile Include="Utility\FloatExtensions.cs" />
+    <Compile Include="Utility\RectangleExtensions.cs" />
   </ItemGroup>
 
   <ItemGroup>

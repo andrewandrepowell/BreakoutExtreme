@@ -17,11 +17,6 @@ namespace BreakoutExtreme.Systems
         }
         public override void Update(GameTime gameTime)
         {
-            foreach (var entityId in ActiveEntities)
-            {
-                var ball = _ballMapper.Get(entityId);
-                ball.Update();
-            }
         }
     }
 }
