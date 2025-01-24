@@ -45,23 +45,37 @@ namespace BreakoutExtreme
         /// </summary>
         protected override void LoadContent()
         {
-            _spriteBatch = new SpriteBatch(GraphicsDevice);
-            _controller = new Controller();
-            Globals.Initialize(
-                spriteBatch: _spriteBatch, 
-                contentManager: Content,
-                controlState: _controller.GetControlState());
-            _runner = new Runner();
+#if DEBUG
+            try
+            {
+#endif
+                _spriteBatch = new SpriteBatch(GraphicsDevice);
+                _controller = new Controller();
+                Globals.Initialize(
+                    spriteBatch: _spriteBatch, 
+                    contentManager: Content,
+                    controlState: _controller.GetControlState());
+                _runner = new Runner();
 
-            var ball = _runner.CreateBall();
-            var ballCollider = ball.GetCollider();
-            ballCollider.Acceleration = new Vector2(2000, -1000);
-            ballCollider.Position = Globals.PlayAreaBox.Size / 2;
+                var ball = _runner.CreateBall();
+                var ballCollider = ball.GetCollider();
+                ballCollider.Acceleration = new Vector2(2000, -1000);
+                ballCollider.Position = Globals.PlayAreaBox.Size / 2;
 
-            Texter.Load();
-            Animater.Load();
+                _runner.CreatePlayAreaWalls();
 
-            _testTexter = new() { Color = Color.Black };
+                Texter.Load();
+                Animater.Load();
+
+                _testTexter = new() { Color = Color.Black };
+#if DEBUG
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.ToString());
+                throw e;
+            }
+#endif
         }
 
         /// <summary>
@@ -80,15 +94,27 @@ namespace BreakoutExtreme
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         protected override void Update(GameTime gameTime)
         {
-            Globals.UpdateGameTime(gameTime);
-            _controller.Update();
-            _runner.Update();
+#if DEBUG
+            try
+            {
+#endif
+                Globals.UpdateGameTime(gameTime);
+                _controller.Update();
+                _runner.Update();
 
-            var controllerState = _controller.GetControlState();
-            _testTexter.Message = $"Cursor Position: {controllerState.CursorPosition}. Cursor State: {controllerState.CursorSelectState}";
-            _testTexter.Position = _testTexter.Size / 2;
+                var controllerState = _controller.GetControlState();
+                _testTexter.Message = $"Cursor Position: {controllerState.CursorPosition}. Cursor State: {controllerState.CursorSelectState}";
+                _testTexter.Position = _testTexter.Size / 2;
 
-            base.Update(gameTime);
+                base.Update(gameTime);
+#if DEBUG
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.ToString());
+                throw e;
+            }
+#endif
         }
 
         /// <summary>
@@ -97,13 +123,25 @@ namespace BreakoutExtreme
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         protected override void Draw(GameTime gameTime)
         {
-            GraphicsDevice.Clear(Color.CornflowerBlue);
-            _runner.Draw();
+#if DEBUG
+            try
+            {
+#endif
+                GraphicsDevice.Clear(Color.CornflowerBlue);
+                _runner.Draw();
 
-            _spriteBatch.Begin();
-            _testTexter.Draw();
-            _spriteBatch.End();
-            base.Draw(gameTime);
+                _spriteBatch.Begin();
+                _testTexter.Draw();
+                _spriteBatch.End();
+                base.Draw(gameTime);
+#if DEBUG
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.ToString());
+                throw e;
+            }
+#endif
         }
     }
 }

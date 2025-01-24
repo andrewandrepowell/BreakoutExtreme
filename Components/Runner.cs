@@ -9,6 +9,18 @@ namespace BreakoutExtreme.Components
     {
         private World _world;
         private CollisionComponent _collisionComponent;
+        public void CreatePlayAreaWalls()
+        {
+            var thickness = 16;
+            CreateWall(new RectangleF(Globals.PlayAreaBox.X, Globals.PlayAreaBox.Y, thickness, Globals.PlayAreaBox.Height));
+            CreateWall(new RectangleF(Globals.PlayAreaBox.X + Globals.PlayAreaBox.Width - thickness, Globals.PlayAreaBox.Y, thickness, Globals.PlayAreaBox.Height));
+            CreateWall(new RectangleF(Globals.PlayAreaBox.X + thickness, Globals.PlayAreaBox.Y, Globals.PlayAreaBox.Width - 2 * thickness, thickness));
+            CreateWall(new RectangleF(Globals.PlayAreaBox.X + thickness, Globals.PlayAreaBox.Y + Globals.PlayAreaBox.Height - thickness, Globals.PlayAreaBox.Width - 2 * thickness, thickness));
+
+            var ninePatcher = CreateNinePatcher();
+            ninePatcher.Texture = NinePatcher.Textures.PlayArea;
+            ninePatcher.Bounds = Globals.PlayAreaBox;
+        }
         public Ball CreateBall()
         {
             var entity = _world.CreateEntity();
@@ -30,6 +42,13 @@ namespace BreakoutExtreme.Components
             entity.Attach(collider);
             _collisionComponent.Insert(collider);
             return wall;
+        }
+        public NinePatcher CreateNinePatcher()
+        {
+            var entity = _world.CreateEntity();
+            var ninePatcher = new NinePatcher();
+            entity.Attach(ninePatcher);
+            return ninePatcher;
         }
         public void RemoveEntity(int entityId) => RemoveEntity(_world.GetEntity(entityId));
         public void RemoveEntity(Entity entity)
@@ -53,13 +72,7 @@ namespace BreakoutExtreme.Components
             worldBuilder.AddSystem(renderSystem);
             _world = worldBuilder.Build();
 
-            {
-                var thickness = 32;
-                CreateWall(new RectangleF(Globals.PlayAreaBox.X, Globals.PlayAreaBox.Y, thickness, Globals.PlayAreaBox.Height));
-                CreateWall(new RectangleF(Globals.PlayAreaBox.X + Globals.PlayAreaBox.Width - thickness, Globals.PlayAreaBox.Y, thickness, Globals.PlayAreaBox.Height));
-                CreateWall(new RectangleF(Globals.PlayAreaBox.X + thickness, Globals.PlayAreaBox.Y, Globals.PlayAreaBox.Width - 2 * thickness, thickness));
-                CreateWall(new RectangleF(Globals.PlayAreaBox.X + thickness, Globals.PlayAreaBox.Y + Globals.PlayAreaBox.Height - thickness, Globals.PlayAreaBox.Width - 2 * thickness, thickness));
-            }
+            //ConfigurePlayAreaWalls();
         }
         public void Update()
         {

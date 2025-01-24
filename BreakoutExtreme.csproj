@@ -27,6 +27,7 @@
     <Compile Include="Components\Ball.cs" />
     <Compile Include="Components\Collider.cs" />
     <Compile Include="Components\Controller.cs" />
+    <Compile Include="Components\NinePatcher.cs" />
     <Compile Include="Components\Runner.cs" />
     <Compile Include="Components\PlayArea.cs" />
     <Compile Include="Components\Texter.cs" />
