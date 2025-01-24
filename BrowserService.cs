@@ -1,10 +1,6 @@
 ﻿using Microsoft.JSInterop;
 using System.Threading.Tasks;
-using MonoGame.Extended;
-using MonoGame.Extended.Collections;
-using Microsoft.Xna.Framework;
 using System.Diagnostics;
-using System;
 
 
 namespace BreakoutExtreme
@@ -21,15 +17,8 @@ namespace BreakoutExtreme
 #if DEBUG
         private static bool _initialized = false;
 #endif
-        private const int _touchLimit = 64;
         private IJSObjectReference _jsModule;
         private IJSRuntime _jsRuntime;
-        public class Touch
-        {
-            public float X { get; set; }
-            public float Y { get; set; }
-        }
-        public static Deque<Vector2> Touches = new Deque<Vector2>();
         public BrowserService(IJSRuntime jsRuntime)
         {
             Debug.Assert(_jsRuntime == null);
@@ -37,19 +26,13 @@ namespace BreakoutExtreme
         }
         public async Task ConfigureBrowserServer()
         {
+#if DEBUG
+            Debug.Assert(!_initialized);
+            _initialized = true;
+#endif
             Debug.Assert(_jsModule == null);
             _jsModule = await _jsRuntime.InvokeAsync<IJSObjectReference>("import", "./js/utility.js");
             await _jsModule.InvokeVoidAsync("RegisterServiceUpdates", DotNetObjectReference.Create(this));
-        }
-        [JSInvokable]
-        public void ServiceTouchStartUpdate(Touch[] touches)
-        {
-            foreach (ref var touch in touches.AsSpan())
-            {
-                if (Touches.Count == _touchLimit)
-                    Touches.RemoveFromFront();
-                Touches.AddToBack(new Vector2(touch.X, touch.Y));
-            }
         }
     }
 }
