@@ -69,7 +69,7 @@ namespace BreakoutExtreme
                 Texter.Load();
                 Animater.Load();
 
-                _testTexter = new() { Color = Color.Black };
+                _testTexter = new() { Color = Color.Yellow };
 #if DEBUG
             }
             catch (Exception e)
@@ -100,7 +100,7 @@ namespace BreakoutExtreme
             try
             {
 #endif
-                Globals.UpdateGameTime(gameTime);
+                Globals.Update(gameTime);
                 _controller.Update();
                 _runner.Update();
 

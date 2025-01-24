@@ -15,7 +15,7 @@ namespace BreakoutExtreme.Components
         private ButtonState _mouseLeftButtonState = ButtonState.Released;
         private bool _touchPressed = false;
         private bool _keyboardLeft = false, _keyboardRight = false;
-        private Vector2 TransformPosition(Vector2 position) => position * Scale + Offset;
+        private Vector2 TransformPosition(Vector2 position) => (position - Globals.GameWindowToResizeOffset) / Globals.GameWindowToResizeScalar;
         private void DeterminePaddleMoveDirection(Vector2 cursorPosition, ref Directions paddleMoveDirection)
         {
             if (PaddleBox.Contains(cursorPosition))
@@ -29,8 +29,6 @@ namespace BreakoutExtreme.Components
                     paddleMoveDirection = Directions.Right;
             }
         }
-        public float Scale = 1;
-        public Vector2 Offset = Vector2.Zero;
         public RectangleF PaddleBox = RectangleF.Empty;
         public Vector2 PaddlePosition = Vector2.Zero;
         public float PaddleCursorThreshold = 8;
@@ -52,112 +50,115 @@ namespace BreakoutExtreme.Components
         public Inputs Input { get; private set; } = Inputs.Mouse;
         public void Update()
         {
-            MouseState mouseState = Mouse.GetState();
-            KeyboardState keyboardState = Keyboard.GetState();
-            TouchCollection touchCollection = TouchPanel.GetState();
-
-            var cursorPosition = _controlState.CursorPosition;
-            var cursorSelectState = _controlState.CursorSelectState;
-            var paddleMoveDirection = _controlState.PaddleMoveDirection;
-
-            // Mouse controls.
+            // Update controls
             {
-                var mousePosition = TransformPosition(mouseState.Position.ToVector2());
-                if (mousePosition != _mousePosition)
-                {
-                    cursorPosition = TransformPosition(mouseState.Position.ToVector2());
-                    DeterminePaddleMoveDirection(cursorPosition, ref paddleMoveDirection);
-                    Input = Inputs.Mouse;
-                    _mousePosition = mousePosition;
-                }
+                MouseState mouseState = Mouse.GetState();
+                KeyboardState keyboardState = Keyboard.GetState();
+                TouchCollection touchCollection = TouchPanel.GetState();
 
-                if (Input == Inputs.Mouse)
-                {
-                    if (mouseState.LeftButton == ButtonState.Pressed && _mouseLeftButtonState == ButtonState.Released)
-                    {
-                        cursorSelectState = SelectStates.Pressed;
-                    }
-                    else if (mouseState.LeftButton == ButtonState.Pressed && _mouseLeftButtonState == ButtonState.Pressed)
-                    {
-                        cursorSelectState = SelectStates.Held;
-                    }
-                    else if (mouseState.LeftButton == ButtonState.Released && _mouseLeftButtonState == ButtonState.Pressed)
-                    {
-                        cursorSelectState = SelectStates.Released;
-                    }
-                    else if (mouseState.LeftButton == ButtonState.Released && _mouseLeftButtonState == ButtonState.Released)
-                    {
-                        cursorSelectState = SelectStates.None;
-                    }
-                    _mouseLeftButtonState = mouseState.LeftButton;
-                }
-            }
+                var cursorPosition = _controlState.CursorPosition;
+                var cursorSelectState = _controlState.CursorSelectState;
+                var paddleMoveDirection = _controlState.PaddleMoveDirection;
 
-            // Keyboard controls
-            {
-                var pressedKeys = keyboardState.GetPressedKeys();
-                var keyboardLeft = pressedKeys.Contains(Keys.A) || pressedKeys.Contains(Keys.Left);
-                var keyboardRight = pressedKeys.Contains(Keys.D) || pressedKeys.Contains(Keys.Right);
-                if (keyboardLeft && (!_keyboardLeft || !keyboardRight))
+                // Mouse controls.
                 {
-                    paddleMoveDirection = Directions.Left;
-                }
-                else if (keyboardRight && (!_keyboardRight || !keyboardLeft))
-                {
-                    paddleMoveDirection = Directions.Right;
-                }
-                else if (!keyboardLeft && !keyboardRight && (_keyboardLeft ^ _keyboardRight))
-                {
-                    paddleMoveDirection = Directions.None;
-                }
-                _keyboardLeft = keyboardLeft;
-                _keyboardRight = keyboardRight;
-            }
-
-            // Touch controls
-            {
-                var touchPressed = touchCollection.Count > 0;
-
-                if (touchCollection.Count > 0)
-                {
-                    var touchLocation = touchCollection[^1];
-
-                    var touchPosition = TransformPosition(touchLocation.Position);
-                    if (touchPosition != _touchPosition)
+                    var mousePosition = TransformPosition(mouseState.Position.ToVector2());
+                    if (mousePosition != _mousePosition)
                     {
-                        cursorPosition = touchPosition;
+                        cursorPosition = TransformPosition(mouseState.Position.ToVector2());
                         DeterminePaddleMoveDirection(cursorPosition, ref paddleMoveDirection);
-                        Input = Inputs.Touch;
-                        _touchPosition = touchPosition;
+                        Input = Inputs.Mouse;
+                        _mousePosition = mousePosition;
+                    }
+
+                    if (Input == Inputs.Mouse)
+                    {
+                        if (mouseState.LeftButton == ButtonState.Pressed && _mouseLeftButtonState == ButtonState.Released)
+                        {
+                            cursorSelectState = SelectStates.Pressed;
+                        }
+                        else if (mouseState.LeftButton == ButtonState.Pressed && _mouseLeftButtonState == ButtonState.Pressed)
+                        {
+                            cursorSelectState = SelectStates.Held;
+                        }
+                        else if (mouseState.LeftButton == ButtonState.Released && _mouseLeftButtonState == ButtonState.Pressed)
+                        {
+                            cursorSelectState = SelectStates.Released;
+                        }
+                        else if (mouseState.LeftButton == ButtonState.Released && _mouseLeftButtonState == ButtonState.Released)
+                        {
+                            cursorSelectState = SelectStates.None;
+                        }
+                        _mouseLeftButtonState = mouseState.LeftButton;
                     }
                 }
 
-                if (Input == Inputs.Touch)
+                // Keyboard controls
                 {
-                    if (touchPressed && !_touchPressed)
+                    var pressedKeys = keyboardState.GetPressedKeys();
+                    var keyboardLeft = pressedKeys.Contains(Keys.A) || pressedKeys.Contains(Keys.Left);
+                    var keyboardRight = pressedKeys.Contains(Keys.D) || pressedKeys.Contains(Keys.Right);
+                    if (keyboardLeft && (!_keyboardLeft || !keyboardRight))
                     {
-                        cursorSelectState = SelectStates.Pressed;
+                        paddleMoveDirection = Directions.Left;
                     }
-                    else if (touchPressed && _touchPressed)
+                    else if (keyboardRight && (!_keyboardRight || !keyboardLeft))
                     {
-                        cursorSelectState = SelectStates.Held;
+                        paddleMoveDirection = Directions.Right;
                     }
-                    else if (!touchPressed && _touchPressed)
+                    else if (!keyboardLeft && !keyboardRight && (_keyboardLeft ^ _keyboardRight))
                     {
-                        cursorSelectState = SelectStates.Released;
+                        paddleMoveDirection = Directions.None;
                     }
-                    else if (!touchPressed && !_touchPressed)
-                    {
-                        cursorSelectState = SelectStates.None;
-                    }
-                    _touchPressed = touchPressed;
+                    _keyboardLeft = keyboardLeft;
+                    _keyboardRight = keyboardRight;
                 }
-            }
 
-            _controlState.Update(
-                cursorPosition: cursorPosition,
-                cursorSelectState: cursorSelectState,
-                paddleMoveDirection: paddleMoveDirection);
+                // Touch controls
+                {
+                    var touchPressed = touchCollection.Count > 0;
+
+                    if (touchCollection.Count > 0)
+                    {
+                        var touchLocation = touchCollection[^1];
+
+                        var touchPosition = TransformPosition(touchLocation.Position);
+                        if (touchPosition != _touchPosition)
+                        {
+                            cursorPosition = touchPosition;
+                            DeterminePaddleMoveDirection(cursorPosition, ref paddleMoveDirection);
+                            Input = Inputs.Touch;
+                            _touchPosition = touchPosition;
+                        }
+                    }
+
+                    if (Input == Inputs.Touch)
+                    {
+                        if (touchPressed && !_touchPressed)
+                        {
+                            cursorSelectState = SelectStates.Pressed;
+                        }
+                        else if (touchPressed && _touchPressed)
+                        {
+                            cursorSelectState = SelectStates.Held;
+                        }
+                        else if (!touchPressed && _touchPressed)
+                        {
+                            cursorSelectState = SelectStates.Released;
+                        }
+                        else if (!touchPressed && !_touchPressed)
+                        {
+                            cursorSelectState = SelectStates.None;
+                        }
+                        _touchPressed = touchPressed;
+                    }
+                }
+
+                _controlState.Update(
+                    cursorPosition: cursorPosition,
+                    cursorSelectState: cursorSelectState,
+                    paddleMoveDirection: paddleMoveDirection);
+            }
         }
     }
 }

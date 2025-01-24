@@ -1,4 +1,5 @@
 ﻿using BreakoutExtreme.Components;
+using BreakoutExtreme.Utility;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
@@ -36,14 +37,23 @@ namespace BreakoutExtreme
             ControlState = controlState;
             Runner = runner;
         }
-        public static void UpdateGameTime(GameTime gameTime)
+        public static void Update(GameTime gameTime)
         {
             GameTime = gameTime;
-        }
-        public static void UpdateResizeParameters(float scalar, Vector2 offset)
-        {
-            GameWindowToResizeScalar = scalar;
-            GameWindowToResizeOffset = offset;
+
+            {
+                var windowSize = SpriteBatch.GraphicsDevice.Viewport.Bounds.Size;
+
+                var widthScalar = windowSize.X / GameWindowBounds.Width;
+                var heightScaledByWidthScalar = GameWindowBounds.Height * widthScalar;
+                if (heightScaledByWidthScalar < windowSize.Y || heightScaledByWidthScalar.EqualsWithTolerance(windowSize.Y))
+                    GameWindowToResizeScalar = widthScalar;
+                else
+                    GameWindowToResizeScalar = windowSize.Y / GameWindowBounds.Height;
+
+                var widthScaledByResizeScalar = GameWindowBounds.Width * GameWindowToResizeScalar;
+                GameWindowToResizeOffset.X = (windowSize.X - widthScaledByResizeScalar) / 2;
+            }
         }
     }
 }

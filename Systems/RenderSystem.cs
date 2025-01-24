@@ -78,12 +78,12 @@ namespace BreakoutExtreme.Systems
             spriteBatch.Begin(samplerState: SamplerState.PointClamp);
             spriteBatch.Draw(
                 texture: _pixelArtRenderTarget,
-                position: Vector2.Zero,
+                position: Globals.GameWindowToResizeOffset,
                 sourceRectangle: null,
                 color: Color.White,
                 rotation: 0,
                 origin: Vector2.Zero,
-                scale: 2,
+                scale: Globals.GameWindowToResizeScalar,
                 effects: SpriteEffects.None,
                 layerDepth: 0);
             spriteBatch.End();
