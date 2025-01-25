@@ -4,14 +4,20 @@ using MonoGame.Extended;
 using MonoGame.Extended.Collisions;
 using System;
 using System.Diagnostics;
-using static BreakoutExtreme.Components.Collider;
 
 namespace BreakoutExtreme.Components
 {
-    public partial class Collider(IShapeF bounds, object parent, Action<Collider.CollideNode> action = null) : ICollisionActor
+    public partial class Collider : ICollisionActor
     {
-        private readonly Action<CollideNode> _action = action;
-        private readonly Attacher _attacher = new();
+        private readonly Action<CollideNode> _action;
+        private readonly Attacher _attacher;
+        public Collider(IShapeF bounds, object parent, Action<CollideNode> action = null)
+        {
+            Bounds = bounds;
+            Parent = parent;
+            _action = action;
+            _attacher = new(this);
+        }
         public Vector2 Position 
         { 
             get => Bounds.Position;
@@ -19,16 +25,16 @@ namespace BreakoutExtreme.Components
             {
                 if (Bounds.Position == value) 
                     return;
-                _attacher.UpdatePositions(previousPosition: Bounds.Position, newPosition: value);
                 Bounds.Position = value;
+                _attacher.UpdatePositions();
             }
         }
         public SizeF Size => Bounds.BoundingRectangle.Size;
         public Vector2 Velocity;
         public Vector2 Acceleration;
         public float Slick = 0.80f;
-        public IShapeF Bounds { get; } = bounds;
-        public object Parent { get; } = parent;
+        public IShapeF Bounds { get; }
+        public object Parent { get; }
         public Attacher GetAttacher() => _attacher;
 
         public readonly struct CollideNode(Collider current, Collider other, Vector2 penetrationVector)

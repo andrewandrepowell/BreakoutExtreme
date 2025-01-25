@@ -34,11 +34,24 @@ namespace BreakoutExtreme.Components
                     State = States.PlayerTakingAim;
                 }
 
+                if (State == States.PlayerTakingAim && Globals.ControlState.CursorSelectState == Controller.SelectStates.Released)
+                {
+                    Debug.Assert(_balls.Count == 1);
+                    var ball = _balls[0];
+                    _paddle.GetCollider().GetAttacher().Detach(ball.GetCollider());
+                    ball.GetLauncher().Launch();
+
+                    State = States.GameRunning;
+                }
 
 
                 // Update all game components.
                 {
                     _paddle.Update();
+                    for (var i = 0; i < _balls.Count; i++)
+                    {
+                        _balls[i].Update();
+                    }
                 }
             }
         }

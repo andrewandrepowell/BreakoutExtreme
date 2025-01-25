@@ -17,9 +17,15 @@ namespace BreakoutExtreme.Components
         private readonly MoveToTarget _moveToTarget;
         private void ServiceCollision(Collider.CollideNode node)
         {
-            if (node.Other.Parent is Wall || node.Other.Parent is Ball)
+            if (node.Other.Parent is Wall)
             {
                 node.CorrectPosition();
+            }
+            else if (node.Other.Parent is Ball)
+            {
+                _collider.Position = new Vector2(
+                    x: _collider.Position.X - node.PenetrationVector.X, 
+                    y: _collider.Position.Y);
             }
             _moveToTarget.ServiceCollision(node);
         }

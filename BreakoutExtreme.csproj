@@ -34,6 +34,7 @@
     <Compile Include="BrowserService.cs" />
     <Compile Include="Components\Animater.cs" />
     <Compile Include="Components\Ball.cs" />
+    <Compile Include="Components\BallLauncher.cs" />
     <Compile Include="Components\Collider.cs" />
     <Compile Include="Components\ColliderAttacher.cs" />
     <Compile Include="Components\Controller.cs" />
