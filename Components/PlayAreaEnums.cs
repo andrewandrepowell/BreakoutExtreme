@@ -9,7 +9,8 @@
         public enum Components
         {
             None,
-            Ball
+            Ball,
+            Paddle
         }
         public enum States
         {

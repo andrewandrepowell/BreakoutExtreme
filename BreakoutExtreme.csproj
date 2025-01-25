@@ -37,6 +37,8 @@
     <Compile Include="Components\Collider.cs" />
     <Compile Include="Components\Controller.cs" />
     <Compile Include="Components\NinePatcher.cs" />
+    <Compile Include="Components\Paddle.cs" />
+    <Compile Include="Components\PaddleMoveToTarget.cs" />
     <Compile Include="Components\PlayAreaEnums.cs" />
     <Compile Include="Components\PlayAreaLevels.cs" />
     <Compile Include="Components\PlayAreaUpdate.cs" />

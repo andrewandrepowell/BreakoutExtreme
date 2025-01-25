@@ -22,18 +22,31 @@ namespace BreakoutExtreme.Components
                 {
                     var ball = Globals.Runner.CreateBall();
                     var collider = ball.GetCollider();
-                    collider.Position = position + (Vector2)(collider.Bounds.BoundingRectangle.Size / 2);
+                    collider.Position = position + (Vector2)(collider.Size / 2);
                     playArea._balls.Add(ball);
+                }
+            },
+            {
+                Components.Paddle, (PlayArea playArea, Vector2 position) => 
+                {
+                    var paddle = Globals.Runner.CreatePaddle();
+                    var collider = paddle.GetCollider();
+                    collider.Position = position;
+                    Debug.Assert(playArea._paddle == null);
+                    playArea._paddle = paddle;
+                    Console.WriteLine($"Paddle={collider.Bounds.BoundingRectangle}, Position={collider.Position}");
                 }
             }
         });
         private static readonly ReadOnlyDictionary<Components, char> _componentSymbols = new(new Dictionary<Components, char>()
         {
             { Components.None, '_' },
-            { Components.Ball, 'o' }
+            { Components.Ball, 'o' },
+            { Components.Paddle, 'P' }
         });
         private static readonly ReadOnlyDictionary<char, Components> _symbolComponents = new(_componentSymbols.ToDictionary(e => e.Value, e => e.Key));
         private Bag<Ball> _balls = new();
+        private Paddle _paddle = null;
         private Levels _level = Levels.Test;
         public bool Loaded => State != States.Unloaded;
         static PlayArea()
@@ -96,8 +109,10 @@ namespace BreakoutExtreme.Components
             {
                 _balls[i].RemoveEntity();
             }
+            _paddle.RemoveEntity();
 
             _balls.Clear();
+            _paddle = null;
 
             State = States.Unloaded;
         }

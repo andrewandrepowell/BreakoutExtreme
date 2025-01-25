@@ -15,8 +15,8 @@ namespace BreakoutExtreme.Components
         private Entity _entity;
         private void ServiceCollision(Collider.Node node)
         {
-            if (node.Other.Parent is Wall)
-            {
+            if (node.Other.Parent is Wall || node.Other.Parent is Paddle)
+            { 
                 if (!_collider.Velocity.EqualsWithTolerence(Vector2.Zero))
                 {
                     if (!node.PenetrationVector.X.EqualsWithTolerance(0))

@@ -1,0 +1,46 @@
+﻿using MonoGame.Extended.ECS;
+using MonoGame.Extended;
+using System;
+using Microsoft.Xna.Framework;
+using BreakoutExtreme.Utility;
+
+namespace BreakoutExtreme.Components
+{
+    public partial class Paddle
+    {
+        private static readonly Rectangle _blockBounds = new Rectangle(0, 4, 4, 1); // y is set to 4 to resolve odd blazorgl compile bug.
+        private static readonly RectangleF _bounds = _blockBounds.ToBounds();
+        private static readonly Action<Collider.Node> _collideAction = (Collider.Node node) => ((Paddle)node.Current.Parent).ServiceCollision(node);
+        private Animater _animater;
+        private Collider _collider;
+        private Entity _entity;
+        private MoveToTarget _moveToTarget;
+        private void ServiceCollision(Collider.Node node)
+        {
+            if (node.Other.Parent is Wall || node.Other.Parent is Ball)
+            {
+                node.CorrectPosition();
+            }
+            _moveToTarget.ServiceCollision(node);
+        }
+        public Animater GetAnimater() => _animater;
+        public Collider GetCollider() => _collider;
+        public MoveToTarget GetMoveToTarget() => _moveToTarget;
+        public Paddle(Entity entity)
+        {
+            _animater = new();
+            _animater.Play(Animater.Animations.Paddle);
+            _collider = new(bounds: _bounds, parent: this, action: _collideAction);
+            _entity = entity;
+            _moveToTarget = new(this);
+        }
+        public void RemoveEntity()
+        {
+            Globals.Runner.RemoveEntity(_entity);
+        }
+        public void Update()
+        {
+            _moveToTarget.Update();
+        }
+    }
+}

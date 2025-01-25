@@ -28,6 +28,18 @@ namespace BreakoutExtreme.Components
             _collisionComponent.Insert(collider);
             return ball;
         }
+        public Paddle CreatePaddle()
+        {
+            var entity = _world.CreateEntity();
+            var paddle = new Paddle(entity);
+            var animator = paddle.GetAnimater();
+            var collider = paddle.GetCollider();
+            entity.Attach(paddle);
+            entity.Attach(animator);
+            entity.Attach(collider);
+            _collisionComponent.Insert(collider);
+            return paddle;
+        }
         public Wall CreateWall(RectangleF bounds)
         {
             var entity = _world.CreateEntity();

@@ -2,6 +2,7 @@
 using Microsoft.Xna.Framework;
 using MonoGame.Extended.ECS;
 using MonoGame.Extended.ECS.Systems;
+using MonoGame.Extended;
 
 namespace BreakoutExtreme.Systems
 {
@@ -19,7 +20,14 @@ namespace BreakoutExtreme.Systems
         }
         public override void Process(GameTime gameTime, int entityId)
         {
-            _animaterMapper.Get(entityId).Position = _colliderMapper.Get(entityId).Position;
+            var collider = _colliderMapper.Get(entityId);
+            var animater = _animaterMapper.Get(entityId);
+
+            animater.Position = collider.Position;
+            if (collider.Bounds is RectangleF)
+            {
+                animater.Position +=  (Vector2)(collider.Size / 2);
+            }
         }
     }
 }

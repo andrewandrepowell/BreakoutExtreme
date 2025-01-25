@@ -7,6 +7,7 @@ using Microsoft.Xna.Framework.Media;
 using BreakoutExtreme.Components;
 using System;
 using System.Collections.Generic;
+using BreakoutExtreme.Utility;
 
 namespace BreakoutExtreme
 {
@@ -61,8 +62,7 @@ namespace BreakoutExtreme
                 
                 var ball = _runner.CreateBall();
                 var ballCollider = ball.GetCollider();
-                ballCollider.Acceleration = new Vector2(2000, -1000);
-                ballCollider.Position = Globals.PlayAreaBounds.Size / 2;
+                ballCollider.Position = new Point(3, 10).ToPosition();
 
                 _runner.CreatePlayArea();
 

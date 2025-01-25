@@ -11,6 +11,7 @@ namespace BreakoutExtreme.Components
     {
         private Action<Node> _action;
         public Vector2 Position { get => Bounds.Position; set => Bounds.Position = value; }
+        public SizeF Size => Bounds.BoundingRectangle.Size;
         public Vector2 Velocity;
         public Vector2 Acceleration;
         public float Slick = 0.80f;
@@ -65,6 +66,11 @@ namespace BreakoutExtreme.Components
 #endif
                 Position += displacement;
             }
+
+            // Acceleration is always reset.
+            // The idea is that every entity with a collider
+            /// must reapply acceleration.
+            Acceleration = Vector2.Zero;
         }
     }
 }

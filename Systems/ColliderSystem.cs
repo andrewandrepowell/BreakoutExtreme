@@ -1,8 +1,11 @@
 ﻿using BreakoutExtreme.Components;
 using Microsoft.Xna.Framework;
+using MonoGame.Extended;
 using MonoGame.Extended.Collisions;
 using MonoGame.Extended.ECS;
 using MonoGame.Extended.ECS.Systems;
+using System;
+
 
 namespace BreakoutExtreme.Systems
 {
@@ -21,7 +24,10 @@ namespace BreakoutExtreme.Systems
         public override void Update(GameTime gameTime)
         {
             foreach (var entityId in ActiveEntities)
-                _colliderMapper.Get(entityId).Update();
+            {
+                var collider = _colliderMapper.Get(entityId);
+                collider.Update();
+            }
             _collisionComponent.Update(gameTime);
         }
     }
