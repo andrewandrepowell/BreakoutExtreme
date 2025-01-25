@@ -10,12 +10,12 @@ namespace BreakoutExtreme.Components
     {
         private static readonly Rectangle _blockBounds = new Rectangle(0, 4, 4, 1); // y is set to 4 to resolve odd blazorgl compile bug.
         private static readonly RectangleF _bounds = _blockBounds.ToBounds();
-        private static readonly Action<Collider.Node> _collideAction = (Collider.Node node) => ((Paddle)node.Current.Parent).ServiceCollision(node);
+        private static readonly Action<Collider.CollideNode> _collideAction = (Collider.CollideNode node) => ((Paddle)node.Current.Parent).ServiceCollision(node);
         private Animater _animater;
         private Collider _collider;
         private Entity _entity;
         private MoveToTarget _moveToTarget;
-        private void ServiceCollision(Collider.Node node)
+        private void ServiceCollision(Collider.CollideNode node)
         {
             if (node.Other.Parent is Wall || node.Other.Parent is Ball)
             {

@@ -9,7 +9,7 @@ namespace BreakoutExtreme.Components
 {
     public class Collider : ICollisionActor
     {
-        private Action<Node> _action;
+        private Action<CollideNode> _action;
         public Vector2 Position { get => Bounds.Position; set => Bounds.Position = value; }
         public SizeF Size => Bounds.BoundingRectangle.Size;
         public Vector2 Velocity;
@@ -17,18 +17,18 @@ namespace BreakoutExtreme.Components
         public float Slick = 0.80f;
         public IShapeF Bounds { get; }
         public object Parent { get; }
-        public Collider(IShapeF bounds, object parent, Action<Node> action = null)
+        public Collider(IShapeF bounds, object parent, Action<CollideNode> action = null)
         {
             Bounds = bounds;
             Parent = parent;
             _action = action;
         }
-        public struct Node
+        public struct CollideNode
         {
             public readonly Vector2 PenetrationVector;
             public readonly Collider Current;
             public readonly Collider Other;
-            public Node(Collider current, Collider other, Vector2 penetrationVector)
+            public CollideNode(Collider current, Collider other, Vector2 penetrationVector)
             {
                 Current = current;
                 Other = other;
@@ -43,7 +43,7 @@ namespace BreakoutExtreme.Components
         {
             if (_action == null)
                 return;
-            _action(new Node(
+            _action(new CollideNode(
                 current: this,
                 other: (Collider)collisionInfo.Other,
                 penetrationVector: collisionInfo.PenetrationVector));

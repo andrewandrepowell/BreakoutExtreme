@@ -28,7 +28,7 @@ namespace BreakoutExtreme.Components
                 Debug.Assert(Moving);
                 Moving = false;
             }
-            public void ServiceCollision(Collider.Node node)
+            public void ServiceCollision(Collider.CollideNode node)
             {
                 if (node.Other.Parent is Wall && Moving)
                 {

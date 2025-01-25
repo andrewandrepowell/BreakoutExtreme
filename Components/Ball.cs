@@ -9,11 +9,11 @@ namespace BreakoutExtreme.Components
     public class Ball
     {
         private static readonly CircleF _bounds = new CircleF(Vector2.Zero, Globals.GameHalfBlockSize);
-        private static readonly Action<Collider.Node> _collideAction = (Collider.Node node) => ((Ball)node.Current.Parent).ServiceCollision(node);
+        private static readonly Action<Collider.CollideNode> _collideAction = (Collider.CollideNode node) => ((Ball)node.Current.Parent).ServiceCollision(node);
         private Animater _animater;
         private Collider _collider;
         private Entity _entity;
-        private void ServiceCollision(Collider.Node node)
+        private void ServiceCollision(Collider.CollideNode node)
         {
             if (node.Other.Parent is Wall || node.Other.Parent is Paddle)
             { 
