@@ -35,6 +35,7 @@
     <Compile Include="Components\Animater.cs" />
     <Compile Include="Components\Ball.cs" />
     <Compile Include="Components\Collider.cs" />
+    <Compile Include="Components\ColliderAttacher.cs" />
     <Compile Include="Components\Controller.cs" />
     <Compile Include="Components\NinePatcher.cs" />
     <Compile Include="Components\Paddle.cs" />

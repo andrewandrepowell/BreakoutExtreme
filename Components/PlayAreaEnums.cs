@@ -15,6 +15,7 @@
         public enum States
         {
             Unloaded,
+            Loaded,
             PlayerTakingAim,
             GameRunning
         }

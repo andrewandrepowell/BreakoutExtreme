@@ -98,7 +98,7 @@ namespace BreakoutExtreme.Components
             }
 
             _level = level;
-            State = States.PlayerTakingAim;
+            State = States.Loaded;
         }
         public void Unload()
         {

@@ -1,4 +1,6 @@
-﻿namespace BreakoutExtreme.Components
+﻿using System.Diagnostics;
+
+namespace BreakoutExtreme.Components
 {
     public partial class PlayArea
     {
@@ -20,6 +22,19 @@
                     if (!moveToTarget.Moving && cursorSelected)
                         moveToTarget.MoveTo(controlState.CursorPosition.X);
                 }
+
+                if (State == States.Loaded)
+                {
+                    {
+                        Debug.Assert(_balls.Count == 1);
+                        var ball = _balls[0];
+                        _paddle.GetCollider().GetAttacher().Attach(ball.GetCollider());
+                    }
+
+                    State = States.PlayerTakingAim;
+                }
+
+
 
                 // Update all game components.
                 {

@@ -22,7 +22,7 @@ namespace BreakoutExtreme.Components
         private static readonly ReadOnlyDictionary<Atlases, Size> _atlasRegionSizes = new(new Dictionary<Atlases, Size>
         {
             { Atlases.Ball, new Size(80, 80) },
-            { Atlases.Paddle, new Size(128, 80) },
+            { Atlases.Paddle, new Size(144, 80) },
             { Atlases.BrickLarge, new Size(112, 80) },
         });
         private static readonly ReadOnlyDictionary<Animations, string> _animationNames = new(new Dictionary<Animations, string>
