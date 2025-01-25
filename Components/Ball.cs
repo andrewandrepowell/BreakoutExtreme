@@ -15,7 +15,7 @@ namespace BreakoutExtreme.Components
         private readonly Launcher _launcher;
         private void ServiceCollision(Collider.CollideNode node)
         {
-            if (node.Other.Parent is Wall || node.Other.Parent is Paddle)
+            if (node.Other.Parent is Wall || node.Other.Parent is Paddle || node.Other.Parent is Brick)
             { 
                     node.CorrectPosition();
             }

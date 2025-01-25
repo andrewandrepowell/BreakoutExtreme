@@ -17,7 +17,7 @@ namespace BreakoutExtreme.Components
             {
                 var collider = _parent.GetCollider();
                 
-                if (node.Other.Parent is Wall || node.Other.Parent is Paddle)
+                if (node.Other.Parent is Wall || node.Other.Parent is Paddle || node.Other.Parent is Brick)
                 {
                     if (!node.PenetrationVector.EqualsWithTolerence(Vector2.Zero))
                     {

@@ -16,14 +16,26 @@ namespace BreakoutExtreme.Components
             entity.Attach(gameWindow);
             return gameWindow;
         }
+        public Brick CreateBrick(Brick.Bricks brick)
+        {
+            var entity = _world.CreateEntity();
+            var brickObj = new Brick(entity, brick);
+            var animater = brickObj.GetAnimater();
+            var collider = brickObj.GetCollider();
+            entity.Attach(brickObj);
+            entity.Attach(animater);
+            entity.Attach(collider);
+            _collisionComponent.Insert(collider);
+            return brickObj;
+        }
         public Ball CreateBall()
         {
             var entity = _world.CreateEntity();
             var ball = new Ball(entity);
-            var animator = ball.GetAnimater();
+            var animater = ball.GetAnimater();
             var collider = ball.GetCollider();
             entity.Attach(ball);
-            entity.Attach(animator);
+            entity.Attach(animater);
             entity.Attach(collider);
             _collisionComponent.Insert(collider);
             return ball;

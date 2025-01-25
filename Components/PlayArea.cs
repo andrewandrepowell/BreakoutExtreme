@@ -35,16 +35,27 @@ namespace BreakoutExtreme.Components
                     Debug.Assert(playArea._paddle == null);
                     playArea._paddle = paddle;
                 }
+            },
+            {
+                Components.ThickBrick, (PlayArea playArea, Vector2 position) =>
+                {
+                    var brick = Globals.Runner.CreateBrick(Brick.Bricks.ThickBrick);
+                    var collider = brick.GetCollider();
+                    collider.Position = position + (Vector2)(collider.Size / 2);
+                    playArea._brick.Add(brick);
+                }
             }
         });
         private static readonly ReadOnlyDictionary<Components, char> _componentSymbols = new(new Dictionary<Components, char>()
         {
             { Components.None, '_' },
             { Components.Ball, 'o' },
-            { Components.Paddle, 'P' }
+            { Components.Paddle, 'P' },
+            { Components.ThickBrick, 'B' }
         });
         private static readonly ReadOnlyDictionary<char, Components> _symbolComponents = new(_componentSymbols.ToDictionary(e => e.Value, e => e.Key));
         private Bag<Ball> _balls = [];
+        private Bag<Brick> _brick = [];
         private Paddle _paddle = null;
         private Levels _level = Levels.Test;
         public bool Loaded => State != States.Unloaded;

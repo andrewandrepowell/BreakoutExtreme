@@ -10,7 +10,8 @@
         {
             None,
             Ball,
-            Paddle
+            Paddle,
+            ThickBrick
         }
         public enum States
         {
