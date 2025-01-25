@@ -34,7 +34,6 @@ namespace BreakoutExtreme.Components
                     collider.Position = position;
                     Debug.Assert(playArea._paddle == null);
                     playArea._paddle = paddle;
-                    Console.WriteLine($"Paddle={collider.Bounds.BoundingRectangle}, Position={collider.Position}");
                 }
             }
         });
@@ -45,7 +44,7 @@ namespace BreakoutExtreme.Components
             { Components.Paddle, 'P' }
         });
         private static readonly ReadOnlyDictionary<char, Components> _symbolComponents = new(_componentSymbols.ToDictionary(e => e.Value, e => e.Key));
-        private Bag<Ball> _balls = new();
+        private Bag<Ball> _balls = [];
         private Paddle _paddle = null;
         private Levels _level = Levels.Test;
         public bool Loaded => State != States.Unloaded;

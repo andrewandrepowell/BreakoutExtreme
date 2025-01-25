@@ -6,13 +6,9 @@ namespace BreakoutExtreme.Components
 {
     public partial class Paddle
     {
-        public class MoveToTarget
+        public class MoveToTarget(Paddle parent)
         {
-            private Paddle _parent;
-            public MoveToTarget(Paddle parent)
-            {
-                _parent = parent;
-            }
+            private readonly Paddle _parent = parent;
             public bool Moving { get; private set; } = false;
             public float Target { get; private set; }
             public float Threshold = 16;

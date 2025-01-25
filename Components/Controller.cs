@@ -14,8 +14,7 @@ namespace BreakoutExtreme.Components
         private Vector2 _mousePosition = Vector2.Zero, _touchPosition = Vector2.Zero;
         private ButtonState _mouseLeftButtonState = ButtonState.Released;
         private bool _touchPressed = false;
-        private bool _keyboardLeft = false, _keyboardRight = false;
-        private Vector2 TransformPosition(Vector2 position) => (position - Globals.GameWindowToResizeOffset) / Globals.GameWindowToResizeScalar;
+        private static Vector2 TransformPosition(Vector2 position) => (position - Globals.GameWindowToResizeOffset) / Globals.GameWindowToResizeScalar;
         public RectangleF PaddleBox = RectangleF.Empty;
         public Vector2 PaddlePosition = Vector2.Zero;
         public float PaddleCursorThreshold = 8;

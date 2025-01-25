@@ -7,33 +7,22 @@ using System.Diagnostics;
 
 namespace BreakoutExtreme.Components
 {
-    public class Collider : ICollisionActor
+    public class Collider(IShapeF bounds, object parent, Action<Collider.CollideNode> action = null) : ICollisionActor
     {
-        private Action<CollideNode> _action;
+        private readonly Action<CollideNode> _action = action;
         public Vector2 Position { get => Bounds.Position; set => Bounds.Position = value; }
         public SizeF Size => Bounds.BoundingRectangle.Size;
         public Vector2 Velocity;
         public Vector2 Acceleration;
         public float Slick = 0.80f;
-        public IShapeF Bounds { get; }
-        public object Parent { get; }
-        public Collider(IShapeF bounds, object parent, Action<CollideNode> action = null)
+        public IShapeF Bounds { get; } = bounds;
+        public object Parent { get; } = parent;
+
+        public readonly struct CollideNode(Collider current, Collider other, Vector2 penetrationVector)
         {
-            Bounds = bounds;
-            Parent = parent;
-            _action = action;
-        }
-        public struct CollideNode
-        {
-            public readonly Vector2 PenetrationVector;
-            public readonly Collider Current;
-            public readonly Collider Other;
-            public CollideNode(Collider current, Collider other, Vector2 penetrationVector)
-            {
-                Current = current;
-                Other = other;
-                PenetrationVector = penetrationVector;
-            }
+            public readonly Vector2 PenetrationVector = penetrationVector;
+            public readonly Collider Current = current;
+            public readonly Collider Other = other;
             public void CorrectPosition()
             {
                 Current.Position -= PenetrationVector;
