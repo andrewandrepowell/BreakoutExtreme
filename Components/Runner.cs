@@ -9,12 +9,12 @@ namespace BreakoutExtreme.Components
     {
         private World _world;
         private CollisionComponent _collisionComponent;
-        public PlayArea CreatePlayArea()
+        public GameWindow CreateGameWindow()
         {
             var entity = _world.CreateEntity();
-            var playArea = new PlayArea();
-            entity.Attach(playArea);
-            return playArea;
+            var gameWindow = new GameWindow();
+            entity.Attach(gameWindow);
+            return gameWindow;
         }
         public Ball CreateBall()
         {
@@ -70,12 +70,10 @@ namespace BreakoutExtreme.Components
 
             var worldBuilder = new WorldBuilder();
             var gameWindowSystem = new GameWindowSystem();
-            var playAreaSystem = new PlayAreaSystem();
             var colliderSystem = new ColliderSystem(_collisionComponent);
             var positionSystem = new PositionSystem();
             var renderSystem = new RenderSystem();
             worldBuilder.AddSystem(gameWindowSystem);
-            worldBuilder.AddSystem(playAreaSystem);
             worldBuilder.AddSystem(colliderSystem);
             worldBuilder.AddSystem(positionSystem);
             worldBuilder.AddSystem(renderSystem);

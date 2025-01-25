@@ -2,36 +2,25 @@
 using Microsoft.Xna.Framework;
 using MonoGame.Extended.ECS;
 using MonoGame.Extended.ECS.Systems;
-using System.Diagnostics;
+using System;
+
 
 namespace BreakoutExtreme.Systems
 {
-    public class GameWindowSystem : EntityUpdateSystem
+    public class GameWindowSystem : EntityProcessingSystem
     {
-        private ComponentMapper<PlayArea> _playAreaMapper;
-        public GameWindowSystem() : base(Aspect.One(typeof(PlayArea)))
+        private ComponentMapper<Components.GameWindow> _gameWindowMapper;
+        public GameWindowSystem() : base(Aspect.One(typeof(Components.GameWindow)))
         {
         }
         public override void Initialize(IComponentMapperService mapperService)
         {
-            _playAreaMapper = mapperService.GetMapper<PlayArea>();
+            _gameWindowMapper = mapperService.GetMapper<Components.GameWindow>();
         }
-        public override void Update(GameTime gameTime)
+        public override void Process(GameTime gameTime, int entityId)
         {
-            PlayArea playArea = null;
-            foreach (var entityId in ActiveEntities)
-            {
-                if (_playAreaMapper.Has(entityId))
-                {
-                    Debug.Assert(playArea == null);
-                    playArea = _playAreaMapper.Get(entityId);
-                }
-            }
-
-            if (!playArea.Loaded)
-            {
-                playArea.Load(PlayArea.Levels.Test);
-            }
+            Console.WriteLine("reach");
+            _gameWindowMapper.Get(entityId).Update();
         }
     }
 }

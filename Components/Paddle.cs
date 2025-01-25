@@ -21,7 +21,7 @@ namespace BreakoutExtreme.Components
             {
                 node.CorrectPosition();
             }
-            else if (node.Other.Parent is Ball)
+            else if (node.Other.Parent is Ball && _collider.Velocity.X != 0)
             {
                 _collider.Position = new Vector2(
                     x: _collider.Position.X - node.PenetrationVector.X, 

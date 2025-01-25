@@ -59,12 +59,8 @@ namespace BreakoutExtreme
                     contentManager: Content,
                     controlState: _controller.GetControlState(),
                     runner: _runner);
-                
-                var ball = _runner.CreateBall();
-                var ballCollider = ball.GetCollider();
-                ballCollider.Position = new Point(3, 10).ToPosition();
 
-                _runner.CreatePlayArea();
+                _runner.CreateGameWindow();
 
                 Texter.Load();
                 Animater.Load();

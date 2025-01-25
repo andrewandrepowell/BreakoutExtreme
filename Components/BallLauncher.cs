@@ -19,17 +19,20 @@ namespace BreakoutExtreme.Components
                 
                 if (node.Other.Parent is Wall || node.Other.Parent is Paddle)
                 {
-                    if (!node.PenetrationVector.X.EqualsWithTolerance(0))
+                    if (!node.PenetrationVector.EqualsWithTolerence(Vector2.Zero))
                     {
-                        if (Launched)
-                            Acceleration.X *= -1;
-                        collider.Velocity.X *= -1;
-                    }
-                    if (!node.PenetrationVector.Y.EqualsWithTolerance(0))
-                    {
-                        if (Launched)
-                            Acceleration.Y *= -1;
-                        collider.Velocity.Y *= -1;
+                        if (Math.Abs(node.PenetrationVector.X) > (Math.Abs(node.PenetrationVector.Y)))
+                        {
+                            if (Launched)
+                                Acceleration.X *= -1;
+                            collider.Velocity.X *= -1;
+                        }
+                        else
+                        {
+                            if (Launched)
+                                Acceleration.Y *= -1;
+                            collider.Velocity.Y *= -1;
+                        }
                     }
                 }
 

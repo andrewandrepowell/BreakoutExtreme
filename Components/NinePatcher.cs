@@ -16,7 +16,8 @@ namespace BreakoutExtreme.Components
         private static readonly ReadOnlyDictionary<Textures, string> _textureAssetNames = new(new Dictionary<Textures, string>() 
         {
             { Textures.PlayArea, "animations/tiny_wonder_ui/play_area_0" },
-            { Textures.PlayAreaBottomRemoved, "animations/tiny_wonder_ui/play_area_1" }
+            { Textures.PlayAreaBottomRemoved, "animations/tiny_wonder_ui/play_area_1" },
+            { Textures.PlayAreaFilled, "animations/tiny_wonder_ui/play_area_2" }
         });
         private Dictionary<Textures, NinePatch> _textureNinePatches = new();
         private Textures _texture = Textures.PlayArea;
@@ -44,7 +45,8 @@ namespace BreakoutExtreme.Components
         public enum Textures
         {
             PlayArea,
-            PlayAreaBottomRemoved
+            PlayAreaBottomRemoved,
+            PlayAreaFilled
         }
         public RectangleF Bounds
         {
