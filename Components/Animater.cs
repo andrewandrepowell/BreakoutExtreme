@@ -79,8 +79,7 @@ namespace BreakoutExtreme.Components
             var atlasObject = Texture2DAtlas.Create(atlasAssetName, atlasTexture, atlasRegionSize.Width, atlasRegionSize.Height);
             var spriteSheet = new SpriteSheet(atlasAssetName, atlasObject);
             _atlasConfigureAnimations[atlas](spriteSheet);
-            var animatedSprite = new AnimatedSprite(spriteSheet, _animationNames[Animation]);
-            animatedSprite.OriginNormalized = new Vector2(.5f, .5f);
+            var animatedSprite = new AnimatedSprite(spriteSheet, _animationNames[Animation]) { OriginNormalized = new Vector2(.5f, .5f) };
             Debug.Assert(!_atlasAnimatedSprites.ContainsKey(atlas));
             _atlasAnimatedSprites.Add(atlas, animatedSprite);
         }
@@ -169,8 +168,6 @@ namespace BreakoutExtreme.Components
         }
         public void Draw()
         {
-            var k = _atlasAnimatedSprites[_animationAtlases[Animation]];
-            
             Globals.SpriteBatch.Draw(
                 sprite: _atlasAnimatedSprites[_animationAtlases[Animation]], 
                 position: _drawPosition, 
