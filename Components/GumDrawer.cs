@@ -83,6 +83,11 @@ namespace BreakoutExtreme.Components
                 UpdateDrawColor();
             }
         }
+        public void UpdateSizeImmediately()
+        {
+            UpdateRenderTarget();
+            UpdateSizeOrigin();
+        }
         public GumDrawer(InteractiveGue gumRuntime)
         {
             _gumRuntime = gumRuntime;
@@ -94,8 +99,8 @@ namespace BreakoutExtreme.Components
         {
             if (Visibility == 0)
                 return;
-            if ((int)_gumRuntime.GetAbsoluteWidth() != _renderTarget.Width || 
-                (int)_gumRuntime.GetAbsoluteHeight() != _renderTarget.Height)
+            if ((int)_gumRuntime.Width != _renderTarget.Width || 
+                (int)_gumRuntime.Height != _renderTarget.Height)
             {
                 UpdateRenderTarget();
                 UpdateSizeOrigin();

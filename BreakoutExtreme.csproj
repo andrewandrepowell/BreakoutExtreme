@@ -52,6 +52,7 @@
     <Compile Include="Components\PlayArea.cs" />
     <Compile Include="Components\Texter.cs" />
     <Compile Include="Components\GumUI.cs" />
+    <Compile Include="Components\TextField.cs" />
     <Compile Include="Components\Wall.cs" />
     <Compile Include="Globals.cs" />
     <Compile Include="Pages\Index.razor.cs" />
@@ -66,6 +67,7 @@
     <Compile Include="Utility\FloatExtensions.cs" />
     <Compile Include="Utility\PointExtensions.cs" />
     <Compile Include="Utility\RectangleExtensions.cs" />
+    <Compile Include="Utility\SizeExtensions.cs" />
     <Compile Include="Utility\SizeFExtensions.cs" />
   </ItemGroup>
 

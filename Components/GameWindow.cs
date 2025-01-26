@@ -1,6 +1,7 @@
 ﻿using MonoGame.Extended;
 using Microsoft.Xna.Framework;
 using System;
+using BreakoutExtreme.Utility;
 
 namespace BreakoutExtreme.Components
 {
@@ -22,7 +23,9 @@ namespace BreakoutExtreme.Components
             {
                 _scorePanel = Globals.Runner.CreatePanel();
                 var gumDrawer = _scorePanel.GetGumDrawer();
-                gumDrawer.Position = new Vector2(gumDrawer.Size.Width / 2, gumDrawer.Size.Height / 2);
+                _scorePanel.Size = new Size(5, 3) * Globals.GameBlockSize;
+                gumDrawer.Position = new Vector2(gumDrawer.Size.Width / 2 + Globals.GameBlockSize * 0, gumDrawer.Size.Height / 2 + Globals.GameBlockSize);
+                _scorePanel.Text = "Hello";
             }
         }
         public void Update()
