@@ -7,10 +7,10 @@ using System.Diagnostics;
 
 namespace BreakoutExtreme.Components
 {
-    public partial class Collider : ICollisionActor
+    public partial class Collider : ICollisionActor, IMovable
     {
         private readonly Action<CollideNode> _action;
-        private readonly Attacher _attacher;
+        private readonly Attacher<Collider> _attacher;
         public Collider(IShapeF bounds, object parent, Action<CollideNode> action = null)
         {
             Bounds = bounds;
@@ -35,7 +35,7 @@ namespace BreakoutExtreme.Components
         public float Slick = 0.80f;
         public IShapeF Bounds { get; }
         public object Parent { get; }
-        public Attacher GetAttacher() => _attacher;
+        public Attacher<Collider> GetAttacher() => _attacher;
 
         public readonly struct CollideNode(Collider current, Collider other, Vector2 penetrationVector)
         {

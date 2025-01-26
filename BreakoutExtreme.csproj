@@ -35,11 +35,11 @@
     <Compile Include="Components\Animater.cs" />
     <Compile Include="Components\AnimaterData.cs" />
     <Compile Include="Components\AnimaterEnums.cs" />
+    <Compile Include="Components\Attacher.cs" />
     <Compile Include="Components\Ball.cs" />
     <Compile Include="Components\BallLauncher.cs" />
     <Compile Include="Components\Brick.cs" />
     <Compile Include="Components\Collider.cs" />
-    <Compile Include="Components\ColliderAttacher.cs" />
     <Compile Include="Components\Controller.cs" />
     <Compile Include="Components\GameWindow.cs" />
     <Compile Include="Components\GumDrawer.cs" />

@@ -10,7 +10,7 @@ using System.Diagnostics;
 
 namespace BreakoutExtreme.Components
 {
-    public partial class Animater
+    public partial class Animater : IMovable
     {
         private Animations _animation = Animations.Ball;
         private Vector2 _position, _drawPosition;
