@@ -33,6 +33,8 @@
   <ItemGroup>
     <Compile Include="BrowserService.cs" />
     <Compile Include="Components\Animater.cs" />
+    <Compile Include="Components\AnimaterData.cs" />
+    <Compile Include="Components\AnimaterEnums.cs" />
     <Compile Include="Components\Ball.cs" />
     <Compile Include="Components\BallLauncher.cs" />
     <Compile Include="Components\Brick.cs" />

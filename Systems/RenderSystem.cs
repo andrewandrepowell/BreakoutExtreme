@@ -4,11 +4,13 @@ using BreakoutExtreme.Components;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using MonoGame.Extended.Collections;
+using System;
 
 namespace BreakoutExtreme.Systems
 {
     public class RenderSystem : EntitySystem, IUpdateSystem, IDrawSystem
     {
+        private static readonly Animater.Layers[] _layers = Enum.GetValues<Animater.Layers>();
         private ComponentMapper<Animater> _animaterMapper;
         private ComponentMapper<NinePatcher> _ninePatcherMapper;
         private ComponentMapper<GumDrawer> _gumDrawerMapper;
@@ -84,10 +86,16 @@ namespace BreakoutExtreme.Systems
                         _ninePatchers[i].Draw();
                     spriteBatch.End();
                 }
+
+                foreach (ref var layer in _layers.AsSpan())
                 {
                     spriteBatch.Begin(samplerState: SamplerState.PointClamp);
                     for (var i = 0; i < _animaters.Count; i++)
-                        _animaters[i].Draw();
+                    {
+                        var animater = _animaters[i];
+                        if (animater.Layer == layer)
+                            _animaters[i].Draw();
+                    }
                     spriteBatch.End();
                 }
             }
