@@ -11,7 +11,7 @@ namespace BreakoutExtreme.Components
             _playArea = new PlayArea();
             
             var topPatch = Globals.Runner.CreateNinePatcher();
-            topPatch.Texture = NinePatcher.Textures.PlayAreaFilled;
+            topPatch.Texture = NinePatcher.Textures.GameWindowFilled;
             topPatch.Bounds = new RectangleF(0, 0, Globals.GameWindowBounds.Width, Globals.PlayAreaBounds.Y);
         }
         public void Update()

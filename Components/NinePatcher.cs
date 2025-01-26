@@ -17,7 +17,8 @@ namespace BreakoutExtreme.Components
         {
             { Textures.PlayArea, "animations/tiny_wonder_ui/play_area_0" },
             { Textures.PlayAreaBottomRemoved, "animations/tiny_wonder_ui/play_area_1" },
-            { Textures.PlayAreaFilled, "animations/tiny_wonder_ui/play_area_2" }
+            { Textures.PlayAreaFilled, "animations/play_area_3" },
+            { Textures.GameWindowFilled, "animations/tiny_wonder_ui/play_area_2" },
         });
         private Dictionary<Textures, NinePatch> _textureNinePatches = new();
         private Textures _texture = Textures.PlayArea;
@@ -46,7 +47,8 @@ namespace BreakoutExtreme.Components
         {
             PlayArea,
             PlayAreaBottomRemoved,
-            PlayAreaFilled
+            PlayAreaFilled,
+            GameWindowFilled,
         }
         public RectangleF Bounds
         {
