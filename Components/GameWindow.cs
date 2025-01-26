@@ -9,6 +9,7 @@ namespace BreakoutExtreme.Components
     {
         private readonly PlayArea _playArea;
         private readonly Panel _scorePanel;
+        private readonly Panel _highScorePanel;
         public GameWindow()
         {
             GumUI.Initialize();
@@ -20,6 +21,8 @@ namespace BreakoutExtreme.Components
                 topPatch.Bounds = new RectangleF(0, 0, Globals.GameWindowBounds.Width, Globals.PlayAreaBounds.Y);
             }
 
+
+            // Prepare score panel and label.
             {
                 var scoreLabel = Globals.Runner.CreateLabel(Globals.ScoreLabelBlockBounds.Size.ToSize() * Globals.GameBlockSize);
                 var gumDrawer = scoreLabel.GetGumDrawer();
@@ -31,7 +34,22 @@ namespace BreakoutExtreme.Components
                 var gumDrawer = _scorePanel.GetGumDrawer();
                 _scorePanel.Size = Globals.ScorePanelBlockBounds.Size.ToSize() * Globals.GameBlockSize;
                 gumDrawer.Position = (gumDrawer.Size / 2).ToVector2() + Globals.ScorePanelBlockBounds.Location.ToVector2() * Globals.GameBlockSize;
-                _scorePanel.Text = "Hello";
+                _scorePanel.Text = "1111";
+            }
+
+            // Prepare high score panel and label.
+            {
+                var label = Globals.Runner.CreateLabel(Globals.HighScoreLabelBlockBounds.Size.ToSize() * Globals.GameBlockSize);
+                var gumDrawer = label.GetGumDrawer();
+                gumDrawer.Position = (gumDrawer.Size / 2).ToVector2() + Globals.HighScoreLabelBlockBounds.Location.ToVector2() * Globals.GameBlockSize;
+                label.Text = "High Score:";
+            }
+            {
+                _highScorePanel = Globals.Runner.CreatePanel();
+                var gumDrawer = _highScorePanel.GetGumDrawer();
+                _highScorePanel.Size = Globals.HighScorePanelBlockBounds.Size.ToSize() * Globals.GameBlockSize;
+                gumDrawer.Position = (gumDrawer.Size / 2).ToVector2() + Globals.HighScorePanelBlockBounds.Location.ToVector2() * Globals.GameBlockSize;
+                _highScorePanel.Text = "0000";
             }
         }
         public void Update()

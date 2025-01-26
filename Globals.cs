@@ -16,9 +16,11 @@ namespace BreakoutExtreme
         public const int GameBlockSize = 16;
         public const int GameHalfBlockSize = GameBlockSize / 2;
         public static readonly Rectangle GameWindowBlockBounds = new(0, 0, 22, 40);
-        public static readonly Rectangle PlayAreaBlockBounds = new(0, 4, 22, 36);
-        public static readonly Rectangle ScoreLabelBlockBounds = new(1, 1, 4, 3);
-        public static readonly Rectangle ScorePanelBlockBounds = new(4, 1, 5, 3);
+        public static readonly Rectangle PlayAreaBlockBounds = new(0, 5, 22, 35);
+        public static readonly Rectangle ScoreLabelBlockBounds = new(1, 1, 5, 2);
+        public static readonly Rectangle ScorePanelBlockBounds = new(6, 1, 5, 2);
+        public static readonly Rectangle HighScoreLabelBlockBounds = new(1, 3, 5, 2);
+        public static readonly Rectangle HighScorePanelBlockBounds = new(6, 3, 5, 2);
         public static readonly RectangleF GameWindowBounds = GameWindowBlockBounds.ToBounds();
         public static readonly RectangleF PlayAreaBounds = PlayAreaBlockBounds.ToBounds();
         public static float GameWindowToResizeScalar = 1;
