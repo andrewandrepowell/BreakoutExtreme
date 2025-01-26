@@ -127,7 +127,7 @@ namespace BreakoutExtreme
             try
             {
 #endif
-                GraphicsDevice.Clear(Color.CornflowerBlue);
+                GraphicsDevice.Clear(Color.Black);
                 _runner.Draw();
 
                 _spriteBatch.Begin();

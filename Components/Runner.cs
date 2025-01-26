@@ -9,6 +9,15 @@ namespace BreakoutExtreme.Components
     {
         readonly private World _world;
         readonly private CollisionComponent _collisionComponent;
+        public Label CreateLabel(Size size)
+        {
+            var entity = _world.CreateEntity();
+            var label = new Label(size);
+            var gumDrawer = label.GetGumDrawer();
+            entity.Attach(label);
+            entity.Attach(gumDrawer);
+            return label;
+        }
         public Panel CreatePanel()
         {
             var entity = _world.CreateEntity();

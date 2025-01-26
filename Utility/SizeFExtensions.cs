@@ -5,7 +5,6 @@ namespace BreakoutExtreme.Utility
 {
     public static class SizeFExtensions
     {
-        public enum RoundingModes { Floor, Round, Ceil }
         public static Size ToSize(this SizeF sizeF, RoundingModes mode = RoundingModes.Floor)
         {
             switch (mode)

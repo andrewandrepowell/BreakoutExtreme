@@ -21,10 +21,16 @@ namespace BreakoutExtreme.Components
             }
 
             {
+                var scoreLabel = Globals.Runner.CreateLabel(Globals.ScoreLabelBlockBounds.Size.ToSize() * Globals.GameBlockSize);
+                var gumDrawer = scoreLabel.GetGumDrawer();
+                gumDrawer.Position = (gumDrawer.Size / 2).ToVector2() + Globals.ScoreLabelBlockBounds.Location.ToVector2() * Globals.GameBlockSize;
+                scoreLabel.Text = "Score:";
+            }
+            {
                 _scorePanel = Globals.Runner.CreatePanel();
                 var gumDrawer = _scorePanel.GetGumDrawer();
-                _scorePanel.Size = new Size(5, 3) * Globals.GameBlockSize;
-                gumDrawer.Position = new Vector2(gumDrawer.Size.Width / 2 + Globals.GameBlockSize * 0, gumDrawer.Size.Height / 2 + Globals.GameBlockSize);
+                _scorePanel.Size = Globals.ScorePanelBlockBounds.Size.ToSize() * Globals.GameBlockSize;
+                gumDrawer.Position = (gumDrawer.Size / 2).ToVector2() + Globals.ScorePanelBlockBounds.Location.ToVector2() * Globals.GameBlockSize;
                 _scorePanel.Text = "Hello";
             }
         }

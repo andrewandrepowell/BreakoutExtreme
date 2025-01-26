@@ -16,6 +16,7 @@ namespace BreakoutExtreme.Systems
         private Bag<NinePatcher> _ninePatchers = new();
         private Bag<GumDrawer> _gumDrawers = new();
         private RenderTarget2D _pixelArtRenderTarget;
+        private RenderTarget2D _smoothArtRenderTarget;
         public RenderSystem() : base(Aspect.One(typeof(Animater), typeof(NinePatcher), typeof(GumDrawer)))
         {
         }
@@ -30,6 +31,18 @@ namespace BreakoutExtreme.Systems
             if (_pixelArtRenderTarget == null)
             {
                 _pixelArtRenderTarget = new RenderTarget2D(
+                    graphicsDevice: Globals.SpriteBatch.GraphicsDevice,
+                    width: (int)Globals.GameWindowBounds.Width,
+                    height: (int)Globals.GameWindowBounds.Height,
+                    mipMap: false,
+                    preferredFormat: SurfaceFormat.Color,
+                    preferredDepthFormat: DepthFormat.None,
+                    preferredMultiSampleCount: 0,
+                    usage: RenderTargetUsage.DiscardContents);
+            }
+            if (_smoothArtRenderTarget == null)
+            {
+                _smoothArtRenderTarget = new RenderTarget2D(
                     graphicsDevice: Globals.SpriteBatch.GraphicsDevice,
                     width: (int)Globals.GameWindowBounds.Width,
                     height: (int)Globals.GameWindowBounds.Height,
@@ -63,7 +76,7 @@ namespace BreakoutExtreme.Systems
 
             var previousRenderTargets = graphicsDevice.GetRenderTargets();
             graphicsDevice.SetRenderTarget(_pixelArtRenderTarget);
-            graphicsDevice.Clear(Color.Pink);
+            graphicsDevice.Clear(Color.Transparent);
             {
                 {
                     spriteBatch.Begin(samplerState: SamplerState.PointClamp);
@@ -77,13 +90,17 @@ namespace BreakoutExtreme.Systems
                         _animaters[i].Draw();
                     spriteBatch.End();
                 }
-                {
-                    spriteBatch.Begin(samplerState: SamplerState.PointClamp);
-                    for (var i = 0; i < _gumDrawers.Count; i++)
-                        _gumDrawers[i].MonoDraw();
-                    spriteBatch.End();
-                }
             }
+
+            graphicsDevice.SetRenderTargets(_smoothArtRenderTarget);
+            graphicsDevice.Clear(Color.Transparent);
+            {
+                spriteBatch.Begin(samplerState: SamplerState.PointClamp);
+                for (var i = 0; i < _gumDrawers.Count; i++)
+                    _gumDrawers[i].MonoDraw();
+                spriteBatch.End();
+            }
+
             graphicsDevice.SetRenderTargets(previousRenderTargets);
             graphicsDevice.Clear(Color.Black);
 
@@ -99,6 +116,45 @@ namespace BreakoutExtreme.Systems
                 effects: SpriteEffects.None,
                 layerDepth: 0);
             spriteBatch.End();
+
+            spriteBatch.Begin(samplerState: SamplerState.LinearClamp);
+            spriteBatch.Draw(
+                texture: _smoothArtRenderTarget,
+                position: Globals.GameWindowToResizeOffset,
+                sourceRectangle: null,
+                color: Color.White,
+                rotation: 0,
+                origin: Vector2.Zero,
+                scale: Globals.GameWindowToResizeScalar,
+                effects: SpriteEffects.None,
+                layerDepth: 0);
+            spriteBatch.End();
+
+
+            //graphicsDevice.SetRenderTarget(_pixelArtRenderTarget);
+            //graphicsDevice.Clear(Color.Transparent);
+            //{
+            //    spriteBatch.Begin(samplerState: SamplerState.PointClamp);
+            //    for (var i = 0; i < _gumDrawers.Count; i++)
+            //        _gumDrawers[i].MonoDraw();
+            //    spriteBatch.End();
+            //}
+
+            //graphicsDevice.SetRenderTargets(previousRenderTargets);
+
+            //graphicsDevice.Clear(Color.Transparent);
+            //spriteBatch.Begin(samplerState: SamplerState.LinearClamp);
+            //spriteBatch.Draw(
+            //    texture: _pixelArtRenderTarget,
+            //    position: Globals.GameWindowToResizeOffset,
+            //    sourceRectangle: null,
+            //    color: Color.White,
+            //    rotation: 0,
+            //    origin: Vector2.Zero,
+            //    scale: Globals.GameWindowToResizeScalar,
+            //    effects: SpriteEffects.None,
+            //    layerDepth: 0);
+            //spriteBatch.End();
         }
     }
 }

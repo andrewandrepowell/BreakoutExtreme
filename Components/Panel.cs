@@ -89,7 +89,7 @@ namespace BreakoutExtreme.Components
 
             {
                 _textRuntime = new TextRuntime();
-                _textRuntime.BitmapFont = new BitmapFont("fonts/montserrat/montserrat_0.fnt", SystemManagers.Default);
+                _textRuntime.BitmapFont = new BitmapFont("fonts/montserrat/montserrat_1.fnt", SystemManagers.Default);
                 _textRuntime.X = Globals.GameBlockSize;
                 _textRuntime.Y = Globals.GameBlockSize;
                 _textRuntime.Width = -Globals.GameBlockSize * 2;
@@ -97,7 +97,6 @@ namespace BreakoutExtreme.Components
                 _textRuntime.WidthUnits = Gum.DataTypes.DimensionUnitType.RelativeToContainer;
                 _textRuntime.HeightUnits = Gum.DataTypes.DimensionUnitType.RelativeToContainer;
                 _textRuntime.VerticalAlignment = VerticalAlignment.Center;
-                _textRuntime.UseFontSmoothing = false;
                 UpdateTextRuntimeColor();
                 UpdateTextRuntimeText();
                 _containerRuntime.Children.Add(_textRuntime);

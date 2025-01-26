@@ -41,6 +41,7 @@
     <Compile Include="Components\Controller.cs" />
     <Compile Include="Components\GameWindow.cs" />
     <Compile Include="Components\GumDrawer.cs" />
+    <Compile Include="Components\Label.cs" />
     <Compile Include="Components\NinePatcher.cs" />
     <Compile Include="Components\Paddle.cs" />
     <Compile Include="Components\PaddleMoveToTarget.cs" />
