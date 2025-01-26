@@ -3,6 +3,7 @@ using MonoGame.Extended;
 using System;
 using Microsoft.Xna.Framework;
 using BreakoutExtreme.Utility;
+using MonoGame.Extended.Collisions.Layers;
 
 namespace BreakoutExtreme.Components
 {
@@ -14,6 +15,7 @@ namespace BreakoutExtreme.Components
         private readonly Animater _animater;
         private readonly Collider _collider;
         private readonly Entity _entity;
+        private readonly Shadow _shadow;
         private readonly MoveToTarget _moveToTarget;
         private void ServiceCollision(Collider.CollideNode node)
         {
@@ -39,10 +41,12 @@ namespace BreakoutExtreme.Components
             _collider = new(bounds: _bounds, parent: this, action: _collideAction);
             _entity = entity;
             _moveToTarget = new(this);
+            _shadow = Globals.Runner.CreateShadow(_animater, new Vector2(_animater.Position.X, _animater.Position.Y + 8));
         }
         public void RemoveEntity()
         {
             Globals.Runner.RemoveEntity(_entity);
+            _shadow.RemoveEntity();
         }
         public void Update()
         {

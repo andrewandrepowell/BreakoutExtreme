@@ -17,6 +17,7 @@ namespace BreakoutExtreme.Components
         private float _scale = 1;
         private Vector2 _scaleVector;
         private IAnimationController _animationController;
+        private Attacher<Animater> _attacher;
         private void UpdateAtlasAnimatedSprites()
         {
             var atlas = _animationAtlases[Animation];
@@ -63,6 +64,7 @@ namespace BreakoutExtreme.Components
                     return;
                 _position = value;
                 UpdateDrawPosition();
+                _attacher.UpdatePositions();
             }
         }
         public float Scale
@@ -78,6 +80,7 @@ namespace BreakoutExtreme.Components
         }
         public float Rotation = 0;
         public Layers Layer = Layers.Ground;
+        public Attacher<Animater> GetAttacher() => _attacher;
         public bool IsAnimating => _animationController.IsAnimating;
         public int CurrentFrame => _animationController.CurrentFrame;
         public Animater()
@@ -86,6 +89,7 @@ namespace BreakoutExtreme.Components
             UpdateDrawPosition();
             UpdateScaleVector();
             UpdateAnimationController();
+            _attacher = new(this);
         }
         public void Play(Animations animation)
         {

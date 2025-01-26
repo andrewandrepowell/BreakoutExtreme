@@ -53,6 +53,8 @@
     <Compile Include="Components\PlayAreaUpdate.cs" />
     <Compile Include="Components\Runner.cs" />
     <Compile Include="Components\PlayArea.cs" />
+    <Compile Include="Components\RunnerCreateEntity.cs" />
+    <Compile Include="Components\Shadow.cs" />
     <Compile Include="Components\Texter.cs" />
     <Compile Include="Components\GumUI.cs" />
     <Compile Include="Components\TextField.cs" />
