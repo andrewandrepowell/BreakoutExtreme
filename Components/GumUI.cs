@@ -26,14 +26,6 @@ namespace BreakoutExtreme.Components
             _initialized = true;
 #endif
             GumService.Default.Initialize(Globals.SpriteBatch.GraphicsDevice);
-            {
-                //var renderer = SystemManagers.Default.Renderer;
-                //var camera = renderer.Camera;
-                //var windowSize = Globals.SpriteBatch.GraphicsDevice.Viewport.Bounds.Size;
-                //camera.ClientHeight = 64;
-                //camera.ClientWidth = 64;
-                //camera.Zoom = 4;
-            }
             _gumBatch = new GumBatch();
         }
     }

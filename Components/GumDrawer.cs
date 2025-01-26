@@ -107,23 +107,12 @@ namespace BreakoutExtreme.Components
                 return;
             var graphicsDevice = Globals.SpriteBatch.GraphicsDevice;
             var gumBatch = GumUI.GetGumBatch();
+            var camera = SystemManagers.Default.Renderer.Camera;
             var previousRenderTargets = graphicsDevice.GetRenderTargets();
             graphicsDevice.SetRenderTargets(_renderTarget);
-            {
-                {
-                    var renderer = SystemManagers.Default.Renderer;
-                    var camera = renderer.Camera;
-                    var windowSize = Globals.SpriteBatch.GraphicsDevice.Viewport.Bounds.Size;
-                    //camera.X = 0;
-                    //camera.Y = 0;
-                    //camera.ClientHeight = (int)(Globals.GameWindowBounds.Width * Globals.GameWindowToResizeScalar);
-                    //camera.ClientWidth = (int)(Globals.GameWindowBounds.Height * Globals.GameWindowToResizeScalar);
-                    camera.CameraCenterOnScreen = CameraCenterOnScreen.TopLeft;
-                    camera.ClientHeight = Size.Height;
-                    camera.ClientWidth = Size.Width;
-                }
-            }
-            Console.WriteLine($"Size: {Size}");
+            graphicsDevice.Clear(Color.Transparent);
+            camera.ClientHeight = Size.Height;
+            camera.ClientWidth = Size.Width;
             gumBatch.Begin();
             gumBatch.Draw(_gumRuntime);
             gumBatch.End();

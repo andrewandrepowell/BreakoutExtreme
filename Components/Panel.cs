@@ -8,7 +8,7 @@ namespace BreakoutExtreme.Components
 {
     public class Panel
     {
-        private static readonly Size _initialSize = new Size(Globals.GameBlockSize * 3, Globals.GameBlockSize * 3);
+        private static readonly Size _initialSize = new Size(Globals.GameBlockSize * 2, Globals.GameBlockSize * 2);
         private readonly ContainerRuntime _containerRuntime;
         private readonly GumDrawer _gumDrawer;
         private void UpdateContainerSize()
@@ -40,6 +40,8 @@ namespace BreakoutExtreme.Components
                 var nineSlice = new NineSliceRuntime();
                 var texture = Globals.ContentManager.Load<Texture2D>("animations/panel_0");
                 nineSlice.SourceFile = texture;
+                nineSlice.Width = 0;
+                nineSlice.Height = 0;
                 nineSlice.WidthUnits = Gum.DataTypes.DimensionUnitType.RelativeToContainer;
                 nineSlice.HeightUnits = Gum.DataTypes.DimensionUnitType.RelativeToContainer;
                 _containerRuntime.Children.Add(nineSlice);
