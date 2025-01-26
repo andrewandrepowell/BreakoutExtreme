@@ -40,15 +40,18 @@
     <Compile Include="Components\ColliderAttacher.cs" />
     <Compile Include="Components\Controller.cs" />
     <Compile Include="Components\GameWindow.cs" />
+    <Compile Include="Components\GumDrawer.cs" />
     <Compile Include="Components\NinePatcher.cs" />
     <Compile Include="Components\Paddle.cs" />
     <Compile Include="Components\PaddleMoveToTarget.cs" />
+    <Compile Include="Components\Panel.cs" />
     <Compile Include="Components\PlayAreaEnums.cs" />
     <Compile Include="Components\PlayAreaLevels.cs" />
     <Compile Include="Components\PlayAreaUpdate.cs" />
     <Compile Include="Components\Runner.cs" />
     <Compile Include="Components\PlayArea.cs" />
     <Compile Include="Components\Texter.cs" />
+    <Compile Include="Components\GumUI.cs" />
     <Compile Include="Components\Wall.cs" />
     <Compile Include="Globals.cs" />
     <Compile Include="Pages\Index.razor.cs" />
@@ -56,15 +59,18 @@
     <Compile Include="BreakoutExtremeGame.cs" />
     <Compile Include="Systems\ColliderSystem.cs" />
     <Compile Include="Systems\GameWindowSystem.cs" />
+    <Compile Include="Systems\GumRenderSystem.cs" />
     <Compile Include="Systems\PositionSystem.cs" />
     <Compile Include="Systems\RenderSystem.cs" />
     <Compile Include="Utility\Enums.cs" />
     <Compile Include="Utility\FloatExtensions.cs" />
     <Compile Include="Utility\PointExtensions.cs" />
     <Compile Include="Utility\RectangleExtensions.cs" />
+    <Compile Include="Utility\SizeFExtensions.cs" />
   </ItemGroup>
 
   <ItemGroup>
+    <PackageReference Include="Gum.KNI" Version="2025.1.24.2" />
     <PackageReference Include="KNI.Extended" Version="4.0.4" />
     <PackageReference Include="KNI.Extended.Content.Pipeline" Version="4.0.4" />
     <PackageReference Include="nkast.Xna.Framework" Version="3.14.9001" />

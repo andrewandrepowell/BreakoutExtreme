@@ -14,7 +14,7 @@ namespace BreakoutExtreme.Components
                     var controlState = Globals.ControlState;
                     var moveToTarget = _paddle.GetMoveToTarget();
                     var cursorSelected = controlState.CursorSelectState == Controller.SelectStates.Pressed || controlState.CursorSelectState == Controller.SelectStates.Held;
-                    var cursorReleased = controlState.CursorSelectState == Controller.SelectStates.Released;
+                    var cursorReleased = controlState.CursorSelectState == Controller.SelectStates.Released || controlState.CursorSelectState == Controller.SelectStates.None;
 
                     if (moveToTarget.Moving && ((cursorSelected && controlState.CursorPosition.X != moveToTarget.Target) || cursorReleased))
                         moveToTarget.Release();

@@ -20,7 +20,7 @@ namespace BreakoutExtreme.Components
             { Textures.PlayAreaFilled, "animations/play_area_3" },
             { Textures.GameWindowFilled, "animations/tiny_wonder_ui/play_area_2" },
         });
-        private Dictionary<Textures, NinePatch> _textureNinePatches = new();
+        private readonly Dictionary<Textures, NinePatch> _textureNinePatches = [];
         private Textures _texture = Textures.PlayArea;
         private Rectangle _drawRectangle;
         private RectangleF _bounds;

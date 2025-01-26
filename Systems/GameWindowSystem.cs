@@ -19,7 +19,6 @@ namespace BreakoutExtreme.Systems
         }
         public override void Process(GameTime gameTime, int entityId)
         {
-            Console.WriteLine("reach");
             _gameWindowMapper.Get(entityId).Update();
         }
     }

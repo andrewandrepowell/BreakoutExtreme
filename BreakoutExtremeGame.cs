@@ -58,6 +58,7 @@ namespace BreakoutExtreme
                     spriteBatch: _spriteBatch, 
                     contentManager: Content,
                     controlState: _controller.GetControlState(),
+                    game: this,
                     runner: _runner);
 
                 _runner.CreateGameWindow();

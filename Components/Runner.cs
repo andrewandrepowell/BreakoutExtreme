@@ -7,8 +7,17 @@ namespace BreakoutExtreme.Components
 {
     public class Runner
     {
-        private World _world;
-        private CollisionComponent _collisionComponent;
+        readonly private World _world;
+        readonly private CollisionComponent _collisionComponent;
+        public Panel CreatePanel()
+        {
+            var entity = _world.CreateEntity();
+            var panel = new Panel();
+            var gumDrawer = panel.GetGumDrawer();
+            entity.Attach(panel);
+            entity.Attach(gumDrawer);
+            return panel;
+        }
         public GameWindow CreateGameWindow()
         {
             var entity = _world.CreateEntity();
@@ -84,10 +93,12 @@ namespace BreakoutExtreme.Components
             var gameWindowSystem = new GameWindowSystem();
             var colliderSystem = new ColliderSystem(_collisionComponent);
             var positionSystem = new PositionSystem();
+            var gumRenderSystem = new GumRenderSystem();
             var renderSystem = new RenderSystem();
             worldBuilder.AddSystem(gameWindowSystem);
             worldBuilder.AddSystem(colliderSystem);
             worldBuilder.AddSystem(positionSystem);
+            worldBuilder.AddSystem(gumRenderSystem);
             worldBuilder.AddSystem(renderSystem);
             _world = worldBuilder.Build();
         }
