@@ -1,15 +1,22 @@
 ﻿using BreakoutExtreme.Utility;
+using Microsoft.Xna.Framework;
 
 namespace BreakoutExtreme.Shaders
 {
     public abstract class Feature
     {
-        public abstract Scripts Script { get; }
-        public abstract RunningStates RunningState { get; }
-        public virtual void Update(SilhouetteNode node)
+        public virtual Scripts? Script => null;
+        public virtual void Update()
         {
         }
-        public virtual void Update(BlurNode node)
+        public virtual bool UpdateDrawOffset(ref Vector2 drawPosition)
+        {
+            return false;
+        }
+        public virtual void UpdateShaderNode(SilhouetteNode node)
+        {
+        }
+        public virtual void UpdateShaderNode(BlurNode node)
         {
         }
     }

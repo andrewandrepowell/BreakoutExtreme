@@ -5,6 +5,7 @@ using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using MonoGame.Extended;
 using System.Diagnostics;
+using System;
 
 namespace BreakoutExtreme
 {
@@ -25,6 +26,7 @@ namespace BreakoutExtreme
         public static readonly Rectangle HighScorePanelBlockBounds = new(6, 3, 5, 2);
         public static readonly RectangleF GameWindowBounds = GameWindowBlockBounds.ToBounds();
         public static readonly RectangleF PlayAreaBounds = PlayAreaBlockBounds.ToBounds();
+        public static readonly Random Random = new();
         public static float GameWindowToResizeScalar = 1;
         public static Vector2 GameWindowToResizeOffset = Vector2.Zero;
         public static SpriteBatch SpriteBatch { get; private set; }

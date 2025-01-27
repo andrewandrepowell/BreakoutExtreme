@@ -60,6 +60,7 @@
     <Compile Include="Components\TextField.cs" />
     <Compile Include="Components\Wall.cs" />
     <Compile Include="Features\Shadow.cs" />
+    <Compile Include="Features\Shake.cs" />
     <Compile Include="Globals.cs" />
     <Compile Include="Pages\Index.razor.cs" />
     <Compile Include="Program.cs" />

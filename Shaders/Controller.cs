@@ -12,11 +12,11 @@ namespace BreakoutExtreme.Shaders
             switch (feature.Script)
             {
                 case Scripts.Silhouette:
-                    feature.Update(_silhouetteNode);
+                    feature.UpdateShaderNode(_silhouetteNode);
                     effect = _silhouetteNode.Effect;
                     break;
                 case Scripts.Blur:
-                    feature.Update(_blurNode);
+                    feature.UpdateShaderNode(_blurNode);
                     effect = _blurNode.Effect;
                     break;
             }

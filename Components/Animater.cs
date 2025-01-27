@@ -14,7 +14,7 @@ namespace BreakoutExtreme.Components
     public partial class Animater : IMovable
     {
         private Animations _animation = Animations.Ball;
-        private Vector2 _position, _drawPosition;
+        private Vector2 _position, _drawPosition, _shaderDrawOffset;
         private float _scale = 1;
         private Vector2 _scaleVector;
         private IAnimationController _animationController;
@@ -36,8 +36,8 @@ namespace BreakoutExtreme.Components
         }
         private void UpdateDrawPosition()
         {
-            _drawPosition.X = (float)Math.Floor(_position.X);
-            _drawPosition.Y = (float)Math.Floor(_position.Y);
+            _drawPosition.X = (float)Math.Floor(_position.X + _shaderDrawOffset.X);
+            _drawPosition.Y = (float)Math.Floor(_position.Y + _shaderDrawOffset.Y);
         }
         private void UpdateScaleVector()
         {
@@ -134,6 +134,20 @@ namespace BreakoutExtreme.Components
         }
         public void Update()
         {
+            {
+                _shaderDrawOffset = Vector2.Zero;
+                var updateDrawPosition = false;
+                for (var i = 0; i < ShaderFeatures.Count; i++)
+                {
+                    var feature = ShaderFeatures[i];
+                    updateDrawPosition |= feature.UpdateDrawOffset(ref _shaderDrawOffset);
+                }
+                if (updateDrawPosition)
+                    UpdateDrawPosition();
+            }
+
+            for (var i = 0; i < ShaderFeatures.Count; i++)
+                ShaderFeatures[i].Update();
             _atlasAnimatedSprites[_animationAtlases[Animation]].Update(Globals.GameTime);
         }
         public void Draw()

@@ -111,12 +111,11 @@ namespace BreakoutExtreme.Systems
                             for (var j = 0; j < shaderFeatures.Count; j++)
                             {
                                 var shaderFeature = shaderFeatures[j];
-                                if (shaderFeature.RunningState != Utility.RunningStates.Waiting)
-                                {
-                                    _shaderController.Begin(shaderFeature);
-                                    _animaters[i].Draw();
-                                    spriteBatch.End();
-                                }
+                                if (!shaderFeature.Script.HasValue)
+                                    continue;
+                                _shaderController.Begin(shaderFeature);
+                                _animaters[i].Draw();
+                                spriteBatch.End();
                             }
                         }
                     }

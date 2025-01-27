@@ -60,6 +60,13 @@ namespace BreakoutExtreme.Components
                         collider.Velocity = newVelocity;
                     }
                 }
+
+                
+                if (node.Other.Parent is Brick brick)
+                {
+                    brick.Damage();
+                }
+                
             }
             public void Launch()
             {
