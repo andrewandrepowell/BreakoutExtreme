@@ -63,6 +63,10 @@
     <Compile Include="Pages\Index.razor.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="BreakoutExtremeGame.cs" />
+    <Compile Include="Shaders\Controller.cs" />
+    <Compile Include="Shaders\Enums.cs" />
+    <Compile Include="Shaders\Feature.cs" />
+    <Compile Include="Shaders\Nodes.cs" />
     <Compile Include="Systems\ColliderSystem.cs" />
     <Compile Include="Systems\GameWindowSystem.cs" />
     <Compile Include="Systems\GumRenderSystem.cs" />

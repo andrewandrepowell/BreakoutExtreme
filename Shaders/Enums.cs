@@ -1,0 +1,8 @@
+﻿namespace BreakoutExtreme.Shaders
+{
+    public enum Scripts
+    {
+        Silhouette,
+        Blur
+    }
+}

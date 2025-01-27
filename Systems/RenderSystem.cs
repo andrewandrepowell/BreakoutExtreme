@@ -93,7 +93,7 @@ namespace BreakoutExtreme.Systems
                     for (var i = 0; i < _animaters.Count; i++)
                     {
                         var animater = _animaters[i];
-                        if (animater.Layer == layer)
+                        if (animater.Layer == layer && animater.Visibility != 0)
                             _animaters[i].Draw();
                     }
                     spriteBatch.End();

@@ -18,6 +18,8 @@ namespace BreakoutExtreme.Components
         private Vector2 _scaleVector;
         private IAnimationController _animationController;
         private Attacher<Animater> _attacher;
+        private float _visibility = 1;
+        private Color _color = Color.White;
         private void UpdateAtlasAnimatedSprites()
         {
             var atlas = _animationAtlases[Animation];
@@ -44,6 +46,10 @@ namespace BreakoutExtreme.Components
         private void UpdateAnimationController()
         {
             _animationController = _atlasAnimatedSprites[_animationAtlases[Animation]].SetAnimation(_animationNames[Animation]);
+        }
+        private void UpdateAnimatedSpriteColor()
+        {
+            _atlasAnimatedSprites[_animationAtlases[Animation]].Color = Color * Visibility;
         }
         public static void Load()
         {
@@ -81,8 +87,28 @@ namespace BreakoutExtreme.Components
         public float Rotation = 0;
         public Layers Layer = Layers.Ground;
         public Attacher<Animater> GetAttacher() => _attacher;
-        public bool IsAnimating => _animationController.IsAnimating;
-        public int CurrentFrame => _animationController.CurrentFrame;
+        public float Visibility
+        {
+            get => _visibility;
+            set
+            {
+                if (_visibility == value)
+                    return;
+                _visibility = value;
+                UpdateAnimatedSpriteColor();
+            }
+        }
+        public Color Color
+        {
+            get => _color;
+            set
+            {
+                if (_color == value) return;
+                _color = value;
+                UpdateAnimatedSpriteColor();
+            }
+        }
+        public bool ShowAnimatedSprite = true;
         public Animater()
         {
             UpdateAtlasAnimatedSprites();
