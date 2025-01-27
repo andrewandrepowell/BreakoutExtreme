@@ -41,7 +41,7 @@ namespace BreakoutExtreme.Components
             _collider = new(bounds: _bounds, parent: this, action: _collideAction);
             _entity = entity;
             _moveToTarget = new(this);
-            _shadow = Globals.Runner.CreateShadow(_animater, new Vector2(_animater.Position.X, _animater.Position.Y + 8));
+            _shadow = Globals.Runner.CreateShadow(_animater, new Vector2(_animater.Position.X, _animater.Position.Y + Globals.ShadowDisplacement));
         }
         public void RemoveEntity()
         {

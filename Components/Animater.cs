@@ -2,6 +2,7 @@
 using Microsoft.Xna.Framework.Graphics;
 using MonoGame.Extended;
 using MonoGame.Extended.Animations;
+using MonoGame.Extended.Collections;
 using MonoGame.Extended.Graphics;
 using System;
 using System.Collections.Generic;
@@ -48,7 +49,7 @@ namespace BreakoutExtreme.Components
             _animationController = _atlasAnimatedSprites[_animationAtlases[Animation]].SetAnimation(_animationNames[Animation]);
         }
         private void UpdateAnimatedSpriteColor()
-        {
+        {  
             _atlasAnimatedSprites[_animationAtlases[Animation]].Color = Color * Visibility;
         }
         public static void Load()
@@ -108,13 +109,15 @@ namespace BreakoutExtreme.Components
                 UpdateAnimatedSpriteColor();
             }
         }
-        public bool ShowAnimatedSprite = true;
+        public bool ShowBase = true;
+        public readonly Bag<Shaders.Feature> ShaderFeatures = new();
         public Animater()
         {
             UpdateAtlasAnimatedSprites();
             UpdateDrawPosition();
             UpdateScaleVector();
             UpdateAnimationController();
+            UpdateAnimatedSpriteColor();
             _attacher = new(this);
         }
         public void Play(Animations animation)
@@ -126,6 +129,7 @@ namespace BreakoutExtreme.Components
                 UpdateAtlasAnimatedSprites();
 
             UpdateAnimationController();
+            UpdateAnimatedSpriteColor();
             _animationController.Play();
         }
         public void Update()

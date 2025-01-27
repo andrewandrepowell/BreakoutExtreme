@@ -19,6 +19,8 @@ namespace BreakoutExtreme.Systems
         private Bag<GumDrawer> _gumDrawers = new();
         private RenderTarget2D _pixelArtRenderTarget;
         private RenderTarget2D _smoothArtRenderTarget;
+        private Shaders.Controller _shaderController = null;
+        private bool _initialized = false;
         public RenderSystem() : base(Aspect.One(typeof(Animater), typeof(NinePatcher), typeof(GumDrawer)))
         {
         }
@@ -30,29 +32,32 @@ namespace BreakoutExtreme.Systems
         }
         public void Update(GameTime gameTime)
         {
-            if (_pixelArtRenderTarget == null)
+            if (!_initialized)
             {
-                _pixelArtRenderTarget = new RenderTarget2D(
-                    graphicsDevice: Globals.SpriteBatch.GraphicsDevice,
-                    width: (int)Globals.GameWindowBounds.Width,
-                    height: (int)Globals.GameWindowBounds.Height,
-                    mipMap: false,
-                    preferredFormat: SurfaceFormat.Color,
-                    preferredDepthFormat: DepthFormat.None,
-                    preferredMultiSampleCount: 0,
-                    usage: RenderTargetUsage.DiscardContents);
-            }
-            if (_smoothArtRenderTarget == null)
-            {
-                _smoothArtRenderTarget = new RenderTarget2D(
-                    graphicsDevice: Globals.SpriteBatch.GraphicsDevice,
-                    width: (int)Globals.GameWindowBounds.Width,
-                    height: (int)Globals.GameWindowBounds.Height,
-                    mipMap: false,
-                    preferredFormat: SurfaceFormat.Color,
-                    preferredDepthFormat: DepthFormat.None,
-                    preferredMultiSampleCount: 0,
-                    usage: RenderTargetUsage.DiscardContents);
+                {
+                    _pixelArtRenderTarget = new RenderTarget2D(
+                        graphicsDevice: Globals.SpriteBatch.GraphicsDevice,
+                        width: (int)Globals.GameWindowBounds.Width,
+                        height: (int)Globals.GameWindowBounds.Height,
+                        mipMap: false,
+                        preferredFormat: SurfaceFormat.Color,
+                        preferredDepthFormat: DepthFormat.None,
+                        preferredMultiSampleCount: 0,
+                        usage: RenderTargetUsage.DiscardContents);
+                    _smoothArtRenderTarget = new RenderTarget2D(
+                        graphicsDevice: Globals.SpriteBatch.GraphicsDevice,
+                        width: (int)Globals.GameWindowBounds.Width,
+                        height: (int)Globals.GameWindowBounds.Height,
+                        mipMap: false,
+                        preferredFormat: SurfaceFormat.Color,
+                        preferredDepthFormat: DepthFormat.None,
+                        preferredMultiSampleCount: 0,
+                        usage: RenderTargetUsage.DiscardContents);
+                }
+                {
+                    _shaderController = new();
+                }
+                _initialized = true;
             }
 
             _animaters.Clear();
@@ -93,10 +98,28 @@ namespace BreakoutExtreme.Systems
                     for (var i = 0; i < _animaters.Count; i++)
                     {
                         var animater = _animaters[i];
-                        if (animater.Layer == layer && animater.Visibility != 0)
+                        if (animater.Layer == layer && animater.Visibility != 0 && animater.ShowBase)
                             _animaters[i].Draw();
                     }
                     spriteBatch.End();
+                    for (var i = 0; i < _animaters.Count; i++)
+                    {
+                        var animater = _animaters[i];
+                        var shaderFeatures = animater.ShaderFeatures;
+                        if (animater.Layer == layer && animater.Visibility != 0)
+                        {
+                            for (var j = 0; j < shaderFeatures.Count; j++)
+                            {
+                                var shaderFeature = shaderFeatures[j];
+                                if (shaderFeature.RunningState != Utility.RunningStates.Waiting)
+                                {
+                                    _shaderController.Begin(shaderFeature);
+                                    _animaters[i].Draw();
+                                    spriteBatch.End();
+                                }
+                            }
+                        }
+                    }
                 }
             }
 
@@ -137,32 +160,6 @@ namespace BreakoutExtreme.Systems
                 effects: SpriteEffects.None,
                 layerDepth: 0);
             spriteBatch.End();
-
-
-            //graphicsDevice.SetRenderTarget(_pixelArtRenderTarget);
-            //graphicsDevice.Clear(Color.Transparent);
-            //{
-            //    spriteBatch.Begin(samplerState: SamplerState.PointClamp);
-            //    for (var i = 0; i < _gumDrawers.Count; i++)
-            //        _gumDrawers[i].MonoDraw();
-            //    spriteBatch.End();
-            //}
-
-            //graphicsDevice.SetRenderTargets(previousRenderTargets);
-
-            //graphicsDevice.Clear(Color.Transparent);
-            //spriteBatch.Begin(samplerState: SamplerState.LinearClamp);
-            //spriteBatch.Draw(
-            //    texture: _pixelArtRenderTarget,
-            //    position: Globals.GameWindowToResizeOffset,
-            //    sourceRectangle: null,
-            //    color: Color.White,
-            //    rotation: 0,
-            //    origin: Vector2.Zero,
-            //    scale: Globals.GameWindowToResizeScalar,
-            //    effects: SpriteEffects.None,
-            //    layerDepth: 0);
-            //spriteBatch.End();
         }
     }
 }

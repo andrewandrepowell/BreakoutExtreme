@@ -15,6 +15,8 @@ namespace BreakoutExtreme
 #endif
         public const int GameBlockSize = 16;
         public const int GameHalfBlockSize = GameBlockSize / 2;
+        public const float ShadowDisplacement = 8;
+        public const float ShadowVisibility = 0.5f;
         public static readonly Rectangle GameWindowBlockBounds = new(0, 0, 22, 40);
         public static readonly Rectangle PlayAreaBlockBounds = new(0, 5, 22, 35);
         public static readonly Rectangle ScoreLabelBlockBounds = new(1, 1, 5, 2);

@@ -1,5 +1,4 @@
-﻿using Microsoft.Xna.Platform.Graphics;
-using Microsoft.Xna.Framework;
+﻿using Microsoft.Xna.Framework;
 using MonoGame.Extended.ECS;
 
 namespace BreakoutExtreme.Components
@@ -14,7 +13,12 @@ namespace BreakoutExtreme.Components
         {
             _entity = entity;
             _parent = parent;
-            _animater = new() { Position = shadowPosition, Layer = Animater.Layers.Shadow };
+            _animater = new();
+            _animater.Position = shadowPosition;
+            _animater.Layer = Animater.Layers.Shadow;
+            _animater.ShowBase = false;
+            _animater.Visibility = Globals.ShadowVisibility;
+            _animater.ShaderFeatures.Add(new Features.Shadow());
             _animater.Play(parent.Animation);
             _parent.GetAttacher().Attach(_animater);
         }

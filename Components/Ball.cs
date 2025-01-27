@@ -13,6 +13,7 @@ namespace BreakoutExtreme.Components
         private readonly Collider _collider;
         private readonly Entity _entity;
         private readonly Launcher _launcher;
+        private readonly Shadow _shadow;
         private void ServiceCollision(Collider.CollideNode node)
         {
             if (node.Other.Parent is Wall || node.Other.Parent is Paddle || node.Other.Parent is Brick)
@@ -31,10 +32,12 @@ namespace BreakoutExtreme.Components
             _collider = new(bounds: _bounds, parent: this, action: _collideAction);
             _entity = entity;
             _launcher = new Launcher(this);
+            _shadow = Globals.Runner.CreateShadow(_animater, new Vector2(_animater.Position.X, _animater.Position.Y + Globals.ShadowDisplacement));
         }
         public void RemoveEntity()
         {
             Globals.Runner.RemoveEntity(_entity);
+            _shadow.RemoveEntity();
         }
         public void Update()
         {

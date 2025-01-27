@@ -142,3 +142,9 @@
 /processorParam:TextureFormat=Color
 /build:animations/tiny_wonder_ui/frame_0.png
 
+#begin effects/silhouette_0.fx
+/importer:EffectImporter
+/processor:EffectProcessor
+/processorParam:DebugMode=Auto
+/build:effects/silhouette_0.fx
+
