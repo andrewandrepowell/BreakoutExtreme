@@ -9,19 +9,19 @@ namespace BreakoutExtreme.Components
 {
     public partial class Animater
     {
-        private static readonly ReadOnlyDictionary<Atlases, string> _atlasAssetNames = new(new Dictionary<Atlases, string>
+        private static readonly ReadOnlyDictionary<Spriters, string> _spriterAssetNames = new(new Dictionary<Spriters, string>
         {
-            { Atlases.Ball, "animations/ball_0" },
-            { Atlases.Paddle, "animations/paddle_0" },
-            { Atlases.BrickLarge, "animations/brick_2" },
-            { Atlases.Cracks, "animations/cracks_0" },
+            { Spriters.Ball, "animations/ball_0" },
+            { Spriters.Paddle, "animations/paddle_0" },
+            { Spriters.BrickLarge, "animations/brick_2" },
+            { Spriters.Cracks, "animations/cracks_0" },
         });
-        private static readonly ReadOnlyDictionary<Atlases, Size> _atlasRegionSizes = new(new Dictionary<Atlases, Size>
+        private static readonly ReadOnlyDictionary<Spriters, Size> _spriterRegionSizes = new(new Dictionary<Spriters, Size>
         {
-            { Atlases.Ball, new Size(80, 80) },
-            { Atlases.Paddle, new Size(144, 80) },
-            { Atlases.BrickLarge, new Size(112, 80) },
-            { Atlases.Cracks, new Size(16, 16) },
+            { Spriters.Ball, new Size(80, 80) },
+            { Spriters.Paddle, new Size(144, 80) },
+            { Spriters.BrickLarge, new Size(112, 80) },
+            { Spriters.Cracks, new Size(16, 16) },
         });
         private static readonly ReadOnlyDictionary<Animations, string> _animationNames = new(new Dictionary<Animations, string>
         {
@@ -33,52 +33,50 @@ namespace BreakoutExtreme.Components
             { Animations.CrackMedium, "crack_1" },
             { Animations.CrackLarge, "crack_2" },
         });
-        private static readonly ReadOnlyDictionary<Atlases, Action<SpriteSheet>> _atlasConfigureAnimations = new(new Dictionary<Atlases, Action<SpriteSheet>>
+        private static readonly ReadOnlyDictionary<Spriters, Action<Spriter>> _spriterConfigureAnimations = new(new Dictionary<Spriters, Action<Spriter>>
         {
             {
-                Atlases.Ball,
-                delegate(SpriteSheet spriteSheet)
+                Spriters.Ball,
+                delegate(Spriter spriter)
                 {
-                    spriteSheet.DefineAnimation(_animationNames[Animations.Ball], builder => builder
-                        .AddFrame(0, TimeSpan.Zero));
+                    spriter.Add(_animationNames[Animations.Ball], [0]);
                 }
             },
             {
-                Atlases.Paddle,
-                delegate(SpriteSheet spriteSheet)
+                Spriters.Paddle,
+                delegate(Spriter spriter)
                 {
-                    spriteSheet.DefineAnimation(_animationNames[Animations.Paddle], builder => builder
-                        .AddFrame(0, TimeSpan.Zero));
+                    spriter.Add(_animationNames[Animations.Paddle], [0]);
                 }
             },
             {
-                Atlases.BrickLarge,
-                delegate(SpriteSheet spriteSheet)
+                Spriters.BrickLarge,
+                delegate(Spriter spriter)
                 {
-                    spriteSheet.DefineAnimation(_animationNames[Animations.BrickLarge], builder => builder.AddFrame(1, TimeSpan.FromSeconds(0.1)));
-                    spriteSheet.DefineAnimation(_animationNames[Animations.BrickLargeDead], builder => builder.AddFrame(0, TimeSpan.FromSeconds(0.1)));
+                    spriter.Add(_animationNames[Animations.BrickLarge], [0]);
+                    spriter.Add(_animationNames[Animations.BrickLargeDead], [1]);
                 }
             },
             {
-                Atlases.Cracks,
-                delegate(SpriteSheet spriteSheet)
+                Spriters.Cracks,
+                delegate(Spriter spriter)
                 {
-                    spriteSheet.DefineAnimation(_animationNames[Animations.CrackSmall], builder => builder.AddFrame(0, TimeSpan.Zero));
-                    spriteSheet.DefineAnimation(_animationNames[Animations.CrackMedium], builder => builder.AddFrame(1, TimeSpan.Zero));
-                    spriteSheet.DefineAnimation(_animationNames[Animations.CrackLarge], builder => builder.AddFrame(2, TimeSpan.Zero));
+                    spriter.Add(_animationNames[Animations.CrackSmall], [0]);
+                    spriter.Add(_animationNames[Animations.CrackMedium], [1]);
+                    spriter.Add(_animationNames[Animations.CrackLarge], [2]);
                 }
             }
         });
-        private static readonly ReadOnlyDictionary<Animations, Atlases> _animationAtlases = new(new Dictionary<Animations, Atlases>()
+        private static readonly ReadOnlyDictionary<Animations, Spriters> _animationSpriters = new(new Dictionary<Animations, Spriters>()
         {
-            { Animations.Ball, Atlases.Ball },
-            { Animations.Paddle, Atlases.Paddle },
-            { Animations.BrickLarge, Atlases.BrickLarge },
-            { Animations.BrickLargeDead, Atlases.BrickLarge },
-            { Animations.CrackSmall, Atlases.Cracks },
-            { Animations.CrackMedium, Atlases.Cracks },
-            { Animations.CrackLarge, Atlases.Cracks },
+            { Animations.Ball, Spriters.Ball },
+            { Animations.Paddle, Spriters.Paddle },
+            { Animations.BrickLarge, Spriters.BrickLarge },
+            { Animations.BrickLargeDead, Spriters.BrickLarge },
+            { Animations.CrackSmall, Spriters.Cracks },
+            { Animations.CrackMedium, Spriters.Cracks },
+            { Animations.CrackLarge, Spriters.Cracks },
         });
-        private readonly Dictionary<Atlases, Node> _atlasNodes = [];
+        private readonly Dictionary<Spriters, Spriter> _spriters = [];
     }
 }

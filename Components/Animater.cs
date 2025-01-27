@@ -1,9 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using MonoGame.Extended;
-using MonoGame.Extended.Animations;
 using MonoGame.Extended.Collections;
-using MonoGame.Extended.Graphics;
 using System;
 using System.Diagnostics;
 
@@ -12,10 +10,8 @@ namespace BreakoutExtreme.Components
     public partial class Animater : IMovable
     {
         private Animations _animation = Animations.Ball;
-        private Vector2 _position, _drawPosition, _shaderDrawOffset;
-        private float _scale = 1;
-        private Vector2 _scaleVector;
-        private IAnimationController _animationController;
+        private Spriter _spriter;
+        private Vector2 _position, _shaderDrawOffset;
         private Attacher<Animater> _attacher;
         private float _visibility = 1, _shaderVisibility = 1;
         private Color _color = Color.White;
@@ -35,42 +31,35 @@ namespace BreakoutExtreme.Components
                 if (updateDrawPosition)
                     UpdateDrawPosition();
                 if (updateVisibility)
-                    UpdateAnimatedSpriteColor();
+                    UpdateSpriterColor();
             }
 
             for (var i = 0; i < ShaderFeatures.Count; i++)
                 ShaderFeatures[i].Update();
         }
-        private void UpdateAtlasAnimatedSprites()
+        private void UpdateSpriters()
         {
-            var atlas = _animationAtlases[Animation];
-            var atlasAssetName = _atlasAssetNames[atlas];
-            var atlasTexture = Globals.ContentManager.Load<Texture2D>(atlasAssetName);
-            var atlasRegionSize = _atlasRegionSizes[atlas];
-            var atlasObject = Texture2DAtlas.Create(atlasAssetName, atlasTexture, atlasRegionSize.Width, atlasRegionSize.Height);
-            var spriteSheet = new SpriteSheet(atlasAssetName, atlasObject);
-            _atlasConfigureAnimations[atlas](spriteSheet);
-            var animatedSprite = new AnimatedSprite(spriteSheet, _animationNames[Animation]) { OriginNormalized = new Vector2(.5f, .5f) };
-            Debug.Assert(!_atlasNodes.ContainsKey(atlas));
-            _atlasNodes.Add(atlas, new(animatedSprite, spriteSheet));
+            var spriter = _animationSpriters[Animation];
+            var spriterAssetName = _spriterAssetNames[spriter];
+            var spriterTexture = Globals.ContentManager.Load<Texture2D>(spriterAssetName);
+            var spriterRegionSize = _spriterRegionSizes[spriter];
+            var spriterObj = new Spriter(spriterAssetName, spriterRegionSize);
+            _spriterConfigureAnimations[spriter](spriterObj);
+            Debug.Assert(!_spriters.ContainsKey(spriter));
+            _spriters.Add(spriter, spriterObj);
+        }
+        private void UpdateSpriter()
+        {
+            _spriter = _spriters[_animationSpriters[Animation]];
         }
         private void UpdateDrawPosition()
         {
-            _drawPosition.X = (float)Math.Floor(_position.X + _shaderDrawOffset.X);
-            _drawPosition.Y = (float)Math.Floor(_position.Y + _shaderDrawOffset.Y);
+            _spriter.Position.X = (float)Math.Floor(_position.X + _shaderDrawOffset.X);
+            _spriter.Position.Y = (float)Math.Floor(_position.Y + _shaderDrawOffset.Y);
         }
-        private void UpdateScaleVector()
+        private void UpdateSpriterColor()
         {
-            _scaleVector.X = _scale;
-            _scaleVector.Y = _scale;
-        }
-        private void UpdateAnimationController()
-        {
-            _animationController = _atlasNodes[_animationAtlases[Animation]].AnimatedSprite.SetAnimation(_animationNames[Animation]);
-        }
-        private void UpdateAnimatedSpriteColor()
-        {
-            _atlasNodes[_animationAtlases[Animation]].AnimatedSprite.Color = Color * Visibility * _shaderVisibility;
+            _spriter.Color = Color * Visibility * _shaderVisibility;
         }
         public static void Load()
         {
@@ -96,16 +85,14 @@ namespace BreakoutExtreme.Components
         }
         public float Scale
         {
-            get => _scale;
-            set
-            {
-                if (_scale == value)
-                    return;
-                _scale = value;
-                UpdateScaleVector();
-            }
+            get => _spriter.Scale;
+            set => _spriter.Scale = value;
         }
-        public float Rotation = 0;
+        public float Rotation
+        {
+            get => _spriter.Rotation;
+            set => _spriter.Rotation = value;
+        }
         public Layers Layer = Layers.Ground;
         public Attacher<Animater> GetAttacher() => _attacher;
         public float Visibility
@@ -116,7 +103,7 @@ namespace BreakoutExtreme.Components
                 if (_visibility == value)
                     return;
                 _visibility = value;
-                UpdateAnimatedSpriteColor();
+                UpdateSpriterColor();
             }
         }
         public Color Color
@@ -126,49 +113,40 @@ namespace BreakoutExtreme.Components
             {
                 if (_color == value) return;
                 _color = value;
-                UpdateAnimatedSpriteColor();
+                UpdateSpriterColor();
             }
         }
         public bool ShowBase = true;
         public readonly Bag<Shaders.Feature> ShaderFeatures = new();
-        public int CurrentFrame => _animationController.CurrentFrame;
-        public Texture2D Texture => _atlasNodes[_animationAtlases[Animation]].SpriteSheet.TextureAtlas.Texture;
-        public Rectangle Region => _atlasNodes[_animationAtlases[Animation]].SpriteSheet.TextureAtlas[CurrentFrame].Bounds;
+        public Texture2D Texture => _spriter.Texture;
+        public Rectangle Region => _spriter.Region;
         public Animater()
         {
             _attacher = new(this);
-            UpdateAtlasAnimatedSprites();
+            UpdateSpriters();
+            UpdateSpriter();
             UpdateDrawPosition();
-            UpdateScaleVector();
-            UpdateAnimationController();
-            UpdateAnimatedSpriteColor();
+            UpdateSpriterColor();
         }
         public void Play(Animations animation)
         {
             var differentAnimation = Animation != animation;
             _animation = animation;
 
-            if (differentAnimation && !_atlasNodes.ContainsKey(_animationAtlases[Animation]))
-                UpdateAtlasAnimatedSprites();
-
-            UpdateAnimationController();
-            UpdateAnimatedSpriteColor();
-            _animationController.Stop();
-            var result = _animationController.Play();
-            Debug.Assert(result);
+            if (differentAnimation && !_spriters.ContainsKey(_animationSpriters[Animation]))
+                UpdateSpriters();
+            UpdateSpriter();
+            UpdateSpriterColor();
+            _spriter.Play(_animationNames[Animation]);
         }
         public void Update()
         {
             UpdateShaderFeatures();
-            _atlasNodes[_animationAtlases[Animation]].AnimatedSprite.Update(Globals.GameTime);
+            _spriter.Update();
         }
         public void Draw()
         {
-            Globals.SpriteBatch.Draw(
-                sprite: _atlasNodes[_animationAtlases[Animation]].AnimatedSprite, 
-                position: _drawPosition, 
-                rotation: Rotation, 
-                scale: _scaleVector);
+            _spriter.Draw();
         }
     }
 }

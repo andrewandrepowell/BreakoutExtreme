@@ -50,10 +50,11 @@ namespace BreakoutExtreme.Components
 
             _origin = (regionSize / 2).ToVector2();
         }
-        public void Add(string name, int[] indices, float period, bool repeat)
+        public void Add(string name, int[] indices, float period = 0, bool repeat = false)
         {
             Debug.Assert(!_nodes.ContainsKey(name));
-            Debug.Assert(indices.All(x => x > 0 && x < _regions.Length));
+            Debug.Assert(indices.All(x => x >= 0 && x < _regions.Length));
+            Debug.Assert(indices.Length > 0);
             Debug.Assert(period >= 0);
             _nodes.Add(name, new Node(indices, period, repeat));
         }
@@ -97,9 +98,11 @@ namespace BreakoutExtreme.Components
         }
         public Color Color = Color.White;
         public Vector2 Position;
+        public float Scale = 1;
+        public float Rotation = 0;
         public void Update()
         {
-            if (_playing)
+            if (_playing && _node.Period > 0)
             {
                 while (_time <= 0)
                 {
@@ -133,9 +136,9 @@ namespace BreakoutExtreme.Components
                 position: Position,
                 sourceRectangle: Region,
                 color: Color,
-                rotation: 0,
+                rotation: Rotation,
                 origin: _origin,
-                scale: 1,
+                scale: Scale,
                 effects: SpriteEffects.None,
                 layerDepth: 0);
         }

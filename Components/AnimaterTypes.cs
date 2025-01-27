@@ -4,7 +4,7 @@ namespace BreakoutExtreme.Components
 {
     public partial class Animater
     {
-        public enum Atlases
+        public enum Spriters
         {
             Ball,
             Paddle,
@@ -25,11 +25,6 @@ namespace BreakoutExtreme.Components
         {
             Shadow,
             Ground
-        }
-        private class Node(AnimatedSprite animatedSprite, SpriteSheet spriteSheet)
-        {
-            public readonly AnimatedSprite AnimatedSprite = animatedSprite;
-            public readonly SpriteSheet SpriteSheet = spriteSheet;
         }
     }
 }
