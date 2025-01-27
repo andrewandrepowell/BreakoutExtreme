@@ -55,6 +55,7 @@
     <Compile Include="Components\PlayArea.cs" />
     <Compile Include="Components\RunnerCreateEntity.cs" />
     <Compile Include="Components\Shadow.cs" />
+    <Compile Include="Components\Spriter.cs" />
     <Compile Include="Components\Texter.cs" />
     <Compile Include="Components\GumUI.cs" />
     <Compile Include="Components\TextField.cs" />
@@ -62,6 +63,7 @@
     <Compile Include="Features\Cracks.cs" />
     <Compile Include="Features\Shadow.cs" />
     <Compile Include="Features\Shake.cs" />
+    <Compile Include="Features\Vanish.cs" />
     <Compile Include="Globals.cs" />
     <Compile Include="Pages\Index.razor.cs" />
     <Compile Include="Program.cs" />

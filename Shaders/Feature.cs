@@ -13,6 +13,10 @@ namespace BreakoutExtreme.Shaders
         {
             return false;
         }
+        public virtual bool UpdateVisibility(ref float visibility) 
+        { 
+            return false; 
+        }
         public virtual void UpdateShaderNode(SilhouetteNode node)
         {
         }

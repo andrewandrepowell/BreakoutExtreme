@@ -3,6 +3,7 @@ using MonoGame.Extended;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System;
+using System.Diagnostics;
 
 namespace BreakoutExtreme.Components
 {
@@ -54,8 +55,8 @@ namespace BreakoutExtreme.Components
                 Atlases.BrickLarge,
                 delegate(SpriteSheet spriteSheet)
                 {
-                    spriteSheet.DefineAnimation(_animationNames[Animations.BrickLarge], builder => builder.AddFrame(0, TimeSpan.Zero));
-                    spriteSheet.DefineAnimation(_animationNames[Animations.BrickLargeDead], builder => builder.AddFrame(1, TimeSpan.Zero));
+                    spriteSheet.DefineAnimation(_animationNames[Animations.BrickLarge], builder => builder.AddFrame(1, TimeSpan.FromSeconds(0.1)));
+                    spriteSheet.DefineAnimation(_animationNames[Animations.BrickLargeDead], builder => builder.AddFrame(0, TimeSpan.FromSeconds(0.1)));
                 }
             },
             {

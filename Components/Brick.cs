@@ -36,6 +36,7 @@ namespace BreakoutExtreme.Components
         private readonly Shadow _shadow;
         private readonly Features.Shake _shake;
         private readonly Features.Cracks _cracks;
+        private readonly Features.Vanish _vanish;
         private void ServiceCollision(Collider.CollideNode node)
         {
         }
@@ -75,10 +76,12 @@ namespace BreakoutExtreme.Components
         public void Destroy()
         {
             Debug.Assert(State == States.Active);
+            Debug.Assert(!_vanish.Running);
             CurrentHP = 0;
 
             _shake.Start(0.5f);
             _cracks.Degree = Features.Cracks.Degrees.None;
+            _vanish.Start();
             _animater.Play(_brickDeadAnimations[_brick]);
 
             State = States.Destroying;
@@ -95,6 +98,8 @@ namespace BreakoutExtreme.Components
             _animater.ShaderFeatures.Add(_shake);
             _cracks = new(_animater);
             _animater.ShaderFeatures.Add(_cracks);
+            _vanish = new();
+            _animater.ShaderFeatures.Add(_vanish);
             TotalHP = _brickTotalHPs[brick];
             CurrentHP = TotalHP;
             State = States.Active;
@@ -106,7 +111,7 @@ namespace BreakoutExtreme.Components
         }
         public void Update()
         {
-            if (State == States.Destroying)
+            if (State == States.Destroying && !_vanish.Running)
             {
                 State = States.Destroyed;
             }

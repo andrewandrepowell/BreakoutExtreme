@@ -17,8 +17,30 @@ namespace BreakoutExtreme.Components
         private Vector2 _scaleVector;
         private IAnimationController _animationController;
         private Attacher<Animater> _attacher;
-        private float _visibility = 1;
+        private float _visibility = 1, _shaderVisibility = 1;
         private Color _color = Color.White;
+        private void UpdateShaderFeatures()
+        {
+            {
+                _shaderDrawOffset = Vector2.Zero;
+                _shaderVisibility = 1;
+                var updateDrawPosition = false;
+                var updateVisibility = false;
+                for (var i = 0; i < ShaderFeatures.Count; i++)
+                {
+                    var feature = ShaderFeatures[i];
+                    updateDrawPosition |= feature.UpdateDrawOffset(ref _shaderDrawOffset);
+                    updateVisibility |= feature.UpdateVisibility(ref _shaderVisibility);
+                }
+                if (updateDrawPosition)
+                    UpdateDrawPosition();
+                if (updateVisibility)
+                    UpdateAnimatedSpriteColor();
+            }
+
+            for (var i = 0; i < ShaderFeatures.Count; i++)
+                ShaderFeatures[i].Update();
+        }
         private void UpdateAtlasAnimatedSprites()
         {
             var atlas = _animationAtlases[Animation];
@@ -48,7 +70,7 @@ namespace BreakoutExtreme.Components
         }
         private void UpdateAnimatedSpriteColor()
         {
-            _atlasNodes[_animationAtlases[Animation]].AnimatedSprite.Color = Color * Visibility;
+            _atlasNodes[_animationAtlases[Animation]].AnimatedSprite.Color = Color * Visibility * _shaderVisibility;
         }
         public static void Load()
         {
@@ -131,24 +153,13 @@ namespace BreakoutExtreme.Components
 
             UpdateAnimationController();
             UpdateAnimatedSpriteColor();
-            _animationController.Play();
+            _animationController.Stop();
+            var result = _animationController.Play();
+            Debug.Assert(result);
         }
         public void Update()
         {
-            {
-                _shaderDrawOffset = Vector2.Zero;
-                var updateDrawPosition = false;
-                for (var i = 0; i < ShaderFeatures.Count; i++)
-                {
-                    var feature = ShaderFeatures[i];
-                    updateDrawPosition |= feature.UpdateDrawOffset(ref _shaderDrawOffset);
-                }
-                if (updateDrawPosition)
-                    UpdateDrawPosition();
-            }
-
-            for (var i = 0; i < ShaderFeatures.Count; i++)
-                ShaderFeatures[i].Update();
+            UpdateShaderFeatures();
             _atlasNodes[_animationAtlases[Animation]].AnimatedSprite.Update(Globals.GameTime);
         }
         public void Draw()
