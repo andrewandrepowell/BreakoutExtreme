@@ -5,6 +5,7 @@ using Microsoft.Xna.Framework;
 using BreakoutExtreme.Utility;
 using System.Collections.ObjectModel;
 using System.Collections.Generic;
+using System.Diagnostics;
 
 
 namespace BreakoutExtreme.Components
@@ -18,6 +19,10 @@ namespace BreakoutExtreme.Components
         private static readonly ReadOnlyDictionary<Bricks, Animater.Animations> _brickAnimations = new(new Dictionary<Bricks, Animater.Animations>() 
         {
             { Bricks.ThickBrick, Animater.Animations.BrickLarge }
+        });
+        private static readonly ReadOnlyDictionary<Bricks, int> _brickTotalHPs = new(new Dictionary<Bricks, int>() 
+        {
+            { Bricks.ThickBrick, 3 }
         });
         private static readonly Action<Collider.CollideNode> _collideAction = (Collider.CollideNode node) => ((Brick)node.Current.Parent).ServiceCollision(node);
         private readonly Animater _animater;
@@ -37,9 +42,24 @@ namespace BreakoutExtreme.Components
         public Bricks GetBrick() => _brick;
         public Animater GetAnimater() => _animater;
         public Collider GetCollider() => _collider;
+        public readonly int TotalHP;
+        public int CurrentHP;
         public void Damage()
         {
-            _shake.Start(0.5f);
+            Debug.Assert(CurrentHP > 0);
+            
+            {
+                
+                CurrentHP -= 1;
+                _shake.Start(0.5f);
+                _cracks.Degree = (Features.Cracks.Degrees)(TotalHP - CurrentHP);
+            }
+
+            if (CurrentHP == 0)
+            {
+
+            }
+
         }
         public Brick(Entity entity, Bricks brick)
         {
@@ -51,8 +71,10 @@ namespace BreakoutExtreme.Components
             _shadow = Globals.Runner.CreateShadow(_animater, new Vector2(_animater.Position.X, _animater.Position.Y + Globals.ShadowDisplacement));
             _shake = new();
             _animater.ShaderFeatures.Add(_shake);
-            _cracks = new(_animater) { Degree = Features.Cracks.Degrees.Large };
+            _cracks = new(_animater);
             _animater.ShaderFeatures.Add(_cracks);
+            TotalHP = _brickTotalHPs[brick];
+            CurrentHP = TotalHP;
         }
         public void RemoveEntity()
         {

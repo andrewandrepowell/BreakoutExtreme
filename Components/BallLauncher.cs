@@ -62,7 +62,7 @@ namespace BreakoutExtreme.Components
                 }
 
                 
-                if (node.Other.Parent is Brick brick)
+                if (node.Other.Parent is Brick brick && brick.CurrentHP > 0)
                 {
                     brick.Damage();
                 }
