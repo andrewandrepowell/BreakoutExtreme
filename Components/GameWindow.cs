@@ -7,14 +7,25 @@ namespace BreakoutExtreme.Components
 {
     public class GameWindow
     {
+        private readonly Action<Brick> _brickDestroyedAction;
         private readonly PlayArea _playArea;
         private readonly Panel _scorePanel;
         private readonly Panel _highScorePanel;
+        private int _score = 0;
         public GameWindow()
         {
+            // Gum needs initailization first.
             GumUI.Initialize();
-            _playArea = new PlayArea();
 
+            _brickDestroyedAction = delegate (Brick brick)
+            {
+                _score++;
+                _scorePanel.Text = $"{_score}";
+            };
+
+            _playArea = new PlayArea(_brickDestroyedAction);
+
+            // Create background area for UI.
             {
                 var topPatch = Globals.Runner.CreateNinePatcher();
                 topPatch.Texture = NinePatcher.Textures.GameWindowFilled;
@@ -34,7 +45,7 @@ namespace BreakoutExtreme.Components
                 var gumDrawer = _scorePanel.GetGumDrawer();
                 _scorePanel.Size = Globals.ScorePanelBlockBounds.Size.ToSize() * Globals.GameBlockSize;
                 gumDrawer.Position = (gumDrawer.Size / 2).ToVector2() + Globals.ScorePanelBlockBounds.Location.ToVector2() * Globals.GameBlockSize;
-                _scorePanel.Text = "1111";
+                _scorePanel.Text = "0";
             }
 
             // Prepare high score panel and label.
@@ -49,8 +60,8 @@ namespace BreakoutExtreme.Components
                 var gumDrawer = _highScorePanel.GetGumDrawer();
                 _highScorePanel.Size = Globals.HighScorePanelBlockBounds.Size.ToSize() * Globals.GameBlockSize;
                 gumDrawer.Position = (gumDrawer.Size / 2).ToVector2() + Globals.HighScorePanelBlockBounds.Location.ToVector2() * Globals.GameBlockSize;
-                _highScorePanel.Text = "0000";
-            }
+                _highScorePanel.Text = "0";
+            }            
         }
         public void Update()
         {

@@ -1,5 +1,6 @@
 ﻿using MonoGame.Extended;
 using Microsoft.Xna.Framework;
+using System;
 
 namespace BreakoutExtreme.Components
 {
@@ -50,10 +51,10 @@ namespace BreakoutExtreme.Components
             _collisionComponent.Insert(collider);
             return brickObj;
         }
-        public Ball CreateBall()
+        public Ball CreateBall(Action<Brick> brickDestroyedAction)
         {
             var entity = _world.CreateEntity();
-            var ball = new Ball(entity);
+            var ball = new Ball(entity, brickDestroyedAction);
             var animater = ball.GetAnimater();
             var collider = ball.GetCollider();
             entity.Attach(ball);

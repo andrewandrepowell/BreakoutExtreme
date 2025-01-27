@@ -20,7 +20,7 @@ namespace BreakoutExtreme.Components
             {
                 Components.Ball, (PlayArea playArea, Vector2 position) =>
                 {
-                    var ball = Globals.Runner.CreateBall();
+                    var ball = Globals.Runner.CreateBall(playArea._brickDestroyedAction);
                     var collider = ball.GetCollider();
                     collider.Position = position + (Vector2)(collider.Size / 2);
                     playArea._balls.Add(ball);
@@ -59,6 +59,7 @@ namespace BreakoutExtreme.Components
         private Bag<Brick> _destroyedBricks = [];
         private Paddle _paddle = null;
         private Levels _level = Levels.Test;
+        private Action<Brick> _brickDestroyedAction;
         public bool Loaded => State != States.Unloaded;
         static PlayArea()
         {
@@ -127,8 +128,13 @@ namespace BreakoutExtreme.Components
 
             State = States.Unloaded;
         }
-        public PlayArea()
+        public PlayArea(Action<Brick> brickDestroyedAction)
         {
+            // Actions for when the children objects need to communicate with parent objects.
+            {
+                _brickDestroyedAction = brickDestroyedAction;
+            }
+
             // Create the wall components.
             {
                 Globals.Runner.CreateWall(new RectangleF(Globals.PlayAreaBounds.X, Globals.PlayAreaBounds.Y, Globals.GameBlockSize, Globals.PlayAreaBounds.Height));

@@ -27,13 +27,13 @@ namespace BreakoutExtreme.Components
         public Animater GetAnimater() => _animater;
         public Collider GetCollider() => _collider;
         public Launcher GetLauncher() => _launcher;
-        public Ball(Entity entity)
+        public Ball(Entity entity, Action<Brick> brickDestroyedAction = null)
         {
             _animater = new();
             _animater.Play(Animater.Animations.Ball);
             _collider = new(bounds: _bounds, parent: this, action: _collideAction);
             _entity = entity;
-            _launcher = new Launcher(this);
+            _launcher = new Launcher(this, brickDestroyedAction);
             _shadow = Globals.Runner.CreateShadow(_animater, new Vector2(_animater.Position.X, _animater.Position.Y + Globals.ShadowDisplacement));
         }
         public void RemoveEntity()

@@ -8,9 +8,10 @@ namespace BreakoutExtreme.Components
 {
     public partial class Ball
     {
-        public class Launcher(Ball parent)
+        public class Launcher(Ball parent, Action<Brick> brickDestroyedAction)
         {
             private readonly Ball _parent = parent;
+            private readonly Action<Brick> _brickDestroyedAction = brickDestroyedAction;
             public bool Launched { get; private set; } = false;
             public Vector2 Acceleration = new(0, -5000);
             public void ServiceCollision(Collider.CollideNode node)
@@ -72,6 +73,8 @@ namespace BreakoutExtreme.Components
                     if (node.Other.Parent is Brick brick && brick.State == Brick.States.Active)
                     {
                         brick.Damage();
+                        if (brick.State != Brick.States.Active)
+                            _brickDestroyedAction(brick);
                     }
                 }
                 
