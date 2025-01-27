@@ -19,5 +19,9 @@ namespace BreakoutExtreme.Shaders
         public virtual void UpdateShaderNode(BlurNode node)
         {
         }
+        public virtual void UpdateShaderNode(PatternNode node)
+        {
+
+        }
     }
 }

@@ -26,6 +26,7 @@ namespace BreakoutExtreme.Components
         private readonly Bricks _brick;
         private readonly Shadow _shadow;
         private readonly Features.Shake _shake;
+        private readonly Features.Cracks _cracks;
         private void ServiceCollision(Collider.CollideNode node)
         {
         }
@@ -50,6 +51,8 @@ namespace BreakoutExtreme.Components
             _shadow = Globals.Runner.CreateShadow(_animater, new Vector2(_animater.Position.X, _animater.Position.Y + Globals.ShadowDisplacement));
             _shake = new();
             _animater.ShaderFeatures.Add(_shake);
+            _cracks = new(_animater) { Degree = Features.Cracks.Degrees.Large };
+            _animater.ShaderFeatures.Add(_cracks);
         }
         public void RemoveEntity()
         {

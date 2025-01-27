@@ -34,7 +34,7 @@
     <Compile Include="BrowserService.cs" />
     <Compile Include="Components\Animater.cs" />
     <Compile Include="Components\AnimaterData.cs" />
-    <Compile Include="Components\AnimaterEnums.cs" />
+    <Compile Include="Components\AnimaterTypes.cs" />
     <Compile Include="Components\Attacher.cs" />
     <Compile Include="Components\Ball.cs" />
     <Compile Include="Components\BallLauncher.cs" />
@@ -59,6 +59,7 @@
     <Compile Include="Components\GumUI.cs" />
     <Compile Include="Components\TextField.cs" />
     <Compile Include="Components\Wall.cs" />
+    <Compile Include="Features\Cracks.cs" />
     <Compile Include="Features\Shadow.cs" />
     <Compile Include="Features\Shake.cs" />
     <Compile Include="Globals.cs" />

@@ -3,6 +3,7 @@
     public enum Scripts
     {
         Silhouette,
-        Blur
+        Blur,
+        Pattern
     }
 }

@@ -5,8 +5,6 @@ using MonoGame.Extended.Animations;
 using MonoGame.Extended.Collections;
 using MonoGame.Extended.Graphics;
 using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.Diagnostics;
 
 namespace BreakoutExtreme.Components
@@ -31,8 +29,8 @@ namespace BreakoutExtreme.Components
             var spriteSheet = new SpriteSheet(atlasAssetName, atlasObject);
             _atlasConfigureAnimations[atlas](spriteSheet);
             var animatedSprite = new AnimatedSprite(spriteSheet, _animationNames[Animation]) { OriginNormalized = new Vector2(.5f, .5f) };
-            Debug.Assert(!_atlasAnimatedSprites.ContainsKey(atlas));
-            _atlasAnimatedSprites.Add(atlas, animatedSprite);
+            Debug.Assert(!_atlasNodes.ContainsKey(atlas));
+            _atlasNodes.Add(atlas, new(animatedSprite, spriteSheet));
         }
         private void UpdateDrawPosition()
         {
@@ -46,11 +44,11 @@ namespace BreakoutExtreme.Components
         }
         private void UpdateAnimationController()
         {
-            _animationController = _atlasAnimatedSprites[_animationAtlases[Animation]].SetAnimation(_animationNames[Animation]);
+            _animationController = _atlasNodes[_animationAtlases[Animation]].AnimatedSprite.SetAnimation(_animationNames[Animation]);
         }
         private void UpdateAnimatedSpriteColor()
-        {  
-            _atlasAnimatedSprites[_animationAtlases[Animation]].Color = Color * Visibility;
+        {
+            _atlasNodes[_animationAtlases[Animation]].AnimatedSprite.Color = Color * Visibility;
         }
         public static void Load()
         {
@@ -111,21 +109,24 @@ namespace BreakoutExtreme.Components
         }
         public bool ShowBase = true;
         public readonly Bag<Shaders.Feature> ShaderFeatures = new();
+        public int CurrentFrame => _animationController.CurrentFrame;
+        public Texture2D Texture => _atlasNodes[_animationAtlases[Animation]].SpriteSheet.TextureAtlas.Texture;
+        public Rectangle Region => _atlasNodes[_animationAtlases[Animation]].SpriteSheet.TextureAtlas[CurrentFrame].Bounds;
         public Animater()
         {
+            _attacher = new(this);
             UpdateAtlasAnimatedSprites();
             UpdateDrawPosition();
             UpdateScaleVector();
             UpdateAnimationController();
             UpdateAnimatedSpriteColor();
-            _attacher = new(this);
         }
         public void Play(Animations animation)
         {
             var differentAnimation = Animation != animation;
             _animation = animation;
 
-            if (differentAnimation && !_atlasAnimatedSprites.ContainsKey(_animationAtlases[Animation]))
+            if (differentAnimation && !_atlasNodes.ContainsKey(_animationAtlases[Animation]))
                 UpdateAtlasAnimatedSprites();
 
             UpdateAnimationController();
@@ -148,12 +149,12 @@ namespace BreakoutExtreme.Components
 
             for (var i = 0; i < ShaderFeatures.Count; i++)
                 ShaderFeatures[i].Update();
-            _atlasAnimatedSprites[_animationAtlases[Animation]].Update(Globals.GameTime);
+            _atlasNodes[_animationAtlases[Animation]].AnimatedSprite.Update(Globals.GameTime);
         }
         public void Draw()
         {
             Globals.SpriteBatch.Draw(
-                sprite: _atlasAnimatedSprites[_animationAtlases[Animation]], 
+                sprite: _atlasNodes[_animationAtlases[Animation]].AnimatedSprite, 
                 position: _drawPosition, 
                 rotation: Rotation, 
                 scale: _scaleVector);
