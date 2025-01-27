@@ -24,6 +24,7 @@ namespace BreakoutExtreme.Components
         private readonly Collider _collider;
         private readonly Entity _entity;
         private readonly Bricks _brick;
+        private readonly Shadow _shadow;
         private void ServiceCollision(Collider.CollideNode node)
         {
         }
@@ -41,10 +42,12 @@ namespace BreakoutExtreme.Components
             _collider = new(bounds: _brickBounds[brick], parent: this, action: _collideAction);
             _entity = entity;
             _brick = brick;
+            _shadow = Globals.Runner.CreateShadow(_animater, new Vector2(_animater.Position.X, _animater.Position.Y + Globals.ShadowDisplacement));
         }
         public void RemoveEntity()
         {
             Globals.Runner.RemoveEntity(_entity);
+            _shadow.RemoveEntity();
         }
     }
 }
