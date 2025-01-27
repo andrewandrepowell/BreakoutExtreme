@@ -1,4 +1,5 @@
 ﻿using System.Diagnostics;
+using static BreakoutExtreme.Components.Brick;
 
 namespace BreakoutExtreme.Components
 {
@@ -44,14 +45,33 @@ namespace BreakoutExtreme.Components
                     State = States.GameRunning;
                 }
 
+                // Remove any destroyed bricks.
+                {
+                    _destroyedBricks.Clear();
+                    for (var i = 0; i < _bricks.Count; i++)
+                    {
+                        var brick = _bricks[i];
+                        if (brick.State == Brick.States.Destroyed)
+                        {
+                            
+                            _destroyedBricks.Add(brick);
+                        }
+                    }
+                    for (var i = 0; i < _destroyedBricks.Count; i++)
+                    {
+                        var brick = _destroyedBricks[i];
+                        brick.RemoveEntity();
+                        _bricks.Remove(brick);
+                    }
+                }
 
                 // Update all game components.
                 {
                     _paddle.Update();
                     for (var i = 0; i < _balls.Count; i++)
-                    {
                         _balls[i].Update();
-                    }
+                    for (var i = 0; i < _bricks.Count; i++)
+                        _bricks[i].Update();
                 }
             }
         }

@@ -16,6 +16,7 @@ namespace BreakoutExtreme.Components
             Ball,
             Paddle,
             BrickLarge,
+            BrickLargeDead,
             CrackSmall,
             CrackMedium,
             CrackLarge

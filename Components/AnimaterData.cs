@@ -27,6 +27,7 @@ namespace BreakoutExtreme.Components
             { Animations.Ball, "ball_0" },
             { Animations.Paddle, "paddle_0" },
             { Animations.BrickLarge, "brick_0" },
+            { Animations.BrickLargeDead, "brick_1" },
             { Animations.CrackSmall, "crack_0" },
             { Animations.CrackMedium, "crack_1" },
             { Animations.CrackLarge, "crack_2" },
@@ -53,8 +54,8 @@ namespace BreakoutExtreme.Components
                 Atlases.BrickLarge,
                 delegate(SpriteSheet spriteSheet)
                 {
-                    spriteSheet.DefineAnimation(_animationNames[Animations.BrickLarge], builder => builder
-                        .AddFrame(0, TimeSpan.Zero));
+                    spriteSheet.DefineAnimation(_animationNames[Animations.BrickLarge], builder => builder.AddFrame(0, TimeSpan.Zero));
+                    spriteSheet.DefineAnimation(_animationNames[Animations.BrickLargeDead], builder => builder.AddFrame(1, TimeSpan.Zero));
                 }
             },
             {
@@ -72,6 +73,7 @@ namespace BreakoutExtreme.Components
             { Animations.Ball, Atlases.Ball },
             { Animations.Paddle, Atlases.Paddle },
             { Animations.BrickLarge, Atlases.BrickLarge },
+            { Animations.BrickLargeDead, Atlases.BrickLarge },
             { Animations.CrackSmall, Atlases.Cracks },
             { Animations.CrackMedium, Atlases.Cracks },
             { Animations.CrackLarge, Atlases.Cracks },

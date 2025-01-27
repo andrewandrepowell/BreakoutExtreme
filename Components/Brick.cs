@@ -20,6 +20,10 @@ namespace BreakoutExtreme.Components
         {
             { Bricks.ThickBrick, Animater.Animations.BrickLarge }
         });
+        private static readonly ReadOnlyDictionary<Bricks, Animater.Animations> _brickDeadAnimations = new(new Dictionary<Bricks, Animater.Animations>()
+        {
+            { Bricks.ThickBrick, Animater.Animations.BrickLargeDead }
+        });
         private static readonly ReadOnlyDictionary<Bricks, int> _brickTotalHPs = new(new Dictionary<Bricks, int>() 
         {
             { Bricks.ThickBrick, 3 }
@@ -39,14 +43,21 @@ namespace BreakoutExtreme.Components
         {
             ThickBrick
         }
+        public enum States
+        {
+            Active,
+            Destroying,
+            Destroyed
+        }
         public Bricks GetBrick() => _brick;
         public Animater GetAnimater() => _animater;
         public Collider GetCollider() => _collider;
         public readonly int TotalHP;
         public int CurrentHP;
+        public States State { get; private set; }
         public void Damage()
         {
-            Debug.Assert(CurrentHP > 0);
+            Debug.Assert(CurrentHP > 0 && State == States.Active);
             
             {
                 
@@ -57,9 +68,20 @@ namespace BreakoutExtreme.Components
 
             if (CurrentHP == 0)
             {
-
+                Destroy();
             }
 
+        }
+        public void Destroy()
+        {
+            Debug.Assert(State == States.Active);
+            CurrentHP = 0;
+
+            _shake.Start(0.5f);
+            _cracks.Degree = Features.Cracks.Degrees.None;
+            _animater.Play(_brickDeadAnimations[_brick]);
+
+            State = States.Destroying;
         }
         public Brick(Entity entity, Bricks brick)
         {
@@ -75,11 +97,19 @@ namespace BreakoutExtreme.Components
             _animater.ShaderFeatures.Add(_cracks);
             TotalHP = _brickTotalHPs[brick];
             CurrentHP = TotalHP;
+            State = States.Active;
         }
         public void RemoveEntity()
         {
             Globals.Runner.RemoveEntity(_entity);
             _shadow.RemoveEntity();
+        }
+        public void Update()
+        {
+            if (State == States.Destroying)
+            {
+                State = States.Destroyed;
+            }
         }
     }
 }

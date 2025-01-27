@@ -16,7 +16,9 @@ namespace BreakoutExtreme.Components
         private readonly Shadow _shadow;
         private void ServiceCollision(Collider.CollideNode node)
         {
-            if (node.Other.Parent is Wall || node.Other.Parent is Paddle || node.Other.Parent is Brick)
+            if (node.Other.Parent is Wall || 
+                node.Other.Parent is Paddle || 
+                (node.Other.Parent is Brick brick && brick.State == Brick.States.Active))
             { 
                     node.CorrectPosition();
             }

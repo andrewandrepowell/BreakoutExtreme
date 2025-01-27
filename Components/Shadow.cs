@@ -1,5 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using MonoGame.Extended.ECS;
+using System;
+using System.Diagnostics;
 
 namespace BreakoutExtreme.Components
 {

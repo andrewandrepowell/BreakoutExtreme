@@ -42,7 +42,7 @@ namespace BreakoutExtreme.Components
                     var brick = Globals.Runner.CreateBrick(Brick.Bricks.ThickBrick);
                     var collider = brick.GetCollider();
                     collider.Position = position + (Vector2)(collider.Size / 2);
-                    playArea._brick.Add(brick);
+                    playArea._bricks.Add(brick);
                 }
             }
         });
@@ -55,7 +55,8 @@ namespace BreakoutExtreme.Components
         });
         private static readonly ReadOnlyDictionary<char, Components> _symbolComponents = new(_componentSymbols.ToDictionary(e => e.Value, e => e.Key));
         private Bag<Ball> _balls = [];
-        private Bag<Brick> _brick = [];
+        private Bag<Brick> _bricks = [];
+        private Bag<Brick> _destroyedBricks = [];
         private Paddle _paddle = null;
         private Levels _level = Levels.Test;
         public bool Loaded => State != States.Unloaded;
