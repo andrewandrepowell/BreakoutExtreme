@@ -6,10 +6,10 @@ namespace BreakoutExtreme.Components
 {
     public partial class Runner
     {
-        public Shadow CreateShadow(Animater parent, Vector2 shadowPosition) 
+        public Shadow CreateShadow(Animater parent) 
         {
             var entity = _world.CreateEntity();
-            var shadow = new Shadow(entity, parent, shadowPosition);
+            var shadow = new Shadow(entity, parent);
             var animater = shadow.GetAnimater();
             entity.Attach(animater);
             return shadow;

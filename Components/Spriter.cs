@@ -18,7 +18,7 @@ namespace BreakoutExtreme.Components
         private float _time;
         private int _frame, _index;
         private bool _initialized = false;
-        private bool _playing = false;
+        private bool _running = false;
         private Vector2 _origin;
         private class Node(int[] indices, float period, bool repeat)
         {
@@ -67,9 +67,9 @@ namespace BreakoutExtreme.Components
             _frame = 0;
             _index = _node.Indices[_frame];
             _initialized = true;
-            _playing = true;
+            _running = true;
         }
-        public bool Playing => _playing;
+        public bool Running => _running;
         public bool Initialized => _initialized;
         public Texture2D Texture => _texture;
         public Rectangle Region
@@ -102,7 +102,7 @@ namespace BreakoutExtreme.Components
         public float Rotation = 0;
         public void Update()
         {
-            if (_playing && _node.Period > 0)
+            if (_running && _node.Period > 0)
             {
                 while (_time <= 0)
                 {
@@ -115,7 +115,7 @@ namespace BreakoutExtreme.Components
                         }
                         else
                         {
-                            _playing = false;
+                            _running = false;
                         }
                     }
                     else

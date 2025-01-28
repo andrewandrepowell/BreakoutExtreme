@@ -29,6 +29,7 @@ namespace BreakoutExtreme.Components
             { Bricks.ThickBrick, 3 }
         });
         private static readonly Action<Collider.CollideNode> _collideAction = (Collider.CollideNode node) => ((Brick)node.Current.Parent).ServiceCollision(node);
+        private const float _shakePeriod = 0.5f;
         private readonly Animater _animater;
         private readonly Collider _collider;
         private readonly Entity _entity;
@@ -63,7 +64,7 @@ namespace BreakoutExtreme.Components
             {
                 
                 CurrentHP -= 1;
-                _shake.Start(0.5f);
+                _shake.Start(_shakePeriod);
                 _cracks.Degree = (Features.Cracks.Degrees)(TotalHP - CurrentHP);
             }
 
@@ -79,9 +80,10 @@ namespace BreakoutExtreme.Components
             Debug.Assert(!_vanish.Running);
             CurrentHP = 0;
 
-            _shake.Start(0.5f);
+            _shake.Start(_shakePeriod);
             _cracks.Degree = Features.Cracks.Degrees.None;
             _vanish.Start();
+            _shadow.VanishStart();
             _animater.Play(_brickDeadAnimations[_brick]);
 
             State = States.Destroying;
@@ -93,7 +95,7 @@ namespace BreakoutExtreme.Components
             _collider = new(bounds: _brickBounds[brick], parent: this, action: _collideAction);
             _entity = entity;
             _brick = brick;
-            _shadow = Globals.Runner.CreateShadow(_animater, new Vector2(_animater.Position.X, _animater.Position.Y + Globals.ShadowDisplacement));
+            _shadow = Globals.Runner.CreateShadow(_animater);
             _shake = new();
             _animater.ShaderFeatures.Add(_shake);
             _cracks = new(_animater);
@@ -111,7 +113,7 @@ namespace BreakoutExtreme.Components
         }
         public void Update()
         {
-            if (State == States.Destroying && !_vanish.Running)
+            if (State == States.Destroying && !_vanish.Running && !_shadow.VanishRunning)
             {
                 State = States.Destroyed;
             }

@@ -40,7 +40,7 @@ namespace BreakoutExtreme.Components
                     Debug.Assert(_balls.Count == 1);
                     var ball = _balls[0];
                     _paddle.GetCollider().GetAttacher().Detach(ball.GetCollider());
-                    ball.GetLauncher().Launch();
+                    ball.StartLaunch();
 
                     State = States.GameRunning;
                 }

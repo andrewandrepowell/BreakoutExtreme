@@ -120,6 +120,7 @@ namespace BreakoutExtreme.Components
         public readonly Bag<Shaders.Feature> ShaderFeatures = new();
         public Texture2D Texture => _spriter.Texture;
         public Rectangle Region => _spriter.Region;
+        public bool Running => _spriter.Running;
         public Animater()
         {
             _attacher = new(this);

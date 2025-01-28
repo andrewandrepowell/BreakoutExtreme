@@ -4,15 +4,15 @@ using System.Diagnostics;
 
 namespace BreakoutExtreme.Features
 {
-    public class Vanish : Feature
+    public class Appear : Feature
     {
         private float _period;
-        private float _time = 0;
+        private float _time;
         public override bool UpdateVisibility(ref float visibility)
         {
             if (!Running)
                 return false;
-            visibility *= (_time / _period);
+            visibility *= 1 - (_time / _period);
             return true;
         }
         public bool Running { get; private set; } = false;

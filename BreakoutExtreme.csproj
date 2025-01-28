@@ -37,10 +37,13 @@
     <Compile Include="Components\AnimaterTypes.cs" />
     <Compile Include="Components\Attacher.cs" />
     <Compile Include="Components\Ball.cs" />
+    <Compile Include="Components\BallDestroyer.cs" />
     <Compile Include="Components\BallLauncher.cs" />
+    <Compile Include="Components\BallTypes.cs" />
     <Compile Include="Components\Brick.cs" />
     <Compile Include="Components\Collider.cs" />
     <Compile Include="Components\Controller.cs" />
+    <Compile Include="Components\DisplayBall.cs" />
     <Compile Include="Components\GameWindow.cs" />
     <Compile Include="Components\GumDrawer.cs" />
     <Compile Include="Components\Label.cs" />
@@ -60,7 +63,11 @@
     <Compile Include="Components\GumUI.cs" />
     <Compile Include="Components\TextField.cs" />
     <Compile Include="Components\Wall.cs" />
+    <Compile Include="Features\Appear.cs" />
     <Compile Include="Features\Cracks.cs" />
+    <Compile Include="Features\Flash.cs" />
+    <Compile Include="Features\Float.cs" />
+    <Compile Include="Features\FloatAway.cs" />
     <Compile Include="Features\Shadow.cs" />
     <Compile Include="Features\Shake.cs" />
     <Compile Include="Features\Vanish.cs" />

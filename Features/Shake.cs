@@ -1,8 +1,6 @@
 ﻿using BreakoutExtreme.Shaders;
-using BreakoutExtreme.Utility;
 using Microsoft.Xna.Framework;
 using MonoGame.Extended;
-using System;
 using System.Diagnostics;
 
 namespace BreakoutExtreme.Features

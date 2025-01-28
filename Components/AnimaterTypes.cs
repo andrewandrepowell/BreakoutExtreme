@@ -14,6 +14,7 @@ namespace BreakoutExtreme.Components
         public enum Animations
         {
             Ball,
+            BallDead,
             Paddle,
             BrickLarge,
             BrickLargeDead,

@@ -1,5 +1,4 @@
 ﻿using BreakoutExtreme.Shaders;
-using BreakoutExtreme.Utility;
 using Microsoft.Xna.Framework;
 
 namespace BreakoutExtreme.Features

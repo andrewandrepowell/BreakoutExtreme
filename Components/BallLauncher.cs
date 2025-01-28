@@ -8,11 +8,11 @@ namespace BreakoutExtreme.Components
 {
     public partial class Ball
     {
-        public class Launcher(Ball parent, Action<Brick> brickDestroyedAction)
+        private class Launcher(Ball parent, Action<Brick> brickDestroyedAction)
         {
             private readonly Ball _parent = parent;
             private readonly Action<Brick> _brickDestroyedAction = brickDestroyedAction;
-            public bool Launched { get; private set; } = false;
+            public bool Running { get; private set; } = false;
             public Vector2 Acceleration = new(0, -5000);
             public void ServiceCollision(Collider.CollideNode node)
             {
@@ -26,13 +26,13 @@ namespace BreakoutExtreme.Components
                         {
                             if (Math.Abs(node.PenetrationVector.X) > (Math.Abs(node.PenetrationVector.Y)))
                             {
-                                if (Launched)
+                                if (Running)
                                     Acceleration.X *= -1;
                                 collider.Velocity.X *= -1;
                             }
                             else
                             {
-                                if (Launched)
+                                if (Running)
                                     Acceleration.Y *= -1;
                                 collider.Velocity.Y *= -1;
                             }
@@ -44,7 +44,7 @@ namespace BreakoutExtreme.Components
                 {
                     if (node.Other.Parent is Paddle)
                     {
-                        if (Launched && !Acceleration.EqualsWithTolerence(Vector2.Zero) && !collider.Velocity.EqualsWithTolerence(Vector2.Zero) && Acceleration.Y < 0)
+                        if (Running && !Acceleration.EqualsWithTolerence(Vector2.Zero) && !collider.Velocity.EqualsWithTolerence(Vector2.Zero) && Acceleration.Y < 0)
                         {
                             var accelerationMagnitude = Acceleration.Length();
                             var accelerationDirection = Acceleration / accelerationMagnitude;
@@ -79,14 +79,19 @@ namespace BreakoutExtreme.Components
                 }
                 
             }
-            public void Launch()
+            public void Start()
             {
-                Debug.Assert(!Launched);
-                Launched = true;
+                Debug.Assert(!Running);
+                Running = true;
+            }
+            public void Stop()
+            {
+                Debug.Assert(Running);
+                Running = false;
             }
             public void Update()
             {
-                if (Launched)
+                if (Running)
                 {
                     _parent.GetCollider().Acceleration += Acceleration;
                 }

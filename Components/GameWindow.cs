@@ -17,12 +17,14 @@ namespace BreakoutExtreme.Components
             // Gum needs initailization first.
             GumUI.Initialize();
 
+            // Implement all actions.
             _brickDestroyedAction = delegate (Brick brick)
             {
                 _score++;
                 _scorePanel.Text = $"{_score}";
             };
 
+            // Finally, instantiate the play area.
             _playArea = new PlayArea(_brickDestroyedAction);
 
             // Create background area for UI.
@@ -61,7 +63,15 @@ namespace BreakoutExtreme.Components
                 _highScorePanel.Size = Globals.HighScorePanelBlockBounds.Size.ToSize() * Globals.GameBlockSize;
                 gumDrawer.Position = (gumDrawer.Size / 2).ToVector2() + Globals.HighScorePanelBlockBounds.Location.ToVector2() * Globals.GameBlockSize;
                 _highScorePanel.Text = "0";
-            }            
+            }
+
+            // Prepare balls remaining label
+            {
+                var label = Globals.Runner.CreateLabel(Globals.BallsRemainingLabelBlockBounds.Size.ToSize() * Globals.GameBlockSize);
+                var gumDrawer = label.GetGumDrawer();
+                gumDrawer.Position = (gumDrawer.Size / 2).ToVector2() + Globals.BallsRemainingLabelBlockBounds.Location.ToVector2() * Globals.GameBlockSize;
+                label.Text = "Balls Remain:";
+            }
         }
         public void Update()
         {

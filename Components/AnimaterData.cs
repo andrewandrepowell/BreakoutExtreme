@@ -26,6 +26,7 @@ namespace BreakoutExtreme.Components
         private static readonly ReadOnlyDictionary<Animations, string> _animationNames = new(new Dictionary<Animations, string>
         {
             { Animations.Ball, "ball_0" },
+            { Animations.BallDead, "ball_1" },
             { Animations.Paddle, "paddle_0" },
             { Animations.BrickLarge, "brick_0" },
             { Animations.BrickLargeDead, "brick_1" },
@@ -40,6 +41,7 @@ namespace BreakoutExtreme.Components
                 delegate(Spriter spriter)
                 {
                     spriter.Add(_animationNames[Animations.Ball], [0]);
+                    spriter.Add(_animationNames[Animations.BallDead], [1, 2, 3, 4, 5], 0.2f);
                 }
             },
             {
@@ -70,6 +72,7 @@ namespace BreakoutExtreme.Components
         private static readonly ReadOnlyDictionary<Animations, Spriters> _animationSpriters = new(new Dictionary<Animations, Spriters>()
         {
             { Animations.Ball, Spriters.Ball },
+            { Animations.BallDead, Spriters.Ball },
             { Animations.Paddle, Spriters.Paddle },
             { Animations.BrickLarge, Spriters.BrickLarge },
             { Animations.BrickLargeDead, Spriters.BrickLarge },
