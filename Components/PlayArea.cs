@@ -1,7 +1,5 @@
 ﻿using MonoGame.Extended;
 using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.Linq;
 using System.Diagnostics;
 using MonoGame.Extended.Collections;
@@ -12,56 +10,15 @@ namespace BreakoutExtreme.Components
 {
     public partial class PlayArea
     {
-        private static readonly ReadOnlyDictionary<Components, Action<PlayArea, Vector2>> _componentLoadActions = new(new Dictionary <Components, Action<PlayArea, Vector2>>() 
-        {
-            {
-                Components.None, (PlayArea playArea, Vector2 position) => { }
-            },
-            {
-                Components.Ball, (PlayArea playArea, Vector2 position) =>
-                {
-                    var ball = Globals.Runner.CreateBall(playArea._brickDestroyedAction);
-                    var collider = ball.GetCollider();
-                    collider.Position = position + (Vector2)(collider.Size / 2);
-                    playArea._balls.Add(ball);
-                }
-            },
-            {
-                Components.Paddle, (PlayArea playArea, Vector2 position) => 
-                {
-                    var paddle = Globals.Runner.CreatePaddle();
-                    var collider = paddle.GetCollider();
-                    collider.Position = position;
-                    Debug.Assert(playArea._paddle == null);
-                    playArea._paddle = paddle;
-                }
-            },
-            {
-                Components.ThickBrick, (PlayArea playArea, Vector2 position) =>
-                {
-                    var brick = Globals.Runner.CreateBrick(Brick.Bricks.ThickBrick);
-                    var collider = brick.GetCollider();
-                    collider.Position = position + (Vector2)(collider.Size / 2);
-                    playArea._bricks.Add(brick);
-                }
-            }
-        });
-        private static readonly ReadOnlyDictionary<Components, char> _componentSymbols = new(new Dictionary<Components, char>()
-        {
-            { Components.None, '_' },
-            { Components.Ball, 'o' },
-            { Components.Paddle, 'P' },
-            { Components.ThickBrick, 'B' }
-        });
-        private static readonly ReadOnlyDictionary<char, Components> _symbolComponents = new(_componentSymbols.ToDictionary(e => e.Value, e => e.Key));
+        private readonly GameWindow _parent;
         private readonly Bag<Ball> _balls = [];
         private readonly Bag<Brick> _bricks = [];
         private readonly Bag<Ball> _destroyedBalls = [];
         private readonly Bag<Brick> _destroyedBricks = [];
-        private readonly Action<Brick> _brickDestroyedAction;
         private readonly DeathWall _deathWall;
         private Paddle _paddle = null;
         private Levels _level = Levels.Test;
+        private Vector2 _ballInitialDisplacementFromPaddle;
         public bool Loaded => State != States.Unloaded;
         static PlayArea()
         {
@@ -95,21 +52,35 @@ namespace BreakoutExtreme.Components
             }
         }
         public States State { get; private set; } = States.Unloaded;
+        public GameWindow Parent => _parent;
         public void Load(Levels level)
         {
             Debug.Assert(!Loaded);
             Debug.Assert(_balls.Count == 0);
 
-            var area = _levelAreas[level];  
-            for (var y = 0; y < Globals.PlayAreaBlockBounds.Height; y++)
+            // Load all the components of the level.
             {
-                for (var x = 0; x < Globals.PlayAreaBlockBounds.Width; x++)
+                var area = _levelAreas[level];
+                for (var y = 0; y < Globals.PlayAreaBlockBounds.Height; y++)
                 {
-                    var symbol = area[x + y * Globals.PlayAreaBlockBounds.Width];
-                    var component = _symbolComponents[symbol];
-                    var position = new Point(x + Globals.PlayAreaBlockBounds.X, y + Globals.PlayAreaBlockBounds.Y).ToPosition();
-                    _componentLoadActions[component](this, position);
+                    for (var x = 0; x < Globals.PlayAreaBlockBounds.Width; x++)
+                    {
+                        var symbol = area[x + y * Globals.PlayAreaBlockBounds.Width];
+                        var component = _symbolComponents[symbol];
+                        var position = new Point(x + Globals.PlayAreaBlockBounds.X, y + Globals.PlayAreaBlockBounds.Y).ToPosition();
+                        _componentLoadActions[component](this, position);
+                    }
                 }
+            }
+
+            // Determine displacement for future balls.
+            // Attaching the ball to the paddle occurs in later state.
+            {
+                Debug.Assert(_balls.Count == 1);
+                Debug.Assert(_paddle != null);
+
+                var ball = _balls[0];
+                _ballInitialDisplacementFromPaddle = ball.GetCollider().Position - _paddle.GetCollider().Position;
             }
 
             _level = level;
@@ -130,12 +101,13 @@ namespace BreakoutExtreme.Components
 
             State = States.Unloaded;
         }
-        public PlayArea(Action<Brick> brickDestroyedAction)
+        public void UpdateScore(Brick brick)
         {
-            // Actions for when the children objects need to communicate with parent objects.
-            {
-                _brickDestroyedAction = brickDestroyedAction;
-            }
+            _parent.Score++;
+        }
+        public PlayArea(GameWindow parent)
+        {
+            _parent = parent;
 
             // Create the wall components.
             {

@@ -52,7 +52,8 @@
     <Compile Include="Components\Paddle.cs" />
     <Compile Include="Components\PaddleMoveToTarget.cs" />
     <Compile Include="Components\Panel.cs" />
-    <Compile Include="Components\PlayAreaEnums.cs" />
+    <Compile Include="Components\PlayAreaData.cs" />
+    <Compile Include="Components\PlayAreaTypes.cs" />
     <Compile Include="Components\PlayAreaLevels.cs" />
     <Compile Include="Components\PlayAreaUpdate.cs" />
     <Compile Include="Components\RemainingBallsPanel.cs" />
@@ -70,6 +71,7 @@
     <Compile Include="Features\Flash.cs" />
     <Compile Include="Features\Float.cs" />
     <Compile Include="Features\FloatAway.cs" />
+    <Compile Include="Features\LimitedFlash.cs" />
     <Compile Include="Features\Shadow.cs" />
     <Compile Include="Features\Shake.cs" />
     <Compile Include="Features\Vanish.cs" />

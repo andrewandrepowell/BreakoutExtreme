@@ -15,11 +15,6 @@ namespace BreakoutExtreme.Components
             public bool Running => _running;
             public void Start()
             {
-                Debug.Assert(!_parent._animater.Running);
-                Debug.Assert(!_parent._vanish.Running);
-                Debug.Assert(!_parent._shake.Running);
-                Debug.Assert(!_parent._flash.Running);
-                Debug.Assert(!_parent._shadow.VanishRunning);
                 Debug.Assert(!_running);
                 _parent._animater.Play(Animater.Animations.BallDead);
                 _parent._vanish.Start(_vanishPeriod);

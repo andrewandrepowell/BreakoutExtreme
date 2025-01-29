@@ -1,6 +1,7 @@
 ﻿using MonoGame.Extended;
 using System;
 using BreakoutExtreme.Utility;
+using System.Diagnostics;
 
 namespace BreakoutExtreme.Components
 {
@@ -12,20 +13,34 @@ namespace BreakoutExtreme.Components
         private readonly Panel _highScorePanel;
         private readonly RemainingBallsPanel _remainingBallsPanel;
         private int _score = 0;
+        private void UpdateScorePanel()
+        {
+            _scorePanel.Text = $"{_score}";
+        }
+        public int Score
+        {
+            get => _score;
+            set
+            {
+                Debug.Assert(value >= 0);
+                if (_score == value)
+                    return;
+                _score = value;
+                UpdateScorePanel();
+            }
+        }
+        public int RemainingBalls
+        {
+            get => _remainingBallsPanel.RemainingBalls;
+            set => _remainingBallsPanel.RemainingBalls = value;
+        }
         public GameWindow()
         {
             // Gum needs initailization first.
             GumUI.Initialize();
 
-            // Implement all actions.
-            _brickDestroyedAction = delegate (Brick brick)
-            {
-                _score++;
-                _scorePanel.Text = $"{_score}";
-            };
-
             // Finally, instantiate the play area.
-            _playArea = new PlayArea(_brickDestroyedAction);
+            _playArea = new PlayArea(this);
 
             // Create background area for UI.
             {

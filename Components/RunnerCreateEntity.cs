@@ -77,10 +77,10 @@ namespace BreakoutExtreme.Components
             _collisionComponent.Insert(collider);
             return brickObj;
         }
-        public Ball CreateBall(Action<Brick> brickDestroyedAction)
+        public Ball CreateBall(PlayArea parent)
         {
             var entity = _world.CreateEntity();
-            var ball = new Ball(entity, brickDestroyedAction);
+            var ball = new Ball(entity, parent);
             var animater = ball.GetAnimater();
             var collider = ball.GetCollider();
             entity.Attach(ball);

@@ -1,5 +1,4 @@
 ﻿using System.Diagnostics;
-using static BreakoutExtreme.Components.Brick;
 
 namespace BreakoutExtreme.Components
 {
@@ -23,11 +22,14 @@ namespace BreakoutExtreme.Components
                         _paddle.StartMoveToTarget(controlState.CursorPosition.X);
                 }
 
-                if (State == States.Loaded)
+                if (State == States.Loaded || State == States.SpawnNewBall)
                 {
                     {
                         Debug.Assert(_balls.Count == 1);
+                        Debug.Assert(_paddle != null);
                         var ball = _balls[0];
+                        ball.Spawn();
+                        ball.GetCollider().Position = _paddle.GetCollider().Position + _ballInitialDisplacementFromPaddle;
                         _paddle.GetCollider().GetAttacher().Attach(ball.GetCollider());
                     }
 
@@ -40,8 +42,16 @@ namespace BreakoutExtreme.Components
                     var ball = _balls[0];
                     _paddle.GetCollider().GetAttacher().Detach(ball.GetCollider());
                     ball.StartLaunch();
-
                     State = States.GameRunning;
+                }
+
+                if (State == States.GameRunning && _balls.Count == 0 && _parent.RemainingBalls > 0)
+                {
+                    var ball = Globals.Runner.CreateBall(this);
+                    ball.GetCollider().Position = _paddle.GetCollider().Position + _ballInitialDisplacementFromPaddle;
+                    _balls.Add(ball);
+                    _parent.RemainingBalls--;
+                    State = States.SpawnNewBall;
                 }
 
                 // Remove any objects.

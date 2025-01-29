@@ -18,7 +18,8 @@
             Unloaded,
             Loaded,
             PlayerTakingAim,
-            GameRunning
+            GameRunning,
+            SpawnNewBall
         }
     }
 }

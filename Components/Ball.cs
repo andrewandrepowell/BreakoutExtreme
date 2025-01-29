@@ -10,6 +10,7 @@ namespace BreakoutExtreme.Components
     {
         private static readonly CircleF _bounds = new(Vector2.Zero, Globals.GameHalfBlockSize);
         private static readonly Action<Collider.CollideNode> _collideAction = (Collider.CollideNode node) => ((Ball)node.Current.Parent).ServiceCollision(node);
+        private readonly PlayArea _parent;
         private readonly Animater _animater;
         private readonly Collider _collider;
         private readonly Entity _entity;
@@ -19,6 +20,7 @@ namespace BreakoutExtreme.Components
         private readonly Features.Vanish _vanish;
         private readonly Features.Shake _shake;
         private readonly Features.Flash _flash;
+        private readonly Features.LimitedFlash _limitedFlash;
         private States _state = States.Active;
         private void ServiceCollision(Collider.CollideNode node)
         {
@@ -51,18 +53,21 @@ namespace BreakoutExtreme.Components
             Debug.Assert(_state == States.Active);
             _launcher.Stop();
         }
+        public void Spawn()
+        {
+            _limitedFlash.Start();
+        }
         public void Destroy()
         {
             Debug.Assert(_state == States.Active);
-            if (_animater.Running)
-                _animater.Stop();
             if (_launcher.Running)
                 _launcher.Stop();
             _destroyer.Start();
             _state = States.Destroying;
         }
-        public Ball(Entity entity, Action<Brick> brickDestroyedAction = null)
+        public Ball(Entity entity, PlayArea parent)
         {
+            _parent = parent;
             _animater = new();
             _vanish = new();
             _animater.ShaderFeatures.Add(_vanish);
@@ -70,10 +75,12 @@ namespace BreakoutExtreme.Components
             _animater.ShaderFeatures.Add(_shake);
             _flash = new();
             _animater.ShaderFeatures.Add(_flash);
+            _limitedFlash = new();
+            _animater.ShaderFeatures.Add(_limitedFlash);
             _animater.Play(Animater.Animations.Ball);
             _collider = new(bounds: _bounds, parent: this, action: _collideAction);
             _entity = entity;
-            _launcher = new Launcher(this, brickDestroyedAction);
+            _launcher = new Launcher(this);
             _destroyer = new Destroyer(this);
             _shadow = Globals.Runner.CreateShadow(_animater);
         }
