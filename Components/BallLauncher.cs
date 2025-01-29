@@ -16,11 +16,16 @@ namespace BreakoutExtreme.Components
             public Vector2 Acceleration = new(0, -5000);
             public void ServiceCollision(Collider.CollideNode node)
             {
+                Debug.Assert(_parent.State == States.Active);
+                Debug.Assert(Running);
                 var collider = _parent.GetCollider();
 
                 // Handle bounce logic.
                 {
-                    if (node.Other.Parent is Wall || node.Other.Parent is Paddle || (node.Other.Parent is Brick brick && brick.State == Brick.States.Active))
+                    if (node.Other.Parent is Wall || 
+                        node.Other.Parent is Paddle || 
+                        (node.Other.Parent is Brick brick && brick.State == Brick.States.Active) ||
+                        (node.Other.Parent is DeathWall deathWall && !deathWall.Running))
                     {
                         if (!node.PenetrationVector.EqualsWithTolerence(Vector2.Zero))
                         {
@@ -77,7 +82,6 @@ namespace BreakoutExtreme.Components
                             _brickDestroyedAction(brick);
                     }
                 }
-                
             }
             public void Start()
             {
@@ -87,13 +91,16 @@ namespace BreakoutExtreme.Components
             public void Stop()
             {
                 Debug.Assert(Running);
+                var collider = _parent._collider;
+                collider.Acceleration = Vector2.Zero;
+                collider.Velocity = Vector2.Zero;
                 Running = false;
             }
             public void Update()
             {
                 if (Running)
                 {
-                    _parent.GetCollider().Acceleration += Acceleration;
+                    _parent._collider.Acceleration += Acceleration;
                 }
             }
         }

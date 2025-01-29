@@ -33,7 +33,10 @@ namespace BreakoutExtreme.Components
         }
         public Animater GetAnimater() => _animater;
         public Collider GetCollider() => _collider;
-        public MoveToTarget GetMoveToTarget() => _moveToTarget;
+        public float TargetToMoveTo => _moveToTarget.Target;
+        public bool RunningMoveToTarget => _moveToTarget.Running;
+        public void StartMoveToTarget(float x) => _moveToTarget.Start(x);
+        public void StopMoveToTarget() => _moveToTarget.Stop();
         public Paddle(Entity entity)
         {
             _animater = new();

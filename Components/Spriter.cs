@@ -69,6 +69,10 @@ namespace BreakoutExtreme.Components
             _initialized = true;
             _running = true;
         }
+        public void Stop()
+        {
+            _running = false;
+        }
         public bool Running => _running;
         public bool Initialized => _initialized;
         public Texture2D Texture => _texture;

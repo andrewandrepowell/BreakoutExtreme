@@ -9,37 +9,37 @@ namespace BreakoutExtreme.Components
         public class MoveToTarget(Paddle parent)
         {
             private readonly Paddle _parent = parent;
-            public bool Moving { get; private set; } = false;
+            public bool Running { get; private set; } = false;
             public float Target { get; private set; }
             public float Threshold = 16;
             public float Acceleration = 4000;
-            public void MoveTo(float x)
+            public void Start(float x)
             {
-                Debug.Assert(!Moving);
+                Debug.Assert(!Running);
                 Target = x;
-                Moving = true;
+                Running = true;
             }
-            public void Release()
+            public void Stop()
             {
-                Debug.Assert(Moving);
-                Moving = false;
+                Debug.Assert(Running);
+                Running = false;
             }
             public void ServiceCollision(Collider.CollideNode node)
             {
-                if (node.Other.Parent is Wall && Moving)
+                if (node.Other.Parent is Wall && Running)
                 {
-                    Release();
+                    Stop();
                 }
             }
             public void Update()
             {
-                if (Moving)
+                if (Running)
                 {
                     var collider = _parent.GetCollider();
                     var position = collider.Position.X + collider.Size.Width / 2;
                     if (Math.Abs(position - Target) <= Threshold)
                     {
-                        Release();
+                        Stop();
                     }
                     else if (position < Target)
                     {

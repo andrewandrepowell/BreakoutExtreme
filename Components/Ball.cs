@@ -22,12 +22,19 @@ namespace BreakoutExtreme.Components
         private States _state = States.Active;
         private void ServiceCollision(Collider.CollideNode node)
         {
+            if (State != States.Active)
+                return;
+
+            // Always correction position first.
             if (node.Other.Parent is Wall || 
                 node.Other.Parent is Paddle || 
-                (node.Other.Parent is Brick brick && brick.State == Brick.States.Active))
+                (node.Other.Parent is Brick brick && brick.State == Brick.States.Active) ||
+                (node.Other.Parent is DeathWall deathWall && !deathWall.Running))
             { 
                     node.CorrectPosition();
             }
+
+            // Run other service collision handlers.
             _launcher.ServiceCollision(node);
         }
         public Animater GetAnimater() => _animater;
@@ -47,7 +54,10 @@ namespace BreakoutExtreme.Components
         public void Destroy()
         {
             Debug.Assert(_state == States.Active);
-            Debug.Assert(!_launcher.Running);
+            if (_animater.Running)
+                _animater.Stop();
+            if (_launcher.Running)
+                _launcher.Stop();
             _destroyer.Start();
             _state = States.Destroying;
         }

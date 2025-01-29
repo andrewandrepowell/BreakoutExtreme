@@ -43,6 +43,7 @@
     <Compile Include="Components\Brick.cs" />
     <Compile Include="Components\Collider.cs" />
     <Compile Include="Components\Controller.cs" />
+    <Compile Include="Components\DeathWall.cs" />
     <Compile Include="Components\DisplayBall.cs" />
     <Compile Include="Components\GameWindow.cs" />
     <Compile Include="Components\GumDrawer.cs" />

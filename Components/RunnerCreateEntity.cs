@@ -6,6 +6,16 @@ namespace BreakoutExtreme.Components
 {
     public partial class Runner
     {
+        public DeathWall CreateDeathWall(RectangleF bounds)
+        {
+            var entity = _world.CreateEntity();
+            var deathWall = new DeathWall(bounds);
+            var collider = deathWall.GetCollider();
+            entity.Attach(deathWall);
+            entity.Attach(collider);
+            _collisionComponent.Insert(collider);
+            return deathWall;
+        }
         public Shadow CreateShadow(Animater parent) 
         {
             var entity = _world.CreateEntity();

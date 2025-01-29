@@ -140,6 +140,10 @@ namespace BreakoutExtreme.Components
             UpdateSpriterColor();
             _spriter.Play(_animationNames[Animation]);
         }
+        public void Stop()
+        {
+            _spriter.Stop();
+        }
         public void Update()
         {
             UpdateShaderFeatures();

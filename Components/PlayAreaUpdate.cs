@@ -13,15 +13,14 @@ namespace BreakoutExtreme.Components
                 // Apply user control
                 {
                     var controlState = Globals.ControlState;
-                    var moveToTarget = _paddle.GetMoveToTarget();
                     var cursorSelected = controlState.CursorSelectState == Controller.SelectStates.Pressed || controlState.CursorSelectState == Controller.SelectStates.Held;
                     var cursorReleased = controlState.CursorSelectState == Controller.SelectStates.Released || controlState.CursorSelectState == Controller.SelectStates.None;
 
-                    if (moveToTarget.Moving && ((cursorSelected && controlState.CursorPosition.X != moveToTarget.Target) || cursorReleased))
-                        moveToTarget.Release();
+                    if (_paddle.RunningMoveToTarget && ((cursorSelected && controlState.CursorPosition.X != _paddle.TargetToMoveTo) || cursorReleased))
+                        _paddle.StopMoveToTarget();
 
-                    if (!moveToTarget.Moving && cursorSelected)
-                        moveToTarget.MoveTo(controlState.CursorPosition.X);
+                    if (!_paddle.RunningMoveToTarget && cursorSelected)
+                        _paddle.StartMoveToTarget(controlState.CursorPosition.X);
                 }
 
                 if (State == States.Loaded)
@@ -45,8 +44,27 @@ namespace BreakoutExtreme.Components
                     State = States.GameRunning;
                 }
 
-                // Remove any destroyed bricks.
+                // Remove any objects.
                 {
+                    // balls
+                    _destroyedBalls.Clear();
+                    for (var i = 0; i < _balls.Count; i++)
+                    {
+                        var ball = _balls[i];
+                        if (ball.State == Ball.States.Destroyed)
+                        {
+
+                            _destroyedBalls.Add(ball);
+                        }
+                    }
+                    for (var i = 0; i < _destroyedBalls.Count; i++)
+                    {
+                        var ball = _destroyedBalls[i];
+                        ball.RemoveEntity();
+                        _balls.Remove(ball);
+                    }
+
+                    // bricks
                     _destroyedBricks.Clear();
                     for (var i = 0; i < _bricks.Count; i++)
                     {

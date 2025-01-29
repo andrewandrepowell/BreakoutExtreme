@@ -54,12 +54,14 @@ namespace BreakoutExtreme.Components
             { Components.ThickBrick, 'B' }
         });
         private static readonly ReadOnlyDictionary<char, Components> _symbolComponents = new(_componentSymbols.ToDictionary(e => e.Value, e => e.Key));
-        private Bag<Ball> _balls = [];
-        private Bag<Brick> _bricks = [];
-        private Bag<Brick> _destroyedBricks = [];
+        private readonly Bag<Ball> _balls = [];
+        private readonly Bag<Brick> _bricks = [];
+        private readonly Bag<Ball> _destroyedBalls = [];
+        private readonly Bag<Brick> _destroyedBricks = [];
+        private readonly Action<Brick> _brickDestroyedAction;
+        private readonly DeathWall _deathWall;
         private Paddle _paddle = null;
         private Levels _level = Levels.Test;
-        private Action<Brick> _brickDestroyedAction;
         public bool Loaded => State != States.Unloaded;
         static PlayArea()
         {
@@ -140,7 +142,7 @@ namespace BreakoutExtreme.Components
                 Globals.Runner.CreateWall(new RectangleF(Globals.PlayAreaBounds.X, Globals.PlayAreaBounds.Y, Globals.GameBlockSize, Globals.PlayAreaBounds.Height));
                 Globals.Runner.CreateWall(new RectangleF(Globals.PlayAreaBounds.X + Globals.PlayAreaBounds.Width - Globals.GameBlockSize, Globals.PlayAreaBounds.Y, Globals.GameBlockSize, Globals.PlayAreaBounds.Height));
                 Globals.Runner.CreateWall(new RectangleF(Globals.PlayAreaBounds.X + Globals.GameBlockSize, Globals.PlayAreaBounds.Y, Globals.PlayAreaBounds.Width - 2 * Globals.GameBlockSize, Globals.GameBlockSize));
-                Globals.Runner.CreateWall(new RectangleF(Globals.PlayAreaBounds.X + Globals.GameBlockSize, Globals.PlayAreaBounds.Y + Globals.PlayAreaBounds.Height - Globals.GameBlockSize, Globals.PlayAreaBounds.Width - 2 * Globals.GameBlockSize, Globals.GameBlockSize));
+                _deathWall = Globals.Runner.CreateDeathWall(new RectangleF(Globals.PlayAreaBounds.X + Globals.GameBlockSize, Globals.PlayAreaBounds.Y + Globals.PlayAreaBounds.Height - Globals.GameBlockSize, Globals.PlayAreaBounds.Width - 2 * Globals.GameBlockSize, Globals.GameBlockSize));
             }
 
             // Create the wall texture.
