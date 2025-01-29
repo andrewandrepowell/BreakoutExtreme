@@ -22,7 +22,8 @@ namespace BreakoutExtreme
         public static readonly Rectangle ScorePanelBlockBounds = new(6, 1, 5, 2);
         public static readonly Rectangle HighScoreLabelBlockBounds = new(1, 3, 5, 2);
         public static readonly Rectangle HighScorePanelBlockBounds = new(6, 3, 5, 2);
-        public static readonly Rectangle BallsRemainingLabelBlockBounds = new Rectangle(12, 1, 4, 2);
+        public static readonly Rectangle BallsRemainingLabelBlockBounds = new Rectangle(12, 1, 5, 2);
+        public static readonly Rectangle BallsRemainingPanelBlockBounds = new Rectangle(12, 3, 5, 2);
         public static readonly RectangleF GameWindowBounds = GameWindowBlockBounds.ToBounds();
         public static readonly RectangleF PlayAreaBounds = PlayAreaBlockBounds.ToBounds();
         public static readonly Random Random = new();

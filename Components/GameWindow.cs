@@ -1,5 +1,4 @@
 ﻿using MonoGame.Extended;
-using Microsoft.Xna.Framework;
 using System;
 using BreakoutExtreme.Utility;
 
@@ -11,6 +10,7 @@ namespace BreakoutExtreme.Components
         private readonly PlayArea _playArea;
         private readonly Panel _scorePanel;
         private readonly Panel _highScorePanel;
+        private readonly RemainingBallsPanel _remainingBallsPanel;
         private int _score = 0;
         public GameWindow()
         {
@@ -33,7 +33,6 @@ namespace BreakoutExtreme.Components
                 topPatch.Texture = NinePatcher.Textures.GameWindowFilled;
                 topPatch.Bounds = new RectangleF(0, 0, Globals.GameWindowBounds.Width, Globals.PlayAreaBounds.Y);
             }
-
 
             // Prepare score panel and label.
             {
@@ -70,7 +69,10 @@ namespace BreakoutExtreme.Components
                 var label = Globals.Runner.CreateLabel(Globals.BallsRemainingLabelBlockBounds.Size.ToSize() * Globals.GameBlockSize);
                 var gumDrawer = label.GetGumDrawer();
                 gumDrawer.Position = (gumDrawer.Size / 2).ToVector2() + Globals.BallsRemainingLabelBlockBounds.Location.ToVector2() * Globals.GameBlockSize;
-                label.Text = "Balls Remain:";
+                label.Text = "Balls Remaining:";
+            }
+            {
+                _remainingBallsPanel = Globals.Runner.CreateRemainingBallsPanel(Globals.BallsRemainingPanelBlockBounds.Center.ToVector2() * Globals.GameBlockSize);
             }
         }
         public void Update()
@@ -78,7 +80,8 @@ namespace BreakoutExtreme.Components
             // temporary
             if (!_playArea.Loaded)
                 _playArea.Load(PlayArea.Levels.Test);
-            
+
+            _remainingBallsPanel.Update();
             _playArea.Update();
         }
     }

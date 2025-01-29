@@ -5,7 +5,23 @@ using System;
 namespace BreakoutExtreme.Components
 {
     public partial class Runner
-    {
+    { 
+        public RemainingBallsPanel CreateRemainingBallsPanel(Vector2 position)
+        {
+            var entity = _world.CreateEntity();
+            var remainingBallsPanel = new RemainingBallsPanel(position);
+            entity.Attach(remainingBallsPanel);
+            return remainingBallsPanel;
+        }
+        public DisplayBall CreateDisplayBall(float floatStartTime = 0)
+        {
+            var entity = _world.CreateEntity();
+            var displayBall = new DisplayBall(floatStartTime);
+            var animater = displayBall.GetAnimater();
+            entity.Attach(displayBall);
+            entity.Attach(animater);
+            return displayBall;
+        }
         public DeathWall CreateDeathWall(RectangleF bounds)
         {
             var entity = _world.CreateEntity();

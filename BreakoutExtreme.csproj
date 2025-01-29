@@ -55,6 +55,7 @@
     <Compile Include="Components\PlayAreaEnums.cs" />
     <Compile Include="Components\PlayAreaLevels.cs" />
     <Compile Include="Components\PlayAreaUpdate.cs" />
+    <Compile Include="Components\RemainingBallsPanel.cs" />
     <Compile Include="Components\Runner.cs" />
     <Compile Include="Components\PlayArea.cs" />
     <Compile Include="Components\RunnerCreateEntity.cs" />

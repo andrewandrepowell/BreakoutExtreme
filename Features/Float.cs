@@ -7,7 +7,7 @@ namespace BreakoutExtreme.Features
 {
     public class Float : Feature
     {
-        private readonly float _maxHeight = 8;
+        private readonly float _maxHeight = 4;
         private readonly float _period = 1; 
         private float _time;
         private float _offset;
