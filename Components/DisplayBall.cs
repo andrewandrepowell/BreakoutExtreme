@@ -64,7 +64,7 @@ namespace BreakoutExtreme.Components
             if (_state == RunningStates.Stopping && _floatAway.State == RunningStates.Running && !_vanish.Running)
             {
                 _animater.Visibility = 0;
-                _state = RunningStates.Running;
+                _state = RunningStates.Waiting;
             }
         }
     }
