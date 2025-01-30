@@ -1,9 +1,7 @@
-﻿using MonoGame.Extended.Graphics;
-using MonoGame.Extended;
+﻿using MonoGame.Extended;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System;
-using System.Diagnostics;
 
 namespace BreakoutExtreme.Components
 {
@@ -15,6 +13,7 @@ namespace BreakoutExtreme.Components
             { Spriters.Paddle, "animations/paddle_0" },
             { Spriters.BrickLarge, "animations/brick_2" },
             { Spriters.Cracks, "animations/cracks_0" },
+            { Spriters.Spike, "animations/spike_0" },
         });
         private static readonly ReadOnlyDictionary<Spriters, Size> _spriterRegionSizes = new(new Dictionary<Spriters, Size>
         {
@@ -22,6 +21,7 @@ namespace BreakoutExtreme.Components
             { Spriters.Paddle, new Size(144, 80) },
             { Spriters.BrickLarge, new Size(112, 80) },
             { Spriters.Cracks, new Size(16, 16) },
+            { Spriters.Spike, new Size(80, 80) },
         });
         private static readonly ReadOnlyDictionary<Animations, string> _animationNames = new(new Dictionary<Animations, string>
         {
@@ -33,6 +33,7 @@ namespace BreakoutExtreme.Components
             { Animations.CrackSmall, "crack_0" },
             { Animations.CrackMedium, "crack_1" },
             { Animations.CrackLarge, "crack_2" },
+            { Animations.Spike, "spike_0" },
         });
         private static readonly ReadOnlyDictionary<Spriters, Action<Spriter>> _spriterConfigureAnimations = new(new Dictionary<Spriters, Action<Spriter>>
         {
@@ -67,6 +68,13 @@ namespace BreakoutExtreme.Components
                     spriter.Add(_animationNames[Animations.CrackMedium], [1]);
                     spriter.Add(_animationNames[Animations.CrackLarge], [2]);
                 }
+            },
+            {
+                Spriters.Spike,
+                delegate(Spriter spriter)
+                {
+                    spriter.Add(_animationNames[Animations.Spike], [0, 1, 2, 3, 2, 1], 1, true);
+                }
             }
         });
         private static readonly ReadOnlyDictionary<Animations, Spriters> _animationSpriters = new(new Dictionary<Animations, Spriters>()
@@ -79,6 +87,7 @@ namespace BreakoutExtreme.Components
             { Animations.CrackSmall, Spriters.Cracks },
             { Animations.CrackMedium, Spriters.Cracks },
             { Animations.CrackLarge, Spriters.Cracks },
+            { Animations.Spike, Spriters.Spike },
         });
         private readonly Dictionary<Spriters, Spriter> _spriters = [];
     }

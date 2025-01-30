@@ -52,6 +52,9 @@
     <Compile Include="Components\Paddle.cs" />
     <Compile Include="Components\PaddleMoveToTarget.cs" />
     <Compile Include="Components\Panel.cs" />
+    <Compile Include="Components\Particler.cs" />
+    <Compile Include="Components\ParticlerData.cs" />
+    <Compile Include="Components\ParticlerTypes.cs" />
     <Compile Include="Components\PlayAreaData.cs" />
     <Compile Include="Components\PlayAreaTypes.cs" />
     <Compile Include="Components\PlayAreaLevels.cs" />
@@ -61,6 +64,7 @@
     <Compile Include="Components\PlayArea.cs" />
     <Compile Include="Components\RunnerCreateEntity.cs" />
     <Compile Include="Components\Shadow.cs" />
+    <Compile Include="Components\Spike.cs" />
     <Compile Include="Components\Spriter.cs" />
     <Compile Include="Components\Texter.cs" />
     <Compile Include="Components\GumUI.cs" />
@@ -70,7 +74,8 @@
     <Compile Include="Features\Cracks.cs" />
     <Compile Include="Features\Flash.cs" />
     <Compile Include="Features\Float.cs" />
-    <Compile Include="Features\FloatAway.cs" />
+    <Compile Include="Features\FloatDown.cs" />
+    <Compile Include="Features\FloatUp.cs" />
     <Compile Include="Features\LimitedFlash.cs" />
     <Compile Include="Features\Shadow.cs" />
     <Compile Include="Features\Shake.cs" />

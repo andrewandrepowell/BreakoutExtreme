@@ -8,7 +8,7 @@ namespace BreakoutExtreme.Components
     {
         private readonly Animater _animater;
         private readonly Features.Float _float;
-        private readonly Features.FloatAway _floatAway;
+        private readonly Features.FloatUp _floatAway;
         private readonly Features.Vanish _vanish;
         private readonly Features.Appear _appear;
         private float _floatStartTime;

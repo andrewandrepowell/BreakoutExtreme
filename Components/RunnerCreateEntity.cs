@@ -6,6 +6,15 @@ namespace BreakoutExtreme.Components
 {
     public partial class Runner
     { 
+        public Spike CreateSpike(Vector2 position)
+        {
+            var entity = _world.CreateEntity();
+            var spike = new Spike(position);
+            var animater = spike.GetAnimater();
+            entity.Attach(spike);
+            entity.Attach(animater);
+            return spike;
+        }
         public RemainingBallsPanel CreateRemainingBallsPanel(Vector2 position)
         {
             var entity = _world.CreateEntity();
