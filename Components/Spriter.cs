@@ -135,6 +135,8 @@ namespace BreakoutExtreme.Components
         }
         public void Draw()
         {
+            if (Color.A == 0)
+                return;
             Globals.SpriteBatch.Draw(
                 texture: _texture,
                 position: Position,

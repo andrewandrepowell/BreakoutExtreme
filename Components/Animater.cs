@@ -4,6 +4,7 @@ using MonoGame.Extended;
 using MonoGame.Extended.Collections;
 using System;
 using System.Diagnostics;
+using BreakoutExtreme.Utility;
 
 namespace BreakoutExtreme.Components
 {

@@ -1,6 +1,7 @@
 ﻿using MonoGame.Extended.ECS;
 using MonoGame.Extended.ECS.Systems;
 using BreakoutExtreme.Components;
+using BreakoutExtreme.Utility;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using MonoGame.Extended.Collections;
@@ -10,18 +11,20 @@ namespace BreakoutExtreme.Systems
 {
     public class RenderSystem : EntitySystem, IUpdateSystem, IDrawSystem
     {
-        private static readonly Animater.Layers[] _layers = Enum.GetValues<Animater.Layers>();
+        private static readonly Layers[] _layers = Enum.GetValues<Layers>();
         private ComponentMapper<Animater> _animaterMapper;
         private ComponentMapper<NinePatcher> _ninePatcherMapper;
         private ComponentMapper<GumDrawer> _gumDrawerMapper;
+        private ComponentMapper<Particler> _particlerMapper;
         private Bag<Animater> _animaters = new();
         private Bag<NinePatcher> _ninePatchers = new();
         private Bag<GumDrawer> _gumDrawers = new();
+        private Bag<Particler> _particlers = new();
         private RenderTarget2D _pixelArtRenderTarget;
         private RenderTarget2D _smoothArtRenderTarget;
         private Shaders.Controller _shaderController = null;
         private bool _initialized = false;
-        public RenderSystem() : base(Aspect.One(typeof(Animater), typeof(NinePatcher), typeof(GumDrawer)))
+        public RenderSystem() : base(Aspect.One(typeof(Animater), typeof(NinePatcher), typeof(GumDrawer), typeof(Particler)))
         {
         }
         public override void Initialize(IComponentMapperService mapperService)
@@ -29,6 +32,7 @@ namespace BreakoutExtreme.Systems
             _animaterMapper = mapperService.GetMapper<Animater>();
             _ninePatcherMapper = mapperService.GetMapper<NinePatcher>();
             _gumDrawerMapper = mapperService.GetMapper<GumDrawer>();
+            _particlerMapper = mapperService.GetMapper<Particler>();
         }
         public void Update(GameTime gameTime)
         {
@@ -63,6 +67,7 @@ namespace BreakoutExtreme.Systems
             _animaters.Clear();
             _ninePatchers.Clear();
             _gumDrawers.Clear();
+            _particlers.Clear();
             foreach (var entityId in ActiveEntities)
             {
                 if (_animaterMapper.Has(entityId))
@@ -71,10 +76,19 @@ namespace BreakoutExtreme.Systems
                     _ninePatchers.Add(_ninePatcherMapper.Get(entityId));
                 if (_gumDrawerMapper.Has(entityId))
                     _gumDrawers.Add(_gumDrawerMapper.Get(entityId));
+                if (_particlerMapper.Has(entityId))
+                    _particlers.Add(_particlerMapper.Get(entityId));
             }
 
             for (var i = 0; i < _animaters.Count; i++)
                 _animaters[i].Update();
+
+            for (var i = 0; i < _particlers.Count; i++)
+            {
+                var particler = _particlers[i];
+                if (!particler.Disposed)
+                    particler.Update();
+            }
         }
         public void Draw(GameTime gameTime)
         {
@@ -94,14 +108,28 @@ namespace BreakoutExtreme.Systems
 
                 foreach (ref var layer in _layers.AsSpan())
                 {
-                    spriteBatch.Begin(samplerState: SamplerState.PointClamp);
-                    for (var i = 0; i < _animaters.Count; i++)
                     {
-                        var animater = _animaters[i];
-                        if (animater.Layer == layer && animater.Visibility != 0 && animater.ShowBase)
-                            _animaters[i].Draw();
+                        spriteBatch.Begin(blendState: BlendState.AlphaBlend);
+                        for (var i = 0; i < _particlers.Count; i++)
+                        {
+                            var particler = _particlers[i];
+                            if (!particler.Disposed && particler.Layer == layer)
+                                particler.Draw();
+                        }
+                        spriteBatch.End();
                     }
-                    spriteBatch.End();
+
+                    {
+                        spriteBatch.Begin(samplerState: SamplerState.PointClamp);
+                        for (var i = 0; i < _animaters.Count; i++)
+                        {
+                            var animater = _animaters[i];
+                            if (animater.Layer == layer && animater.Visibility != 0 && animater.ShowBase)
+                                _animaters[i].Draw();
+                        }
+                        spriteBatch.End();
+                    }
+
                     for (var i = 0; i < _animaters.Count; i++)
                     {
                         var animater = _animaters[i];

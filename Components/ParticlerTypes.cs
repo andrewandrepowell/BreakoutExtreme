@@ -9,10 +9,5 @@ namespace BreakoutExtreme.Components
         {
             BallTrail
         }
-        public class Node(Texture2D texture, ParticleEffect effect)
-        {
-            public readonly Texture2D Texture = texture;
-            public readonly ParticleEffect Effect = effect;
-        }
     }
 }

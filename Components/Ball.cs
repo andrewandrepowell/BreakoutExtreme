@@ -13,6 +13,7 @@ namespace BreakoutExtreme.Components
         private readonly PlayArea _parent;
         private readonly Animater _animater;
         private readonly Collider _collider;
+        private readonly Particler _particler;
         private readonly Entity _entity;
         private readonly Launcher _launcher;
         private readonly Destroyer _destroyer;
@@ -41,6 +42,7 @@ namespace BreakoutExtreme.Components
         }
         public Animater GetAnimater() => _animater;
         public Collider GetCollider() => _collider;
+        public Particler GetParticler() => _particler;
         public States State => _state;
         public bool LaunchRunning => _launcher.Running;
         public void StartLaunch()
@@ -63,6 +65,7 @@ namespace BreakoutExtreme.Components
             if (_launcher.Running)
                 _launcher.Stop();
             _destroyer.Start();
+            _particler.Stop();
             _state = States.Destroying;
         }
         public Ball(Entity entity, PlayArea parent)
@@ -79,6 +82,9 @@ namespace BreakoutExtreme.Components
             _animater.ShaderFeatures.Add(_limitedFlash);
             _animater.Play(Animater.Animations.Ball);
             _collider = new(bounds: _bounds, parent: this, action: _collideAction);
+            _particler = new();
+            _particler.Stop();
+            _particler.Play(Particler.Particles.BallTrail);
             _entity = entity;
             _launcher = new Launcher(this);
             _destroyer = new Destroyer(this);

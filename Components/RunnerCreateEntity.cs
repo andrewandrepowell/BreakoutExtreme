@@ -92,10 +92,12 @@ namespace BreakoutExtreme.Components
             var ball = new Ball(entity, parent);
             var animater = ball.GetAnimater();
             var collider = ball.GetCollider();
+            var particler = ball.GetParticler();
             entity.Attach(ball);
             entity.Attach(animater);
             entity.Attach(collider);
             _collisionComponent.Insert(collider);
+            entity.Attach(particler);
             return ball;
         }
         public Paddle CreatePaddle()

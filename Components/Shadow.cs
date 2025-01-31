@@ -1,7 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using MonoGame.Extended.ECS;
-using System;
-using System.Diagnostics;
+using BreakoutExtreme.Utility;
+
 
 namespace BreakoutExtreme.Components
 {
@@ -22,7 +22,7 @@ namespace BreakoutExtreme.Components
             _parent = parent;
             _animater = new();
             _animater.Position = _parent.Position + new Vector2(0, _displacement);
-            _animater.Layer = Animater.Layers.Shadow;
+            _animater.Layer = Layers.Shadow;
             _animater.ShowBase = false;
             _animater.Visibility = _visibility;
             _animater.ShaderFeatures.Add(new Features.Shadow());

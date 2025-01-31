@@ -87,14 +87,18 @@ namespace BreakoutExtreme.Components
             public void Start()
             {
                 Debug.Assert(!Running);
+                Debug.Assert(!_parent._particler.Running);
+                _parent._particler.Start();
                 Running = true;
             }
             public void Stop()
             {
                 Debug.Assert(Running);
+                Debug.Assert(_parent._particler.Running);
                 var collider = _parent._collider;
                 collider.Acceleration = Vector2.Zero;
                 collider.Velocity = Vector2.Zero;
+                _parent._particler.Stop();
                 Running = false;
             }
             public void Update()

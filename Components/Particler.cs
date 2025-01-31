@@ -3,58 +3,115 @@ using Microsoft.Xna.Framework;
 using MonoGame.Extended;
 using MonoGame.Extended.Graphics;
 using MonoGame.Extended.Particles;
-using MonoGame.Extended.Particles.Modifiers;
-using MonoGame.Extended.Particles.Modifiers.Containers;
-using MonoGame.Extended.Particles.Modifiers.Interpolators;
-using MonoGame.Extended.Particles.Profiles;
-using System.Collections.Generic;
 using System;
+using System.Diagnostics;
+using BreakoutExtreme.Utility;
 
 
 namespace BreakoutExtreme.Components
 {
     public partial class Particler
     {
+        private bool _disposed = false;
+        private Particles _particle = Particles.BallTrail;
         private ParticleEffect _particleEffect;
-        private Texture2D _particleTexture;
-        public Particler()
+        private Vector2 _position, _drawPosition;
+        private bool _running = true;
+        private void UpdateParticleEffectAutoTrigger()
         {
-            Texture2DRegion textureRegion = new Texture2DRegion(_particleTexture);
-            _particleEffect = new ParticleEffect()
+            for (var i = 0; i < _particleEffect.Emitters.Count; i++)
             {
-                Position = new Vector2(400, 240),
-                Emitters = new List<ParticleEmitter>
-                {
-                    new ParticleEmitter(textureRegion, 500, TimeSpan.FromSeconds(2.5),
-                        Profile.BoxUniform(100,250))
-                    {
-                        Parameters = new ParticleReleaseParameters
-                        {
-                            Speed = new Range<float>(0f, 50f),
-                            Quantity = 3,
-                            Rotation = new Range<float>(-1f, 1f),
-                            Scale = new Range<float>(3.0f, 4.0f)
-                        },
-                        Modifiers =
-                        {
-                            new AgeModifier
-                            {
-                                Interpolators =
-                                {
-                                    new ColorInterpolator
-                                    {
-                                        StartValue = new HslColor(0.33f, 0.5f, 0.5f),
-                                        EndValue = new HslColor(0.5f, 0.9f, 1.0f)
-                                    }
-                                }
-                            },
-                            new RotationModifier {RotationRate = -2.1f},
-                            new RectangleContainerModifier {Width = 800, Height = 480},
-                            new LinearGravityModifier {Direction = -Vector2.UnitY, Strength = 30f},
-                        }
-                    }
-                }
-            };
+                _particleEffect.Emitters[i].AutoTrigger = _running;
+            }
         }
+        private void UpdateParticleEffectPosition()
+        {
+            _particleEffect.Position = new Vector2(
+                x: (float)Math.Floor(_position.X), 
+                y: (float)Math.Floor(_position.Y));
+        }
+        private void UpdateParticleEffects()
+        {
+            var assetName = _particleAssetNames[_particle];
+            var texture = Globals.ContentManager.Load<Texture2D>(assetName);
+            var region = _particleRegions[_particle];
+            var textureRegion = new Texture2DRegion(texture, region);
+            var particleEffect = _particleCreateActions[_particle](textureRegion);
+            _particleEffects.Add(_particle, particleEffect);
+        }
+        private void UpdateParticleEffect()
+        {
+            _particleEffect = _particleEffects[_particle];
+        }
+        public bool Disposed => _disposed;
+        public Particles Particle => _particle;
+        public Vector2 Position
+        {
+            get => _position;
+            set
+            {
+                Debug.Assert(!_disposed);
+                if (_position == value)
+                    return;
+                _position = value;
+                UpdateParticleEffectPosition();
+            }
+        }
+        public Layers Layer = Layers.Ground;
+        public bool Running => _running;
+        public void Start()
+        {
+            Debug.Assert(!_disposed);
+            if (_running)
+                return;
+            _running = true;
+            UpdateParticleEffectAutoTrigger();
+        }
+        public void Stop()
+        {
+            Debug.Assert(!_disposed);
+            if (!_running)
+                return;
+            _running = false;
+            UpdateParticleEffectAutoTrigger();
+        }
+        public void Play(Particles particle)
+        {
+            Debug.Assert(!_disposed);
+            if (_particle == particle)
+                return;
+            _particle = particle;
+            if (!_particleEffects.ContainsKey(_particle))
+                UpdateParticleEffects();
+            UpdateParticleEffect();
+            UpdateParticleEffectAutoTrigger();
+            UpdateParticleEffectPosition();
+        }
+        public void Dispose()
+        {
+            Debug.Assert(!_disposed);
+            _disposed = true;
+            foreach (var particleEffect in _particleEffects.Values)
+                particleEffect.Dispose();
+        }
+        public void Update()
+        {
+            Debug.Assert(!_disposed);
+            _particleEffect.Update(Globals.GameTime.GetElapsedSeconds());
+        }
+        public void Draw()
+        {
+            Debug.Assert(!_disposed);
+            Globals.SpriteBatch.Draw(_particleEffect);
+        }
+        public Particler(Particles particle = Particles.BallTrail)
+        {
+            _particle = particle;
+            UpdateParticleEffects();
+            UpdateParticleEffect();
+            UpdateParticleEffectAutoTrigger();
+            UpdateParticleEffectPosition();
+        }
+
     }
 }

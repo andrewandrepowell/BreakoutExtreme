@@ -24,10 +24,5 @@ namespace BreakoutExtreme.Components
             CrackLarge,
             Spike
         }
-        public enum Layers
-        {
-            Shadow,
-            Ground
-        }
     }
 }

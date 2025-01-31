@@ -9,12 +9,12 @@ namespace BreakoutExtreme.Components
     {
         readonly private World _world;
         readonly private CollisionComponent _collisionComponent;
-        
-        public void RemoveEntity(int entityId) => RemoveEntity(_world.GetEntity(entityId));
         public void RemoveEntity(Entity entity)
         {
             if (entity.Has<Collider>())
                 _collisionComponent.Remove(entity.Get<Collider>());
+            if (entity.Has<Particler>())
+                entity.Get<Particler>().Dispose();
             entity.Destroy();
         }
         public Runner()
