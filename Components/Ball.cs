@@ -82,9 +82,8 @@ namespace BreakoutExtreme.Components
             _animater.ShaderFeatures.Add(_limitedFlash);
             _animater.Play(Animater.Animations.Ball);
             _collider = new(bounds: _bounds, parent: this, action: _collideAction);
-            _particler = new();
+            _particler = new(Particler.Particles.BallTrail);
             _particler.Stop();
-            _particler.Play(Particler.Particles.BallTrail);
             _entity = entity;
             _launcher = new Launcher(this);
             _destroyer = new Destroyer(this);

@@ -32,6 +32,7 @@ namespace BreakoutExtreme.Components
         private const float _shakePeriod = 0.5f;
         private readonly Animater _animater;
         private readonly Collider _collider;
+        private readonly Particler _particler;
         private readonly Entity _entity;
         private readonly Bricks _brick;
         private readonly Shadow _shadow;
@@ -54,6 +55,7 @@ namespace BreakoutExtreme.Components
         public Bricks GetBrick() => _brick;
         public Animater GetAnimater() => _animater;
         public Collider GetCollider() => _collider;
+        public Particler GetParticler() => _particler;
         public readonly int TotalHP;
         public int CurrentHP;
         public States State { get; private set; }
@@ -66,6 +68,7 @@ namespace BreakoutExtreme.Components
                 CurrentHP -= 1;
                 _shake.Start(_shakePeriod);
                 _cracks.Degree = (Features.Cracks.Degrees)(TotalHP - CurrentHP);
+                _particler.Trigger();
             }
 
             if (CurrentHP == 0)
@@ -93,6 +96,8 @@ namespace BreakoutExtreme.Components
             _animater = new();
             _animater.Play(_brickAnimations[brick]);
             _collider = new(bounds: _brickBounds[brick], parent: this, action: _collideAction);
+            _particler = new(Particler.Particles.BrickBreak);
+            _particler.Layer = Layers.Foreground;
             _entity = entity;
             _brick = brick;
             _shadow = Globals.Runner.CreateShadow(_animater);

@@ -16,7 +16,17 @@ namespace BreakoutExtreme.Components
         private Particles _particle = Particles.BallTrail;
         private ParticleEffect _particleEffect;
         private Vector2 _position, _drawPosition;
-        private bool _running = true;
+        private bool _running;
+        private void UpdateRunning()
+        {
+            _running = _particleEffect.Emitters[0].AutoTrigger;
+#if DEBUG
+            for (var i = 0; i < _particleEffect.Emitters.Count; i++)
+            {
+                Debug.Assert(_particleEffect.Emitters[i].AutoTrigger == _running);
+            }
+#endif
+        }
         private void UpdateParticleEffectAutoTrigger()
         {
             for (var i = 0; i < _particleEffect.Emitters.Count; i++)
@@ -34,9 +44,25 @@ namespace BreakoutExtreme.Components
         {
             var assetName = _particleAssetNames[_particle];
             var texture = Globals.ContentManager.Load<Texture2D>(assetName);
-            var region = _particleRegions[_particle];
-            var textureRegion = new Texture2DRegion(texture, region);
-            var particleEffect = _particleCreateActions[_particle](textureRegion);
+            var regionSize = _particleRegionSizes[_particle];
+            Debug.Assert(texture.Width % regionSize.Width == 0);
+            Debug.Assert(texture.Height % regionSize.Height == 0);
+            var xRegions = texture.Width / regionSize.Width;
+            var yRegions = texture.Height / regionSize.Height;
+            var totalRegions = xRegions * yRegions;
+            var textureRegions = new Texture2DRegion[totalRegions];
+            for (var y = 0; y < yRegions; y++)
+            {
+                for (var x = 0; x < xRegions; x++)
+                {
+                    textureRegions[x + y * xRegions] = new Texture2DRegion(texture, new Rectangle(
+                        x * regionSize.Width,
+                        y * regionSize.Height,
+                        regionSize.Width,
+                        regionSize.Height));
+                }
+            }
+            var particleEffect = _particleCreateActions[_particle](textureRegions);
             _particleEffects.Add(_particle, particleEffect);
         }
         private void UpdateParticleEffect()
@@ -87,6 +113,11 @@ namespace BreakoutExtreme.Components
             UpdateParticleEffectAutoTrigger();
             UpdateParticleEffectPosition();
         }
+        public void Trigger()
+        {
+            Debug.Assert(!_disposed);
+            _particleEffect.Trigger();
+        }
         public void Dispose()
         {
             Debug.Assert(!_disposed);
@@ -109,6 +140,7 @@ namespace BreakoutExtreme.Components
             _particle = particle;
             UpdateParticleEffects();
             UpdateParticleEffect();
+            UpdateRunning();
             UpdateParticleEffectAutoTrigger();
             UpdateParticleEffectPosition();
         }

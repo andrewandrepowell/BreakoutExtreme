@@ -80,9 +80,11 @@ namespace BreakoutExtreme.Components
             var brickObj = new Brick(entity, brick);
             var animater = brickObj.GetAnimater();
             var collider = brickObj.GetCollider();
+            var particler = brickObj.GetParticler();
             entity.Attach(brickObj);
             entity.Attach(animater);
             entity.Attach(collider);
+            entity.Attach(particler);
             _collisionComponent.Insert(collider);
             return brickObj;
         }
