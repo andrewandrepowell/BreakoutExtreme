@@ -1,5 +1,7 @@
 ﻿using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework;
+using MonoGame.Extended;
+using System;
 
 namespace BreakoutExtreme.Shaders
 {
@@ -39,6 +41,61 @@ namespace BreakoutExtreme.Shaders
         public readonly Effect Effect;
         public BlurNode()
         {
+        }
+    }
+    public class HighlightCanvasItemNode
+    {
+        public readonly Effect Effect;
+        public readonly EffectParameter LineSmoothness; //: hint_range(0, 0.1) = 0.045;
+        public readonly EffectParameter LineWidth; //: hint_range(0, 0.2) = 0.09;
+        public readonly EffectParameter Brightness; // = 3.0;
+        public readonly EffectParameter Rotation; //: hint_range(-90, 90) = 30;
+        public readonly EffectParameter Distortion; //: hint_range(1, 2) = 1.8;
+        public readonly EffectParameter Speed; //= 0.7;
+        public readonly EffectParameter Position; //: hint_range(0, 1) = 0;
+        public readonly EffectParameter PositionMin; //= 0.25;
+        public readonly EffectParameter PositionMax; //= 0.5;
+        public readonly EffectParameter Alpha; //: hint_range(0, 1) = 1;
+        public readonly EffectParameter GameTimeSeconds;
+        public void Configure(
+            float lineSmoothness = 0.045f,
+            float lineWidth = 0.09f,
+            float brightness = 3.0f,
+            float rotation = 0.5235987755982988f,
+            float distortion = 1.8f,
+            float speed = 0.7f,
+            float position = 0,
+            float positionMin = 0.25f,
+            float positionMax = 0.5f,
+            float alpha = 1f,
+            float initialGameTimeSeconds = 0f)
+        {
+            LineSmoothness.SetValue(lineSmoothness);
+            LineWidth.SetValue(lineWidth);
+            Brightness.SetValue(brightness);
+            Rotation.SetValue(rotation);
+            Distortion.SetValue(distortion);
+            Speed.SetValue(speed);
+            Position.SetValue(position);
+            PositionMin.SetValue(positionMin);
+            PositionMax.SetValue(positionMax);
+            Alpha.SetValue(alpha);
+            GameTimeSeconds.SetValue((float)Globals.GameTime.TotalGameTime.TotalSeconds - initialGameTimeSeconds);
+        }
+        public HighlightCanvasItemNode()
+        {
+            Effect = Globals.ContentManager.Load<Effect>($"effects/hightlight_canvasitem_0");
+            LineSmoothness = Effect.Parameters["LineSmoothness"];
+            LineWidth = Effect.Parameters["LineWidth"];
+            Brightness = Effect.Parameters["Brightness"];
+            Rotation = Effect.Parameters["Rotation"];
+            Distortion = Effect.Parameters["Distortion"];
+            Speed = Effect.Parameters["Speed"];
+            Position = Effect.Parameters["Position"];
+            PositionMin = Effect.Parameters["PositionMin"];
+            PositionMax = Effect.Parameters["PositionMax"];
+            Alpha = Effect.Parameters["Alpha"];
+            GameTimeSeconds = Effect.Parameters["GameTimeSeconds"];
         }
     }
 }

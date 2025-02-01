@@ -4,6 +4,7 @@
     {
         Silhouette,
         Blur,
-        Pattern
+        Pattern,
+        HighlightCanvasItem
     }
 }

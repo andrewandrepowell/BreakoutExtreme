@@ -202,3 +202,9 @@
 /processorParam:TextureFormat=Color
 /build:animations/particle_1.png
 
+#begin effects/hightlight_canvasitem_0.fx
+/importer:EffectImporter
+/processor:EffectProcessor
+/processorParam:DebugMode=Auto
+/build:effects/hightlight_canvasitem_0.fx
+

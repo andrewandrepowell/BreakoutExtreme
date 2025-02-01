@@ -79,6 +79,7 @@
     <Compile Include="Features\LimitedFlash.cs" />
     <Compile Include="Features\Shadow.cs" />
     <Compile Include="Features\Shake.cs" />
+    <Compile Include="Features\Shine.cs" />
     <Compile Include="Features\Vanish.cs" />
     <Compile Include="Globals.cs" />
     <Compile Include="Pages\Index.razor.cs" />

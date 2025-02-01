@@ -39,6 +39,7 @@ namespace BreakoutExtreme.Components
         private readonly Features.Shake _shake;
         private readonly Features.Cracks _cracks;
         private readonly Features.Vanish _vanish;
+        private readonly Features.Shine _shine;
         private void ServiceCollision(Collider.CollideNode node)
         {
         }
@@ -107,6 +108,9 @@ namespace BreakoutExtreme.Components
             _animater.ShaderFeatures.Add(_cracks);
             _vanish = new();
             _animater.ShaderFeatures.Add(_vanish);
+            _shine = new();
+            _shine.Start();
+            _animater.ShaderFeatures.Add(_shine);
             TotalHP = _brickTotalHPs[brick];
             CurrentHP = TotalHP;
             State = States.Active;
