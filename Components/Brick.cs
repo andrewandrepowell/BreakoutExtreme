@@ -31,6 +31,8 @@ namespace BreakoutExtreme.Components
         private static readonly Action<Collider.CollideNode> _collideAction = (Collider.CollideNode node) => ((Brick)node.Current.Parent).ServiceCollision(node);
         private const float _shakePeriod = 0.5f;
         private static readonly Vector2 _shineDirection = Vector2.Normalize(new Vector2(1, 1));
+        private const float _shineRepeatPeriod = 7.5f;
+        private const float _shineDelayControl = 0.01f;
         private readonly Animater _animater;
         private readonly Collider _collider;
         private readonly Particler _particler;
@@ -111,8 +113,8 @@ namespace BreakoutExtreme.Components
             _vanish = new();
             _animater.ShaderFeatures.Add(_vanish);
             _shine = new();
-            _shine.RepeatPeriod = 7.5f;
-            _shine.DelayPeriod = _shineDirection.Dot(position) * 0.01f;
+            _shine.RepeatPeriod = _shineRepeatPeriod;
+            _shine.DelayPeriod = _shineDirection.Dot(position) * _shineDelayControl;
             _shine.Start();
             _animater.ShaderFeatures.Add(_shine);
             TotalHP = _brickTotalHPs[brick];

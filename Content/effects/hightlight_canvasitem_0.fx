@@ -95,8 +95,8 @@ float4 MainPS(VertexShaderOutput input) : COLOR
     // Sample the original texture
     float4 original_color = tex2D(SpriteTextureSampler, uv);
    
-    // Apply the effect as an additive blend!
-    float4 return_color = float4(remapped_line, remapped_line, remapped_line, original_color.a);
+    // Changed the original code here so that I can use alpha blend everywhere when drawing--makes life so much easier. 
+    float4 return_color = float4(remapped_line, remapped_line, remapped_line, 0) * original_color.a * input.Color;
     return return_color;
 }
 

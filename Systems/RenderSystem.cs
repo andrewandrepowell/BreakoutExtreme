@@ -117,7 +117,7 @@ namespace BreakoutExtreme.Systems
                 foreach (ref var layer in _layers.AsSpan())
                 {
                     {
-                        spriteBatch.Begin(blendState: BlendState.AlphaBlend);
+                        spriteBatch.Begin();
                         for (var i = 0; i < _particlers.Count; i++)
                         {
                             var particler = _particlers[i];
