@@ -30,6 +30,7 @@ namespace BreakoutExtreme.Components
         });
         private static readonly Action<Collider.CollideNode> _collideAction = (Collider.CollideNode node) => ((Brick)node.Current.Parent).ServiceCollision(node);
         private const float _shakePeriod = 0.5f;
+        private static readonly Vector2 _shineDirection = Vector2.Normalize(new Vector2(1, 1));
         private readonly Animater _animater;
         private readonly Collider _collider;
         private readonly Particler _particler;
@@ -92,11 +93,12 @@ namespace BreakoutExtreme.Components
 
             State = States.Destroying;
         }
-        public Brick(Entity entity, Bricks brick)
+        public Brick(Entity entity, Bricks brick, Vector2 position)
         {
             _animater = new();
             _animater.Play(_brickAnimations[brick]);
             _collider = new(bounds: _brickBounds[brick], parent: this, action: _collideAction);
+            _collider.Position = position;
             _particler = new(Particler.Particles.BrickBreak);
             _particler.Layer = Layers.Foreground;
             _entity = entity;
@@ -109,6 +111,8 @@ namespace BreakoutExtreme.Components
             _vanish = new();
             _animater.ShaderFeatures.Add(_vanish);
             _shine = new();
+            _shine.RepeatPeriod = 7.5f;
+            _shine.DelayPeriod = _shineDirection.Dot(position) * 0.01f;
             _shine.Start();
             _animater.ShaderFeatures.Add(_shine);
             TotalHP = _brickTotalHPs[brick];

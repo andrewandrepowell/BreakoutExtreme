@@ -74,10 +74,10 @@ namespace BreakoutExtreme.Components
             entity.Attach(gameWindow);
             return gameWindow;
         }
-        public Brick CreateBrick(Brick.Bricks brick)
+        public Brick CreateBrick(Brick.Bricks brick, Vector2 position)
         {
             var entity = _world.CreateEntity();
-            var brickObj = new Brick(entity, brick);
+            var brickObj = new Brick(entity, brick, position);
             var animater = brickObj.GetAnimater();
             var collider = brickObj.GetCollider();
             var particler = brickObj.GetParticler();

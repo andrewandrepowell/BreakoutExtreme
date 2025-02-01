@@ -37,9 +37,8 @@ namespace BreakoutExtreme.Components
             {
                 Components.ThickBrick, (PlayArea playArea, Vector2 position) =>
                 {
-                    var brick = Globals.Runner.CreateBrick(Brick.Bricks.ThickBrick);
+                    var brick = Globals.Runner.CreateBrick(Brick.Bricks.ThickBrick, position);
                     var collider = brick.GetCollider();
-                    collider.Position = position;
                     playArea._bricks.Add(brick);
                 }
             }
