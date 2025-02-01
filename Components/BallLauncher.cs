@@ -21,10 +21,11 @@ namespace BreakoutExtreme.Components
 
                 // Handle bounce logic.
                 {
-                    if (node.Other.Parent is Wall || 
-                        node.Other.Parent is Paddle || 
+                    if (_parent.State == States.Active && 
+                        (node.Other.Parent is Wall || 
+                         node.Other.Parent is Paddle || 
                         (node.Other.Parent is Brick brick && brick.State == Brick.States.Active) ||
-                        (node.Other.Parent is DeathWall deathWall && !deathWall.Running))
+                        (node.Other.Parent is DeathWall deathWall && !deathWall.Running)))
                     {
                         if (!node.PenetrationVector.EqualsWithTolerence(Vector2.Zero))
                         {
@@ -46,7 +47,7 @@ namespace BreakoutExtreme.Components
 
                 // Handle paddle bounce adjustment logic.
                 {
-                    if (node.Other.Parent is Paddle)
+                    if (_parent.State == States.Active && node.Other.Parent is Paddle)
                     {
                         if (Running && !Acceleration.EqualsWithTolerence(Vector2.Zero) && !collider.Velocity.EqualsWithTolerence(Vector2.Zero) && Acceleration.Y < 0)
                         {
@@ -74,7 +75,8 @@ namespace BreakoutExtreme.Components
 
                 // Handle damaging a brick logic.
                 {
-                    if (node.Other.Parent is Brick brick && brick.State == Brick.States.Active)
+                    if (_parent.State == States.Active && 
+                        node.Other.Parent is Brick brick && brick.State == Brick.States.Active)
                     {
                         brick.Damage();
 
@@ -82,6 +84,15 @@ namespace BreakoutExtreme.Components
                         if (brick.State != Brick.States.Active)
                             _parent._parent.UpdateScore(brick);
                     }
+                }
+
+                // Handle collision with death wall.
+                {
+                    if (_parent.State == States.Active && 
+                        node.Other.Parent is DeathWall deathWall && deathWall.Running)
+                    {
+                        _parent.Destroy();
+                    }    
                 }
             }
             public void Start()

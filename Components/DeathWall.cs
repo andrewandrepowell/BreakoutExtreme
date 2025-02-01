@@ -13,12 +13,6 @@ namespace BreakoutExtreme.Components
         private Spike[] _spikes;
         private void ServiceCollision(Collider.CollideNode node)
         {
-            if (!_running)
-                return;
-            if (node.Other.Parent is Ball ball && ball.State == Ball.States.Active)
-            {
-                ball.Destroy();
-            }
         }
         public Collider GetCollider() => _collider;
         public bool Running => _running;
