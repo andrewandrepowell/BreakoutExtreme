@@ -25,12 +25,10 @@ namespace BreakoutExtreme.Components
             var gameWindowSystem = new GameWindowSystem();
             var colliderSystem = new ColliderSystem(_collisionComponent);
             var positionSystem = new PositionSystem();
-            var gumRenderSystem = new GumRenderSystem();
             var renderSystem = new RenderSystem();
             worldBuilder.AddSystem(gameWindowSystem);
             worldBuilder.AddSystem(colliderSystem);
             worldBuilder.AddSystem(positionSystem);
-            worldBuilder.AddSystem(gumRenderSystem);
             worldBuilder.AddSystem(renderSystem);
             _world = worldBuilder.Build();
         }

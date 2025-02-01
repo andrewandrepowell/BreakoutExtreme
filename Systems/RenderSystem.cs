@@ -80,6 +80,9 @@ namespace BreakoutExtreme.Systems
                     _particlers.Add(_particlerMapper.Get(entityId));
             }
 
+            for (var i = 0; i < _gumDrawers.Count; i++)
+                _gumDrawers[i].Update();
+
             for (var i = 0; i < _animaters.Count; i++)
                 _animaters[i].Update();
 
@@ -94,6 +97,11 @@ namespace BreakoutExtreme.Systems
         {
             var spriteBatch = Globals.SpriteBatch;
             var graphicsDevice = spriteBatch.GraphicsDevice;
+
+            {
+                for (var i = 0; i < _gumDrawers.Count; i++)
+                    _gumDrawers[i].GumDraw();
+            }
 
             var previousRenderTargets = graphicsDevice.GetRenderTargets();
             graphicsDevice.SetRenderTarget(_pixelArtRenderTarget);

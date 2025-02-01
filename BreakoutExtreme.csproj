@@ -90,7 +90,6 @@
     <Compile Include="Shaders\Nodes.cs" />
     <Compile Include="Systems\ColliderSystem.cs" />
     <Compile Include="Systems\GameWindowSystem.cs" />
-    <Compile Include="Systems\GumRenderSystem.cs" />
     <Compile Include="Systems\PositionSystem.cs" />
     <Compile Include="Systems\RenderSystem.cs" />
     <Compile Include="Utility\Enums.cs" />
