@@ -11,10 +11,15 @@ namespace BreakoutExtreme.Components
         private readonly Panel _scorePanel;
         private readonly Panel _highScorePanel;
         private readonly RemainingBallsPanel _remainingBallsPanel;
+        private readonly Button _menuButton;
         private int _score = 0;
         private void UpdateScorePanel()
         {
             _scorePanel.Text = $"{_score}";
+        }
+        private void OpenMenu()
+        {
+
         }
         public int Score
         {
@@ -85,6 +90,15 @@ namespace BreakoutExtreme.Components
             {
                 _remainingBallsPanel = Globals.Runner.CreateRemainingBallsPanel(Globals.BallsRemainingPanelBlockBounds.Center.ToVector2() * Globals.GameBlockSize);
             }
+
+            // Create the menu button.
+            {
+                _menuButton = Globals.Runner.CreateButton(
+                    parent: this, 
+                    action: (object parent) => OpenMenu(), 
+                    bounds: Globals.MenuButtonBlockBounds.ToBounds(), 
+                    text: "Menu");
+            }
         }
         public void Update()
         {
@@ -92,6 +106,7 @@ namespace BreakoutExtreme.Components
             if (!_playArea.Loaded)
                 _playArea.Load(PlayArea.Levels.Test);
 
+            _menuButton.Update();
             _remainingBallsPanel.Update();
             _playArea.Update();
         }

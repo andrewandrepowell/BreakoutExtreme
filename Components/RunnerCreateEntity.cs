@@ -7,6 +7,16 @@ namespace BreakoutExtreme.Components
 {
     public partial class Runner
     { 
+        public Button CreateButton(object parent, Action<object> action, RectangleF bounds, string text)
+        {
+            Debug.Assert(_initialized);
+            var entity = _world.CreateEntity();
+            var button = new Button(parent, action, bounds, text);
+            var gumDrawer = button.GetGumDrawer();
+            entity.Attach(button);
+            entity.Attach(gumDrawer);
+            return button;
+        }
         public ScorePopup CreateScorePopup()
         {
             Debug.Assert(_initialized);

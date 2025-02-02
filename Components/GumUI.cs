@@ -35,6 +35,8 @@ namespace BreakoutExtreme.Components
                 new BitmapFont("fonts/montserrat/montserrat_0.fnt", SystemManagers.Default);
                 new BitmapFont("fonts/montserrat/montserrat_1.fnt", SystemManagers.Default);
                 Globals.ContentManager.Load<Texture2D>("animations/panel_0");
+                Globals.ContentManager.Load<Texture2D>("animations/button_0");
+                Globals.ContentManager.Load<Texture2D>("animations/button_1");
 #pragma warning restore CA1806
             }
         }
