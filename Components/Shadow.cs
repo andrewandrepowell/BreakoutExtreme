@@ -20,11 +20,13 @@ namespace BreakoutExtreme.Components
         {
             _entity = entity;
             _parent = parent;
-            _animater = new();
-            _animater.Position = _parent.Position + new Vector2(0, _displacement);
-            _animater.Layer = Layers.Shadow;
-            _animater.ShowBase = false;
-            _animater.Visibility = _visibility;
+            _animater = new()
+            {
+                Position = _parent.Position + new Vector2(0, _displacement),
+                Layer = Layers.Shadow,
+                ShowBase = false,
+                Visibility = _visibility,
+            };
             _animater.ShaderFeatures.Add(new Features.Shadow());
             _vanish = new();
             _animater.ShaderFeatures.Add(_vanish);

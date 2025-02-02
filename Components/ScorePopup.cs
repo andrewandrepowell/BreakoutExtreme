@@ -103,16 +103,18 @@ namespace BreakoutExtreme.Components
             }
 
             {
-                _textRuntime = new();
-                _textRuntime.X = 0;
-                _textRuntime.Y = 0;
-                _textRuntime.Width = 0;
-                _textRuntime.Height = 0;
-                _textRuntime.WidthUnits = Gum.DataTypes.DimensionUnitType.RelativeToContainer;
-                _textRuntime.HeightUnits = Gum.DataTypes.DimensionUnitType.RelativeToContainer;
-                _textRuntime.VerticalAlignment = VerticalAlignment.Center;
-                _textRuntime.HorizontalAlignment = HorizontalAlignment.Center;
-                _textRuntime.BitmapFont = new BitmapFont("fonts/montserrat/montserrat_0.fnt", SystemManagers.Default);
+                _textRuntime = new()
+                {
+                    BitmapFont = new BitmapFont("fonts/montserrat/montserrat_0.fnt", SystemManagers.Default),
+                    X = 0,
+                    Y = 0,
+                    Width = 0,
+                    Height = 0,
+                    WidthUnits = Gum.DataTypes.DimensionUnitType.RelativeToContainer,
+                    HeightUnits = Gum.DataTypes.DimensionUnitType.RelativeToContainer,
+                    VerticalAlignment = VerticalAlignment.Center,
+                    HorizontalAlignment = HorizontalAlignment.Center,
+                };
                 UpdateTextRuntimeColor();
                 UpdateTextRuntimeText();
                 _containerRuntime.Children.Add(_textRuntime);

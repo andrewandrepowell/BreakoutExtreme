@@ -76,26 +76,30 @@ namespace BreakoutExtreme.Components
             }
 
             {
-                var nineSlice = new NineSliceRuntime();
                 var texture = Globals.ContentManager.Load<Texture2D>("animations/panel_0");
-                nineSlice.SourceFile = texture;
-                nineSlice.Width = 0;
-                nineSlice.Height = 0;
-                nineSlice.WidthUnits = Gum.DataTypes.DimensionUnitType.RelativeToContainer;
-                nineSlice.HeightUnits = Gum.DataTypes.DimensionUnitType.RelativeToContainer;
+                var nineSlice = new NineSliceRuntime()
+                {
+                    SourceFile = texture,
+                    Width = 0,
+                    Height = 0,
+                    WidthUnits = Gum.DataTypes.DimensionUnitType.RelativeToContainer,
+                    HeightUnits = Gum.DataTypes.DimensionUnitType.RelativeToContainer,
+                };
                 _containerRuntime.Children.Add(nineSlice);
             }
 
             {
-                _textRuntime = new();
-                _textRuntime.BitmapFont = new BitmapFont("fonts/montserrat/montserrat_1.fnt", SystemManagers.Default);
-                _textRuntime.X = Globals.GameBlockSize;
-                _textRuntime.Y = 0;
-                _textRuntime.Width = -Globals.GameBlockSize * 2;
-                _textRuntime.Height = 0;
-                _textRuntime.WidthUnits = Gum.DataTypes.DimensionUnitType.RelativeToContainer;
-                _textRuntime.HeightUnits = Gum.DataTypes.DimensionUnitType.RelativeToContainer;
-                _textRuntime.VerticalAlignment = VerticalAlignment.Center;
+                _textRuntime = new()
+                {
+                    BitmapFont = new BitmapFont("fonts/montserrat/montserrat_1.fnt", SystemManagers.Default),
+                    X = Globals.GameBlockSize,
+                    Y = 0,
+                    Width = -Globals.GameBlockSize * 2,
+                    Height = 0,
+                    WidthUnits = Gum.DataTypes.DimensionUnitType.RelativeToContainer,
+                    HeightUnits = Gum.DataTypes.DimensionUnitType.RelativeToContainer,
+                    VerticalAlignment = VerticalAlignment.Center,
+                };
                 UpdateTextRuntimeColor();
                 UpdateTextRuntimeText();
                 _containerRuntime.Children.Add(_textRuntime);

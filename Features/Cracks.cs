@@ -36,7 +36,7 @@ namespace BreakoutExtreme.Features
         public Cracks(Animater parent)
         {
             _parent = parent;
-            _degreeNodes = new();
+            _degreeNodes = [];
             {
                 var animater = new Animater();
                 foreach (ref var degree in _degrees.AsSpan())

@@ -22,13 +22,15 @@ namespace BreakoutExtreme
         public static readonly Rectangle ScorePanelBlockBounds = new(6, 1, 5, 2);
         public static readonly Rectangle HighScoreLabelBlockBounds = new(1, 3, 5, 2);
         public static readonly Rectangle HighScorePanelBlockBounds = new(6, 3, 5, 2);
-        public static readonly Rectangle BallsRemainingLabelBlockBounds = new Rectangle(12, 1, 5, 2);
-        public static readonly Rectangle BallsRemainingPanelBlockBounds = new Rectangle(12, 3, 5, 2);
+        public static readonly Rectangle BallsRemainingLabelBlockBounds = new(12, 1, 5, 2);
+        public static readonly Rectangle BallsRemainingPanelBlockBounds = new(12, 3, 5, 2);
         public static readonly RectangleF GameWindowBounds = GameWindowBlockBounds.ToBounds();
         public static readonly RectangleF PlayAreaBounds = PlayAreaBlockBounds.ToBounds();
         public static readonly Random Random = new();
-        public static float GameWindowToResizeScalar = 1;
+#pragma warning disable CA2211
+        public static float GameWindowToResizeScalar = 1; 
         public static Vector2 GameWindowToResizeOffset = Vector2.Zero;
+#pragma warning restore CA2211
         public static SpriteBatch SpriteBatch { get; private set; }
         public static ContentManager ContentManager { get; private set; }
         public static GameTime GameTime { get; private set; }
