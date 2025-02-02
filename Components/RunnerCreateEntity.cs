@@ -6,6 +6,15 @@ namespace BreakoutExtreme.Components
 {
     public partial class Runner
     { 
+        public ScorePopup CreateScorePopup()
+        {
+            var entity = _world.CreateEntity();
+            var scorePopup = new ScorePopup(entity);
+            var gumDrawer = scorePopup.GetGumDrawer();
+            entity.Attach(scorePopup);
+            entity.Attach(gumDrawer);
+            return scorePopup;
+        }
         public Spike CreateSpike(Vector2 position)
         {
             var entity = _world.CreateEntity();

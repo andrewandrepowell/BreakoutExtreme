@@ -65,6 +65,7 @@ namespace BreakoutExtreme
 
                 Texter.Load();
                 Animater.Load();
+                Particler.Load();
 
                 _testTexter = new() { Color = Color.Yellow };
 #if DEBUG

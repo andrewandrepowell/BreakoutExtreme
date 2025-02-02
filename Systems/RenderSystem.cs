@@ -100,7 +100,11 @@ namespace BreakoutExtreme.Systems
 
             {
                 for (var i = 0; i < _gumDrawers.Count; i++)
-                    _gumDrawers[i].GumDraw();
+                {
+                    var gumDraw = _gumDrawers[i];
+                    if (gumDraw.Visibility != 0)
+                        gumDraw.GumDraw();
+                }
             }
 
             var previousRenderTargets = graphicsDevice.GetRenderTargets();
@@ -133,7 +137,7 @@ namespace BreakoutExtreme.Systems
                         {
                             var animater = _animaters[i];
                             if (animater.Layer == layer && animater.Visibility != 0 && animater.ShowBase)
-                                _animaters[i].Draw();
+                                animater.Draw();
                         }
                         spriteBatch.End();
                     }
@@ -150,7 +154,7 @@ namespace BreakoutExtreme.Systems
                                 if (!shaderFeature.Script.HasValue)
                                     continue;
                                 _shaderController.Begin(shaderFeature);
-                                _animaters[i].Draw();
+                                animater.Draw();
                                 spriteBatch.End();
                             }
                         }
@@ -161,10 +165,39 @@ namespace BreakoutExtreme.Systems
             graphicsDevice.SetRenderTargets(_smoothArtRenderTarget);
             graphicsDevice.Clear(Color.Transparent);
             {
-                spriteBatch.Begin(samplerState: SamplerState.PointClamp);
-                for (var i = 0; i < _gumDrawers.Count; i++)
-                    _gumDrawers[i].MonoDraw();
-                spriteBatch.End();
+                foreach (ref var layer in _layers.AsSpan())
+                {
+                    {
+                        spriteBatch.Begin(samplerState: SamplerState.PointClamp);
+                        for (var i = 0; i < _gumDrawers.Count; i++)
+                        {
+                            var gumDraw = _gumDrawers[i];
+                            if (gumDraw.Layer == layer && gumDraw.Visibility != 0)
+                                gumDraw.MonoDraw();
+                        }
+                        spriteBatch.End();
+                    }
+
+                    {
+                        for (var i = 0; i < _gumDrawers.Count; i++)
+                        {
+                            var gumDrawer = _gumDrawers[i];
+                            var shaderFeatures = gumDrawer.ShaderFeatures;
+                            if (gumDrawer.Layer == layer && gumDrawer.Visibility != 0)
+                            {
+                                for (var j = 0; j < shaderFeatures.Count; j++)
+                                {
+                                    var shaderFeature = shaderFeatures[j];
+                                    if (!shaderFeature.Script.HasValue)
+                                        continue;
+                                    _shaderController.Begin(shaderFeature);
+                                    gumDrawer.MonoDraw();
+                                    spriteBatch.End();
+                                }
+                            }
+                        }
+                    }
+                }
             }
 
             graphicsDevice.SetRenderTargets(previousRenderTargets);

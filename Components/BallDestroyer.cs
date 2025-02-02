@@ -8,7 +8,6 @@ namespace BreakoutExtreme.Components
         private class Destroyer(Ball parent)
         {
             private const float _shakePeriod = 0.5f;
-            private const float _vanishPeriod = 1f;
             private static readonly Color _flashColor = Color.Red * 0.5f;
             private readonly Ball _parent = parent;
             private bool _running = false;
@@ -17,7 +16,7 @@ namespace BreakoutExtreme.Components
             {
                 Debug.Assert(!_running);
                 _parent._animater.Play(Animater.Animations.BallDead);
-                _parent._vanish.Start(_vanishPeriod);
+                _parent._vanish.Start();
                 _parent._shake.Start(_shakePeriod);
                 _parent._flash.Start();
                 _parent._shadow.VanishStart();

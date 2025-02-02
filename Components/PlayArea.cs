@@ -13,8 +13,10 @@ namespace BreakoutExtreme.Components
         private readonly GameWindow _parent;
         private readonly Bag<Ball> _balls = [];
         private readonly Bag<Brick> _bricks = [];
+        private readonly Bag<ScorePopup> _scorePopups = [];
         private readonly Bag<Ball> _destroyedBalls = [];
         private readonly Bag<Brick> _destroyedBricks = [];
+        private readonly Bag<ScorePopup> _destroyedScorePopups = [];
         private readonly DeathWall _deathWall;
         private Paddle _paddle = null;
         private Levels _level = Levels.Test;
@@ -103,6 +105,11 @@ namespace BreakoutExtreme.Components
         }
         public void UpdateScore(Brick brick)
         {
+            var brickCollider = brick.GetCollider();
+            var scorePopup = Globals.Runner.CreateScorePopup();
+            scorePopup.Text = "+1";
+            scorePopup.GetGumDrawer().Position = brickCollider.Position + (Vector2)(brickCollider.Size / 2);
+            _scorePopups.Add(scorePopup);
             _parent.Score++;
         }
         public PlayArea(GameWindow parent)

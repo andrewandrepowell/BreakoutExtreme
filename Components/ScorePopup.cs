@@ -1,21 +1,24 @@
 ﻿using MonoGameGum.GueDeriving;
-using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework;
 using MonoGame.Extended;
-using MonoGameGum;
 using RenderingLibrary.Graphics;
-using BreakoutExtreme.Utility;
 using RenderingLibrary;
+using MonoGame.Extended.ECS;
+using BreakoutExtreme.Utility;
 
 namespace BreakoutExtreme.Components
 {
-    public class Panel
+    public partial class ScorePopup
     {
-        private static readonly Size _initialSize = new Size(Globals.GameBlockSize * 3, Globals.GameBlockSize * 3);
+        private static readonly Size _size = new Size(Globals.GameBlockSize * 4, Globals.GameBlockSize * 1);
         private readonly ContainerRuntime _containerRuntime;
         private readonly TextRuntime _textRuntime;
         private readonly GumDrawer _gumDrawer;
-        private Size _size = _initialSize;
+        private readonly Entity _entity;
+        private readonly Features.Vanish _vanish;
+        private readonly Features.FloatUp _floatUp;
+        private readonly Features.Flash _flash;
+        private bool _running = true;
         private Color _textColor = Color.Black;
         private string _text = "H";
         private void UpdateContainerSize()
@@ -33,7 +36,9 @@ namespace BreakoutExtreme.Components
         {
             _textRuntime.Text = Text;
         }
+        public bool Running => _running;
         public GumDrawer GetGumDrawer() => _gumDrawer;
+        public Size Size => _size;
         public Color TextColor
         {
             get => _textColor;
@@ -56,52 +61,57 @@ namespace BreakoutExtreme.Components
                 UpdateTextRuntimeText();
             }
         }
-        public Size Size
+        public void RemoveEntity()
         {
-            get => _size;
-            set
-            {
-                if (_size ==  value) 
-                    return;
-                _size = value;
-                UpdateContainerSize();
-                _gumDrawer.UpdateSizeImmediately();
-            }
+            Globals.Runner.RemoveEntity(_entity);
         }
-        public Panel()
+        public void Update()
         {
+            if (_running && !_vanish.Running && _floatUp.State == RunningStates.Running)
+                _running = false;
+        }
+        public ScorePopup(Entity entity)
+        {
+            {
+                _entity = entity;
+            }
+
             {
                 _containerRuntime = new ContainerRuntime();
                 UpdateContainerSize();
             }
 
             {
-                var nineSlice = new NineSliceRuntime();
-                var texture = Globals.ContentManager.Load<Texture2D>("animations/panel_0");
-                nineSlice.SourceFile = texture;
-                nineSlice.Width = 0;
-                nineSlice.Height = 0;
-                nineSlice.WidthUnits = Gum.DataTypes.DimensionUnitType.RelativeToContainer;
-                nineSlice.HeightUnits = Gum.DataTypes.DimensionUnitType.RelativeToContainer;
-                _containerRuntime.Children.Add(nineSlice);
-            }
-
-            {
                 _textRuntime = new TextRuntime();
-                _textRuntime.BitmapFont = new BitmapFont("fonts/montserrat/montserrat_1.fnt", SystemManagers.Default);
-                _textRuntime.X = Globals.GameBlockSize;
+                _textRuntime.X = 0;
                 _textRuntime.Y = 0;
-                _textRuntime.Width = -Globals.GameBlockSize * 2;
+                _textRuntime.Width = 0;
                 _textRuntime.Height = 0;
                 _textRuntime.WidthUnits = Gum.DataTypes.DimensionUnitType.RelativeToContainer;
                 _textRuntime.HeightUnits = Gum.DataTypes.DimensionUnitType.RelativeToContainer;
                 _textRuntime.VerticalAlignment = VerticalAlignment.Center;
+                _textRuntime.HorizontalAlignment = HorizontalAlignment.Center;
+                _textRuntime.BitmapFont = new BitmapFont("fonts/montserrat/montserrat_0.fnt", SystemManagers.Default);
                 UpdateTextRuntimeColor();
                 UpdateTextRuntimeText();
                 _containerRuntime.Children.Add(_textRuntime);
             }
 
-            _gumDrawer = new GumDrawer(_containerRuntime);
+            {
+                _gumDrawer = new GumDrawer(_containerRuntime);
+                _vanish = new();
+                _vanish.Period = 4;
+                _vanish.Start();
+                _gumDrawer.ShaderFeatures.Add(_vanish);
+                _floatUp = new();
+                _floatUp.Period = 1;
+                _floatUp.Start();
+                _gumDrawer.ShaderFeatures.Add(_floatUp);
+                _flash = new();
+                _flash.Color = Color.White;
+                _flash.Start();
+                _gumDrawer.ShaderFeatures.Add(_flash);
+            }
         }
     }
 }

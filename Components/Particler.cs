@@ -85,6 +85,15 @@ namespace BreakoutExtreme.Components
         }
         public Layers Layer = Layers.Ground;
         public bool Running => _running;
+        public static void Load()
+        {
+            var particler = new Particler();
+            var particles = Enum.GetValues<Particles>();
+            foreach (ref var particle in particles.AsSpan())
+            {
+                particler.Play(particle);
+            }
+        }
         public void Start()
         {
             Debug.Assert(!_disposed);

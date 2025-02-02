@@ -7,22 +7,47 @@ using MonoGame.Extended;
 using System.Diagnostics;
 using System.Linq;
 using RenderingLibrary;
+using MonoGame.Extended.Collections;
+using BreakoutExtreme.Utility;
 
 namespace BreakoutExtreme.Components
 {
     public class GumDrawer
     {
         private readonly InteractiveGue _gumRuntime;
+        private readonly Bag<Shaders.Feature> _shaderFeatures = new();
         private RenderTarget2D _renderTarget;
-        private Vector2 _position, _drawPosition;
+        private Vector2 _position, _drawPosition, _shaderDrawOffset;
         private Size _size;
         private Vector2 _origin;
         private Color _drawColor;
         private Color _color = Color.White;
-        private float _visibility = 1;
+        private float _visibility = 1, _shaderVisibility = 1;
+        private void UpdateShaderFeatures()
+        {
+            {
+                _shaderDrawOffset = Vector2.Zero;
+                _shaderVisibility = 1;
+                var updateDrawPosition = false;
+                var updateVisibility = false;
+                for (var i = 0; i < ShaderFeatures.Count; i++)
+                {
+                    var feature = ShaderFeatures[i];
+                    updateDrawPosition |= feature.UpdateDrawOffset(ref _shaderDrawOffset);
+                    updateVisibility |= feature.UpdateVisibility(ref _shaderVisibility);
+                }
+                if (updateDrawPosition)
+                    UpdateDrawPosition();
+                if (updateVisibility)
+                    UpdateDrawColor();
+            }
+
+            for (var i = 0; i < ShaderFeatures.Count; i++)
+                ShaderFeatures[i].Update();
+        }
         private void UpdateDrawColor()
         {
-            _drawColor = Color * Visibility;
+            _drawColor = Color * Visibility * _shaderVisibility;
         }
         private void UpdateRenderTarget()
         {
@@ -38,8 +63,8 @@ namespace BreakoutExtreme.Components
         }
         private void UpdateDrawPosition()
         {
-            _drawPosition.X = (float)Math.Ceiling(_position.X);
-            _drawPosition.Y = (float)Math.Ceiling(_position.Y);
+            _drawPosition.X = (float)Math.Ceiling(_position.X + _shaderDrawOffset.X);
+            _drawPosition.Y = (float)Math.Ceiling(_position.Y + _shaderDrawOffset.Y);
         }
         private void UpdateSizeOrigin()
         {
@@ -83,6 +108,8 @@ namespace BreakoutExtreme.Components
                 UpdateDrawColor();
             }
         }
+        public Bag<Shaders.Feature> ShaderFeatures => _shaderFeatures;
+        public Layers Layer = Layers.Ground;
         public void UpdateSizeImmediately()
         {
             UpdateRenderTarget();
@@ -97,8 +124,11 @@ namespace BreakoutExtreme.Components
         }
         public void Update()
         {
+            UpdateShaderFeatures();
+
             if (Visibility == 0)
                 return;
+            
             if ((int)_gumRuntime.Width != _renderTarget.Width || 
                 (int)_gumRuntime.Height != _renderTarget.Height)
             {
@@ -108,8 +138,6 @@ namespace BreakoutExtreme.Components
         }
         public void GumDraw()
         {
-            if (Visibility == 0)
-                return;
             var graphicsDevice = Globals.SpriteBatch.GraphicsDevice;
             var gumBatch = GumUI.GetGumBatch();
             var camera = SystemManagers.Default.Renderer.Camera;
@@ -125,8 +153,6 @@ namespace BreakoutExtreme.Components
         }
         public void MonoDraw()
         {
-            if (Visibility == 0)
-                return;
             Globals.SpriteBatch.Draw(
                 texture: _renderTarget,
                 position: _drawPosition,

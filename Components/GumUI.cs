@@ -28,6 +28,12 @@ namespace BreakoutExtreme.Components
 #endif
             GumService.Default.Initialize(Globals.SpriteBatch.GraphicsDevice);
             _gumBatch = new GumBatch();
+
+            // Load gum files.
+            {
+                new BitmapFont("fonts/montserrat/montserrat_0.fnt", SystemManagers.Default);
+                new BitmapFont("fonts/montserrat/montserrat_1.fnt", SystemManagers.Default);
+            }
         }
     }
 }

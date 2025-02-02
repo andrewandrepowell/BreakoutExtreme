@@ -91,6 +91,21 @@ namespace BreakoutExtreme.Components
                         brick.RemoveEntity();
                         _bricks.Remove(brick);
                     }
+
+                    // score popups
+                    _destroyedScorePopups.Clear();
+                    for (var i = 0; i < _scorePopups.Count; i++)
+                    {
+                        var scorePopup = _scorePopups[i];
+                        if (!scorePopup.Running)
+                            _destroyedScorePopups.Add(scorePopup);
+                    }
+                    for (var i = 0; i < _destroyedScorePopups.Count; i++)
+                    {
+                        var scorePopup = _destroyedScorePopups[i];
+                        scorePopup.RemoveEntity();
+                        _scorePopups.Remove(scorePopup);
+                    }
                 }
 
                 // Update all game components.
@@ -100,6 +115,8 @@ namespace BreakoutExtreme.Components
                         _balls[i].Update();
                     for (var i = 0; i < _bricks.Count; i++)
                         _bricks[i].Update();
+                    for (var i = 0; i < _scorePopups.Count; i++)
+                        _scorePopups[i].Update();
                 }
             }
         }

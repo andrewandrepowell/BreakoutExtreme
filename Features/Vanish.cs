@@ -6,7 +6,7 @@ namespace BreakoutExtreme.Features
 {
     public class Vanish : Feature
     {
-        private float _period;
+        private float _period = 1;
         private float _time = 0;
         public override bool UpdateVisibility(ref float visibility)
         {
@@ -16,11 +16,19 @@ namespace BreakoutExtreme.Features
             return true;
         }
         public bool Running { get; private set; } = false;
-        public void Start(float period = 1)
+        public float Period
         {
-            Debug.Assert(period >= 0);
-            _period = period;
-            _time = period;
+            get => _period;
+            set
+            {
+                Debug.Assert(!Running);
+                Debug.Assert(_period > 0);
+                _period = value;
+            }
+        }
+        public void Start()
+        {
+            _time = _period;
             Running = true;
         }
         public void Stop()
