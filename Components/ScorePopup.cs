@@ -5,20 +5,22 @@ using RenderingLibrary.Graphics;
 using RenderingLibrary;
 using MonoGame.Extended.ECS;
 using BreakoutExtreme.Utility;
+using System.Diagnostics;
 
 namespace BreakoutExtreme.Components
 {
     public partial class ScorePopup
     {
-        private static readonly Size _size = new Size(Globals.GameBlockSize * 4, Globals.GameBlockSize * 1);
+        private static readonly Size _size = new(Globals.GameBlockSize * 4, Globals.GameBlockSize * 1);
         private readonly ContainerRuntime _containerRuntime;
         private readonly TextRuntime _textRuntime;
         private readonly GumDrawer _gumDrawer;
-        private readonly Entity _entity;
         private readonly Features.Vanish _vanish;
         private readonly Features.FloatUp _floatUp;
         private readonly Features.Flash _flash;
-        private bool _running = true;
+        private Entity _entity;
+        private bool _running;
+        private bool _initialized;
         private Color _textColor = Color.Black;
         private string _text = "H";
         private void UpdateContainerSize()
@@ -37,13 +39,17 @@ namespace BreakoutExtreme.Components
             _textRuntime.Text = Text;
         }
         public bool Running => _running;
+        public bool Initialized => _initialized;
         public GumDrawer GetGumDrawer() => _gumDrawer;
+#pragma warning disable CA1822
         public Size Size => _size;
+#pragma warning restore CA1822
         public Color TextColor
         {
             get => _textColor;
             set
             {
+                Debug.Assert(_initialized);
                 if (_textColor == value)
                     return;
                 _textColor = value;
@@ -55,6 +61,7 @@ namespace BreakoutExtreme.Components
             get => _text;
             set
             {
+                Debug.Assert(_initialized);
                 if (_text == value)
                     return;
                 _text = value;
@@ -63,17 +70,31 @@ namespace BreakoutExtreme.Components
         }
         public void RemoveEntity()
         {
+            Debug.Assert(_initialized);
+            _initialized = false;
             Globals.Runner.RemoveEntity(_entity);
         }
         public void Update()
         {
+            Debug.Assert(_initialized);
             if (_running && !_vanish.Running && _floatUp.State == RunningStates.Running)
                 _running = false;
         }
-        public ScorePopup(Entity entity)
+        public void Reset(Entity entity)
+        {
+            Debug.Assert(!_initialized);
+            _entity = entity;
+            _vanish.Start();
+            _floatUp.Start();
+            _initialized = true;
+            _running = true;
+        }
+        public ScorePopup(Entity entity = null)
         {
             {
                 _entity = entity;
+                _initialized = entity != null;
+                _running = _initialized;
             }
 
             {
@@ -82,7 +103,7 @@ namespace BreakoutExtreme.Components
             }
 
             {
-                _textRuntime = new TextRuntime();
+                _textRuntime = new();
                 _textRuntime.X = 0;
                 _textRuntime.Y = 0;
                 _textRuntime.Width = 0;
@@ -99,16 +120,13 @@ namespace BreakoutExtreme.Components
 
             {
                 _gumDrawer = new GumDrawer(_containerRuntime);
-                _vanish = new();
-                _vanish.Period = 4;
+                _vanish = new() { Period = 2 };
                 _vanish.Start();
                 _gumDrawer.ShaderFeatures.Add(_vanish);
-                _floatUp = new();
-                _floatUp.Period = 1;
+                _floatUp = new() { Period = 1 };
                 _floatUp.Start();
                 _gumDrawer.ShaderFeatures.Add(_floatUp);
-                _flash = new();
-                _flash.Color = Color.White;
+                _flash = new() { Color = Color.White };
                 _flash.Start();
                 _gumDrawer.ShaderFeatures.Add(_flash);
             }

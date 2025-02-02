@@ -20,7 +20,6 @@ namespace BreakoutExtreme.Features
         private static readonly Degrees[] _degrees = Enum.GetValues<Degrees>();
         private readonly Animater _parent;
         private readonly Dictionary<Degrees, Node> _degreeNodes;
-        private Degrees _degree = Degrees.None;
         private class Node(Texture2D texture, Rectangle region)
         {
             public readonly Texture2D Texture = texture;

@@ -7,7 +7,6 @@ namespace BreakoutExtreme.Components
 {
     public class GameWindow
     {
-        private readonly Action<Brick> _brickDestroyedAction;
         private readonly PlayArea _playArea;
         private readonly Panel _scorePanel;
         private readonly Panel _highScorePanel;
@@ -36,9 +35,6 @@ namespace BreakoutExtreme.Components
         }
         public GameWindow()
         {
-            // Gum needs initailization first.
-            GumUI.Initialize();
-
             // Finally, instantiate the play area.
             _playArea = new PlayArea(this);
 

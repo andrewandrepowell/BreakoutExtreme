@@ -16,11 +16,13 @@ namespace BreakoutExtreme
     /// </summary>
     public class BreakoutExtremeGame : Game
     {
-        GraphicsDeviceManager _graphics;
-        SpriteBatch _spriteBatch;
-        Controller _controller;
-        Runner _runner;
-        Texter _testTexter;
+#pragma warning disable IDE0052
+        private readonly GraphicsDeviceManager _graphics;
+#pragma warning restore IDE0052
+        private SpriteBatch _spriteBatch;
+        private Controller _controller;
+        private Runner _runner;
+        private Texter _testTexter;
         
         public BreakoutExtremeGame()
         {
@@ -61,6 +63,7 @@ namespace BreakoutExtreme
                     game: this,
                     runner: _runner);
 
+                _runner.Initialize();
                 _runner.CreateGameWindow();
 
                 Texter.Load();
@@ -73,7 +76,9 @@ namespace BreakoutExtreme
             catch (Exception e)
             {
                 Console.WriteLine(e.ToString());
+#pragma warning disable CA2200
                 throw e;
+#pragma warning restore CA2200
             }
 #endif
         }
@@ -113,7 +118,9 @@ namespace BreakoutExtreme
             catch (Exception e)
             {
                 Console.WriteLine(e.ToString());
+#pragma warning disable CA2200
                 throw e;
+#pragma warning restore CA2200
             }
 #endif
         }
@@ -140,7 +147,9 @@ namespace BreakoutExtreme
             catch (Exception e)
             {
                 Console.WriteLine(e.ToString());
+#pragma warning disable CA2200
                 throw e;
+#pragma warning restore CA2200
             }
 #endif
         }

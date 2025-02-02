@@ -1,6 +1,7 @@
 ﻿using MonoGame.Extended;
 using Microsoft.Xna.Framework;
 using System;
+using System.Diagnostics;
 
 namespace BreakoutExtreme.Components
 {
@@ -8,8 +9,10 @@ namespace BreakoutExtreme.Components
     { 
         public ScorePopup CreateScorePopup()
         {
+            Debug.Assert(_initialized);
             var entity = _world.CreateEntity();
-            var scorePopup = new ScorePopup(entity);
+            _scorePopupPool.RemoveFromFront(out var scorePopup);
+            scorePopup.Reset(entity);
             var gumDrawer = scorePopup.GetGumDrawer();
             entity.Attach(scorePopup);
             entity.Attach(gumDrawer);
@@ -17,6 +20,7 @@ namespace BreakoutExtreme.Components
         }
         public Spike CreateSpike(Vector2 position)
         {
+            Debug.Assert(_initialized);
             var entity = _world.CreateEntity();
             var spike = new Spike(position);
             var animater = spike.GetAnimater();
@@ -26,6 +30,7 @@ namespace BreakoutExtreme.Components
         }
         public RemainingBallsPanel CreateRemainingBallsPanel(Vector2 position)
         {
+            Debug.Assert(_initialized);
             var entity = _world.CreateEntity();
             var remainingBallsPanel = new RemainingBallsPanel(position);
             entity.Attach(remainingBallsPanel);
@@ -33,6 +38,7 @@ namespace BreakoutExtreme.Components
         }
         public DisplayBall CreateDisplayBall(float floatStartTime = 0)
         {
+            Debug.Assert(_initialized);
             var entity = _world.CreateEntity();
             var displayBall = new DisplayBall(floatStartTime);
             var animater = displayBall.GetAnimater();
@@ -42,6 +48,7 @@ namespace BreakoutExtreme.Components
         }
         public DeathWall CreateDeathWall(RectangleF bounds)
         {
+            Debug.Assert(_initialized);
             var entity = _world.CreateEntity();
             var deathWall = new DeathWall(bounds);
             var collider = deathWall.GetCollider();
@@ -52,6 +59,7 @@ namespace BreakoutExtreme.Components
         }
         public Shadow CreateShadow(Animater parent) 
         {
+            Debug.Assert(_initialized);
             var entity = _world.CreateEntity();
             var shadow = new Shadow(entity, parent);
             var animater = shadow.GetAnimater();
@@ -60,6 +68,7 @@ namespace BreakoutExtreme.Components
         }
         public Label CreateLabel(Size size)
         {
+            Debug.Assert(_initialized);
             var entity = _world.CreateEntity();
             var label = new Label(size);
             var gumDrawer = label.GetGumDrawer();
@@ -69,6 +78,7 @@ namespace BreakoutExtreme.Components
         }
         public Panel CreatePanel()
         {
+            Debug.Assert(_initialized);
             var entity = _world.CreateEntity();
             var panel = new Panel();
             var gumDrawer = panel.GetGumDrawer();
@@ -78,6 +88,7 @@ namespace BreakoutExtreme.Components
         }
         public GameWindow CreateGameWindow()
         {
+            Debug.Assert(_initialized);
             var entity = _world.CreateEntity();
             var gameWindow = new GameWindow();
             entity.Attach(gameWindow);
@@ -85,6 +96,7 @@ namespace BreakoutExtreme.Components
         }
         public Brick CreateBrick(Brick.Bricks brick, Vector2 position)
         {
+            Debug.Assert(_initialized);
             var entity = _world.CreateEntity();
             var brickObj = new Brick(entity, brick, position);
             var animater = brickObj.GetAnimater();
@@ -99,6 +111,7 @@ namespace BreakoutExtreme.Components
         }
         public Ball CreateBall(PlayArea parent)
         {
+            Debug.Assert(_initialized);
             var entity = _world.CreateEntity();
             var ball = new Ball(entity, parent);
             var animater = ball.GetAnimater();
@@ -113,6 +126,7 @@ namespace BreakoutExtreme.Components
         }
         public Paddle CreatePaddle()
         {
+            Debug.Assert(_initialized);
             var entity = _world.CreateEntity();
             var paddle = new Paddle(entity);
             var animator = paddle.GetAnimater();
@@ -125,6 +139,7 @@ namespace BreakoutExtreme.Components
         }
         public Wall CreateWall(RectangleF bounds)
         {
+            Debug.Assert(_initialized);
             var entity = _world.CreateEntity();
             var wall = new Wall(bounds);
             var collider = wall.GetCollider();
@@ -135,6 +150,7 @@ namespace BreakoutExtreme.Components
         }
         public NinePatcher CreateNinePatcher()
         {
+            Debug.Assert(_initialized);
             var entity = _world.CreateEntity();
             var ninePatcher = new NinePatcher();
             entity.Attach(ninePatcher);

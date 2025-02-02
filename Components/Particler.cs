@@ -15,7 +15,7 @@ namespace BreakoutExtreme.Components
         private bool _disposed = false;
         private Particles _particle = Particles.BallTrail;
         private ParticleEffect _particleEffect;
-        private Vector2 _position, _drawPosition;
+        private Vector2 _position;
         private bool _running;
         private void UpdateRunning()
         {

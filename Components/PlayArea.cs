@@ -44,7 +44,6 @@ namespace BreakoutExtreme.Components
             }
 #endif
         }
-        public RectangleF Bounds => Globals.PlayAreaBounds;
         public Levels Level
         {
             get

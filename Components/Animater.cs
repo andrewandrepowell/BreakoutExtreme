@@ -118,7 +118,7 @@ namespace BreakoutExtreme.Components
             }
         }
         public bool ShowBase = true;
-        public readonly Bag<Shaders.Feature> ShaderFeatures = new();
+        public readonly Bag<Shaders.Feature> ShaderFeatures = [];
         public Texture2D Texture => _spriter.Texture;
         public Rectangle Region => _spriter.Region;
         public bool Running => _spriter.Running;

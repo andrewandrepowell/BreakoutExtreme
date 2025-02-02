@@ -31,8 +31,10 @@ namespace BreakoutExtreme.Components
 
             // Load gum files.
             {
+#pragma warning disable CA1806
                 new BitmapFont("fonts/montserrat/montserrat_0.fnt", SystemManagers.Default);
                 new BitmapFont("fonts/montserrat/montserrat_1.fnt", SystemManagers.Default);
+#pragma warning restore CA1806
             }
         }
     }

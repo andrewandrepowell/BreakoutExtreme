@@ -8,7 +8,6 @@ namespace BreakoutExtreme.Components
         private class Destroyer(Ball parent)
         {
             private const float _shakePeriod = 0.5f;
-            private static readonly Color _flashColor = Color.Red * 0.5f;
             private readonly Ball _parent = parent;
             private bool _running = false;
             public bool Running => _running;

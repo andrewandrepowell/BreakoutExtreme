@@ -11,7 +11,7 @@ namespace BreakoutExtreme.Components
 {
     public class Panel
     {
-        private static readonly Size _initialSize = new Size(Globals.GameBlockSize * 3, Globals.GameBlockSize * 3);
+        private static readonly Size _initialSize = new(Globals.GameBlockSize * 3, Globals.GameBlockSize * 3);
         private readonly ContainerRuntime _containerRuntime;
         private readonly TextRuntime _textRuntime;
         private readonly GumDrawer _gumDrawer;
@@ -87,7 +87,7 @@ namespace BreakoutExtreme.Components
             }
 
             {
-                _textRuntime = new TextRuntime();
+                _textRuntime = new();
                 _textRuntime.BitmapFont = new BitmapFont("fonts/montserrat/montserrat_1.fnt", SystemManagers.Default);
                 _textRuntime.X = Globals.GameBlockSize;
                 _textRuntime.Y = 0;
