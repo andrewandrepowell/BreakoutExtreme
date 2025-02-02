@@ -38,11 +38,19 @@ namespace BreakoutExtreme.Components
 
                 if (State == States.PlayerTakingAim && Globals.ControlState.CursorSelectState == Controller.SelectStates.Released)
                 {
-                    Debug.Assert(_balls.Count == 1);
-                    var ball = _balls[0];
-                    _paddle.GetCollider().GetAttacher().Detach(ball.GetCollider());
-                    ball.StartLaunch();
-                    State = States.GameRunning;
+                    var bricksActive = true;
+                    for (var i = 0; i < _bricks.Count; i++)
+                    {
+                        bricksActive &= _bricks[i].State == Brick.States.Active;
+                    }
+                    if (bricksActive)
+                    {
+                        Debug.Assert(_balls.Count == 1);
+                        var ball = _balls[0];
+                        _paddle.GetCollider().GetAttacher().Detach(ball.GetCollider());
+                        ball.StartLaunch();
+                        State = States.GameRunning;
+                    }
                 }
 
                 if (State == States.GameRunning && _balls.Count == 0 && _parent.RemainingBalls > 0)

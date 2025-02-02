@@ -9,16 +9,26 @@ namespace BreakoutExtreme.Features
     {
         private const float _flashPeriod = (float)1 / 15;
         private float _flashTime;
+        private float _limitedPeriod = 1;
         private float _limitedTime;
         public bool _running = false;
         public bool _active = false;
         public bool Running => _running;
         public Color Color = Color.White;
         public override Scripts? Script => (_running && _active) ? Scripts.Silhouette : null;
-        public void Start(float time = 1)
+        public float LimitedPeriod
         {
-            Debug.Assert(time >= 0);
-            _limitedTime = time;
+            get => _limitedPeriod;
+            set
+            {
+                Debug.Assert(!_running);
+                Debug.Assert(value >= 0);
+                _limitedPeriod = value;
+            }
+        }
+        public void Start()
+        {
+            _limitedTime = _limitedPeriod;
             _flashTime = _flashPeriod;
             _running = true;
         }

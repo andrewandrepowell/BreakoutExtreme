@@ -8,6 +8,7 @@
         }
         public enum States
         {
+            Spawning,
             Active,
             Destroying,
             Destroyed

@@ -13,6 +13,7 @@ namespace BreakoutExtreme.Components
         private static readonly Vector2 _shineDirection = Vector2.Normalize(new Vector2(1, 1));
         private const float _shineRepeatPeriod = 7.5f;
         private const float _shineDelayControl = 0.01f;
+        private const float _spawnFactor = 0.005f;
         private readonly Animater _animater;
         private readonly Collider _collider;
         private readonly Particler _particler;
@@ -23,21 +24,25 @@ namespace BreakoutExtreme.Components
         private readonly Features.Cracks _cracks;
         private readonly Features.Vanish _vanish;
         private readonly Features.Shine _shine;
+        private readonly Features.ScaleDown _scaleDown;
+        private readonly Features.LimitedFlash _limitedFlash;
+        private readonly Features.Appear _appear;
+        private States _state = States.Active;
         public Bricks GetBrick() => _brick;
         public Animater GetAnimater() => _animater;
         public Collider GetCollider() => _collider;
         public Particler GetParticler() => _particler;
         public readonly int TotalHP;
         public int CurrentHP;
-        public States State { get; private set; }
+        public States State => _state;
         public void Damage()
         {
             Debug.Assert(CurrentHP > 0 && State == States.Active);
             
-            {
-                
+            { 
                 CurrentHP -= 1;
-                _shake.Start(_shakePeriod);
+                
+                _shake.Start();
                 _cracks.Degree = (Features.Cracks.Degrees)(TotalHP - CurrentHP);
                 _particler.Trigger();
             }
@@ -54,13 +59,13 @@ namespace BreakoutExtreme.Components
             Debug.Assert(!_vanish.Running);
             CurrentHP = 0;
 
-            _shake.Start(_shakePeriod);
+            _shake.Start();
             _cracks.Degree = Features.Cracks.Degrees.None;
             _vanish.Start();
             _shadow.VanishStart();
             _animater.Play(_brickDeadAnimations[_brick]);
 
-            State = States.Destroying;
+            _state = States.Destroying;
         }
         public Brick(Entity entity, Bricks brick, Vector2 position)
         {
@@ -71,20 +76,61 @@ namespace BreakoutExtreme.Components
             _entity = entity;
             _brick = brick;
             _shadow = Globals.Runner.CreateShadow(_animater);
-            _shake = new();
-            _animater.ShaderFeatures.Add(_shake);
-            _cracks = new(_animater);
-            _animater.ShaderFeatures.Add(_cracks);
-            _vanish = new();
-            _animater.ShaderFeatures.Add(_vanish);
-            _shine = new();
-            _shine.RepeatPeriod = _shineRepeatPeriod;
-            _shine.DelayPeriod = _shineDirection.Dot(position) * _shineDelayControl;
-            _shine.Start();
-            _animater.ShaderFeatures.Add(_shine);
+            {
+                _shake = new() 
+                { 
+                    DelayPeriod = position.X * _spawnFactor, 
+                    Period = _shakePeriod 
+                };
+                _shake.Start();
+                _animater.ShaderFeatures.Add(_shake);
+            }
+            {
+                _cracks = new(_animater);
+                _animater.ShaderFeatures.Add(_cracks);
+            }
+            {
+                _vanish = new();
+                _animater.ShaderFeatures.Add(_vanish);
+            }
+            {
+                _shine = new() 
+                { 
+                    RepeatPeriod = _shineRepeatPeriod, 
+                    DelayPeriod = _shineDirection.Dot(position) * _shineDelayControl 
+                };
+                _shine.Start();
+                _animater.ShaderFeatures.Add(_shine);
+            }
+            {
+                _scaleDown = new() 
+                { 
+                    DelayPeriod = position.X * _spawnFactor, 
+                    Period = 0.5f 
+                };
+                _scaleDown.Start();
+                _animater.ShaderFeatures.Add(_scaleDown);
+            }
+            {
+                _limitedFlash = new() 
+                { 
+                    LimitedPeriod = position.X * _spawnFactor + 0.5f 
+                };
+                _limitedFlash.Start();
+                _animater.ShaderFeatures.Add(_limitedFlash);
+            }
+            {
+                _appear = new() 
+                { 
+                    Period = 0.5f, 
+                    DelayPeriod = position.X * _spawnFactor
+                };
+                _appear.Start();
+                _animater.ShaderFeatures.Add(_appear);
+            }
             TotalHP = _brickTotalHPs[brick];
             CurrentHP = TotalHP;
-            State = States.Active;
+            _state = States.Spawning;
         }
         public void RemoveEntity()
         {
@@ -93,10 +139,14 @@ namespace BreakoutExtreme.Components
         }
         public void Update()
         {
-            if (State == States.Destroying && !_vanish.Running && !_shadow.VanishRunning)
+            if (_state == States.Spawning && !_shake.Running && !_scaleDown.Running && !_limitedFlash.Running && !_appear.Running)
             {
-                State = States.Destroyed;
+                _shake.DelayPeriod = 0;
+                _state = States.Active;
             }
+
+            if (_state == States.Destroying && !_vanish.Running && !_shadow.VanishRunning)
+                _state = States.Destroyed;
         }
     }
 }

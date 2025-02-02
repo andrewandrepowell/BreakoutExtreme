@@ -16,7 +16,8 @@ namespace BreakoutExtreme.Components
                 Debug.Assert(!_running);
                 _parent._animater.Play(Animater.Animations.BallDead);
                 _parent._vanish.Start();
-                _parent._shake.Start(_shakePeriod);
+                _parent._shake.Period = _shakePeriod;
+                _parent._shake.Start();
                 _parent._flash.Start();
                 _parent._shadow.VanishStart();
                 _running = true;

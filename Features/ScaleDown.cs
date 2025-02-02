@@ -7,7 +7,7 @@ namespace BreakoutExtreme.Features
 {
     public class ScaleDown : Feature
     {
-        private float _maxScale = 1.25f;
+        private float _maxScale = 1.5f;
         private float _minScale = 1f;
         private float _period = 1;
         private float _delayPeriod = 0;
