@@ -14,25 +14,31 @@ namespace BreakoutExtreme.Components
         private Spriter _spriter;
         private Vector2 _position, _shaderDrawOffset;
         private Attacher<Animater> _attacher;
-        private float _visibility = 1, _shaderVisibility = 1;
+        private float _visibility = 1, _shaderVisibility = 1, _shaderScale = 1;
         private Color _color = Color.White;
+        private float _scale = 1;
         private void UpdateShaderFeatures()
         {
             {
                 _shaderDrawOffset = Vector2.Zero;
                 _shaderVisibility = 1;
+                _shaderScale = 1;
                 var updateDrawPosition = false;
                 var updateVisibility = false;
+                var updateScale = false;
                 for (var i = 0; i < ShaderFeatures.Count; i++)
                 {
                     var feature = ShaderFeatures[i];
                     updateDrawPosition |= feature.UpdateDrawOffset(ref _shaderDrawOffset);
                     updateVisibility |= feature.UpdateVisibility(ref _shaderVisibility);
+                    updateScale |= feature.UpdateScale(ref  _shaderScale);
                 }
                 if (updateDrawPosition)
-                    UpdateDrawPosition();
+                    UpdateSpriterDrawPosition();
                 if (updateVisibility)
                     UpdateSpriterColor();
+                if (updateScale)
+                    UpdateSpriterScale();
             }
 
             for (var i = 0; i < ShaderFeatures.Count; i++)
@@ -53,7 +59,11 @@ namespace BreakoutExtreme.Components
         {
             _spriter = _spriters[_animationSpriters[Animation]];
         }
-        private void UpdateDrawPosition()
+        private void UpdateSpriterScale()
+        {
+            _spriter.Scale = _scale * _shaderScale;
+        }
+        private void UpdateSpriterDrawPosition()
         {
             _spriter.Position.X = (float)Math.Floor(_position.X + _shaderDrawOffset.X);
             _spriter.Position.Y = (float)Math.Floor(_position.Y + _shaderDrawOffset.Y);
@@ -80,14 +90,19 @@ namespace BreakoutExtreme.Components
                 if (_position == value)
                     return;
                 _position = value;
-                UpdateDrawPosition();
+                UpdateSpriterDrawPosition();
                 _attacher.UpdatePositions();
             }
         }
         public float Scale
         {
             get => _spriter.Scale;
-            set => _spriter.Scale = value;
+            set
+            {
+                if (_scale == value) return;
+                _scale = value;
+                UpdateSpriterScale();
+            }
         }
         public float Rotation
         {
@@ -127,8 +142,9 @@ namespace BreakoutExtreme.Components
             _attacher = new(this);
             UpdateSpriters();
             UpdateSpriter();
-            UpdateDrawPosition();
+            UpdateSpriterDrawPosition();
             UpdateSpriterColor();
+            UpdateSpriterScale();
         }
         public void Play(Animations animation)
         {
@@ -138,7 +154,9 @@ namespace BreakoutExtreme.Components
             if (differentAnimation && !_spriters.ContainsKey(_animationSpriters[Animation]))
                 UpdateSpriters();
             UpdateSpriter();
+            UpdateSpriterDrawPosition();
             UpdateSpriterColor();
+            UpdateSpriterScale();
             _spriter.Play(_animationNames[Animation]);
         }
         public void Stop()

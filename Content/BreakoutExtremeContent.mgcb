@@ -70,7 +70,7 @@
 /processorParam:TextureFormat=Color
 /build:animations/paddle_0.png
 
-#begin animations/tiny_wonder_ui/play_area_0.png
+#begin animations/play_area_0.png
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255, 0, 255, 255
@@ -80,9 +80,9 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:animations/tiny_wonder_ui/play_area_0.png
+/build:animations/play_area_0.png
 
-#begin animations/tiny_wonder_ui/play_area_1.png
+#begin animations/play_area_1.png
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255, 0, 255, 255
@@ -92,9 +92,9 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:animations/tiny_wonder_ui/play_area_1.png
+/build:animations/play_area_1.png
 
-#begin animations/tiny_wonder_ui/play_area_2.png
+#begin animations/play_area_2.png
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255, 0, 255, 255
@@ -104,7 +104,7 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:animations/tiny_wonder_ui/play_area_2.png
+/build:animations/play_area_2.png
 
 #begin animations/play_area_3.png
 /importer:TextureImporter
@@ -130,7 +130,7 @@
 /processorParam:TextureFormat=Color
 /build:animations/panel_0.png
 
-#begin animations/tiny_wonder_ui/frame_0.png
+#begin animations/frame_0.png
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255, 0, 255, 255
@@ -140,7 +140,7 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:animations/tiny_wonder_ui/frame_0.png
+/build:animations/frame_0.png
 
 #begin effects/silhouette_0.fx
 /importer:EffectImporter
@@ -207,4 +207,28 @@
 /processor:EffectProcessor
 /processorParam:DebugMode=Auto
 /build:effects/hightlight_canvasitem_0.fx
+
+#begin animations/button_0.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255, 0, 255, 255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:animations/button_0.png
+
+#begin animations/button_1.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255, 0, 255, 255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:animations/button_1.png
 

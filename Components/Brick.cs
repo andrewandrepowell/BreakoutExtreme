@@ -1,34 +1,14 @@
 ﻿using MonoGame.Extended.ECS;
 using MonoGame.Extended;
-using System;
 using Microsoft.Xna.Framework;
 using BreakoutExtreme.Utility;
-using System.Collections.ObjectModel;
-using System.Collections.Generic;
 using System.Diagnostics;
 
 
 namespace BreakoutExtreme.Components
 {
-    public class Brick
+    public partial class Brick
     {
-        private static readonly ReadOnlyDictionary<Bricks, RectangleF> _brickBounds = new(new Dictionary<Bricks, RectangleF>() 
-        {
-            { Bricks.ThickBrick, new Rectangle(Globals.PlayAreaBlockBounds.X, Globals.PlayAreaBlockBounds.Y, 3, 1).ToBounds() }
-        });
-        private static readonly ReadOnlyDictionary<Bricks, Animater.Animations> _brickAnimations = new(new Dictionary<Bricks, Animater.Animations>() 
-        {
-            { Bricks.ThickBrick, Animater.Animations.BrickLarge }
-        });
-        private static readonly ReadOnlyDictionary<Bricks, Animater.Animations> _brickDeadAnimations = new(new Dictionary<Bricks, Animater.Animations>()
-        {
-            { Bricks.ThickBrick, Animater.Animations.BrickLargeDead }
-        });
-        private static readonly ReadOnlyDictionary<Bricks, int> _brickTotalHPs = new(new Dictionary<Bricks, int>() 
-        {
-            { Bricks.ThickBrick, 3 }
-        });
-        private static readonly Action<Collider.CollideNode> _collideAction = (Collider.CollideNode node) => ((Brick)node.Current.Parent).ServiceCollision(node);
         private const float _shakePeriod = 0.5f;
         private static readonly Vector2 _shineDirection = Vector2.Normalize(new Vector2(1, 1));
         private const float _shineRepeatPeriod = 7.5f;
@@ -43,19 +23,6 @@ namespace BreakoutExtreme.Components
         private readonly Features.Cracks _cracks;
         private readonly Features.Vanish _vanish;
         private readonly Features.Shine _shine;
-        private void ServiceCollision(Collider.CollideNode node)
-        {
-        }
-        public enum Bricks
-        {
-            ThickBrick
-        }
-        public enum States
-        {
-            Active,
-            Destroying,
-            Destroyed
-        }
         public Bricks GetBrick() => _brick;
         public Animater GetAnimater() => _animater;
         public Collider GetCollider() => _collider;
@@ -99,10 +66,8 @@ namespace BreakoutExtreme.Components
         {
             _animater = new();
             _animater.Play(_brickAnimations[brick]);
-            _collider = new(bounds: _brickBounds[brick], parent: this, action: _collideAction);
-            _collider.Position = position;
-            _particler = new(Particler.Particles.BrickBreak);
-            _particler.Layer = Layers.Foreground;
+            _collider = new(bounds: _brickBounds[brick], parent: this) { Position = position };
+            _particler = new(Particler.Particles.BrickBreak) { Layer = Layers.Foreground };
             _entity = entity;
             _brick = brick;
             _shadow = Globals.Runner.CreateShadow(_animater);

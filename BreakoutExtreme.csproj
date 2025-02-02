@@ -41,6 +41,8 @@
     <Compile Include="Components\BallLauncher.cs" />
     <Compile Include="Components\BallTypes.cs" />
     <Compile Include="Components\Brick.cs" />
+    <Compile Include="Components\BrickData.cs" />
+    <Compile Include="Components\BrickTypes.cs" />
     <Compile Include="Components\Collider.cs" />
     <Compile Include="Components\Controller.cs" />
     <Compile Include="Components\DeathWall.cs" />
@@ -78,6 +80,7 @@
     <Compile Include="Features\FloatDown.cs" />
     <Compile Include="Features\FloatUp.cs" />
     <Compile Include="Features\LimitedFlash.cs" />
+    <Compile Include="Features\ScaleDown.cs" />
     <Compile Include="Features\Shadow.cs" />
     <Compile Include="Features\Shake.cs" />
     <Compile Include="Features\Shine.cs" />

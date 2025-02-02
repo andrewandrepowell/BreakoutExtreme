@@ -35,7 +35,7 @@ namespace BreakoutExtreme.Components
             {
                 for (var i = 0; i < _poolSize; i++)
                 {
-                    var scorePopup = new ScorePopup(null);
+                    var scorePopup = new ScorePopup();
                     _scorePopupPool.AddToBack(scorePopup);
                 }
             }

@@ -15,10 +15,10 @@ namespace BreakoutExtreme.Components
         private static readonly int[] _textureRegionIndices = [0, 1, 2, 3, 4, 5, 6, 7, 8];
         private static readonly ReadOnlyDictionary<Textures, string> _textureAssetNames = new(new Dictionary<Textures, string>() 
         {
-            { Textures.PlayArea, "animations/tiny_wonder_ui/play_area_0" },
-            { Textures.PlayAreaBottomRemoved, "animations/tiny_wonder_ui/play_area_1" },
+            { Textures.PlayArea, "animations/play_area_0" },
+            { Textures.PlayAreaBottomRemoved, "animations/play_area_1" },
             { Textures.PlayAreaFilled, "animations/play_area_3" },
-            { Textures.GameWindowFilled, "animations/tiny_wonder_ui/play_area_2" },
+            { Textures.GameWindowFilled, "animations/play_area_2" },
         });
         private readonly Dictionary<Textures, NinePatch> _textureNinePatches = [];
         private Textures _texture = Textures.PlayArea;

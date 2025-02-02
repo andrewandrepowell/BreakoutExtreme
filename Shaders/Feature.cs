@@ -17,6 +17,10 @@ namespace BreakoutExtreme.Shaders
         { 
             return false; 
         }
+        public virtual bool UpdateScale(ref float scale)
+        {
+            return false;
+        }
         public virtual void UpdateShaderNode(SilhouetteNode node)
         {
         }
