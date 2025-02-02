@@ -42,17 +42,24 @@ namespace BreakoutExtreme.Components
                 var cursorPosition = _controlState.CursorPosition;
                 var cursorSelectState = _controlState.CursorSelectState;
 
+                // Determine input
+                {
+                    if (mouseState.LeftButton == ButtonState.Pressed)
+                        Input = Inputs.Mouse;
+                    else if (touchCollection.Count > 0)
+                        Input = Inputs.Touch;
+                }
+
                 // Mouse controls.
+                if (Input == Inputs.Mouse)
                 {
                     var mousePosition = TransformPosition(mouseState.Position.ToVector2());
                     if (mousePosition != _mousePosition)
                     {
                         cursorPosition = TransformPosition(mouseState.Position.ToVector2());
-                        Input = Inputs.Mouse;
                         _mousePosition = mousePosition;
                     }
 
-                    if (Input == Inputs.Mouse)
                     {
                         if (mouseState.LeftButton == ButtonState.Pressed && _mouseLeftButtonState == ButtonState.Released)
                         {
@@ -75,6 +82,7 @@ namespace BreakoutExtreme.Components
                 }
 
                 // Touch controls
+                if (Input == Inputs.Touch)
                 {
                     var touchPressed = touchCollection.Count > 0;
 
@@ -91,7 +99,7 @@ namespace BreakoutExtreme.Components
                         }
                     }
 
-                    if (Input == Inputs.Touch)
+                    
                     {
                         if (touchPressed && !_touchPressed)
                         {
@@ -112,6 +120,8 @@ namespace BreakoutExtreme.Components
                         _touchPressed = touchPressed;
                     }
                 }
+
+                Globals.Logger.Message = $"Cursor Position: {cursorPosition}. Cursor Select State: {cursorSelectState}";
 
                 _controlState.Update(
                     cursorPosition: cursorPosition,

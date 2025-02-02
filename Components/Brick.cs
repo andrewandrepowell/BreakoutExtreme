@@ -14,6 +14,7 @@ namespace BreakoutExtreme.Components
         private const float _shineRepeatPeriod = 7.5f;
         private const float _shineDelayControl = 0.01f;
         private const float _spawnFactor = 0.005f;
+        private const float _spawnPeriod = 0.5f;
         private readonly Animater _animater;
         private readonly Collider _collider;
         private readonly Particler _particler;
@@ -80,7 +81,7 @@ namespace BreakoutExtreme.Components
                 _shake = new() 
                 { 
                     DelayPeriod = position.X * _spawnFactor, 
-                    Period = _shakePeriod 
+                    Period = _spawnPeriod
                 };
                 _shake.Start();
                 _animater.ShaderFeatures.Add(_shake);
@@ -106,7 +107,7 @@ namespace BreakoutExtreme.Components
                 _scaleDown = new() 
                 { 
                     DelayPeriod = position.X * _spawnFactor, 
-                    Period = 0.5f 
+                    Period = _spawnPeriod
                 };
                 _scaleDown.Start();
                 _animater.ShaderFeatures.Add(_scaleDown);
@@ -114,7 +115,7 @@ namespace BreakoutExtreme.Components
             {
                 _limitedFlash = new() 
                 { 
-                    LimitedPeriod = position.X * _spawnFactor + 0.5f 
+                    LimitedPeriod = position.X * _spawnFactor + _spawnPeriod
                 };
                 _limitedFlash.Start();
                 _animater.ShaderFeatures.Add(_limitedFlash);
@@ -122,7 +123,7 @@ namespace BreakoutExtreme.Components
             {
                 _appear = new() 
                 { 
-                    Period = 0.5f, 
+                    Period = _spawnPeriod, 
                     DelayPeriod = position.X * _spawnFactor
                 };
                 _appear.Start();
@@ -142,6 +143,7 @@ namespace BreakoutExtreme.Components
             if (_state == States.Spawning && !_shake.Running && !_scaleDown.Running && !_limitedFlash.Running && !_appear.Running)
             {
                 _shake.DelayPeriod = 0;
+                _shake.Period = _spawnPeriod;
                 _state = States.Active;
             }
 

@@ -2,9 +2,7 @@
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework;
 using MonoGame.Extended;
-using MonoGameGum;
 using RenderingLibrary.Graphics;
-using BreakoutExtreme.Utility;
 using RenderingLibrary;
 
 namespace BreakoutExtreme.Components

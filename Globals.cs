@@ -13,6 +13,7 @@ namespace BreakoutExtreme
     {
 #if DEBUG
         private static bool _initialized = false;
+        private static bool _initializedLogger = false;
 #endif
         public const int GameBlockSize = 16;
         public const int GameHalfBlockSize = GameBlockSize / 2;
@@ -35,13 +36,12 @@ namespace BreakoutExtreme
         public static ContentManager ContentManager { get; private set; }
         public static GameTime GameTime { get; private set; }
         public static Controller.ControlState ControlState { get; private set; }
-        public static Game Game { get; private set; }
         public static Runner Runner { get; private set; }
+        public static Texter Logger { get; private set; }
         public static void Initialize(
             SpriteBatch spriteBatch, 
             ContentManager contentManager,
             Controller.ControlState controlState,
-            Game game,
             Runner runner)
         {
 #if DEBUG
@@ -51,8 +51,15 @@ namespace BreakoutExtreme
             SpriteBatch = spriteBatch;
             ContentManager = contentManager;
             ControlState = controlState;
-            Game = game;
             Runner = runner;
+        }
+        public static void Initialize(Texter logger)
+        {
+#if DEBUG
+            Debug.Assert(!_initializedLogger);
+            _initializedLogger = true;
+#endif
+            Logger = logger;
         }
         public static void Update(GameTime gameTime)
         {

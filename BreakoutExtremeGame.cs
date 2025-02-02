@@ -22,7 +22,7 @@ namespace BreakoutExtreme
         private SpriteBatch _spriteBatch;
         private Controller _controller;
         private Runner _runner;
-        private Texter _testTexter;
+        private Texter _logger;
         
         public BreakoutExtremeGame()
         {
@@ -60,7 +60,6 @@ namespace BreakoutExtreme
                     spriteBatch: _spriteBatch, 
                     contentManager: Content,
                     controlState: _controller.GetControlState(),
-                    game: this,
                     runner: _runner);
 
                 _runner.Initialize();
@@ -70,7 +69,8 @@ namespace BreakoutExtreme
                 Animater.Load();
                 Particler.Load();
 
-                _testTexter = new() { Color = Color.Yellow };
+                _logger = new() { Color = Color.Yellow };
+                Globals.Initialize(_logger);
 #if DEBUG
             }
             catch (Exception e)
@@ -107,10 +107,10 @@ namespace BreakoutExtreme
                 _controller.Update();
                 _runner.Update();
 
-                var controllerState = _controller.GetControlState();
-                var windowSize = _spriteBatch.GraphicsDevice.Viewport.Bounds.Size;
-                _testTexter.Message = $"Cursor Position: {controllerState.CursorPosition}. Cursor State: {controllerState.CursorSelectState}"; 
-                _testTexter.Position = _testTexter.Size / 2;
+                //var controllerState = _controller.GetControlState();
+                //var windowSize = _spriteBatch.GraphicsDevice.Viewport.Bounds.Size;
+                //_testTexter.Message = $"Cursor Position: {controllerState.CursorPosition}. Cursor State: {controllerState.CursorSelectState}";
+                _logger.Position = _logger.Size / 2;
 
                 base.Update(gameTime);
 #if DEBUG
@@ -139,7 +139,7 @@ namespace BreakoutExtreme
                 _runner.Draw();
 
                 _spriteBatch.Begin();
-                _testTexter.Draw();
+                _logger.Draw();
                 _spriteBatch.End();
                 base.Draw(gameTime);
 #if DEBUG
