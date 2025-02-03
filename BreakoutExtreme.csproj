@@ -49,7 +49,9 @@
     <Compile Include="Components\DeathWall.cs" />
     <Compile Include="Components\DisplayBall.cs" />
     <Compile Include="Components\GameWindow.cs" />
+    <Compile Include="Components\Glower.cs" />
     <Compile Include="Components\GumDrawer.cs" />
+    <Compile Include="Components\Laser.cs" />
     <Compile Include="Components\ScorePopup.cs" />
     <Compile Include="Components\Label.cs" />
     <Compile Include="Components\NinePatcher.cs" />
@@ -73,6 +75,7 @@
     <Compile Include="Components\Texter.cs" />
     <Compile Include="Components\GumUI.cs" />
     <Compile Include="Components\TextField.cs" />
+    <Compile Include="Components\Texturer.cs" />
     <Compile Include="Components\Wall.cs" />
     <Compile Include="Features\Appear.cs" />
     <Compile Include="Features\Cracks.cs" />
@@ -80,7 +83,9 @@
     <Compile Include="Features\Float.cs" />
     <Compile Include="Features\FloatDown.cs" />
     <Compile Include="Features\FloatUp.cs" />
+    <Compile Include="Features\Glow.cs" />
     <Compile Include="Features\LimitedFlash.cs" />
+    <Compile Include="Features\Pulse.cs" />
     <Compile Include="Features\ScaleDown.cs" />
     <Compile Include="Features\Shadow.cs" />
     <Compile Include="Features\Shake.cs" />

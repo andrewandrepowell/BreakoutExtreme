@@ -100,6 +100,7 @@ namespace BreakoutExtreme.Components
                 return _frame;
             }
         }
+        public Vector2 Origin => _origin;
         public Color Color = Color.White;
         public Vector2 Position;
         public float Scale = 1;

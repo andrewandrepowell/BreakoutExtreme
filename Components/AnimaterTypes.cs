@@ -10,7 +10,8 @@ namespace BreakoutExtreme.Components
             Paddle,
             BrickLarge,
             Cracks,
-            Spike
+            Spike,
+            Laser
         }
         public enum Animations
         {
@@ -22,7 +23,8 @@ namespace BreakoutExtreme.Components
             CrackSmall,
             CrackMedium,
             CrackLarge,
-            Spike
+            Spike,
+            Laser
         }
     }
 }

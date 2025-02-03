@@ -32,7 +32,6 @@ namespace BreakoutExtreme.Features
             get => _delayPeriod;
             set
             {
-                Console.WriteLine($"{_time}");
                 Debug.Assert(!Running);
                 Debug.Assert(value >= 0);
                 _delayPeriod = value;

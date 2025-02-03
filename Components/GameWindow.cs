@@ -99,6 +99,11 @@ namespace BreakoutExtreme.Components
                     bounds: Globals.MenuButtonBlockBounds.ToBounds(), 
                     text: "Menu");
             }
+
+
+            // DEBUG
+            var laser = Globals.Runner.CreateLaser();
+            laser.GetCollider().Position = Globals.PlayAreaBounds.Center;
         }
         public void Update()
         {

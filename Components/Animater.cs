@@ -13,7 +13,7 @@ namespace BreakoutExtreme.Components
         private Animations _animation = Animations.Ball;
         private Spriter _spriter;
         private Vector2 _position, _shaderDrawOffset;
-        private Attacher<Animater> _attacher;
+        private Attacher<IMovable> _attacher;
         private float _visibility = 1, _shaderVisibility = 1, _shaderScale = 1;
         private Color _color = Color.White;
         private float _scale = 1;
@@ -109,8 +109,9 @@ namespace BreakoutExtreme.Components
             get => _spriter.Rotation;
             set => _spriter.Rotation = value;
         }
+        public Vector2 Origin => _spriter.Origin;
         public Layers Layer = Layers.Ground;
-        public Attacher<Animater> GetAttacher() => _attacher;
+        public Attacher<IMovable> GetAttacher() => _attacher;
         public float Visibility
         {
             get => _visibility;

@@ -2,6 +2,7 @@
 using Microsoft.Xna.Framework;
 using MonoGame.Extended;
 using System;
+using BreakoutExtreme.Utility;
 
 namespace BreakoutExtreme.Shaders
 {
@@ -39,8 +40,18 @@ namespace BreakoutExtreme.Shaders
     public class BlurNode
     {
         public readonly Effect Effect;
+        public readonly EffectParameter SpriteTextureDimensions;
+        public readonly EffectParameter Gray;
+        public void Configure(Size textureSize, bool gray = false)
+        {
+            SpriteTextureDimensions.SetValue(textureSize.ToVector2());
+            Gray.SetValue((gray) ? 1 : 0);
+        }
         public BlurNode()
         {
+            Effect = Globals.ContentManager.Load<Effect>($"effects/blur_0");
+            SpriteTextureDimensions = Effect.Parameters["SpriteTextureDimensions"];
+            Gray = Effect.Parameters["Gray"];
         }
     }
     public class HighlightCanvasItemNode

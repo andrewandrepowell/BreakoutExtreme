@@ -16,15 +16,17 @@ namespace BreakoutExtreme.Systems
         private ComponentMapper<NinePatcher> _ninePatcherMapper;
         private ComponentMapper<GumDrawer> _gumDrawerMapper;
         private ComponentMapper<Particler> _particlerMapper;
+        private ComponentMapper<Texturer> _texturerMapper;
         private Bag<Animater> _animaters = new();
         private Bag<NinePatcher> _ninePatchers = new();
         private Bag<GumDrawer> _gumDrawers = new();
         private Bag<Particler> _particlers = new();
+        private Bag<Texturer> _texturers = new();
         private RenderTarget2D _pixelArtRenderTarget;
         private RenderTarget2D _smoothArtRenderTarget;
         private Shaders.Controller _shaderController = null;
         private bool _initialized = false;
-        public RenderSystem() : base(Aspect.One(typeof(Animater), typeof(NinePatcher), typeof(GumDrawer), typeof(Particler)))
+        public RenderSystem() : base(Aspect.One(typeof(Animater), typeof(NinePatcher), typeof(GumDrawer), typeof(Particler), typeof(Texturer)))
         {
         }
         public override void Initialize(IComponentMapperService mapperService)
@@ -33,6 +35,7 @@ namespace BreakoutExtreme.Systems
             _ninePatcherMapper = mapperService.GetMapper<NinePatcher>();
             _gumDrawerMapper = mapperService.GetMapper<GumDrawer>();
             _particlerMapper = mapperService.GetMapper<Particler>();
+            _texturerMapper = mapperService.GetMapper<Texturer>();
         }
         public void Update(GameTime gameTime)
         {
@@ -64,33 +67,43 @@ namespace BreakoutExtreme.Systems
                 _initialized = true;
             }
 
-            _animaters.Clear();
-            _ninePatchers.Clear();
-            _gumDrawers.Clear();
-            _particlers.Clear();
-            foreach (var entityId in ActiveEntities)
             {
-                if (_animaterMapper.Has(entityId))
-                    _animaters.Add(_animaterMapper.Get(entityId));
-                if (_ninePatcherMapper.Has(entityId))
-                    _ninePatchers.Add(_ninePatcherMapper.Get(entityId));
-                if (_gumDrawerMapper.Has(entityId))
-                    _gumDrawers.Add(_gumDrawerMapper.Get(entityId));
-                if (_particlerMapper.Has(entityId))
-                    _particlers.Add(_particlerMapper.Get(entityId));
+                _animaters.Clear();
+                _ninePatchers.Clear();
+                _gumDrawers.Clear();
+                _particlers.Clear();
+                _texturers.Clear();
+                foreach (var entityId in ActiveEntities)
+                {
+                    if (_animaterMapper.Has(entityId))
+                        _animaters.Add(_animaterMapper.Get(entityId));
+                    if (_ninePatcherMapper.Has(entityId))
+                        _ninePatchers.Add(_ninePatcherMapper.Get(entityId));
+                    if (_gumDrawerMapper.Has(entityId))
+                        _gumDrawers.Add(_gumDrawerMapper.Get(entityId));
+                    if (_particlerMapper.Has(entityId))
+                        _particlers.Add(_particlerMapper.Get(entityId));
+                    if (_texturerMapper.Has(entityId))
+                        _texturers.Add(_texturerMapper.Get(entityId));
+                }
             }
 
-            for (var i = 0; i < _gumDrawers.Count; i++)
-                _gumDrawers[i].Update();
-
-            for (var i = 0; i < _animaters.Count; i++)
-                _animaters[i].Update();
-
-            for (var i = 0; i < _particlers.Count; i++)
             {
-                var particler = _particlers[i];
-                if (!particler.Disposed)
-                    particler.Update();
+                for (var i = 0; i < _texturers.Count; i++)
+                    _texturers[i].Update();
+
+                for (var i = 0; i < _gumDrawers.Count; i++)
+                    _gumDrawers[i].Update();
+
+                for (var i = 0; i < _animaters.Count; i++)
+                    _animaters[i].Update();
+
+                for (var i = 0; i < _particlers.Count; i++)
+                {
+                    var particler = _particlers[i];
+                    if (!particler.Disposed)
+                        particler.Update();
+                }
             }
         }
         public void Draw(GameTime gameTime)
@@ -121,7 +134,7 @@ namespace BreakoutExtreme.Systems
                 foreach (ref var layer in _layers.AsSpan())
                 {
                     {
-                        spriteBatch.Begin();
+                        spriteBatch.Begin(samplerState: SamplerState.PointClamp);
                         for (var i = 0; i < _particlers.Count; i++)
                         {
                             var particler = _particlers[i];
@@ -133,6 +146,35 @@ namespace BreakoutExtreme.Systems
 
                     {
                         spriteBatch.Begin(samplerState: SamplerState.PointClamp);
+                        for (var i = 0; i < _texturers.Count; i++)
+                        {
+                            var texturer = _texturers[i];
+                            if (texturer.Layer == layer && texturer.Visibility != 0 && texturer.ShowBase)
+                                texturer.Draw();
+                        }
+                        spriteBatch.End();
+
+                        for (var i = 0; i < _texturers.Count; i++)
+                        {
+                            var texturer = _texturers[i];
+                            var shaderFeatures = texturer.ShaderFeatures;
+                            if (texturer.Layer == layer && texturer.Visibility != 0)
+                            {
+                                for (var j = 0; j < shaderFeatures.Count; j++)
+                                {
+                                    var shaderFeature = shaderFeatures[j];
+                                    if (!shaderFeature.Script.HasValue)
+                                        continue;
+                                    _shaderController.Begin(shaderFeature);
+                                    texturer.Draw();
+                                    spriteBatch.End();
+                                }
+                            }
+                        }
+                    }
+
+                    {
+                        spriteBatch.Begin(samplerState: SamplerState.PointClamp);
                         for (var i = 0; i < _animaters.Count; i++)
                         {
                             var animater = _animaters[i];
@@ -140,22 +182,22 @@ namespace BreakoutExtreme.Systems
                                 animater.Draw();
                         }
                         spriteBatch.End();
-                    }
 
-                    for (var i = 0; i < _animaters.Count; i++)
-                    {
-                        var animater = _animaters[i];
-                        var shaderFeatures = animater.ShaderFeatures;
-                        if (animater.Layer == layer && animater.Visibility != 0)
+                        for (var i = 0; i < _animaters.Count; i++)
                         {
-                            for (var j = 0; j < shaderFeatures.Count; j++)
+                            var animater = _animaters[i];
+                            var shaderFeatures = animater.ShaderFeatures;
+                            if (animater.Layer == layer && animater.Visibility != 0)
                             {
-                                var shaderFeature = shaderFeatures[j];
-                                if (!shaderFeature.Script.HasValue)
-                                    continue;
-                                _shaderController.Begin(shaderFeature);
-                                animater.Draw();
-                                spriteBatch.End();
+                                for (var j = 0; j < shaderFeatures.Count; j++)
+                                {
+                                    var shaderFeature = shaderFeatures[j];
+                                    if (!shaderFeature.Script.HasValue)
+                                        continue;
+                                    _shaderController.Begin(shaderFeature);
+                                    animater.Draw();
+                                    spriteBatch.End();
+                                }
                             }
                         }
                     }

@@ -7,6 +7,35 @@ namespace BreakoutExtreme.Components
 {
     public partial class Runner
     { 
+        public Laser CreateLaser()
+        {
+            Debug.Assert(_initialized);
+            var entity = _world.CreateEntity();
+            if (_laserPool.Count == 0)
+                _laserPool.AddToBack(new Laser());
+            _laserPool.RemoveFromFront(out var laser);
+            laser.Reset(entity);
+            var animater = laser.GetAnimater();
+            var collider = laser.GetCollider();
+            entity.Attach(animater);
+            entity.Attach(collider);
+            _collisionComponent.Insert(collider);
+            return laser;
+        }
+
+        public Glower CreateGlower(Animater parent, Color color, float minVisibility, float maxVisibility, float pulsePeriod, float appearVanishPeriod)
+        {
+            Debug.Assert(_initialized);
+            var entity = _world.CreateEntity();
+            if (_glowerPool.Count == 0)
+                _glowerPool.AddToBack(new Glower());
+            _glowerPool.RemoveFromFront(out var glower);
+            glower.Reset(entity, parent, color, minVisibility, maxVisibility, pulsePeriod, appearVanishPeriod);
+            var texturer = glower.GetTexturer();
+            entity.Attach(glower);
+            entity.Attach(texturer);
+            return glower;
+        }
         public Button CreateButton(object parent, Action<object> action, RectangleF bounds, string text)
         {
             Debug.Assert(_initialized);
@@ -21,6 +50,8 @@ namespace BreakoutExtreme.Components
         {
             Debug.Assert(_initialized);
             var entity = _world.CreateEntity();
+            if (_scorePopupPool.Count == 0)
+                _scorePopupPool.AddToBack(new ScorePopup());
             _scorePopupPool.RemoveFromFront(out var scorePopup);
             scorePopup.Reset(entity);
             var gumDrawer = scorePopup.GetGumDrawer();
