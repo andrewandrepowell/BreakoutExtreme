@@ -20,6 +20,14 @@ namespace BreakoutExtreme.Components
 
                     if (!_paddle.RunningMoveToTarget && cursorSelected)
                         _paddle.StartMoveToTarget(controlState.CursorPosition.X);
+
+                    if (State == States.GameRunning && cursorReleased)
+                    {
+                        var laser = Globals.Runner.CreateLaser();
+                        var collider = laser.GetCollider();
+                        collider.Position = _paddle.GetCollider().Bounds.BoundingRectangle.Center - (collider.Bounds.BoundingRectangle.Size / 2);
+                        _lasers.Add(laser);
+                    }
                 }
 
                 if (State == States.Loaded || State == States.SpawnNewBall)
@@ -114,11 +122,28 @@ namespace BreakoutExtreme.Components
                         scorePopup.RemoveEntity();
                         _scorePopups.Remove(scorePopup);
                     }
+
+                    // laser shots
+                    _destroyedLasers.Clear();
+                    for (var i = 0; i < _lasers.Count; i++)
+                    {
+                        var laser = _lasers[i];
+                        if (laser.State == Laser.States.Destroyed)
+                            _destroyedLasers.Add(laser);
+                    }
+                    for (var i = 0; i < _destroyedLasers.Count; i++)
+                    {
+                        var laser = _destroyedLasers[i];
+                        laser.RemoveEntity();
+                        _lasers.Remove(laser);
+                    }
                 }
 
                 // Update all game components.
                 {
                     _paddle.Update();
+                    for (var i = 0; i < _lasers.Count; i++)
+                        _lasers[i].Update();
                     for (var i = 0; i < _balls.Count; i++)
                         _balls[i].Update();
                     for (var i = 0; i < _bricks.Count; i++)

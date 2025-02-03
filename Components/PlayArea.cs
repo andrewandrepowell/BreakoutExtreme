@@ -14,9 +14,11 @@ namespace BreakoutExtreme.Components
         private readonly Bag<Ball> _balls = [];
         private readonly Bag<Brick> _bricks = [];
         private readonly Bag<ScorePopup> _scorePopups = [];
+        private readonly Bag<Laser> _lasers = [];
         private readonly Bag<Ball> _destroyedBalls = [];
         private readonly Bag<Brick> _destroyedBricks = [];
         private readonly Bag<ScorePopup> _destroyedScorePopups = [];
+        private readonly Bag<Laser> _destroyedLasers = [];
         private readonly DeathWall _deathWall;
         private Paddle _paddle = null;
         private Levels _level = Levels.Test;
