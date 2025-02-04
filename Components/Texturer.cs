@@ -12,7 +12,7 @@ namespace BreakoutExtreme.Components
     {
         private Animater _parent = parent;
         private Vector2 _position, _drawPosition, _shaderDrawOffset;
-        private Color _color, _drawColor;
+        private Color _color = Color.White, _drawColor = Color.White;
         private float _scale = 1, _drawScale = 1, _shaderScale = 1;
         private float _visibility = 1, _shaderVisibility = 1;
         private Bag<Feature> _shaderFeatures = new();

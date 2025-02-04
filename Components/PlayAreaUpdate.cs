@@ -137,6 +137,21 @@ namespace BreakoutExtreme.Components
                         laser.RemoveEntity();
                         _lasers.Remove(laser);
                     }
+
+                    // Cannons
+                    _destroyedCannons.Clear();
+                    for (var i = 0; i < _cannons.Count; i++)
+                    {
+                        var cannon = _cannons[i];
+                        if (cannon.State == Cannon.States.Destroyed)
+                            _destroyedCannons.Add(cannon);
+                    }
+                    for (var i = 0; i < _destroyedCannons.Count; i++)
+                    {
+                        var cannon = _destroyedCannons[i];
+                        cannon.RemoveEntity();
+                        _cannons.Remove(cannon);
+                    }
                 }
 
                 // Update all game components.
@@ -150,6 +165,8 @@ namespace BreakoutExtreme.Components
                         _bricks[i].Update();
                     for (var i = 0; i < _scorePopups.Count; i++)
                         _scorePopups[i].Update();
+                    for (var i = 0; i < _cannons.Count; i++)
+                        _cannons[i].Update();
                 }
             }
         }

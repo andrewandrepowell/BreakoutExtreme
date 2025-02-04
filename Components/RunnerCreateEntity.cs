@@ -7,6 +7,21 @@ namespace BreakoutExtreme.Components
 {
     public partial class Runner
     { 
+        public Cannon CreateCannon(Cannon.Cannons cannonEnum, Vector2 position)
+        {
+            Debug.Assert(_initialized);
+            var entity = _world.CreateEntity();
+            if (_cannonPool.Count == 0)
+                _cannonPool.AddToBack(new Cannon());
+            _cannonPool.RemoveFromFront(out var cannon);
+            cannon.Reset(entity, cannonEnum, position);
+            var animater = cannon.GetAnimater();
+            var collider = cannon.GetCollider();
+            entity.Attach(animater);
+            entity.Attach(collider);
+            _collisionComponent.Insert(collider);
+            return cannon;
+        }
         public Laser CreateLaser()
         {
             Debug.Assert(_initialized);
@@ -102,9 +117,11 @@ namespace BreakoutExtreme.Components
         {
             Debug.Assert(_initialized);
             var entity = _world.CreateEntity();
-            var shadow = new Shadow(entity, parent);
-            var animater = shadow.GetAnimater();
-            entity.Attach(animater);
+            var shadow = new Shadow();
+            shadow.Reset(entity, parent);
+            var texturer = shadow.GetTexturer();
+            entity.Attach(shadow);
+            entity.Attach(texturer);
             return shadow;
         }
         public Label CreateLabel(Size size)

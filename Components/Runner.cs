@@ -15,6 +15,7 @@ namespace BreakoutExtreme.Components
         readonly private Deque<ScorePopup> _scorePopupPool = new();
         readonly private Deque<Glower> _glowerPool = new();
         readonly private Deque<Laser> _laserPool = new();
+        readonly private Deque<Cannon> _cannonPool = new();
         private bool _initialized = false;
         public void RemoveEntity(Entity entity)
         {
@@ -25,6 +26,8 @@ namespace BreakoutExtreme.Components
                 _glowerPool.AddToBack(entity.Get<Glower>());
             if (entity.Has<Laser>())
                 _laserPool.AddToBack(entity.Get<Laser>());
+            if (entity.Has<Cannon>())
+                _cannonPool.AddToBack(entity.Get<Cannon>());
             if (entity.Has<Collider>())
                 _collisionComponent.Remove(entity.Get<Collider>());
             if (entity.Has<Particler>())
@@ -49,6 +52,9 @@ namespace BreakoutExtreme.Components
 
                     var laser = new Laser();
                     _laserPool.AddToBack(laser);
+
+                    var cannon = new Cannon();
+                    _cannonPool.AddToBack(cannon);
                 }
             }
 

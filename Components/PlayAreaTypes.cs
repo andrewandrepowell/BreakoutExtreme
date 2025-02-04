@@ -11,7 +11,8 @@
             None,
             Ball,
             Paddle,
-            ThickBrick
+            ThickBrick,
+            Cannon
         }
         public enum States
         {

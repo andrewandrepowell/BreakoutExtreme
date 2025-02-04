@@ -1,6 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using MonoGame.Extended.ECS;
 using BreakoutExtreme.Utility;
+using System.Diagnostics;
 
 
 namespace BreakoutExtreme.Components
@@ -9,34 +10,43 @@ namespace BreakoutExtreme.Components
     {
         private const float _displacement = 8;
         private const float _visibility = 0.5f;
-        private readonly Entity _entity;
-        private readonly Animater _animater;
-        private readonly Animater _parent;
+        private readonly Texturer _texturer;
         private readonly Features.Vanish _vanish;
-        public Animater GetAnimater() => _animater;
+        private Animater _parent;
+        private Entity _entity;
+        private bool _initialized;
+        public Texturer GetTexturer() => _texturer;
         public bool VanishRunning => _vanish.Running;
         public void VanishStart() => _vanish.Start();
-        public Shadow(Entity entity, Animater parent)
+        public void Reset(Entity entity, Animater parent)
         {
+            Debug.Assert(!_initialized);
             _entity = entity;
             _parent = parent;
-            _animater = new()
+            _initialized = true;
+            _texturer.Parent = parent;
+            _texturer.Position = _parent.Position + new Vector2(0, _displacement);
+            _parent.GetAttacher().Attach(_texturer);
+        }
+        public Shadow()
+        {
+            _initialized = false;
+            _texturer = new(null)
             {
-                Position = _parent.Position + new Vector2(0, _displacement),
                 Layer = Layers.Shadow,
                 ShowBase = false,
                 Visibility = _visibility,
             };
-            _animater.ShaderFeatures.Add(new Features.Shadow());
+            _texturer.ShaderFeatures.Add(new Features.Shadow());
             _vanish = new();
-            _animater.ShaderFeatures.Add(_vanish);
-            _animater.Play(parent.Animation);
-            _parent.GetAttacher().Attach(_animater);
+            _texturer.ShaderFeatures.Add(_vanish);
         }
         public void RemoveEntity()
         {
+            Debug.Assert(_initialized);
             Globals.Runner.RemoveEntity(_entity);
-            _parent.GetAttacher().Detach(_animater);
+            _parent.GetAttacher().Detach(_texturer);
+            _initialized = false;
         }
     }
 }

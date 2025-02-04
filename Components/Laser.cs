@@ -9,6 +9,11 @@ namespace BreakoutExtreme.Components
 {
     public partial class Laser
     {
+        private const float _appearVanishPeriod = 0.25f;
+        private const float _pulsePeriod = 0.5f;
+        private const float _minGlowVisibility = 0.1f;
+        private const float _maxThickGlowVisibility = 1f;
+        private const float _maxThinGlowVisibility = 0.5f;
         private static readonly RectangleF _bounds = new Rectangle(0, 0, 1, 2).ToBounds();
         private static readonly Action<Collider.CollideNode> _collideAction = (Collider.CollideNode node) => ((Laser)node.Current.Parent).ServiceCollision(node);
         private bool _initialized;
@@ -32,17 +37,17 @@ namespace BreakoutExtreme.Components
             _thickGlower = Globals.Runner.CreateGlower(
                 parent: _animater,
                 color: Color.Orange,
-                minVisibility: 0.1f,
-                maxVisibility: 1f,
-                pulsePeriod: 0.5f,
-                appearVanishPeriod: 0.25f);
+                minVisibility: _minGlowVisibility,
+                maxVisibility: _maxThickGlowVisibility,
+                pulsePeriod: _pulsePeriod,
+                appearVanishPeriod: _appearVanishPeriod);
             _thinGlower = Globals.Runner.CreateGlower(
                 parent: _animater,
                 color: Color.Red,
-                minVisibility: 0.1f,
-                maxVisibility: 0.5f,
-                pulsePeriod: 0.5f,
-                appearVanishPeriod: 0.25f);
+                minVisibility: _minGlowVisibility,
+                maxVisibility: _maxThinGlowVisibility,
+                pulsePeriod: _pulsePeriod,
+                appearVanishPeriod: _appearVanishPeriod);
             _appear.Start();
             _state = States.Active;
             _initialized = true;
@@ -67,6 +72,7 @@ namespace BreakoutExtreme.Components
         }
         public void Update()
         {
+            Debug.Assert(_initialized);
             if (_state == States.Active)
                 _collider.Acceleration += _acceleration;
 
@@ -78,9 +84,9 @@ namespace BreakoutExtreme.Components
             _initialized = false;
             _animater = new();
             _animater.Play(Animater.Animations.Laser);
-            _appear = new() { Period = 0.25f };
+            _appear = new() { Period = _appearVanishPeriod };
             _animater.ShaderFeatures.Add(_appear);
-            _vanish = new() { Period = 0.25f };
+            _vanish = new() { Period = _appearVanishPeriod };
             _animater.ShaderFeatures.Add(_vanish);
             _collider = new(_bounds, this, _collideAction);
         }
