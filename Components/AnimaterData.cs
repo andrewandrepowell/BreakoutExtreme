@@ -15,6 +15,8 @@ namespace BreakoutExtreme.Components
             { Spriters.Cracks, "animations/cracks_0" },
             { Spriters.Spike, "animations/spike_0" },
             { Spriters.Laser, "animations/laser_0" },
+            { Spriters.Cannon, "animations/cannon_0" },
+            { Spriters.Bomb, "animations/bomb_0" },
         });
         private static readonly ReadOnlyDictionary<Spriters, Size> _spriterRegionSizes = new(new Dictionary<Spriters, Size>
         {
@@ -24,6 +26,8 @@ namespace BreakoutExtreme.Components
             { Spriters.Cracks, new Size(16, 16) },
             { Spriters.Spike, new Size(80, 80) },
             { Spriters.Laser, new Size(80, 96) },
+            { Spriters.Cannon, new Size(96, 96) },
+            { Spriters.Bomb, new Size(80, 80) },
         });
         private static readonly ReadOnlyDictionary<Animations, string> _animationNames = new(new Dictionary<Animations, string>
         {
@@ -37,6 +41,11 @@ namespace BreakoutExtreme.Components
             { Animations.CrackLarge, "crack_2" },
             { Animations.Spike, "spike_0" },
             { Animations.Laser, "laser_0" },
+            { Animations.Cannon, "cannon_0" },
+            { Animations.CannonDead, "cannon_1" },
+            { Animations.CannonFire, "cannon_2" },
+            { Animations.Bomb, "bomb_0" },
+            { Animations.BombDead, "bomb_1" },
         });
         private static readonly ReadOnlyDictionary<Spriters, Action<Spriter>> _spriterConfigureAnimations = new(new Dictionary<Spriters, Action<Spriter>>
         {
@@ -85,6 +94,23 @@ namespace BreakoutExtreme.Components
                 {
                     spriter.Add(_animationNames[Animations.Laser], [0]);
                 }
+            },
+            {
+                Spriters.Cannon,
+                delegate(Spriter spriter)
+                {
+                    spriter.Add(_animationNames[Animations.Cannon], [0]);
+                    spriter.Add(_animationNames[Animations.CannonFire], [1, 2, 3, 4], 0.25f);
+                    spriter.Add(_animationNames[Animations.CannonDead], [5]);
+                }
+            },
+            {
+                Spriters.Bomb,
+                delegate(Spriter spriter)
+                {
+                    spriter.Add(_animationNames[Animations.Bomb], [0]);
+                    spriter.Add(_animationNames[Animations.BombDead], [1]);
+                }
             }
         });
         private static readonly ReadOnlyDictionary<Animations, Spriters> _animationSpriters = new(new Dictionary<Animations, Spriters>()
@@ -99,6 +125,11 @@ namespace BreakoutExtreme.Components
             { Animations.CrackLarge, Spriters.Cracks },
             { Animations.Spike, Spriters.Spike },
             { Animations.Laser, Spriters.Laser },
+            { Animations.Cannon, Spriters.Cannon },
+            { Animations.CannonFire, Spriters.Cannon },
+            { Animations.CannonDead, Spriters.Cannon },
+            { Animations.Bomb, Spriters.Bomb },
+            { Animations.BombDead, Spriters.Bomb },
         });
         private readonly Dictionary<Spriters, Spriter> _spriters = [];
     }

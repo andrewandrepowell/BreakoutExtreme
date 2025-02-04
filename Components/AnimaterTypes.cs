@@ -11,7 +11,9 @@ namespace BreakoutExtreme.Components
             BrickLarge,
             Cracks,
             Spike,
-            Laser
+            Laser,
+            Cannon,
+            Bomb
         }
         public enum Animations
         {
@@ -24,7 +26,12 @@ namespace BreakoutExtreme.Components
             CrackMedium,
             CrackLarge,
             Spike,
-            Laser
+            Laser,
+            Cannon,
+            CannonFire,
+            CannonDead,
+            Bomb,
+            BombDead
         }
     }
 }
