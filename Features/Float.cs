@@ -2,6 +2,7 @@
 using BreakoutExtreme.Utility;
 using Microsoft.Xna.Framework;
 using MonoGame.Extended;
+using System.Diagnostics;
 
 namespace BreakoutExtreme.Features
 {
@@ -13,6 +14,17 @@ namespace BreakoutExtreme.Features
         private float _offset;
         private Directions _direction = Directions.Up;
         private bool _running = false;
+        private float _delayPeriod = 0;
+        private float _delayTime;
+        public float DelayPeriod
+        {
+            get => _delayPeriod;
+            set
+            {
+                Debug.Assert(value >= 0);
+                _delayPeriod = value;
+            }
+        }
         public override bool UpdateDrawOffset(ref Vector2 drawPosition)
         {
             if (!_running)
@@ -25,6 +37,7 @@ namespace BreakoutExtreme.Features
         {
             _offset = _maxHeight;
             _time = _period;
+            _delayTime = _delayPeriod;
             _direction = Directions.Up;
             _running = true;
         }
@@ -45,7 +58,15 @@ namespace BreakoutExtreme.Features
                     _direction = (_direction == Directions.Up) ? Directions.Down : Directions.Up;
                     _time += _period;
                 }
-                _time -= Globals.GameTime.GetElapsedSeconds();
+                var elaspedTimed = Globals.GameTime.GetElapsedSeconds();
+                if (_delayTime <= 0)
+                {
+                    _time -= elaspedTimed;
+                }
+                else
+                {
+                    _delayTime -= elaspedTimed;
+                }
             }
         }
     }

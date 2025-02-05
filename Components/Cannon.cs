@@ -106,6 +106,7 @@ namespace BreakoutExtreme.Components
             _appear.Period = _spawnPeriod;
             _appear.DelayPeriod = position.X * _spawnFactor;
             _appear.Start();
+            _float.DelayPeriod = Globals.Random.NextSingle();
             _float.Start();
             _collider.Position = position;
             _totalHP = _configNode.TotalHP;
