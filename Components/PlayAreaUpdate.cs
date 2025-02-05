@@ -70,103 +70,23 @@ namespace BreakoutExtreme.Components
                     State = States.SpawnNewBall;
                 }
 
-                // Remove any objects.
+                // Remove any destroyed objects.
                 {
-                    // balls
-                    _destroyedBalls.Clear();
-                    for (var i = 0; i < _balls.Count; i++)
-                    {
-                        var ball = _balls[i];
-                        if (ball.State == Ball.States.Destroyed)
-                        {
-
-                            _destroyedBalls.Add(ball);
-                        }
-                    }
-                    for (var i = 0; i < _destroyedBalls.Count; i++)
-                    {
-                        var ball = _destroyedBalls[i];
-                        ball.RemoveEntity();
-                        _balls.Remove(ball);
-                    }
-
-                    // bricks
-                    _destroyedBricks.Clear();
-                    for (var i = 0; i < _bricks.Count; i++)
-                    {
-                        var brick = _bricks[i];
-                        if (brick.State == Brick.States.Destroyed)
-                        {
-                            
-                            _destroyedBricks.Add(brick);
-                        }
-                    }
-                    for (var i = 0; i < _destroyedBricks.Count; i++)
-                    {
-                        var brick = _destroyedBricks[i];
-                        brick.RemoveEntity();
-                        _bricks.Remove(brick);
-                    }
-
-                    // score popups
-                    _destroyedScorePopups.Clear();
-                    for (var i = 0; i < _scorePopups.Count; i++)
-                    {
-                        var scorePopup = _scorePopups[i];
-                        if (!scorePopup.Running)
-                            _destroyedScorePopups.Add(scorePopup);
-                    }
-                    for (var i = 0; i < _destroyedScorePopups.Count; i++)
-                    {
-                        var scorePopup = _destroyedScorePopups[i];
-                        scorePopup.RemoveEntity();
-                        _scorePopups.Remove(scorePopup);
-                    }
-
-                    // laser shots
-                    _destroyedLasers.Clear();
-                    for (var i = 0; i < _lasers.Count; i++)
-                    {
-                        var laser = _lasers[i];
-                        if (laser.State == Laser.States.Destroyed)
-                            _destroyedLasers.Add(laser);
-                    }
-                    for (var i = 0; i < _destroyedLasers.Count; i++)
-                    {
-                        var laser = _destroyedLasers[i];
-                        laser.RemoveEntity();
-                        _lasers.Remove(laser);
-                    }
-
-                    // Cannons
-                    _destroyedCannons.Clear();
-                    for (var i = 0; i < _cannons.Count; i++)
-                    {
-                        var cannon = _cannons[i];
-                        if (cannon.State == Cannon.States.Destroyed)
-                            _destroyedCannons.Add(cannon);
-                    }
-                    for (var i = 0; i < _destroyedCannons.Count; i++)
-                    {
-                        var cannon = _destroyedCannons[i];
-                        cannon.RemoveEntity();
-                        _cannons.Remove(cannon);
-                    }
+                    _balls.Destroy();
+                    _bricks.Destroy();
+                    _scorePopups.Destroy();
+                    _lasers.Destroy();
+                    _cannons.Destroy();
                 }
 
                 // Update all game components.
                 {
                     _paddle.Update();
-                    for (var i = 0; i < _lasers.Count; i++)
-                        _lasers[i].Update();
-                    for (var i = 0; i < _balls.Count; i++)
-                        _balls[i].Update();
-                    for (var i = 0; i < _bricks.Count; i++)
-                        _bricks[i].Update();
-                    for (var i = 0; i < _scorePopups.Count; i++)
-                        _scorePopups[i].Update();
-                    for (var i = 0; i < _cannons.Count; i++)
-                        _cannons[i].Update();
+                    _balls.Update();
+                    _bricks.Update();
+                    _lasers.Update();
+                    _scorePopups.Update();
+                    _cannons.Update();
                 }
             }
         }

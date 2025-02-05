@@ -3,10 +3,11 @@ using MonoGame.Extended;
 using System;
 using MonoGame.Extended.ECS;
 using System.Diagnostics;
+using BreakoutExtreme.Utility;
 
 namespace BreakoutExtreme.Components
 {
-    public partial class Ball
+    public partial class Ball : IUpdate, IRemoveEntity, IDestroyed
     {
         private static readonly CircleF _bounds = new(Vector2.Zero, Globals.GameHalfBlockSize);
         private static readonly Action<Collider.CollideNode> _collideAction = (Collider.CollideNode node) => ((Ball)node.Current.Parent).ServiceCollision(node);
@@ -45,6 +46,7 @@ namespace BreakoutExtreme.Components
         public Particler GetParticler() => _particler;
         public States State => _state;
         public bool LaunchRunning => _launcher.Running;
+        public bool Destroyed => _state == States.Destroyed;
         public void StartLaunch()
         {
             Debug.Assert(_state == States.Active);

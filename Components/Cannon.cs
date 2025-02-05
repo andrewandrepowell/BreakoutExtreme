@@ -4,10 +4,11 @@ using Microsoft.Xna.Framework;
 using MonoGame.Extended;
 using System.Collections.ObjectModel;
 using System.Collections.Generic;
+using BreakoutExtreme.Utility;
 
 namespace BreakoutExtreme.Components
 {
-    public class Cannon
+    public class Cannon : IUpdate, IRemoveEntity, IDestroyed
     {
         private readonly static ReadOnlyDictionary<Cannons, ConfigNode> _cannonConfigNodes = new(new Dictionary<Cannons, ConfigNode>() 
         {
@@ -51,6 +52,7 @@ namespace BreakoutExtreme.Components
         public enum Cannons { Normal }
         public enum States { Spawning, Active, Destroying, Destroyed }
         public States State => _state;
+        public bool Destroyed => _state == States.Destroyed;
         public Animater GetAnimater() => _animater;
         public Collider GetCollider() => _collider;
         public void Reset(Entity entity, Cannons cannon, Vector2 position)

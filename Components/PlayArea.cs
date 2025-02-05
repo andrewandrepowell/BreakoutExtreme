@@ -11,16 +11,11 @@ namespace BreakoutExtreme.Components
     public partial class PlayArea
     {
         private readonly GameWindow _parent;
-        private readonly Bag<Ball> _balls = [];
-        private readonly Bag<Brick> _bricks = [];
-        private readonly Bag<ScorePopup> _scorePopups = [];
-        private readonly Bag<Laser> _lasers = [];
-        private readonly Bag<Cannon> _cannons = [];
-        private readonly Bag<Ball> _destroyedBalls = [];
-        private readonly Bag<Brick> _destroyedBricks = [];
-        private readonly Bag<ScorePopup> _destroyedScorePopups = [];
-        private readonly Bag<Laser> _destroyedLasers = [];
-        private readonly Bag<Cannon> _destroyedCannons = [];
+        private readonly GameBag<Ball> _balls = new();
+        private readonly GameBag<Brick> _bricks = new();
+        private readonly GameBag<ScorePopup> _scorePopups = new();
+        private readonly GameBag<Laser> _lasers = new();
+        private readonly GameBag<Cannon> _cannons = new();
         private readonly DeathWall _deathWall;
         private Paddle _paddle = null;
         private Levels _level = Levels.Test;

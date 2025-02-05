@@ -7,7 +7,7 @@ using System;
 
 namespace BreakoutExtreme.Components
 {
-    public partial class Laser
+    public partial class Laser : IUpdate, IRemoveEntity, IDestroyed
     {
         private const float _appearVanishPeriod = 0.25f;
         private const float _pulsePeriod = 0.5f;
@@ -28,6 +28,7 @@ namespace BreakoutExtreme.Components
         private Vector2 _acceleration = new(0, -6000);
         public enum States { Active, Destroying, Destroyed }
         public States State => _state;
+        public bool Destroyed => _state == States.Destroyed;
         public Collider GetCollider() => _collider;
         public Animater GetAnimater() => _animater;
         public void Reset(Entity entity)

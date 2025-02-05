@@ -9,7 +9,7 @@ using System.Diagnostics;
 
 namespace BreakoutExtreme.Components
 {
-    public partial class ScorePopup
+    public partial class ScorePopup : IUpdate, IRemoveEntity, IDestroyed
     {
         private static readonly Size _size = new(Globals.GameBlockSize * 4, Globals.GameBlockSize * 1);
         private readonly ContainerRuntime _containerRuntime;
@@ -68,6 +68,7 @@ namespace BreakoutExtreme.Components
                 UpdateTextRuntimeText();
             }
         }
+        public bool Destroyed => !_running;
         public void RemoveEntity()
         {
             Debug.Assert(_initialized);

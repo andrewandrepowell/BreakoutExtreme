@@ -7,7 +7,7 @@ using System.Diagnostics;
 
 namespace BreakoutExtreme.Components
 {
-    public partial class Brick
+    public partial class Brick : IUpdate, IRemoveEntity, IDestroyed
     {
         private const float _shakePeriod = 0.5f;
         private static readonly Vector2 _shineDirection = Vector2.Normalize(new Vector2(1, 1));
@@ -36,6 +36,7 @@ namespace BreakoutExtreme.Components
         public readonly int TotalHP;
         public int CurrentHP;
         public States State => _state;
+        public bool Destroyed => _state == States.Destroyed;
         public void Damage()
         {
             Debug.Assert(CurrentHP > 0 && State == States.Active);
