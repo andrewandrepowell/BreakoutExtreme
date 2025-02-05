@@ -6,6 +6,7 @@ using MonoGame.Extended.Particles;
 using System;
 using System.Diagnostics;
 using BreakoutExtreme.Utility;
+using MonoGame.Extended.Collections;
 
 
 namespace BreakoutExtreme.Components
@@ -64,6 +65,7 @@ namespace BreakoutExtreme.Components
             }
             var particleEffect = _particleCreateActions[_particle](textureRegions);
             _particleEffects.Add(_particle, particleEffect);
+            _particles.Add(_particle);
         }
         private void UpdateParticleEffect()
         {
@@ -85,6 +87,7 @@ namespace BreakoutExtreme.Components
         }
         public Layers Layer = Layers.Ground;
         public bool Running => _running;
+        public bool Disposable = true; // prevents the runner from disposing the particler if false. Used for pulled components.
         public static void Load()
         {
             var particler = new Particler();
@@ -131,8 +134,8 @@ namespace BreakoutExtreme.Components
         {
             Debug.Assert(!_disposed);
             _disposed = true;
-            foreach (var particleEffect in _particleEffects.Values)
-                particleEffect.Dispose();
+            for (var i = 0; i < _particles.Count; i++)
+                _particleEffects[_particles[i]].Dispose();
         }
         public void Update()
         {

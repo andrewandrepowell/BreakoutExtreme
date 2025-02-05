@@ -3,16 +3,11 @@ using MonoGame.Extended;
 using System;
 using Microsoft.Xna.Framework;
 using BreakoutExtreme.Utility;
-using MonoGame.Extended.Collisions.Layers;
 
 namespace BreakoutExtreme.Components
 {
     public partial class Paddle
     {
-        private const float _laserPulsePeriod = 1f;
-        private const float _laserMinGlowVisibility = 0.1f;
-        private const float _laserMaxThickGlowVisibility = 1f;
-        private const float _laserMaxThinGlowVisibility = 0.5f;
         private static readonly Rectangle _blockBounds = new(Globals.PlayAreaBlockBounds.X, Globals.PlayAreaBlockBounds.Y, 5, 1); // y is set to 4 to resolve odd blazorgl compile bug.
         private static readonly RectangleF _bounds = _blockBounds.ToBounds();
         private static readonly Action<Collider.CollideNode> _collideAction = (Collider.CollideNode node) => ((Paddle)node.Current.Parent).ServiceCollision(node);
@@ -20,7 +15,7 @@ namespace BreakoutExtreme.Components
         private readonly Collider _collider;
         private readonly Entity _entity;
         private readonly Shadow _shadow;
-        private readonly PulseGlower _laserPulseGlower;
+        private readonly LaserGlower _laserGlower;
         private readonly MoveToTarget _moveToTarget;
         private void ServiceCollision(Collider.CollideNode node)
         {
@@ -42,7 +37,7 @@ namespace BreakoutExtreme.Components
         public bool RunningMoveToTarget => _moveToTarget.Running;
         public void StartMoveToTarget(float x) => _moveToTarget.Start(x);
         public void StopMoveToTarget() => _moveToTarget.Stop();
-        public void LaserGlow() => _laserPulseGlower.Start();
+        public void LaserGlow() => _laserGlower.Start();
         public Paddle(Entity entity)
         {
             _animater = new();
@@ -51,18 +46,14 @@ namespace BreakoutExtreme.Components
             _entity = entity;
             _moveToTarget = new(this);
             _shadow = Globals.Runner.CreateShadow(_animater);
-            _laserPulseGlower = Globals.Runner.CreatePulseGlower(
-                parent: _animater, 
-                color: Color.Orange, 
-                minVisibility: _laserMinGlowVisibility, 
-                maxVisibility: _laserMaxThickGlowVisibility, 
-                pulsePeriod: _laserPulsePeriod);
+            _laserGlower = new(this);
+            _laserGlower.Reset();
         }
         public void RemoveEntity()
         {
             Globals.Runner.RemoveEntity(_entity);
             _shadow.RemoveEntity();
-            _laserPulseGlower.RemoveEntity();
+            _laserGlower.RemoveEntity();
         }
         public void Update()
         {

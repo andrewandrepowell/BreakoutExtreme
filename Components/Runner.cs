@@ -34,7 +34,11 @@ namespace BreakoutExtreme.Components
             if (entity.Has<Collider>())
                 _collisionComponent.Remove(entity.Get<Collider>());
             if (entity.Has<Particler>())
-                entity.Get<Particler>().Dispose();
+            {
+                var particler = entity.Get<Particler>();
+                if (particler.Disposable)
+                    particler.Dispose();
+            }
             entity.Destroy();
         }
         public void Initialize()
