@@ -41,6 +41,7 @@ namespace BreakoutExtreme.Components
                 minVisibility: _minGlowVisibility,
                 maxVisibility: _maxThickGlowVisibility,
                 pulsePeriod: _pulsePeriod,
+                pulseRepeating: true,
                 appearVanishPeriod: _appearVanishPeriod);
             _thinGlower = Globals.Runner.CreateGlower(
                 parent: _animater,
@@ -48,6 +49,7 @@ namespace BreakoutExtreme.Components
                 minVisibility: _minGlowVisibility,
                 maxVisibility: _maxThinGlowVisibility,
                 pulsePeriod: _pulsePeriod,
+                pulseRepeating: true,
                 appearVanishPeriod: _appearVanishPeriod);
             _appear.Start();
             _state = States.Active;

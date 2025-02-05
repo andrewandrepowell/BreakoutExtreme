@@ -17,7 +17,9 @@ namespace BreakoutExtreme.Components
         public Texturer GetTexturer() => _texturer;
         public bool VanishRunning => _vanish.Running;
         public void VanishStart() => _vanish.Start();
-        public void Reset(Entity entity, Animater parent, Color color, float minVisibility, float maxVisibility, float pulseReriod, float appearVanishPeriod)
+        public void Reset(
+            Entity entity, Animater parent, Color color, 
+            float minVisibility, float maxVisibility, float pulsePeriod, bool pulseRepeating, float appearVanishPeriod)
         {
             Debug.Assert(!_initialized);
             _entity = entity;
@@ -30,7 +32,8 @@ namespace BreakoutExtreme.Components
             _glow.Start();
             _pulse.MinVisibility = minVisibility;
             _pulse.MaxVisibility = maxVisibility;
-            _pulse.Period = pulseReriod;
+            _pulse.Period = pulsePeriod;
+            _pulse.Repeating = pulseRepeating;
             _pulse.Start();
             _appear.Period = appearVanishPeriod;
             _appear.Start();

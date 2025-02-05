@@ -14,6 +14,17 @@ namespace BreakoutExtreme.Features
         private float _maxVisibility = 0.75f;
         private bool _brightening = true;
         private bool _running = false;
+        private bool _repeating = true;
+        private bool _startDark = true;
+        public bool StartDark
+        {
+            get => _startDark;
+            set
+            {
+                Debug.Assert(!_running);
+                _startDark = value;
+            }
+        }
         public float MaxVisibility
         {
             get => _maxVisibility;
@@ -42,6 +53,16 @@ namespace BreakoutExtreme.Features
                 _period = value;
             }
         }
+        public bool Repeating
+        {
+            get => _repeating;
+            set
+            {
+                Debug.Assert(!_running);
+                _repeating = value;
+            }
+        }
+        public bool Running => _running;
         public override bool UpdateVisibility(ref float visibility)
         {
             if (!_running)
@@ -60,8 +81,8 @@ namespace BreakoutExtreme.Features
             Debug.Assert(_maxVisibility <= 1);
             Debug.Assert(_maxVisibility >= _minVisibility);
             Debug.Assert(_minVisibility >= 0);
-            _time = _period;
-            _brightening = true;
+            _time = _period / 2;
+            _brightening = _startDark;
             _running = true;
         }
         public void Stop()
@@ -76,7 +97,15 @@ namespace BreakoutExtreme.Features
             while (_time <= 0)
             {
                 _brightening = !_brightening;
-                _time += _period;
+                if (!_repeating &&  _brightening == _startDark)
+                {
+                    _running = false;
+                    return;
+                }
+                else
+                {
+                    _time += (_period / 2);
+                }
             }
 
             _time -= Globals.GameTime.GetElapsedSeconds();

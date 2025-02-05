@@ -15,18 +15,22 @@ namespace BreakoutExtreme.Components
                     var cursorSelected = controlState.CursorSelectState == Controller.SelectStates.Pressed || controlState.CursorSelectState == Controller.SelectStates.Held;
                     var cursorReleased = controlState.CursorSelectState == Controller.SelectStates.Released;
 
+                    // Stop moving the paddle around.
                     if (_paddle.RunningMoveToTarget && ((cursorSelected && controlState.CursorPosition.X != _paddle.TargetToMoveTo) || cursorReleased))
                         _paddle.StopMoveToTarget();
 
+                    // Start moving the paddle around to cursor.
                     if (!_paddle.RunningMoveToTarget && cursorSelected)
                         _paddle.StartMoveToTarget(controlState.CursorPosition.X);
 
+                    // IMMA FIRIN MA LASSSER.
                     if (State == States.GameRunning && cursorReleased)
                     {
                         var laser = Globals.Runner.CreateLaser();
                         var collider = laser.GetCollider();
                         collider.Position = _paddle.GetCollider().Bounds.BoundingRectangle.Center - (collider.Bounds.BoundingRectangle.Size / 2);
                         _lasers.Add(laser);
+                        _paddle.LaserGlow();
                     }
                 }
 

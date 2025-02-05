@@ -14,6 +14,7 @@ namespace BreakoutExtreme.Components
         readonly private CollisionComponent _collisionComponent;
         readonly private Deque<ScorePopup> _scorePopupPool = new();
         readonly private Deque<Glower> _glowerPool = new();
+        readonly private Deque<PulseGlower> _pulseGlowerPool = new();
         readonly private Deque<Laser> _laserPool = new();
         readonly private Deque<Cannon> _cannonPool = new();
         private bool _initialized = false;
@@ -24,6 +25,8 @@ namespace BreakoutExtreme.Components
                 _scorePopupPool.AddToBack(entity.Get<ScorePopup>());
             if (entity.Has<Glower>())
                 _glowerPool.AddToBack(entity.Get<Glower>());
+            if (entity.Has<PulseGlower>())
+                _pulseGlowerPool.AddToBack(entity.Get<PulseGlower>());
             if (entity.Has<Laser>())
                 _laserPool.AddToBack(entity.Get<Laser>());
             if (entity.Has<Cannon>())
@@ -50,6 +53,9 @@ namespace BreakoutExtreme.Components
                     var glower = new Glower();
                     _glowerPool.AddToBack(glower);
 
+                    var pulseGlower = new PulseGlower();
+                    _pulseGlowerPool.AddToBack(pulseGlower);
+
                     var laser = new Laser();
                     _laserPool.AddToBack(laser);
 
@@ -67,10 +73,12 @@ namespace BreakoutExtreme.Components
             {
                 var worldBuilder = new WorldBuilder();
                 var gameWindowSystem = new GameWindowSystem();
+                var pulseGlowerSystem = new PulseGlowerSystem();
                 var colliderSystem = new ColliderSystem(_collisionComponent);
                 var positionSystem = new PositionSystem();
                 var renderSystem = new RenderSystem();
                 worldBuilder.AddSystem(gameWindowSystem);
+                worldBuilder.AddSystem(pulseGlowerSystem);
                 worldBuilder.AddSystem(colliderSystem);
                 worldBuilder.AddSystem(positionSystem);
                 worldBuilder.AddSystem(renderSystem);

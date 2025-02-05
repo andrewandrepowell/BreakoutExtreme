@@ -37,15 +37,34 @@ namespace BreakoutExtreme.Components
             _collisionComponent.Insert(collider);
             return laser;
         }
-
-        public Glower CreateGlower(Animater parent, Color color, float minVisibility, float maxVisibility, float pulsePeriod, float appearVanishPeriod)
+        public PulseGlower CreatePulseGlower(
+            Animater parent, Color color,
+            float minVisibility, float maxVisibility,
+            float pulsePeriod)
+        {
+            Debug.Assert(_initialized);
+            var entity = _world.CreateEntity();
+            if (_pulseGlowerPool.Count == 0)
+                _pulseGlowerPool.AddToBack(new PulseGlower());
+            _pulseGlowerPool.RemoveFromFront(out var pulseGlower);
+            pulseGlower.Reset(entity, parent, color, minVisibility, maxVisibility, pulsePeriod);
+            var texturer = pulseGlower.GetTexturer();
+            entity.Attach(pulseGlower);
+            entity.Attach(texturer);
+            return pulseGlower;
+        }
+        public Glower CreateGlower(
+            Animater parent, Color color, 
+            float minVisibility, float maxVisibility,
+            float pulsePeriod, bool pulseRepeating,
+            float appearVanishPeriod)
         {
             Debug.Assert(_initialized);
             var entity = _world.CreateEntity();
             if (_glowerPool.Count == 0)
                 _glowerPool.AddToBack(new Glower());
             _glowerPool.RemoveFromFront(out var glower);
-            glower.Reset(entity, parent, color, minVisibility, maxVisibility, pulsePeriod, appearVanishPeriod);
+            glower.Reset(entity, parent, color, minVisibility, maxVisibility, pulsePeriod, pulseRepeating, appearVanishPeriod);
             var texturer = glower.GetTexturer();
             entity.Attach(glower);
             entity.Attach(texturer);
