@@ -45,6 +45,7 @@
     <Compile Include="Components\BrickTypes.cs" />
     <Compile Include="Components\Button.cs" />
     <Compile Include="Components\Cannon.cs" />
+    <Compile Include="Components\CannonFirer.cs" />
     <Compile Include="Components\Collider.cs" />
     <Compile Include="Components\Controller.cs" />
     <Compile Include="Components\DeathWall.cs" />

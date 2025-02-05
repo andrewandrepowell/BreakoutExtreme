@@ -8,7 +8,7 @@ using BreakoutExtreme.Utility;
 
 namespace BreakoutExtreme.Components
 {
-    public class Cannon : IUpdate, IRemoveEntity, IDestroyed
+    public partial class Cannon : IUpdate, IRemoveEntity, IDestroyed
     {
         private readonly static ReadOnlyDictionary<Cannons, ConfigNode> _cannonConfigNodes = new(new Dictionary<Cannons, ConfigNode>() 
         {
@@ -38,6 +38,7 @@ namespace BreakoutExtreme.Components
         private int _totalHP;
         private int _currentHP;
         private States _state;
+        private Firer _firer;
         private class ConfigNode(
             Animater.Animations active,
             Animater.Animations fire, 
@@ -111,6 +112,7 @@ namespace BreakoutExtreme.Components
             _collider.Position = position;
             _totalHP = _configNode.TotalHP;
             _currentHP = _configNode.TotalHP;
+            _firer.Reset();
             _initialized = true;
             _state = States.Spawning;
         }
@@ -119,6 +121,7 @@ namespace BreakoutExtreme.Components
             Debug.Assert(_initialized);
             Globals.Runner.RemoveEntity(_entity);
             _shadow.RemoveEntity();
+            _firer.RemoveEntity();
             _initialized = false;
         }
         public void Update()
@@ -133,6 +136,8 @@ namespace BreakoutExtreme.Components
 
             if (_state == States.Destroying && !_vanish.Running && !_shadow.VanishRunning)
                 _state = States.Destroyed;
+
+            _firer.Update();
         }
         public Cannon()
         {
@@ -153,6 +158,7 @@ namespace BreakoutExtreme.Components
             _float = new();
             _animater.ShaderFeatures.Add(_float);
             _collider = new(_bounds, this);
+            _firer = new(this);
         }
     }
 }
