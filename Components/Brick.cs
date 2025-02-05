@@ -43,7 +43,6 @@ namespace BreakoutExtreme.Components
             
             { 
                 CurrentHP -= 1;
-                
                 _shake.Start();
                 _cracks.Degree = (Features.Cracks.Degrees)(TotalHP - CurrentHP);
                 _particler.Trigger();

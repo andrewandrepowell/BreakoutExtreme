@@ -5,6 +5,8 @@ using System.Diagnostics;
 using MonoGame.Extended.Collections;
 using BreakoutExtreme.Utility;
 using Microsoft.Xna.Framework;
+using static BreakoutExtreme.Components.Brick;
+using static BreakoutExtreme.Components.Cannon;
 
 namespace BreakoutExtreme.Components
 {
@@ -101,14 +103,23 @@ namespace BreakoutExtreme.Components
 
             State = States.Unloaded;
         }
-        public void UpdateScore(Brick brick)
+        public void UpdateScore(Vector2 position)
         {
-            var brickCollider = brick.GetCollider();
             var scorePopup = Globals.Runner.CreateScorePopup();
             scorePopup.Text = "+1";
-            scorePopup.GetGumDrawer().Position = brickCollider.Position + (Vector2)(brickCollider.Size / 2);
+            scorePopup.GetGumDrawer().Position = position;
             _scorePopups.Add(scorePopup);
             _parent.Score++;
+        }
+        public void UpdateScore(Cannon cannon)
+        {
+            var collider = cannon.GetCollider();
+            UpdateScore(collider.Position);
+        }
+        public void UpdateScore(Brick brick)
+        {
+            var collider = brick.GetCollider();
+            UpdateScore(collider.Position + (Vector2)(collider.Size / 2));
         }
         public PlayArea(GameWindow parent)
         {

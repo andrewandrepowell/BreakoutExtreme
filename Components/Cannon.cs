@@ -20,7 +20,7 @@ namespace BreakoutExtreme.Components
         private const float _shineDelayControl = 0.01f;
         private const float _spawnFactor = 0.005f;
         private const float _spawnPeriod = 0.5f;
-        private readonly RectangleF _bounds = new Rectangle(0, 0, 2, 2);
+        private static readonly CircleF _bounds = new(Vector2.Zero, Globals.GameBlockSize);
         private readonly Animater _animater;
         private readonly Collider _collider;
         private readonly Features.Shake _shake;
@@ -55,13 +55,44 @@ namespace BreakoutExtreme.Components
         public bool Destroyed => _state == States.Destroyed;
         public Animater GetAnimater() => _animater;
         public Collider GetCollider() => _collider;
+        public void Damage()
+        {
+            Debug.Assert(_initialized);
+            Debug.Assert(_currentHP > 0 && State == States.Active);
+
+            {
+                _currentHP -= 1;
+                _shake.Start();
+                _cracks.Degree = (Features.Cracks.Degrees)(_totalHP - _currentHP);
+            }
+
+            if (_currentHP == 0)
+            {
+                Destroy();
+            }
+
+        }
+        public void Destroy()
+        {
+            Debug.Assert(_initialized);
+            Debug.Assert(State == States.Active);
+            Debug.Assert(!_vanish.Running);
+            _currentHP = 0;
+
+            _shake.Start();
+            _cracks.Degree = Features.Cracks.Degrees.None;
+            _vanish.Start();
+            _shadow.VanishStart();
+            _animater.Play(_configNode.Dead);
+
+            _state = States.Destroying;
+        }
         public void Reset(Entity entity, Cannons cannon, Vector2 position)
         {
             Debug.Assert(!_initialized);
             _entity = entity;
             _cannon = cannon;
             _configNode = _cannonConfigNodes[cannon];
-            _animater.Position = position;
             _animater.Play(_configNode.Active);
             _shadow = Globals.Runner.CreateShadow(_animater);
             _shake.DelayPeriod = position.X * _spawnFactor;

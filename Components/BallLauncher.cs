@@ -19,7 +19,7 @@ namespace BreakoutExtreme.Components
                 Debug.Assert(Running);
                 var collider = _parent.GetCollider();
 
-                // Handle bounce logic.
+                // Handle rectangular bounce logic.
                 {
                     if (_parent.State == States.Active && 
                         (node.Other.Parent is Wall || 
@@ -41,6 +41,27 @@ namespace BreakoutExtreme.Components
                                     Acceleration.Y *= -1;
                                 collider.Velocity.Y *= -1;
                             }
+                        }
+                    }
+                }
+
+                // Handle circular bounce logic.
+                {
+                    if (_parent.State == States.Active && (
+                        (node.Other.Parent is Cannon cannon && cannon.State == Cannon.States.Active)))
+                    {
+                        var cannonCollider = cannon.GetCollider();
+                        var normalBasis = Vector2.Normalize(collider.Position - cannonCollider.Position);
+                        var orthogBasis = new Vector2(x: -normalBasis.Y, y: normalBasis.X);
+                        {
+                            var normalMag = normalBasis.Dot(collider.Velocity);
+                            var orthogMag = orthogBasis.Dot(collider.Velocity);
+                            collider.Velocity = -normalMag * normalBasis + orthogMag * orthogBasis;
+                        }
+                        {
+                            var normalMag = normalBasis.Dot(Acceleration);
+                            var orthogMag = orthogBasis.Dot(Acceleration);
+                            Acceleration = -normalMag * normalBasis + orthogMag * orthogBasis;
                         }
                     }
                 }
@@ -83,6 +104,19 @@ namespace BreakoutExtreme.Components
                         // Update the score once the brick is destroyed.
                         if (brick.State != Brick.States.Active)
                             _parent._parent.UpdateScore(brick);
+                    }
+                }
+
+                // Handle damaging a cannon logic.
+                {
+                    if (_parent.State == States.Active &&
+                        node.Other.Parent is Cannon cannon && cannon.State == Cannon.States.Active)
+                    {
+                        cannon.Damage();
+
+                        // Update the score once the cannon is destroyed.
+                        if (cannon.State != Cannon.States.Active)
+                            _parent._parent.UpdateScore(cannon);
                     }
                 }
 

@@ -3,6 +3,7 @@ using Microsoft.Xna.Framework;
 using MonoGame.Extended.ECS;
 using MonoGame.Extended.ECS.Systems;
 using MonoGame.Extended;
+using System;
 
 namespace BreakoutExtreme.Systems
 {
