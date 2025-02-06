@@ -126,7 +126,8 @@ namespace BreakoutExtreme.Components
         }
         public void Update()
         {
-            Debug.Assert(_initialized);
+            if (!_initialized)
+                return;
             if (_state == States.Spawning && !_shake.Running && !_scaleDown.Running && !_limitedFlash.Running && !_appear.Running)
             {
                 _shake.DelayPeriod = 0;

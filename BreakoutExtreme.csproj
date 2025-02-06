@@ -107,8 +107,8 @@
     <Compile Include="Systems\ColliderSystem.cs" />
     <Compile Include="Systems\GameWindowSystem.cs" />
     <Compile Include="Systems\PositionSystem.cs" />
-    <Compile Include="Systems\PulseGlowerSystem.cs" />
     <Compile Include="Systems\RenderSystem.cs" />
+    <Compile Include="Systems\UpdateSystem.cs" />
     <Compile Include="Utility\Types.cs" />
     <Compile Include="Utility\FloatExtensions.cs" />
     <Compile Include="Utility\PointExtensions.cs" />

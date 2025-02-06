@@ -76,16 +76,17 @@ namespace BreakoutExtreme.Components
 
             {
                 var worldBuilder = new WorldBuilder();
-                var gameWindowSystem = new GameWindowSystem();
-                var pulseGlowerSystem = new PulseGlowerSystem();
-                var colliderSystem = new ColliderSystem(_collisionComponent);
-                var positionSystem = new PositionSystem();
-                var renderSystem = new RenderSystem();
-                worldBuilder.AddSystem(gameWindowSystem);
-                worldBuilder.AddSystem(pulseGlowerSystem);
-                worldBuilder.AddSystem(colliderSystem);
-                worldBuilder.AddSystem(positionSystem);
-                worldBuilder.AddSystem(renderSystem);
+                worldBuilder.AddSystem(new GameWindowSystem());
+                worldBuilder.AddSystem(new UpdateSystem<Paddle>());
+                worldBuilder.AddSystem(new UpdateSystem<Ball>());
+                worldBuilder.AddSystem(new UpdateSystem<Brick>());
+                worldBuilder.AddSystem(new UpdateSystem<Laser>());
+                worldBuilder.AddSystem(new UpdateSystem<Cannon>());
+                worldBuilder.AddSystem(new UpdateSystem<ScorePopup>());
+                worldBuilder.AddSystem(new UpdateSystem<PulseGlower>());
+                worldBuilder.AddSystem(new ColliderSystem(_collisionComponent));
+                worldBuilder.AddSystem(new PositionSystem());
+                worldBuilder.AddSystem(new RenderSystem());
                 _world = worldBuilder.Build();
             }
         }

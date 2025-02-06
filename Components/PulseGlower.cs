@@ -1,10 +1,11 @@
 ﻿using MonoGame.Extended.ECS;
 using Microsoft.Xna.Framework;
 using System.Diagnostics;
+using BreakoutExtreme.Utility;
 
 namespace BreakoutExtreme.Components
 {
-    public class PulseGlower
+    public class PulseGlower : IUpdate
     {
         private bool _initialized;
         private bool _running;
@@ -74,7 +75,8 @@ namespace BreakoutExtreme.Components
         }
         public void Update()
         {
-            Debug.Assert(_initialized);
+            if (!_initialized)
+                return;
             if (_running && !_pulse.Running)
                 Stop();
         }

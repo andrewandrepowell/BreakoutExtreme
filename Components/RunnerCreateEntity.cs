@@ -17,6 +17,7 @@ namespace BreakoutExtreme.Components
             cannon.Reset(entity, cannonEnum, position);
             var animater = cannon.GetAnimater();
             var collider = cannon.GetCollider();
+            entity.Attach(cannon);
             entity.Attach(animater);
             entity.Attach(collider);
             _collisionComponent.Insert(collider);
@@ -32,6 +33,7 @@ namespace BreakoutExtreme.Components
             laser.Reset(entity);
             var animater = laser.GetAnimater();
             var collider = laser.GetCollider();
+            entity.Attach(laser);
             entity.Attach(animater);
             entity.Attach(collider);
             _collisionComponent.Insert(collider);

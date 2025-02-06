@@ -75,7 +75,8 @@ namespace BreakoutExtreme.Components
         }
         public void Update()
         {
-            Debug.Assert(_initialized);
+            if (!_initialized)
+                return;
             if (_state == States.Active)
                 _collider.Acceleration += _acceleration;
 

@@ -77,7 +77,8 @@ namespace BreakoutExtreme.Components
         }
         public void Update()
         {
-            Debug.Assert(_initialized);
+            if (!_initialized)
+                return;
             if (_running && !_vanish.Running && _floatUp.State == RunningStates.Running)
                 _running = false;
         }

@@ -6,7 +6,7 @@ using BreakoutExtreme.Utility;
 
 namespace BreakoutExtreme.Components
 {
-    public partial class Paddle
+    public partial class Paddle : IUpdate
     {
         private static readonly Rectangle _blockBounds = new(Globals.PlayAreaBlockBounds.X, Globals.PlayAreaBlockBounds.Y, 5, 1); // y is set to 4 to resolve odd blazorgl compile bug.
         private static readonly RectangleF _bounds = _blockBounds.ToBounds();

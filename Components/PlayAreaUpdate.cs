@@ -82,16 +82,6 @@ namespace BreakoutExtreme.Components
                     _lasers.Destroy();
                     _cannons.Destroy();
                 }
-
-                // Update all game components.
-                {
-                    _paddle.Update();
-                    _balls.Update();
-                    _bricks.Update();
-                    _lasers.Update();
-                    _scorePopups.Update();
-                    _cannons.Update();
-                }
             }
         }
     }
