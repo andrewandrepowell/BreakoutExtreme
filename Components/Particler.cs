@@ -6,7 +6,6 @@ using MonoGame.Extended.Particles;
 using System;
 using System.Diagnostics;
 using BreakoutExtreme.Utility;
-using MonoGame.Extended.Collections;
 
 
 namespace BreakoutExtreme.Components
@@ -88,6 +87,7 @@ namespace BreakoutExtreme.Components
         public Layers Layer = Layers.Ground;
         public bool Running => _running;
         public bool Disposable = true; // prevents the runner from disposing the particler if false. Used for pulled components.
+        public ParticleEffect GetParticleEffect() => _particleEffect;
         public static void Load()
         {
             var particler = new Particler();

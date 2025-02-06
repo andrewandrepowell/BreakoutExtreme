@@ -1,54 +1,62 @@
-﻿using MonoGame.Extended.ECS;
-using System.Diagnostics;
-using Microsoft.Xna.Framework;
+﻿using BreakoutExtreme.Utility;
 using MonoGame.Extended;
-using System.Collections.ObjectModel;
+using MonoGame.Extended.ECS;
+using Microsoft.Xna.Framework;
+using System.Diagnostics;
 using System.Collections.Generic;
-using BreakoutExtreme.Utility;
+using System.Collections.ObjectModel;
+using System;
 
 namespace BreakoutExtreme.Components
 {
-    public partial class Cannon : IUpdate, IRemoveEntity, IDestroyed
+    public partial class Bomb : IUpdate, IRemoveEntity, IDestroyed
     {
-        private readonly static ReadOnlyDictionary<Cannons, ConfigNode> _cannonConfigNodes = new(new Dictionary<Cannons, ConfigNode>() 
+        private readonly static ReadOnlyDictionary<Bombs, ConfigNode> _configNodes = new(new Dictionary<Bombs, ConfigNode>()
         {
-            { Cannons.Normal, new(active: Animater.Animations.Cannon, fire: Animater.Animations.CannonFire, dead: Animater.Animations.CannonDead, totalHP: 3) }
+            { Bombs.Normal, new(active: Animater.Animations.Bomb, dead: Animater.Animations.BombDead, totalHP: 3) }
         });
+        private static readonly Action<Collider.CollideNode> _collideAction = (Collider.CollideNode node) => ((Bomb)node.Current.Parent).ServiceCollision(node);
+        private static readonly CircleF _bounds = new(Vector2.Zero, Globals.GameHalfBlockSize);
         private const float _spawnFactor = 0.005f;
         private const float _spawnPeriod = 0.5f;
-        private static readonly CircleF _bounds = new(Vector2.Zero, Globals.GameBlockSize);
         private readonly Animater _animater;
         private readonly Collider _collider;
         private readonly Particler _particler;
         private readonly Features.Shake _shake;
         private readonly Features.Cracks _cracks;
         private readonly Features.Vanish _vanish;
-        private readonly Features.ScaleDown _scaleDown;
         private readonly Features.LimitedFlash _limitedFlash;
         private readonly Features.Appear _appear;
-        private readonly Features.Float _float;
         private bool _initialized;
         private Entity _entity;
-        private Cannons _cannon;
+        private Bombs _bomb;
         private Shadow _shadow;
         private ConfigNode _configNode;
         private int _totalHP;
         private int _currentHP;
         private States _state;
-        private Firer _firer;
+        private Detonater _detonater;
         private class ConfigNode(
             Animater.Animations active,
-            Animater.Animations fire, 
             Animater.Animations dead,
             int totalHP)
         {
             public readonly Animater.Animations Active = active;
-            public readonly Animater.Animations Fire = fire;
             public readonly Animater.Animations Dead = dead;
             public readonly int TotalHP = totalHP;
         }
-        public enum Cannons { Normal }
-        public enum States { Spawning, Active, Destroying, Destroyed }
+        private void ServiceCollision(Collider.CollideNode node)
+        {
+            if (!_initialized)
+                return;
+
+            if (_state == States.Active && node.Other.Parent is DeathWall deathWall)
+            {
+                Detonate();
+            }
+        }
+        public enum Bombs { Normal }
+        public enum States { Spawning, Active, Destroying, Destroyed, Detonating }
         public States State => _state;
         public bool Destroyed => _state == States.Destroyed;
         public Animater GetAnimater() => _animater;
@@ -86,47 +94,47 @@ namespace BreakoutExtreme.Components
 
             _state = States.Destroying;
         }
-        public void Reset(Entity entity, Cannons cannon, Vector2 position)
+        public void Detonate()
         {
-            Debug.Assert(!_initialized);
-            _entity = entity;
-            _cannon = cannon;
-            _configNode = _cannonConfigNodes[cannon];
-            _animater.Play(_configNode.Active);
-            _shadow = Globals.Runner.CreateShadow(_animater);
-            _shake.DelayPeriod = position.X * _spawnFactor;
-            _shake.Period = _spawnPeriod;
-            _shake.Start();
-            _scaleDown.DelayPeriod = position.X * _spawnFactor;
-            _scaleDown.Period = _spawnPeriod;
-            _scaleDown.Start();
-            _limitedFlash.LimitedPeriod = position.X * _spawnFactor + _spawnPeriod;
-            _limitedFlash.Start();
-            _appear.Period = _spawnPeriod;
-            _appear.DelayPeriod = position.X * _spawnFactor;
-            _appear.Start();
-            _float.DelayPeriod = Globals.Random.NextSingle();
-            _float.Start();
-            _collider.Position = position;
-            _totalHP = _configNode.TotalHP;
-            _currentHP = _configNode.TotalHP;
-            _firer.Reset();
-            _initialized = true;
-            _state = States.Spawning;
+            Debug.Assert(_state == States.Active);
+            _detonater.Start();
+            _state = States.Detonating;
         }
         public void RemoveEntity()
         {
             Debug.Assert(_initialized);
             Globals.Runner.RemoveEntity(_entity);
             _shadow.RemoveEntity();
-            _firer.RemoveEntity();
             _initialized = false;
+        }
+        public void Reset(Entity entity, Bombs bomb, Vector2 position)
+        {
+            Debug.Assert(!_initialized);
+            _entity = entity;
+            _bomb = bomb;
+            _configNode = _configNodes[bomb];
+            _animater.Play(_configNode.Active);
+            _shadow = Globals.Runner.CreateShadow(_animater);
+            _shake.DelayPeriod = 0;
+            _shake.Period = _spawnPeriod;
+            _shake.Start();
+            _limitedFlash.LimitedPeriod = _spawnPeriod;
+            _limitedFlash.Start();
+            _appear.Period = _spawnPeriod;
+            _appear.Start();
+            _collider.Position = position;
+            _totalHP = _configNode.TotalHP;
+            _currentHP = _configNode.TotalHP;
+            _particler.Stop();
+            _detonater.Reset();
+            _state = States.Spawning;
+            _initialized = true;
         }
         public void Update()
         {
             if (!_initialized)
                 return;
-            if (_state == States.Spawning && !_shake.Running && !_scaleDown.Running && !_limitedFlash.Running && !_appear.Running)
+            if (_state == States.Spawning && !_shake.Running && !_limitedFlash.Running && !_appear.Running)
             {
                 _shake.DelayPeriod = 0;
                 _shake.Period = _spawnPeriod;
@@ -136,9 +144,12 @@ namespace BreakoutExtreme.Components
             if (_state == States.Destroying && !_vanish.Running && !_shadow.VanishRunning)
                 _state = States.Destroyed;
 
-            _firer.Update();
+            if (_state == States.Detonating && _detonater.State == Detonater.States.Finished)
+                Destroy();
+
+            _detonater.Update();
         }
-        public Cannon()
+        public Bomb()
         {
             _initialized = false;
             _animater = new();
@@ -148,17 +159,13 @@ namespace BreakoutExtreme.Components
             _animater.ShaderFeatures.Add(_cracks);
             _vanish = new();
             _animater.ShaderFeatures.Add(_vanish);
-            _scaleDown = new();
-            _animater.ShaderFeatures.Add(_scaleDown);
             _limitedFlash = new();
             _animater.ShaderFeatures.Add(_limitedFlash);
             _appear = new();
             _animater.ShaderFeatures.Add(_appear);
-            _float = new();
-            _animater.ShaderFeatures.Add(_float);
             _collider = new(_bounds, this);
-            _particler = new(Particler.Particles.CannonBlast) { Disposable = false, Layer = Layers.Foreground };
-            _firer = new(this);
+            _particler = new() { Disposable = false };
+            _detonater = new(this);
         }
     }
 }

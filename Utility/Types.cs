@@ -18,7 +18,7 @@ namespace BreakoutExtreme.Utility
     {
         public bool Destroyed {  get; }
     }
-    public class GameBag<T> where T : IUpdate, IRemoveEntity, IDestroyed
+    public class GameBag<T> where T : IRemoveEntity, IDestroyed
     {
         private readonly Bag<T> _values = [];
         private readonly Bag<T> _destroyedValues = [];
@@ -45,13 +45,6 @@ namespace BreakoutExtreme.Utility
                 var value = _destroyedValues[i];
                 value.RemoveEntity();
                 _values.Remove(value);
-            }
-        }
-        public void Update()
-        {
-            for (var i = 0; i < _values.Count; i++)
-            {
-                _values[i].Update();
             }
         }
     }

@@ -22,12 +22,14 @@ namespace BreakoutExtreme.Components
             { Particles.BallTrail, "animations/particle_0" },
             { Particles.BrickBreak, "animations/particle_1" },
             { Particles.CannonBlast, "animations/fireball_0" },
+            { Particles.BombBlast, "animations/fireball_0" },
         });
         private readonly static ReadOnlyDictionary<Particles, Size> _particleRegionSizes = new(new Dictionary<Particles, Size>()
         {
             { Particles.BallTrail, new Size(1, 1) },
             { Particles.BrickBreak, new Size(16, 16) },
-            { Particles.CannonBlast, new Size(16, 16) }
+            { Particles.CannonBlast, new Size(16, 16) },
+            { Particles.BombBlast, new Size(16, 16) }
         });
         private readonly static ReadOnlyDictionary<Particles, Func<Texture2DRegion[], ParticleEffect>> _particleCreateActions = new(new Dictionary<Particles, Func<Texture2DRegion[], ParticleEffect>>() 
         {
@@ -156,6 +158,44 @@ namespace BreakoutExtreme.Components
                                     new OpacityFastFadeModifier(),
                                 },
                                 AutoTrigger = false,
+                            },
+                        }
+                    };
+                    return particleEffect;
+                }
+            },
+            {
+                Particles.BombBlast,
+                delegate(Texture2DRegion[] textureRegions)
+                {
+                    var particleEffect = new ParticleEffect()
+                    {
+                        Emitters =
+                        {
+                            new ParticleEmitter(
+                                textureRegion: textureRegions[0],
+                                capacity: 100,
+                                lifeSpan: TimeSpan.FromSeconds((float)1 / 2),
+                                profile: Profile.Circle(128, Profile.CircleRadiation.Out))
+                            {
+                                Parameters =
+                                {
+                                    Quantity = 16,
+                                    Speed = 128,
+                                    Rotation = 0,
+                                    Scale = new Range<float>(0.75f, 1.25f)
+                                },
+                                Modifiers =
+                                {
+                                    new OpacityFastFadeModifier(),
+                                    new CircleContainerModifier()
+                                    {
+                                        Radius = 128,
+                                        Inside = true,
+                                        RestitutionCoefficient = 0.2f
+                                    }
+                                },
+                                AutoTrigger = true,
                             },
                         }
                     };

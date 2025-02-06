@@ -40,6 +40,8 @@
     <Compile Include="Components\BallDestroyer.cs" />
     <Compile Include="Components\BallLauncher.cs" />
     <Compile Include="Components\BallTypes.cs" />
+    <Compile Include="Components\Bomb.cs" />
+    <Compile Include="Components\BombDetonater.cs" />
     <Compile Include="Components\Brick.cs" />
     <Compile Include="Components\BrickData.cs" />
     <Compile Include="Components\BrickTypes.cs" />

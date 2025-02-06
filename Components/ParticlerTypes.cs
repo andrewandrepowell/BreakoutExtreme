@@ -13,7 +13,8 @@ namespace BreakoutExtreme.Components
         {
             BallTrail,
             BrickBreak,
-            CannonBlast
+            CannonBlast,
+            BombBlast
         }
     }
 }

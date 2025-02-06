@@ -33,7 +33,7 @@ namespace BreakoutExtreme.Components
         public Vector2 Velocity;
         public Vector2 Acceleration;
         public float Slick = 0.80f;
-        public IShapeF Bounds { get; }
+        public IShapeF Bounds { get; set; }
         public object Parent { get; }
         public Attacher<Collider> GetAttacher() => _attacher;
 

@@ -6,7 +6,25 @@ using System.Diagnostics;
 namespace BreakoutExtreme.Components
 {
     public partial class Runner
-    { 
+    {
+        public Bomb CreateBomb(Bomb.Bombs bombEnum, Vector2 position)
+        {
+            Debug.Assert(_initialized);
+            var entity = _world.CreateEntity();
+            if (_bombPool.Count == 0)
+                _bombPool.AddToBack(new Bomb());
+            _bombPool.RemoveFromFront(out var bomb);
+            bomb.Reset(entity, bombEnum, position);
+            var animater = bomb.GetAnimater();
+            var collider = bomb.GetCollider();
+            var particler = bomb.GetParticler();
+            entity.Attach(bomb);
+            entity.Attach(animater);
+            entity.Attach(collider);
+            entity.Attach(particler);
+            _collisionComponent.Insert(collider);
+            return bomb;
+        }
         public Cannon CreateCannon(Cannon.Cannons cannonEnum, Vector2 position)
         {
             Debug.Assert(_initialized);

@@ -17,6 +17,7 @@ namespace BreakoutExtreme.Components
         readonly private Deque<PulseGlower> _pulseGlowerPool = new();
         readonly private Deque<Laser> _laserPool = new();
         readonly private Deque<Cannon> _cannonPool = new();
+        readonly private Deque<Bomb> _bombPool = new();
         private bool _initialized = false;
         public void RemoveEntity(Entity entity)
         {
@@ -31,6 +32,8 @@ namespace BreakoutExtreme.Components
                 _laserPool.AddToBack(entity.Get<Laser>());
             if (entity.Has<Cannon>())
                 _cannonPool.AddToBack(entity.Get<Cannon>());
+            if (entity.Has<Bomb>())
+                _bombPool.AddToBack(entity.Get<Bomb>());
             if (entity.Has<Collider>())
                 _collisionComponent.Remove(entity.Get<Collider>());
             if (entity.Has<Particler>())
@@ -65,6 +68,9 @@ namespace BreakoutExtreme.Components
 
                     var cannon = new Cannon();
                     _cannonPool.AddToBack(cannon);
+
+                    var bomb = new Bomb();
+                    _bombPool.AddToBack(bomb);
                 }
             }
 
@@ -81,6 +87,7 @@ namespace BreakoutExtreme.Components
                 worldBuilder.AddSystem(new UpdateSystem<Ball>());
                 worldBuilder.AddSystem(new UpdateSystem<Brick>());
                 worldBuilder.AddSystem(new UpdateSystem<Laser>());
+                worldBuilder.AddSystem(new UpdateSystem<Bomb>());
                 worldBuilder.AddSystem(new UpdateSystem<Cannon>());
                 worldBuilder.AddSystem(new UpdateSystem<ScorePopup>());
                 worldBuilder.AddSystem(new UpdateSystem<PulseGlower>());
