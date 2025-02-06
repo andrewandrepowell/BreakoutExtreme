@@ -27,20 +27,25 @@ namespace BreakoutExtreme.Components
                         (node.Other.Parent is Brick brick && brick.State == Brick.States.Active) ||
                         (node.Other.Parent is DeathWall deathWall && !deathWall.Running)))
                     {
-                        if (!node.PenetrationVector.EqualsWithTolerence(Vector2.Zero))
+                        var otherBounds = node.Other.Bounds.BoundingRectangle;
+                        var position = collider.Position;
+                        var xBounce = position.Y >= otherBounds.Top && position.Y <= otherBounds.Bottom;
+                        var yBounce = position.X >= otherBounds.Left && position.X <= otherBounds.Right;
+                        var xDistance = MathHelper.Min(Math.Abs(position.X - otherBounds.Left), Math.Abs(position.X - otherBounds.Right));
+                        var yDistance = MathHelper.Min(Math.Abs(position.Y - otherBounds.Top), Math.Abs(position.Y - otherBounds.Bottom));
+                        var xClosest = xDistance <= yDistance;
+
+                        if (xBounce || (!yBounce && xClosest))
                         {
-                            if (Math.Abs(node.PenetrationVector.X) > (Math.Abs(node.PenetrationVector.Y)))
-                            {
-                                if (Running)
-                                    Acceleration.X *= -1;
-                                collider.Velocity.X *= -1;
-                            }
-                            else
-                            {
-                                if (Running)
-                                    Acceleration.Y *= -1;
-                                collider.Velocity.Y *= -1;
-                            }
+                            if (Running)
+                                Acceleration.X *= -1;
+                            collider.Velocity.X *= -1;
+                        }
+                        else
+                        {
+                            if (Running)
+                                Acceleration.Y *= -1;
+                            collider.Velocity.Y *= -1;
                         }
                     }
                 }
@@ -58,6 +63,7 @@ namespace BreakoutExtreme.Components
                             var orthogMag = orthogBasis.Dot(collider.Velocity);
                             collider.Velocity = -normalMag * normalBasis + orthogMag * orthogBasis;
                         }
+                        if (Running)
                         {
                             var normalMag = normalBasis.Dot(Acceleration);
                             var orthogMag = orthogBasis.Dot(Acceleration);
