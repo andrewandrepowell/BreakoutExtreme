@@ -19,6 +19,7 @@ namespace BreakoutExtreme.Components
         private static readonly CircleF _bounds = new(Vector2.Zero, Globals.GameHalfBlockSize);
         private const float _spawnFactor = 0.005f;
         private const float _spawnPeriod = 0.5f;
+        private static readonly Vector2 _fallingAcceleration = new Vector2(x: 0, y: 1000);
         private readonly Animater _animater;
         private readonly Collider _collider;
         private readonly Particler _particler;
@@ -82,7 +83,7 @@ namespace BreakoutExtreme.Components
         public void Destroy()
         {
             Debug.Assert(_initialized);
-            Debug.Assert(State == States.Active);
+            Debug.Assert(State == States.Active || State == States.Detonating);
             Debug.Assert(!_vanish.Running);
             _currentHP = 0;
 
@@ -134,6 +135,10 @@ namespace BreakoutExtreme.Components
         {
             if (!_initialized)
                 return;
+
+            if (_state == States.Spawning || _state == States.Active)
+                _collider.Acceleration += _fallingAcceleration;
+
             if (_state == States.Spawning && !_shake.Running && !_limitedFlash.Running && !_appear.Running)
             {
                 _shake.DelayPeriod = 0;
@@ -163,7 +168,7 @@ namespace BreakoutExtreme.Components
             _animater.ShaderFeatures.Add(_limitedFlash);
             _appear = new();
             _animater.ShaderFeatures.Add(_appear);
-            _collider = new(_bounds, this);
+            _collider = new(_bounds, this, _collideAction);
             _particler = new() { Disposable = false };
             _detonater = new(this);
         }

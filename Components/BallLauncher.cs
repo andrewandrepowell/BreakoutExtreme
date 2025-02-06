@@ -16,7 +16,6 @@ namespace BreakoutExtreme.Components
             public void ServiceCollision(Collider.CollideNode node)
             {
                 Debug.Assert(_parent.State == States.Active);
-                Debug.Assert(Running);
                 var collider = _parent.GetCollider();
 
                 // Handle rectangular bounce logic.

@@ -16,7 +16,7 @@ namespace BreakoutExtreme.Components
             private readonly static float _detonationRadius = Globals.PlayAreaBounds.Width * 1 / 3;
             private readonly static CircleF _detonationBounds = new CircleF(Vector2.Zero, _detonationRadius);
             private const float _detonationThreshold = Globals.GameBlockSize;
-            private const float _detonationPeriod = 10;
+            private const float _detonationPeriod = 2;
             private readonly Bomb _parent = parent;
             private States _state = States.Waiting;
             public enum States { Waiting, Soaring, Detonating, Finished }
@@ -51,7 +51,7 @@ namespace BreakoutExtreme.Components
                 if (_state == States.Soaring)
                 {
                     Debug.Assert(_parent._state == Bomb.States.Detonating);
-                    _parent._collider.Acceleration = _soaringAcceleration;
+                    _parent._collider.Acceleration += _soaringAcceleration;
                 }
 
                 if (_state == States.Soaring && Math.Abs(_parent._collider.Position.Y - _detonationHeight) <= _detonationThreshold)

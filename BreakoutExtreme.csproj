@@ -109,6 +109,7 @@
     <Compile Include="Systems\ColliderSystem.cs" />
     <Compile Include="Systems\GameWindowSystem.cs" />
     <Compile Include="Systems\PositionSystem.cs" />
+    <Compile Include="Systems\RemoveSystem.cs" />
     <Compile Include="Systems\RenderSystem.cs" />
     <Compile Include="Systems\UpdateSystem.cs" />
     <Compile Include="Utility\Types.cs" />

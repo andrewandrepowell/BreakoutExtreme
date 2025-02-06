@@ -17,10 +17,12 @@ namespace BreakoutExtreme.Components
             public void Fire()
             {
                 Debug.Assert(_initialized);
+                Debug.Assert(_parent._state == States.Active);
                 Debug.Assert(_parent._animater.Animation == _parent._configNode.Active);
                 Debug.Assert(_parent._particler.Particle == Particler.Particles.CannonBlast);
                 _parent._animater.Play(_parent._configNode.Fire);
                 _parent._particler.Trigger();
+                Globals.Runner.CreateBomb(Bomb.Bombs.Normal, _parent._collider.Position);
                 _firing = true;
             }
             public void Reset()
@@ -39,13 +41,16 @@ namespace BreakoutExtreme.Components
             {
                 Debug.Assert(_initialized);
 
+                if (_parent._state != States.Active)
+                    return;
+
                 if (_firing && !_parent._animater.Running)
                 {
                     _parent._animater.Play(_parent._configNode.Active);
                     _firing = false;
                 }
 
-                while (_time <= 0 && _delayTime <= 0)
+                while (!_firing && _time <= 0 && _delayTime <= 0)
                 {
                     Debug.Assert(_period > 0);
                     Fire();

@@ -87,6 +87,7 @@ namespace BreakoutExtreme.Components
                 worldBuilder.AddSystem(new UpdateSystem<Ball>());
                 worldBuilder.AddSystem(new UpdateSystem<Brick>());
                 worldBuilder.AddSystem(new UpdateSystem<Laser>());
+                worldBuilder.AddSystem(new RemoveSystem<Bomb>());
                 worldBuilder.AddSystem(new UpdateSystem<Bomb>());
                 worldBuilder.AddSystem(new UpdateSystem<Cannon>());
                 worldBuilder.AddSystem(new UpdateSystem<ScorePopup>());
