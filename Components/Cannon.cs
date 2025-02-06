@@ -23,6 +23,7 @@ namespace BreakoutExtreme.Components
         private static readonly CircleF _bounds = new(Vector2.Zero, Globals.GameBlockSize);
         private readonly Animater _animater;
         private readonly Collider _collider;
+        private readonly Particler _particler;
         private readonly Features.Shake _shake;
         private readonly Features.Cracks _cracks;
         private readonly Features.Vanish _vanish;
@@ -56,6 +57,7 @@ namespace BreakoutExtreme.Components
         public bool Destroyed => _state == States.Destroyed;
         public Animater GetAnimater() => _animater;
         public Collider GetCollider() => _collider;
+        public Particler GetParticler() => _particler;
         public void Damage()
         {
             Debug.Assert(_initialized);
@@ -159,6 +161,7 @@ namespace BreakoutExtreme.Components
             _float = new();
             _animater.ShaderFeatures.Add(_float);
             _collider = new(_bounds, this);
+            _particler = new(Particler.Particles.CannonBlast) { Disposable = false, Layer = Layers.Foreground };
             _firer = new(this);
         }
     }

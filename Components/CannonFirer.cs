@@ -18,7 +18,9 @@ namespace BreakoutExtreme.Components
             {
                 Debug.Assert(_initialized);
                 Debug.Assert(_parent._animater.Animation == _parent._configNode.Active);
+                Debug.Assert(_parent._particler.Particle == Particler.Particles.CannonBlast);
                 _parent._animater.Play(_parent._configNode.Fire);
+                _parent._particler.Trigger();
                 _firing = true;
             }
             public void Reset()

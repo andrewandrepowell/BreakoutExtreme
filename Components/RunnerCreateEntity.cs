@@ -17,9 +17,11 @@ namespace BreakoutExtreme.Components
             cannon.Reset(entity, cannonEnum, position);
             var animater = cannon.GetAnimater();
             var collider = cannon.GetCollider();
+            var particler = cannon.GetParticler();
             entity.Attach(cannon);
             entity.Attach(animater);
             entity.Attach(collider);
+            entity.Attach(particler);
             _collisionComponent.Insert(collider);
             return cannon;
         }
