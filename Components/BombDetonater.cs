@@ -39,7 +39,7 @@ namespace BreakoutExtreme.Components
                     Debug.Assert(particleEffect.Emitters.Count == 1);
                     var emitter = particleEffect.Emitters[0];
                     ((CircleProfile)emitter.Profile).Radius = _detonationRadius;
-                    Debug.Assert(emitter.Modifiers.Count == 2 && emitter.Modifiers[1] is CircleContainerModifier);
+                    Debug.Assert(emitter.Modifiers.Count == 3 && emitter.Modifiers[1] is CircleContainerModifier);
                     ((CircleContainerModifier)emitter.Modifiers[1]).Radius = _detonationRadius;
                 }
                 _state = States.Soaring;

@@ -183,7 +183,7 @@ namespace BreakoutExtreme.Components
                                     Quantity = 16,
                                     Speed = 128,
                                     Rotation = 0,
-                                    Scale = new Range<float>(0.75f, 1.25f)
+                                    Scale = new Range<float>(1f, 2f)
                                 },
                                 Modifiers =
                                 {
@@ -193,6 +193,12 @@ namespace BreakoutExtreme.Components
                                         Radius = 128,
                                         Inside = true,
                                         RestitutionCoefficient = 0.2f
+                                    },
+                                    new VelocityColorModifier()
+                                    {
+                                        StationaryColor = Color.Black.ToHsl(),
+                                        VelocityColor = Color.White.ToHsl(),
+                                        VelocityThreshold = 64
                                     }
                                 },
                                 AutoTrigger = true,
