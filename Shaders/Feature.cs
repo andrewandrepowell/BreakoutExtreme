@@ -21,6 +21,10 @@ namespace BreakoutExtreme.Shaders
         {
             return false;
         }
+        public virtual bool UpdateRotation(ref float rotation)
+        {
+            return false;
+        }
         public virtual void UpdateShaderNode(SilhouetteNode node)
         {
         }

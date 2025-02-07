@@ -15,6 +15,7 @@ namespace BreakoutExtreme.Components
         private Color _color = Color.White, _drawColor = Color.White;
         private float _scale = 1, _drawScale = 1, _shaderScale = 1;
         private float _visibility = 1, _shaderVisibility = 1;
+        private float _drawRotation = 0, _rotation = 0, _shaderRotation = 0;
         private Bag<Feature> _shaderFeatures = new();
         private void UpdateShaderFeatures()
         {
@@ -22,15 +23,18 @@ namespace BreakoutExtreme.Components
                 _shaderDrawOffset = Vector2.Zero;
                 _shaderVisibility = 1;
                 _shaderScale = 1;
+                _shaderRotation = 0;
                 var updateDrawPosition = false;
                 var updateVisibility = false;
                 var updateScale = false;
+                var updateRotation = false;
                 for (var i = 0; i < _shaderFeatures.Count; i++)
                 {
                     var feature = _shaderFeatures[i];
                     updateDrawPosition |= feature.UpdateDrawOffset(ref _shaderDrawOffset);
                     updateVisibility |= feature.UpdateVisibility(ref _shaderVisibility);
                     updateScale |= feature.UpdateScale(ref _shaderScale);
+                    updateRotation |= feature.UpdateRotation(ref _shaderRotation);
                 }
                 if (updateDrawPosition)
                     UpdateDrawPosition();
@@ -38,10 +42,16 @@ namespace BreakoutExtreme.Components
                     UpdateDrawColor();
                 if (updateScale)
                     UpdateDrawScale();
+                if (updateRotation)
+                    UpdateDrawRotation();
             }
 
             for (var i = 0; i < _shaderFeatures.Count; i++)
                 _shaderFeatures[i].Update();
+        }
+        private void UpdateDrawRotation()
+        {
+            _drawRotation = _rotation + _shaderRotation;
         }
         private void UpdateDrawScale()
         {
@@ -91,6 +101,16 @@ namespace BreakoutExtreme.Components
                 UpdateDrawColor();
             }
         }
+        public float Rotation
+        {
+            get => _rotation;
+            set
+            {
+                if (_rotation == value) return;
+                _rotation = value;
+                UpdateDrawRotation();
+            }
+        }
         public Animater Parent { get => _parent; set => _parent = value; }
         public void Update()
         {
@@ -106,7 +126,7 @@ namespace BreakoutExtreme.Components
                 position: _drawPosition,
                 sourceRectangle: _parent.Region,
                 color: _drawColor,
-                rotation: _parent.Rotation,
+                rotation: _drawRotation,
                 origin: _parent.Origin,
                 scale: _drawScale,
                 effects: SpriteEffects.None,

@@ -93,6 +93,7 @@
     <Compile Include="Features\Glow.cs" />
     <Compile Include="Features\LimitedFlash.cs" />
     <Compile Include="Features\Pulse.cs" />
+    <Compile Include="Features\Rock.cs" />
     <Compile Include="Features\ScaleDown.cs" />
     <Compile Include="Features\Shadow.cs" />
     <Compile Include="Features\Shake.cs" />

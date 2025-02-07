@@ -6,6 +6,7 @@ using System.Diagnostics;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System;
+using BreakoutExtreme.Features;
 
 namespace BreakoutExtreme.Components
 {
@@ -28,6 +29,7 @@ namespace BreakoutExtreme.Components
         private readonly Features.Vanish _vanish;
         private readonly Features.LimitedFlash _limitedFlash;
         private readonly Features.Appear _appear;
+        private readonly Features.Rock _rock;
         private bool _initialized;
         private Entity _entity;
         private Bombs _bomb;
@@ -98,6 +100,7 @@ namespace BreakoutExtreme.Components
         public void Detonate()
         {
             Debug.Assert(_state == States.Active);
+            _rock.Stop();
             _detonater.Start();
             _state = States.Detonating;
         }
@@ -105,6 +108,7 @@ namespace BreakoutExtreme.Components
         {
             Debug.Assert(_initialized);
             Globals.Runner.RemoveEntity(_entity);
+            _shadow.GetTexturer().ShaderFeatures.Remove(_rock);
             _shadow.RemoveEntity();
             _initialized = false;
         }
@@ -116,6 +120,7 @@ namespace BreakoutExtreme.Components
             _configNode = _configNodes[bomb];
             _animater.Play(_configNode.Active);
             _shadow = Globals.Runner.CreateShadow(_animater);
+            _shadow.GetTexturer().ShaderFeatures.Add(_rock);
             _shake.DelayPeriod = 0;
             _shake.Period = _spawnPeriod;
             _shake.Start();
@@ -123,6 +128,7 @@ namespace BreakoutExtreme.Components
             _limitedFlash.Start();
             _appear.Period = _spawnPeriod;
             _appear.Start();
+            _rock.Start();
             _collider.Position = position;
             _totalHP = _configNode.TotalHP;
             _currentHP = _configNode.TotalHP;
@@ -168,6 +174,8 @@ namespace BreakoutExtreme.Components
             _animater.ShaderFeatures.Add(_limitedFlash);
             _appear = new();
             _animater.ShaderFeatures.Add(_appear);
+            _rock = new();
+            _animater.ShaderFeatures.Add(_rock);
             _collider = new(_bounds, this, _collideAction);
             _particler = new() { Disposable = false };
             _detonater = new(this);
