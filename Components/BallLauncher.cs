@@ -125,6 +125,15 @@ namespace BreakoutExtreme.Components
                     }
                 }
 
+                // Handle collision with denotating bomb.
+                {
+                    if (_parent.State == States.Active &&
+                        node.Other.Parent is Bomb bomb && bomb.State == Bomb.States.Detonating)
+                    {
+                        _parent.Destroy();
+                    }
+                }
+
                 // Handle collision with death wall.
                 {
                     if (_parent.State == States.Active && 

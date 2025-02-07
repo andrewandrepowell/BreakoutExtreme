@@ -5,6 +5,7 @@
         public enum States
         {
             Active,
+            Attached,
             Destroying,
             Destroyed
         }

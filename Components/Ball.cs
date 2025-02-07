@@ -23,6 +23,7 @@ namespace BreakoutExtreme.Components
         private readonly Features.Shake _shake;
         private readonly Features.Flash _flash;
         private readonly Features.LimitedFlash _limitedFlash;
+        private Paddle _attachedPaddle;
         private States _state = States.Active;
         private void ServiceCollision(Collider.CollideNode node)
         {
@@ -48,6 +49,20 @@ namespace BreakoutExtreme.Components
         public States State => _state;
         public bool LaunchRunning => _launcher.Running;
         public bool Destroyed => _state == States.Destroyed;
+        public void AttachTo(Paddle paddle)
+        {
+            Debug.Assert(_state == States.Active);
+            var paddleCollider = paddle.GetCollider();
+            paddleCollider.GetAttacher().Attach(_collider);
+            _attachedPaddle = paddle;
+            _state = States.Attached;
+        }
+        public void Detach()
+        {
+            Debug.Assert(_state == States.Attached);
+            _attachedPaddle.GetCollider().GetAttacher().Detach(_collider);
+            _state = States.Active;
+        }
         public void StartLaunch()
         {
             Debug.Assert(_state == States.Active);

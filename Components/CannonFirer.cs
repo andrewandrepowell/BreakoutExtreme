@@ -7,12 +7,12 @@ namespace BreakoutExtreme.Components
     {
         private class Firer(Cannon parent)
         {
-            private const float _delayPeriodConstant = 5;
+            private const float _delayPeriodConstant = 10;
             private bool _initialized = false;
             private bool _firing = false;
             private readonly Cannon _parent = parent;
             private float _delayTime;
-            private const float _period = 5;
+            private const float _period = 10;
             private float _time;
             public void Fire()
             {

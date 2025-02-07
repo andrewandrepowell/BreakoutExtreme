@@ -34,6 +34,18 @@ namespace BreakoutExtreme.Components
                     }
                 }
 
+                // SPAWN NEW BALL STATE
+                if (State == States.GameRunning && _balls.Count == 0 && _parent.RemainingBalls > 0)
+                {
+                    var ball = Globals.Runner.CreateBall(this);
+                    ball.GetCollider().Position = _paddle.GetCollider().Position + _ballInitialDisplacementFromPaddle;
+                    _balls.Add(ball);
+                    _parent.RemainingBalls--;
+                    State = States.SpawnNewBall;
+                }
+
+                // PLAYER TAKING AIM STATE 
+                // It's imperative the SPAWN NEW BALL STATE takes place before this one.
                 if (State == States.Loaded || State == States.SpawnNewBall)
                 {
                     {
@@ -42,12 +54,13 @@ namespace BreakoutExtreme.Components
                         var ball = _balls[0];
                         ball.Spawn();
                         ball.GetCollider().Position = _paddle.GetCollider().Position + _ballInitialDisplacementFromPaddle;
-                        _paddle.GetCollider().GetAttacher().Attach(ball.GetCollider());
+                        ball.AttachTo(_paddle);
                     }
 
                     State = States.PlayerTakingAim;
                 }
 
+                // GAME RUNNING STATE
                 if (State == States.PlayerTakingAim && Globals.ControlState.CursorSelectState == Controller.SelectStates.Released)
                 {
                     var bricksActive = true;
@@ -59,19 +72,11 @@ namespace BreakoutExtreme.Components
                     {
                         Debug.Assert(_balls.Count == 1);
                         var ball = _balls[0];
-                        _paddle.GetCollider().GetAttacher().Detach(ball.GetCollider());
+                        Debug.Assert(ball.State == Ball.States.Attached);
+                        ball.Detach();
                         ball.StartLaunch();
                         State = States.GameRunning;
                     }
-                }
-
-                if (State == States.GameRunning && _balls.Count == 0 && _parent.RemainingBalls > 0)
-                {
-                    var ball = Globals.Runner.CreateBall(this);
-                    ball.GetCollider().Position = _paddle.GetCollider().Position + _ballInitialDisplacementFromPaddle;
-                    _balls.Add(ball);
-                    _parent.RemainingBalls--;
-                    State = States.SpawnNewBall;
                 }
 
                 // Remove any destroyed objects.
