@@ -1,5 +1,5 @@
 ﻿using System.Diagnostics;
-using Microsoft.Xna.Framework;
+
 
 namespace BreakoutExtreme.Components
 {
@@ -13,6 +13,7 @@ namespace BreakoutExtreme.Components
             public bool Running => _running;
             public void Start()
             {
+                Debug.Assert(_parent._initialized);
                 Debug.Assert(!_running);
                 _parent._animater.Play(Animater.Animations.BallDead);
                 _parent._vanish.Start();
@@ -24,6 +25,7 @@ namespace BreakoutExtreme.Components
             }
             public void Update()
             {
+                Debug.Assert(_parent._initialized);
                 if (_running && !_parent._vanish.Running && !_parent._shake.Running)
                 {
                     _parent._flash.Stop();

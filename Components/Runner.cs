@@ -9,7 +9,7 @@ namespace BreakoutExtreme.Components
 {
     public partial class Runner
     {
-        private const int _poolSize = 64;
+        private const int _poolSize = 32;
         readonly private World _world;
         readonly private CollisionComponent _collisionComponent;
         readonly private Deque<ScorePopup> _scorePopupPool = new();
@@ -18,10 +18,12 @@ namespace BreakoutExtreme.Components
         readonly private Deque<Laser> _laserPool = new();
         readonly private Deque<Cannon> _cannonPool = new();
         readonly private Deque<Bomb> _bombPool = new();
+        readonly private Deque<Ball> _ballPool = new();
         private bool _initialized = false;
         public void RemoveEntity(Entity entity)
         {
             Debug.Assert(_initialized);
+
             if (entity.Has<ScorePopup>())
                 _scorePopupPool.AddToBack(entity.Get<ScorePopup>());
             if (entity.Has<Glower>())
@@ -34,6 +36,9 @@ namespace BreakoutExtreme.Components
                 _cannonPool.AddToBack(entity.Get<Cannon>());
             if (entity.Has<Bomb>())
                 _bombPool.AddToBack(entity.Get<Bomb>());
+            if (entity.Has<Ball>())
+                _ballPool.AddToBack(entity.Get<Ball>());
+
             if (entity.Has<Collider>())
                 _collisionComponent.Remove(entity.Get<Collider>());
             if (entity.Has<Particler>())
@@ -71,6 +76,9 @@ namespace BreakoutExtreme.Components
 
                     var bomb = new Bomb();
                     _bombPool.AddToBack(bomb);
+
+                    var ball = new Ball();
+                    _ballPool.AddToBack(ball);
                 }
             }
 

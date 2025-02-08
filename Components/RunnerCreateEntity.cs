@@ -212,7 +212,8 @@ namespace BreakoutExtreme.Components
         {
             Debug.Assert(_initialized);
             var entity = _world.CreateEntity();
-            var ball = new Ball(entity, parent);
+            _ballPool.RemoveFromFront(out var ball);
+            ball.Reset(entity, parent);
             var animater = ball.GetAnimater();
             var collider = ball.GetCollider();
             var particler = ball.GetParticler();

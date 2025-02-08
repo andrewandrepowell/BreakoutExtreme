@@ -15,6 +15,7 @@ namespace BreakoutExtreme.Components
             public Vector2 Acceleration = new(0, -5000);
             public void ServiceCollision(Collider.CollideNode node)
             {
+                Debug.Assert(_parent._initialized);
                 Debug.Assert(_parent.State == States.Active);
                 var collider = _parent.GetCollider();
 
@@ -145,15 +146,17 @@ namespace BreakoutExtreme.Components
             }
             public void Start()
             {
-                Debug.Assert(!Running);
+                Debug.Assert(_parent._initialized);
                 Debug.Assert(!_parent._particler.Running);
+                Debug.Assert(!Running);
                 _parent._particler.Start();
                 Running = true;
             }
             public void Stop()
             {
-                Debug.Assert(Running);
+                Debug.Assert(_parent._initialized);
                 Debug.Assert(_parent._particler.Running);
+                Debug.Assert(Running);
                 var collider = _parent._collider;
                 collider.Acceleration = Vector2.Zero;
                 collider.Velocity = Vector2.Zero;
