@@ -152,7 +152,7 @@ namespace BreakoutExtreme.Components
                 _state = States.Active;
             }
 
-            if (_state == States.Destroying && !_vanish.Running && !_shadow.VanishRunning)
+            if (_state == States.Destroying && !_shake.Running && !_vanish.Running && !_shadow.VanishRunning)
                 _state = States.Destroyed;
 
             if (_state == States.Detonating && _detonater.State == Detonater.States.Finished)
