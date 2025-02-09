@@ -78,6 +78,7 @@
     <Compile Include="Components\PlayArea.cs" />
     <Compile Include="Components\RunnerCreateEntity.cs" />
     <Compile Include="Components\Shadow.cs" />
+    <Compile Include="Components\Shadower.cs" />
     <Compile Include="Components\Spike.cs" />
     <Compile Include="Components\Spriter.cs" />
     <Compile Include="Components\Texter.cs" />
@@ -87,9 +88,11 @@
     <Compile Include="Components\Wall.cs" />
     <Compile Include="Features\Appear.cs" />
     <Compile Include="Features\Cracks.cs" />
+    <Compile Include="Features\Dash.cs" />
     <Compile Include="Features\Flash.cs" />
     <Compile Include="Features\Float.cs" />
     <Compile Include="Features\FloatDown.cs" />
+    <Compile Include="Features\FloatRight.cs" />
     <Compile Include="Features\FloatUp.cs" />
     <Compile Include="Features\Glow.cs" />
     <Compile Include="Features\LimitedFlash.cs" />

@@ -8,7 +8,7 @@ using BreakoutExtreme.Utility;
 
 namespace BreakoutExtreme.Components
 {
-    public partial class Animater : IMovable
+    public partial class Animater : IMovable, ITexture
     {
         private Animations _animation = Animations.Ball;
         private Spriter _spriter;

@@ -154,11 +154,22 @@ namespace BreakoutExtreme.Components
             _collisionComponent.Insert(collider);
             return deathWall;
         }
+        public Shadower CreateShadower(Animater parent, Vector2 position)
+        {
+            Debug.Assert(_initialized);
+            var entity = _world.CreateEntity();
+            _shadowerPool.RemoveFromFront(out var shadower);
+            shadower.Reset(entity, parent, position);
+            var texturer = shadower.GetTexturer();
+            entity.Attach(shadower);
+            entity.Attach(texturer);
+            return shadower;
+        }
         public Shadow CreateShadow(Animater parent) 
         {
             Debug.Assert(_initialized);
             var entity = _world.CreateEntity();
-            var shadow = new Shadow();
+            _shadowPool.RemoveFromFront(out var shadow);
             shadow.Reset(entity, parent);
             var texturer = shadow.GetTexturer();
             entity.Attach(shadow);

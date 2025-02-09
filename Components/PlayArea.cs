@@ -77,12 +77,15 @@ namespace BreakoutExtreme.Components
 
             // Determine displacement for future balls.
             // Attaching the ball to the paddle occurs in later state.
+            // Spawn the paddle.
             {
                 Debug.Assert(_balls.Count == 1);
                 Debug.Assert(_paddle != null);
 
                 var ball = _balls[0];
                 _ballInitialDisplacementFromPaddle = ball.GetCollider().Position - _paddle.GetCollider().Position;
+
+                _paddle.Spawn();
             }
 
             _level = level;

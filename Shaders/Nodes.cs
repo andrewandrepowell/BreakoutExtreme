@@ -112,7 +112,7 @@ namespace BreakoutExtreme.Shaders
     }
     public class MaskBlurNode
     {
-        public const int MaskSize = 9;
+        public const int MaskSize = 25;
         public readonly static float[] DefaultMask = Enumerable
             .Range(0, MaskSize)
             .Select( x => (float)1 / MaskSize)

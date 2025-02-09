@@ -21,6 +21,8 @@ namespace BreakoutExtreme.Components
         readonly private Deque<Ball> _ballPool = new();
         readonly private Deque<Brick> _brickPool = new();
         readonly private Deque<Paddle> _paddlePool = new();
+        readonly private Deque<Shadow> _shadowPool = new();
+        readonly private Deque<Shadower> _shadowerPool = new();
         private bool _initialized = false;
         public void RemoveEntity(Entity entity)
         {
@@ -45,6 +47,10 @@ namespace BreakoutExtreme.Components
                 _brickPool.AddToBack(entity.Get<Brick>());
             if (entity.Has<Paddle>())
                 _paddlePool.AddToBack(entity.Get<Paddle>());
+            if (entity.Has<Shadow>())
+                _shadowPool.AddToBack(entity.Get<Shadow>());
+            if (entity.Has<Shadower>())
+                _shadowerPool.AddToBack(entity.Get<Shadower>());
 
             if (entity.Has<Collider>())
                 _collisionComponent.Remove(entity.Get<Collider>());
@@ -89,6 +95,12 @@ namespace BreakoutExtreme.Components
 
                     var brick = new Brick();
                     _brickPool.AddToBack(brick);
+
+                    var shadow = new Shadow();
+                    _shadowPool.AddToBack(shadow);
+
+                    var shadower = new Shadower();
+                    _shadowerPool.AddToBack(shadower);
                 }
 
                 _paddlePool.AddToBack(new Paddle());

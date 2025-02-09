@@ -8,7 +8,7 @@ using MonoGame.Extended;
 
 namespace BreakoutExtreme.Components
 {
-    public class Texturer(Animater parent) : IMovable
+    public class Texturer(Animater parent) : IMovable, ITexture
     {
         private Animater _parent = parent;
         private Vector2 _position, _drawPosition, _shaderDrawOffset;

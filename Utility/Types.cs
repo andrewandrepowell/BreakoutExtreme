@@ -1,4 +1,7 @@
-﻿using MonoGame.Extended.Collections;
+﻿using BreakoutExtreme.Components;
+using Microsoft.Xna.Framework.Graphics;
+using MonoGame.Extended;
+using MonoGame.Extended.Collections;
 
 namespace BreakoutExtreme.Utility
 {
@@ -17,6 +20,14 @@ namespace BreakoutExtreme.Utility
     public interface IDestroyed
     {
         public bool Destroyed {  get; }
+    }
+    public interface ITexture
+    {
+        public Texture2D Texture { get; }
+    }
+    public interface IAttacher
+    {
+        public Attacher<IMovable> GetAttacher();
     }
     public class GameBag<T> where T : IDestroyed
     {

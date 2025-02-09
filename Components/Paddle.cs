@@ -4,6 +4,7 @@ using System;
 using Microsoft.Xna.Framework;
 using BreakoutExtreme.Utility;
 using System.Diagnostics;
+using BreakoutExtreme.Features;
 
 namespace BreakoutExtreme.Components
 {
@@ -16,6 +17,7 @@ namespace BreakoutExtreme.Components
         private readonly Collider _collider;
         private readonly LaserGlower _laserGlower;
         private readonly MoveToTarget _moveToTarget;
+        private readonly Features.LimitedFlash _limitedFlash;
         private Entity _entity;
         private Shadow _shadow;
         private bool _initialized;
@@ -54,6 +56,11 @@ namespace BreakoutExtreme.Components
             Debug.Assert(_initialized);
             _laserGlower.Start();
         }
+        public void Spawn()
+        {
+            Debug.Assert(_initialized);
+            _limitedFlash.Start();
+        }
         public void Reset(Entity entity)
         {
             Debug.Assert(!_initialized);
@@ -69,6 +76,8 @@ namespace BreakoutExtreme.Components
             _collider = new(bounds: _bounds, parent: this, action: _collideAction);
             _moveToTarget = new(this);
             _laserGlower = new(this);
+            _limitedFlash = new();
+            _animater.ShaderFeatures.Add(_limitedFlash);
             _initialized = false;
         }
         public void RemoveEntity()
