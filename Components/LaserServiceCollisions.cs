@@ -27,7 +27,11 @@ namespace BreakoutExtreme.Components
             // Damage bomb
             if (_state == States.Active && bombCollision)
             {
-                ((Bomb)node.Other.Parent).Damage();
+                var bomb = ((Bomb)node.Other.Parent);
+                bomb.Damage();
+
+                if (bomb.State == Bomb.States.Destroying)
+                    _parent.UpdateScore(bomb);
             }
 
             // Destroy upon contact.

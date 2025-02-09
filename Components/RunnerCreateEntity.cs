@@ -54,14 +54,12 @@ namespace BreakoutExtreme.Components
             _collisionComponent.Insert(collider);
             return cannon;
         }
-        public Laser CreateLaser()
+        public Laser CreateLaser(PlayArea parent)
         {
             Debug.Assert(_initialized);
             var entity = _world.CreateEntity();
-            //if (_laserPool.Count == 0)
-            //    _laserPool.AddToBack(new Laser());
             _laserPool.RemoveFromFront(out var laser);
-            laser.Reset(entity);
+            laser.Reset(entity, parent);
             var animater = laser.GetAnimater();
             var collider = laser.GetCollider();
             entity.Attach(laser);

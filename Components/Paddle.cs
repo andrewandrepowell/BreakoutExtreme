@@ -24,6 +24,7 @@ namespace BreakoutExtreme.Components
         private Shadow _shadow;
         private bool _initialized;
         private States _state;
+        private PlayArea _parent;
         private void ServiceCollision(Collider.CollideNode node)
         {
             if (!_initialized)

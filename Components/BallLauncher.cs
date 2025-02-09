@@ -121,7 +121,7 @@ namespace BreakoutExtreme.Components
                         cannon.Damage();
 
                         // Update the score once the cannon is destroyed.
-                        if (cannon.State != Cannon.States.Active)
+                        if (cannon.State == Cannon.States.Destroying)
                             _parent._parent.UpdateScore(cannon);
                     }
                 }

@@ -25,16 +25,18 @@ namespace BreakoutExtreme.Components
         private Glower _thinGlower;
         private Glower _thickGlower;
         private States _state = States.Active;
+        private PlayArea _parent;
         private Vector2 _acceleration = new(0, -6000);
         public enum States { Active, Destroying, Destroyed }
         public States State => _state;
         public bool Destroyed => _state == States.Destroyed;
         public Collider GetCollider() => _collider;
         public Animater GetAnimater() => _animater;
-        public void Reset(Entity entity)
+        public void Reset(Entity entity, PlayArea parent)
         {
             Debug.Assert(!_initialized);
             _entity = entity;
+            _parent = parent;
             _thickGlower = Globals.Runner.CreateGlower(
                 parent: _animater,
                 color: Color.Orange,

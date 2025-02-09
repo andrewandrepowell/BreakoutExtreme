@@ -28,7 +28,7 @@ namespace BreakoutExtreme.Components
                         // IMMA FIRIN MA LASSSER.
                         if (State == States.GameRunning && cursorReleased)
                         {
-                            var laser = Globals.Runner.CreateLaser();
+                            var laser = Globals.Runner.CreateLaser(this);
                             var collider = laser.GetCollider();
                             collider.Position = _paddle.GetCollider().Bounds.BoundingRectangle.Center - (collider.Bounds.BoundingRectangle.Size / 2);
                             _lasers.Add(laser);
