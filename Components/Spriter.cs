@@ -13,7 +13,7 @@ namespace BreakoutExtreme.Components
     {
         private readonly Texture2D _texture;
         private readonly Rectangle[] _regions;
-        private readonly Dictionary<string, Node> _nodes = new();
+        private readonly Dictionary<string, Node> _nodes = [];
         private Node _node = null;
         private string _name = null;
         private float _time;

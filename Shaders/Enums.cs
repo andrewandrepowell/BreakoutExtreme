@@ -5,6 +5,7 @@
         Silhouette,
         Blur,
         Pattern,
-        HighlightCanvasItem
+        HighlightCanvasItem,
+        MaskBlur
     }
 }

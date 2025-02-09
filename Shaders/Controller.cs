@@ -31,6 +31,10 @@ namespace BreakoutExtreme.Shaders
                     feature.UpdateShaderNode(_highlightCanvasItemNode);
                     effect = _highlightCanvasItemNode.Effect;
                     break;
+                case Scripts.MaskBlur:
+                    feature.UpdateShaderNode(_maskBlurNode);
+                    effect = _maskBlurNode.Effect;
+                    break;
             }
             Globals.SpriteBatch.Begin(effect: effect, samplerState: SamplerState.PointClamp);
         }

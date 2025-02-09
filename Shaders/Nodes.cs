@@ -3,6 +3,7 @@ using Microsoft.Xna.Framework;
 using MonoGame.Extended;
 using System;
 using BreakoutExtreme.Utility;
+using System.Linq;
 
 namespace BreakoutExtreme.Shaders
 {
@@ -111,13 +112,22 @@ namespace BreakoutExtreme.Shaders
     }
     public class MaskBlurNode
     {
+        public const int MaskSize = 9;
+        public readonly static float[] DefaultMask = Enumerable
+            .Range(0, MaskSize)
+            .Select( x => (float)1 / MaskSize)
+            .ToArray();
         public readonly Effect Effect;
         public readonly EffectParameter SpriteTextureDimensions;
         public readonly EffectParameter Spread;
         public readonly EffectParameter Mask;
-        public void Configure(Size textureSize, float spread, float[] mask)
+        public void Configure(Size textureSize, float spread = 5.0f, float[] mask = null)
         {
-
+            if (mask == null)
+                mask = DefaultMask;
+            SpriteTextureDimensions.SetValue(textureSize.ToVector2());
+            Spread.SetValue(spread);
+            Mask.SetValue(mask);
         }
         public MaskBlurNode()
         {

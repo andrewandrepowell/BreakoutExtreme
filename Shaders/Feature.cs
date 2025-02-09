@@ -39,5 +39,9 @@ namespace BreakoutExtreme.Shaders
         {
 
         }
+        public virtual void UpdateShaderNode(MaskBlurNode node)
+        {
+
+        }
     }
 }
