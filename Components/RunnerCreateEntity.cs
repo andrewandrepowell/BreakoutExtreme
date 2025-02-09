@@ -193,20 +193,21 @@ namespace BreakoutExtreme.Components
             entity.Attach(gameWindow);
             return gameWindow;
         }
-        public Brick CreateBrick(Brick.Bricks brick, Vector2 position)
+        public Brick CreateBrick(Brick.Bricks brickEnum, Vector2 position)
         {
             Debug.Assert(_initialized);
             var entity = _world.CreateEntity();
-            var brickObj = new Brick(entity, brick, position);
-            var animater = brickObj.GetAnimater();
-            var collider = brickObj.GetCollider();
-            var particler = brickObj.GetParticler();
-            entity.Attach(brickObj);
+            _brickPool.RemoveFromFront(out var brick);
+            brick.Reset(entity, brickEnum, position);
+            var animater = brick.GetAnimater();
+            var collider = brick.GetCollider();
+            var particler = brick.GetParticler();
+            entity.Attach(brick);
             entity.Attach(animater);
             entity.Attach(collider);
             entity.Attach(particler);
             _collisionComponent.Insert(collider);
-            return brickObj;
+            return brick;
         }
         public Ball CreateBall(PlayArea parent)
         {

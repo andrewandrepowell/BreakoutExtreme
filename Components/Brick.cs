@@ -18,9 +18,6 @@ namespace BreakoutExtreme.Components
         private readonly Animater _animater;
         private readonly Collider _collider;
         private readonly Particler _particler;
-        private readonly Entity _entity;
-        private readonly Bricks _brick;
-        private readonly Shadow _shadow;
         private readonly Features.Shake _shake;
         private readonly Features.Cracks _cracks;
         private readonly Features.Vanish _vanish;
@@ -28,18 +25,24 @@ namespace BreakoutExtreme.Components
         private readonly Features.ScaleDown _scaleDown;
         private readonly Features.LimitedFlash _limitedFlash;
         private readonly Features.Appear _appear;
+        private bool _initialized;
+        private Entity _entity;
+        private Bricks _brick;
+        private Shadow _shadow;
         private States _state = States.Active;
         public Bricks GetBrick() => _brick;
         public Animater GetAnimater() => _animater;
         public Collider GetCollider() => _collider;
         public Particler GetParticler() => _particler;
-        public readonly int TotalHP;
+        public int TotalHP;
         public int CurrentHP;
         public States State => _state;
         public bool Destroyed => _state == States.Destroyed;
         public void Damage()
         {
-            Debug.Assert(CurrentHP > 0 && State == States.Active);
+            Debug.Assert(_initialized);
+            Debug.Assert(CurrentHP > 0);
+            Debug.Assert(State == States.Active);
             
             { 
                 CurrentHP -= 1;
@@ -56,6 +59,7 @@ namespace BreakoutExtreme.Components
         }
         public void Destroy()
         {
+            Debug.Assert(_initialized);
             Debug.Assert(State == States.Active);
             Debug.Assert(!_vanish.Running);
             CurrentHP = 0;
@@ -68,78 +72,67 @@ namespace BreakoutExtreme.Components
 
             _state = States.Destroying;
         }
-        public Brick(Entity entity, Bricks brick, Vector2 position)
+        public void Reset(Entity entity, Bricks brick, Vector2 position)
         {
-            _animater = new();
-            _animater.Play(_brickAnimations[brick]);
-            _collider = new(bounds: _brickBounds[brick], parent: this) { Position = position };
-            _particler = new(Particler.Particles.BrickBreak) { Layer = Layers.Foreground };
+            Debug.Assert(!_initialized);
             _entity = entity;
             _brick = brick;
             _shadow = Globals.Runner.CreateShadow(_animater);
-            {
-                _shake = new() 
-                { 
-                    DelayPeriod = position.X * _spawnFactor, 
-                    Period = _spawnPeriod
-                };
-                _shake.Start();
-                _animater.ShaderFeatures.Add(_shake);
-            }
-            {
-                _cracks = new(_animater);
-                _animater.ShaderFeatures.Add(_cracks);
-            }
-            {
-                _vanish = new();
-                _animater.ShaderFeatures.Add(_vanish);
-            }
-            {
-                _shine = new() 
-                { 
-                    RepeatPeriod = _shineRepeatPeriod, 
-                    DelayPeriod = _shineDirection.Dot(position) * _shineDelayControl 
-                };
-                _shine.Start();
-                _animater.ShaderFeatures.Add(_shine);
-            }
-            {
-                _scaleDown = new() 
-                { 
-                    DelayPeriod = position.X * _spawnFactor, 
-                    Period = _spawnPeriod
-                };
-                _scaleDown.Start();
-                _animater.ShaderFeatures.Add(_scaleDown);
-            }
-            {
-                _limitedFlash = new() 
-                { 
-                    LimitedPeriod = position.X * _spawnFactor + _spawnPeriod
-                };
-                _limitedFlash.Start();
-                _animater.ShaderFeatures.Add(_limitedFlash);
-            }
-            {
-                _appear = new() 
-                { 
-                    Period = _spawnPeriod, 
-                    DelayPeriod = position.X * _spawnFactor
-                };
-                _appear.Start();
-                _animater.ShaderFeatures.Add(_appear);
-            }
+            _animater.Play(_brickAnimations[brick]);
+            _collider.Bounds = _brickBounds[brick];
+            _collider.Position = position;
+            _shake.DelayPeriod = position.X * _spawnFactor;
+            _shake.Period = _spawnPeriod;
+            _shake.Start();
+            _cracks.Degree = 0;
+            _shine.RepeatPeriod = _shineRepeatPeriod;
+            _shine.DelayPeriod = _shineDirection.Dot(position) * _shineDelayControl;
+            _shine.Start();
+            _scaleDown.DelayPeriod = position.X * _spawnFactor;
+            _scaleDown.Period = _spawnPeriod;
+            _scaleDown.Start();
+            _limitedFlash.LimitedPeriod = position.X * _spawnFactor + _spawnPeriod;
+            _limitedFlash.Start();
+            _appear.Period = _spawnPeriod;
+            _appear.DelayPeriod = position.X * _spawnFactor;
+            _appear.Start();
             TotalHP = _brickTotalHPs[brick];
             CurrentHP = TotalHP;
             _state = States.Spawning;
+            _initialized = true;
+        }
+        public Brick()
+        {
+            _initialized = false;
+            _animater = new();
+            _collider = new(bounds: null, parent: this);
+            _particler = new(Particler.Particles.BrickBreak) { Layer = Layers.Foreground };
+            _shake = new();
+            _animater.ShaderFeatures.Add(_shake);
+            _cracks = new(_animater);
+            _animater.ShaderFeatures.Add(_cracks);
+            _vanish = new();
+            _animater.ShaderFeatures.Add(_vanish);
+            _shine = new();
+            _animater.ShaderFeatures.Add(_shine);
+            _scaleDown = new();
+            _animater.ShaderFeatures.Add(_scaleDown);
+            _limitedFlash = new();
+            _animater.ShaderFeatures.Add(_limitedFlash);
+            _appear = new();
+            _animater.ShaderFeatures.Add(_appear);
         }
         public void RemoveEntity()
         {
+            Debug.Assert(_initialized);
             Globals.Runner.RemoveEntity(_entity);
             _shadow.RemoveEntity();
+            _initialized = false;
         }
         public void Update()
         {
+            if (!_initialized)
+                return;
             if (_state == States.Spawning && !_shake.Running && !_scaleDown.Running && !_limitedFlash.Running && !_appear.Running)
             {
                 _shake.DelayPeriod = 0;

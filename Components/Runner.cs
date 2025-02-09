@@ -19,11 +19,13 @@ namespace BreakoutExtreme.Components
         readonly private Deque<Cannon> _cannonPool = new();
         readonly private Deque<Bomb> _bombPool = new();
         readonly private Deque<Ball> _ballPool = new();
+        readonly private Deque<Brick> _brickPool = new();
         private bool _initialized = false;
         public void RemoveEntity(Entity entity)
         {
             Debug.Assert(_initialized);
 
+            // Return components to their respective pools.
             if (entity.Has<ScorePopup>())
                 _scorePopupPool.AddToBack(entity.Get<ScorePopup>());
             if (entity.Has<Glower>())
@@ -38,6 +40,8 @@ namespace BreakoutExtreme.Components
                 _bombPool.AddToBack(entity.Get<Bomb>());
             if (entity.Has<Ball>())
                 _ballPool.AddToBack(entity.Get<Ball>());
+            if (entity.Has<Brick>())
+                _brickPool.AddToBack(entity.Get<Brick>());
 
             if (entity.Has<Collider>())
                 _collisionComponent.Remove(entity.Get<Collider>());
@@ -79,6 +83,9 @@ namespace BreakoutExtreme.Components
 
                     var ball = new Ball();
                     _ballPool.AddToBack(ball);
+
+                    var brick = new Brick();
+                    _brickPool.AddToBack(brick);
                 }
             }
 
