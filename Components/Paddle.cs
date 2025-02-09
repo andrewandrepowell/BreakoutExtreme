@@ -3,22 +3,26 @@ using MonoGame.Extended;
 using System;
 using Microsoft.Xna.Framework;
 using BreakoutExtreme.Utility;
+using System.Diagnostics;
 
 namespace BreakoutExtreme.Components
 {
     public partial class Paddle : IUpdate
     {
-        private static readonly Rectangle _blockBounds = new(Globals.PlayAreaBlockBounds.X, Globals.PlayAreaBlockBounds.Y, 5, 1); // y is set to 4 to resolve odd blazorgl compile bug.
+        private static readonly Rectangle _blockBounds = new(Globals.PlayAreaBlockBounds.X, Globals.PlayAreaBlockBounds.Y, 5, 1);
         private static readonly RectangleF _bounds = _blockBounds.ToBounds();
         private static readonly Action<Collider.CollideNode> _collideAction = (Collider.CollideNode node) => ((Paddle)node.Current.Parent).ServiceCollision(node);
         private readonly Animater _animater;
         private readonly Collider _collider;
-        private readonly Entity _entity;
-        private readonly Shadow _shadow;
         private readonly LaserGlower _laserGlower;
         private readonly MoveToTarget _moveToTarget;
+        private Entity _entity;
+        private Shadow _shadow;
+        private bool _initialized;
         private void ServiceCollision(Collider.CollideNode node)
         {
+            if (!_initialized)
+                return;
             if (node.Other.Parent is Wall)
             {
                 node.CorrectPosition();
@@ -35,28 +39,50 @@ namespace BreakoutExtreme.Components
         public Collider GetCollider() => _collider;
         public float TargetToMoveTo => _moveToTarget.Target;
         public bool RunningMoveToTarget => _moveToTarget.Running;
-        public void StartMoveToTarget(float x) => _moveToTarget.Start(x);
-        public void StopMoveToTarget() => _moveToTarget.Stop();
-        public void LaserGlow() => _laserGlower.Start();
-        public Paddle(Entity entity)
+        public void StartMoveToTarget(float x)
+        {
+            Debug.Assert(_initialized);
+            _moveToTarget.Start(x);
+        }
+        public void StopMoveToTarget() 
+        {
+            Debug.Assert(_initialized);
+            _moveToTarget.Stop(); 
+        }
+        public void LaserGlow()
+        {
+            Debug.Assert(_initialized);
+            _laserGlower.Start();
+        }
+        public void Reset(Entity entity)
+        {
+            Debug.Assert(!_initialized);
+            _entity = entity;
+            _animater.Play(Animater.Animations.Paddle);
+            _shadow = Globals.Runner.CreateShadow(_animater);
+            _laserGlower.Reset();
+            _initialized = true;
+        }
+        public Paddle()
         {
             _animater = new();
-            _animater.Play(Animater.Animations.Paddle);
             _collider = new(bounds: _bounds, parent: this, action: _collideAction);
-            _entity = entity;
             _moveToTarget = new(this);
-            _shadow = Globals.Runner.CreateShadow(_animater);
             _laserGlower = new(this);
-            _laserGlower.Reset();
+            _initialized = false;
         }
         public void RemoveEntity()
         {
+            Debug.Assert(_initialized);
             Globals.Runner.RemoveEntity(_entity);
             _shadow.RemoveEntity();
             _laserGlower.RemoveEntity();
+            _initialized = false;
         }
         public void Update()
         {
+            if (!_initialized)
+                return;
             _moveToTarget.Update();
         }
     }

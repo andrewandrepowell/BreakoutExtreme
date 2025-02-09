@@ -229,7 +229,8 @@ namespace BreakoutExtreme.Components
         {
             Debug.Assert(_initialized);
             var entity = _world.CreateEntity();
-            var paddle = new Paddle(entity);
+            _paddlePool.RemoveFromBack(out var paddle);
+            paddle.Reset(entity);
             var animator = paddle.GetAnimater();
             var collider = paddle.GetCollider();
             entity.Attach(paddle);

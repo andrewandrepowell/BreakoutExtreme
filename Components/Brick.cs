@@ -15,6 +15,7 @@ namespace BreakoutExtreme.Components
         private const float _shineDelayControl = 0.01f;
         private const float _spawnFactor = 0.005f;
         private const float _spawnPeriod = 0.5f;
+        private const float _spawnMaxScale = 3;
         private readonly Animater _animater;
         private readonly Collider _collider;
         private readonly Particler _particler;
@@ -88,6 +89,7 @@ namespace BreakoutExtreme.Components
             _shine.RepeatPeriod = _shineRepeatPeriod;
             _shine.DelayPeriod = _shineDirection.Dot(position) * _shineDelayControl;
             _shine.Start();
+            _scaleDown.MaxScale = _spawnMaxScale;
             _scaleDown.DelayPeriod = position.X * _spawnFactor;
             _scaleDown.Period = _spawnPeriod;
             _scaleDown.Start();
