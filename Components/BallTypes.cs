@@ -7,7 +7,8 @@
             Active,
             Attached,
             Destroying,
-            Destroyed
+            Destroyed,
+            Despawning
         }
     }
 }

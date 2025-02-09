@@ -6,6 +6,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using MonoGame.Extended.Collections;
 using System;
+using System.Diagnostics;
 
 namespace BreakoutExtreme.Systems
 {
@@ -158,6 +159,7 @@ namespace BreakoutExtreme.Systems
                         {
                             var texturer = _texturers[i];
                             var shaderFeatures = texturer.ShaderFeatures;
+                            Debug.Assert(shaderFeatures.Count <= 32);
                             if (texturer.Layer == layer && texturer.Visibility != 0)
                             {
                                 for (var j = 0; j < shaderFeatures.Count; j++)
@@ -187,6 +189,7 @@ namespace BreakoutExtreme.Systems
                         {
                             var animater = _animaters[i];
                             var shaderFeatures = animater.ShaderFeatures;
+                            Debug.Assert(shaderFeatures.Count <= 32);
                             if (animater.Layer == layer && animater.Visibility != 0)
                             {
                                 for (var j = 0; j < shaderFeatures.Count; j++)
@@ -225,6 +228,7 @@ namespace BreakoutExtreme.Systems
                         {
                             var gumDrawer = _gumDrawers[i];
                             var shaderFeatures = gumDrawer.ShaderFeatures;
+                            Debug.Assert(shaderFeatures.Count <= 32);
                             if (gumDrawer.Layer == layer && gumDrawer.Visibility != 0)
                             {
                                 for (var j = 0; j < shaderFeatures.Count; j++)

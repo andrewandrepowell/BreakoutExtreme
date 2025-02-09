@@ -4,6 +4,7 @@ using System;
 using MonoGame.Extended.ECS;
 using System.Diagnostics;
 using BreakoutExtreme.Utility;
+using BreakoutExtreme.Features;
 
 namespace BreakoutExtreme.Components
 {
@@ -18,6 +19,7 @@ namespace BreakoutExtreme.Components
         private readonly Features.Shake _shake;
         private readonly Features.Flash _flash;
         private readonly Features.LimitedFlash _limitedFlash;
+        private readonly Features.FloatUp _floatUp;
         private readonly Launcher _launcher;
         private readonly Destroyer _destroyer;
         private PlayArea _parent;
@@ -81,14 +83,25 @@ namespace BreakoutExtreme.Components
         public void Spawn()
         {
             Debug.Assert(_initialized);
+            Debug.Assert(_state == States.Active);
             _limitedFlash.Start();
+        }
+        public void Despawn()
+        {
+            Debug.Assert(_initialized);
+            Debug.Assert(_state == States.Active);
+            Debug.Assert(!_launcher.Running);
+            _floatUp.Start();
+            _vanish.Start();
+            _shadow.VanishStart();
+            _particler.Stop();
+            _state = States.Despawning;
         }
         public void Destroy()
         {
             Debug.Assert(_initialized);
             Debug.Assert(_state == States.Active);
-            if (_launcher.Running)
-                _launcher.Stop();
+            _launcher.Stop();
             _destroyer.Start();
             _particler.Stop();
             _state = States.Destroying;
@@ -115,6 +128,8 @@ namespace BreakoutExtreme.Components
             _animater.ShaderFeatures.Add(_flash);
             _limitedFlash = new();
             _animater.ShaderFeatures.Add(_limitedFlash);
+            _floatUp = new();
+            _animater.ShaderFeatures.Add(_floatUp);
             _collider = new(bounds: _bounds, parent: this, action: _collideAction);
             _particler = new(Particler.Particles.BallTrail);
             _launcher = new Launcher(this);
@@ -132,7 +147,8 @@ namespace BreakoutExtreme.Components
         {
             if (!_initialized)
                 return;
-            if (_state == States.Destroying && !_destroyer.Running)
+            if ((_state == States.Destroying && !_destroyer.Running) ||
+                (_state == States.Despawning && _floatUp.State == RunningStates.Running && !_vanish.Running && !_shadow.VanishRunning))
                 _state = States.Destroyed;
             _launcher.Update();
             _destroyer.Update();
