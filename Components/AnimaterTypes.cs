@@ -13,7 +13,8 @@ namespace BreakoutExtreme.Components
             Spike,
             Laser,
             Cannon,
-            Bomb
+            Bomb,
+            Cleared
         }
         public enum Animations
         {
@@ -31,7 +32,8 @@ namespace BreakoutExtreme.Components
             CannonFire,
             CannonDead,
             Bomb,
-            BombDead
+            BombDead,
+            Cleared
         }
     }
 }

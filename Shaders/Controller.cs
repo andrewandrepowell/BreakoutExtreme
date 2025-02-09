@@ -9,6 +9,7 @@ namespace BreakoutExtreme.Shaders
         private readonly BlurNode _blurNode = new();
         private readonly PatternNode _patternNode = new();
         private readonly HighlightCanvasItemNode _highlightCanvasItemNode = new();
+        private readonly MaskBlurNode _maskBlurNode = new();
         public void Begin(Feature feature)
         {
             Effect effect = null;

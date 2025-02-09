@@ -109,4 +109,22 @@ namespace BreakoutExtreme.Shaders
             GameTimeSeconds = Effect.Parameters["GameTimeSeconds"];
         }
     }
+    public class MaskBlurNode
+    {
+        public readonly Effect Effect;
+        public readonly EffectParameter SpriteTextureDimensions;
+        public readonly EffectParameter Spread;
+        public readonly EffectParameter Mask;
+        public void Configure(Size textureSize, float spread, float[] mask)
+        {
+
+        }
+        public MaskBlurNode()
+        {
+            Effect = Globals.ContentManager.Load<Effect>($"effects/mask_blur_0");
+            SpriteTextureDimensions = Effect.Parameters["SpriteTextureDimensions"];
+            Spread = Effect.Parameters["Spread"];
+            Mask = Effect.Parameters["Mask"];
+        }
+    }
 }

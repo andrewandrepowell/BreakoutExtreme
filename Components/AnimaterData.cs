@@ -17,6 +17,7 @@ namespace BreakoutExtreme.Components
             { Spriters.Laser, "animations/laser_0" },
             { Spriters.Cannon, "animations/cannon_0" },
             { Spriters.Bomb, "animations/bomb_0" },
+            { Spriters.Cleared, "animations/cleared_0" },
         });
         private static readonly ReadOnlyDictionary<Spriters, Size> _spriterRegionSizes = new(new Dictionary<Spriters, Size>
         {
@@ -28,6 +29,7 @@ namespace BreakoutExtreme.Components
             { Spriters.Laser, new Size(80, 96) },
             { Spriters.Cannon, new Size(96, 96) },
             { Spriters.Bomb, new Size(80, 80) },
+            { Spriters.Cleared, new Size(208, 96) },
         });
         private static readonly ReadOnlyDictionary<Animations, string> _animationNames = new(new Dictionary<Animations, string>
         {
@@ -46,6 +48,7 @@ namespace BreakoutExtreme.Components
             { Animations.CannonFire, "cannon_2" },
             { Animations.Bomb, "bomb_0" },
             { Animations.BombDead, "bomb_1" },
+            { Animations.Cleared, "cleared_0" },
         });
         private static readonly ReadOnlyDictionary<Spriters, Action<Spriter>> _spriterConfigureAnimations = new(new Dictionary<Spriters, Action<Spriter>>
         {
@@ -111,6 +114,13 @@ namespace BreakoutExtreme.Components
                     spriter.Add(_animationNames[Animations.Bomb], [0]);
                     spriter.Add(_animationNames[Animations.BombDead], [1]);
                 }
+            },
+            {
+                Spriters.Cleared,
+                delegate(Spriter spriter)
+                {
+                    spriter.Add(_animationNames[Animations.Cleared], [0]);
+                }
             }
         });
         private static readonly ReadOnlyDictionary<Animations, Spriters> _animationSpriters = new(new Dictionary<Animations, Spriters>()
@@ -130,6 +140,7 @@ namespace BreakoutExtreme.Components
             { Animations.CannonDead, Spriters.Cannon },
             { Animations.Bomb, Spriters.Bomb },
             { Animations.BombDead, Spriters.Bomb },
+            { Animations.Cleared, Spriters.Cleared },
         });
         private readonly Dictionary<Spriters, Spriter> _spriters = [];
     }

@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using BreakoutExtreme.Utility;
+using System;
 
 namespace BreakoutExtreme.Components
 {
@@ -29,7 +30,6 @@ namespace BreakoutExtreme.Components
         public Spriter(string assetName, Size regionSize)
         {
             _texture = Globals.ContentManager.Load<Texture2D>(assetName);
-
             Debug.Assert(_texture.Width % regionSize.Width == 0);
             Debug.Assert(_texture.Height % regionSize.Height == 0);
             var xRegions = _texture.Width / regionSize.Width;
