@@ -86,10 +86,10 @@ namespace BreakoutExtreme.Features
             }
 
             var timeElapsed = Globals.GameTime.GetElapsedSeconds();
-            if (_time > 0 && _delayTime <= 0)
-                _time -= timeElapsed;
             if (_delayTime > 0)
                 _delayTime -= timeElapsed;
+            else
+                _time -= timeElapsed;
         }
     }
 }

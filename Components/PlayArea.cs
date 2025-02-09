@@ -5,8 +5,6 @@ using System.Diagnostics;
 using MonoGame.Extended.Collections;
 using BreakoutExtreme.Utility;
 using Microsoft.Xna.Framework;
-using static BreakoutExtreme.Components.Brick;
-using static BreakoutExtreme.Components.Cannon;
 
 namespace BreakoutExtreme.Components
 {
@@ -19,6 +17,7 @@ namespace BreakoutExtreme.Components
         private readonly GameBag<Laser> _lasers = new();
         private readonly GameBag<Cannon> _cannons = new();
         private readonly DeathWall _deathWall;
+        private readonly Cleared _cleared;
         private Paddle _paddle = null;
         private Levels _level = Levels.Test;
         private Vector2 _ballInitialDisplacementFromPaddle;
@@ -148,6 +147,12 @@ namespace BreakoutExtreme.Components
                 var ninePatcher = Globals.Runner.CreateNinePatcher();
                 ninePatcher.Texture = NinePatcher.Textures.PlayAreaFilled;
                 ninePatcher.Bounds = new Rectangle(Globals.PlayAreaBlockBounds.X + 1, Globals.PlayAreaBlockBounds.Y + 1, Globals.PlayAreaBlockBounds.Width - 2, Globals.PlayAreaBlockBounds.Height - 1).ToBounds();
+            }
+
+
+            {
+                _cleared = Globals.Runner.CreateCleared();
+                _cleared.Start();
             }
         }
     }

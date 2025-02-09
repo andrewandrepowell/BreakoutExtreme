@@ -131,6 +131,7 @@ namespace BreakoutExtreme.Components
                 worldBuilder.AddSystem(new UpdateSystem<Cannon>());
                 worldBuilder.AddSystem(new UpdateSystem<ScorePopup>());
                 worldBuilder.AddSystem(new UpdateSystem<PulseGlower>());
+                worldBuilder.AddSystem(new UpdateSystem<Cleared>());
 
                 worldBuilder.AddSystem(new ColliderSystem(_collisionComponent));
                 worldBuilder.AddSystem(new PositionSystem());

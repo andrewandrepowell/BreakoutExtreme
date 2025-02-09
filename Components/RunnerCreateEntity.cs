@@ -7,6 +7,17 @@ namespace BreakoutExtreme.Components
 {
     public partial class Runner
     {
+        public Cleared CreateCleared()
+        {
+            Debug.Assert(_initialized);
+            var entity = _world.CreateEntity();
+            var cleared = new Cleared();
+            cleared.Reset(entity);
+            var animater = cleared.GetAnimater();
+            entity.Attach(cleared);
+            entity.Attach(animater);
+            return cleared;
+        }
         public Bomb CreateBomb(Bomb.Bombs bombEnum, Vector2 position)
         {
             Debug.Assert(_initialized);

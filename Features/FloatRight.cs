@@ -32,7 +32,15 @@ namespace BreakoutExtreme.Features
                 _delayPeriod = value;
             }
         }
-        public bool Smooth { get; set; }
+        public bool Smooth 
+        {
+            get => _smooth; 
+            set
+            {
+                Debug.Assert(_state == RunningStates.Waiting || _state == RunningStates.Running);
+                _smooth = value;
+            }
+        }
         public RunningStates State => _state;
         public float Period
         {
@@ -97,7 +105,7 @@ namespace BreakoutExtreme.Features
             if (_state == RunningStates.Starting || _state == RunningStates.Stopping)
             {
                 var timeElapsed = Globals.GameTime.GetElapsedSeconds();
-                if (_delayPeriod > 0)
+                if (_delayTime > 0)
                     _delayTime -= timeElapsed;
                 else
                     _time -= timeElapsed;

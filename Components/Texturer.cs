@@ -111,6 +111,16 @@ namespace BreakoutExtreme.Components
                 UpdateDrawRotation();
             }
         }
+        public float Scale
+        {
+            get => _scale;
+            set
+            {
+                if (value == _scale) return;
+                _scale = value;
+                UpdateDrawScale();
+            }
+        }
         public Animater Parent { get => _parent; set => _parent = value; }
         public void Update()
         {
