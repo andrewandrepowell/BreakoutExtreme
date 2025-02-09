@@ -8,7 +8,7 @@ namespace BreakoutExtreme.Utility
     public enum Directions { Left, Right, Up, Down }
     public enum RoundingModes { Floor, Round, Ceil }
     public enum RunningStates { Waiting, Starting, Running, Stopping }
-    public enum Layers { Shadow, Ground, Foreground }
+    public enum Layers { Shadow, Ground, Foreground, Dimmer }
     public interface IUpdate
     {
         public void Update();

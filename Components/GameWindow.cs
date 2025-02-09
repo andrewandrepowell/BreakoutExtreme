@@ -12,6 +12,7 @@ namespace BreakoutExtreme.Components
         private readonly Panel _highScorePanel;
         private readonly RemainingBallsPanel _remainingBallsPanel;
         private readonly Button _menuButton;
+        private readonly Dimmer _dimmer;
         private int _score = 0;
         private int _levelsCleared = 0;
         private void UpdateScorePanel()
@@ -20,7 +21,10 @@ namespace BreakoutExtreme.Components
         }
         private void OpenMenu()
         {
-
+            if (_dimmer.State == RunningStates.Waiting)
+                _dimmer.Start();
+            else if (_dimmer.State == RunningStates.Running)
+                _dimmer.Stop();
         }
         public int Score
         {
@@ -108,6 +112,12 @@ namespace BreakoutExtreme.Components
                     action: (object parent) => OpenMenu(), 
                     bounds: Globals.MenuButtonBlockBounds.ToBounds(), 
                     text: "Menu");
+            }
+
+
+            // Create dimmer.
+            {
+                _dimmer = Globals.Runner.CreateDimmer();
             }
         }
         public void Update()

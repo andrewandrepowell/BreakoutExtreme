@@ -7,6 +7,16 @@ namespace BreakoutExtreme.Components
 {
     public partial class Runner
     {
+        public Dimmer CreateDimmer()
+        {
+            Debug.Assert(_initialized);
+            var entity = _world.CreateEntity();
+            var dimmer = new Dimmer();
+            var gumDrawer = dimmer.GetGumDrawer();
+            entity.Attach(dimmer);
+            entity.Attach(gumDrawer);
+            return dimmer;
+        }
         public Cleared CreateCleared()
         {
             Debug.Assert(_initialized);

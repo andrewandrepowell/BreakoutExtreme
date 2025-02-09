@@ -11,11 +11,12 @@ namespace BreakoutExtreme.Components
                 // Apply user control
                 {
                     var controlState = Globals.ControlState;
+                    var cursorInPlayArea = Globals.PlayAreaBounds.Contains(controlState.CursorPosition);
                     var cursorSelected = controlState.CursorSelectState == Controller.SelectStates.Pressed || controlState.CursorSelectState == Controller.SelectStates.Held;
                     var cursorReleased = controlState.CursorSelectState == Controller.SelectStates.Released;
 
                     // When clearing, the paddle isn't available, so don't run paddle control.
-                    if (State != States.Clearing)
+                    if (State != States.Clearing && cursorInPlayArea)
                     {
                         // Stop moving the paddle around.
                         if (_paddle.RunningMoveToTarget && ((cursorSelected && controlState.CursorPosition.X != _paddle.TargetToMoveTo) || cursorReleased))
@@ -25,7 +26,7 @@ namespace BreakoutExtreme.Components
                         if (!_paddle.RunningMoveToTarget && cursorSelected)
                             _paddle.StartMoveToTarget(controlState.CursorPosition.X);
 
-                        // IMMA FIRIN MA LASSSER.
+                        // Execute laser firing logic.
                         if (State == States.GameRunning && cursorReleased)
                         {
                             var laser = Globals.Runner.CreateLaser(this);
@@ -33,6 +34,25 @@ namespace BreakoutExtreme.Components
                             collider.Position = _paddle.GetCollider().Bounds.BoundingRectangle.Center - (collider.Bounds.BoundingRectangle.Size / 2);
                             _lasers.Add(laser);
                             _paddle.LaserGlow();
+                        }
+
+                        // GAME RUNNING STATE
+                        if (State == States.PlayerTakingAim && Globals.ControlState.CursorSelectState == Controller.SelectStates.Released)
+                        {
+                            var bricksActive = true;
+                            for (var i = 0; i < _bricks.Count; i++)
+                            {
+                                bricksActive &= _bricks[i].State == Brick.States.Active;
+                            }
+                            if (bricksActive)
+                            {
+                                Debug.Assert(_balls.Count == 1);
+                                var ball = _balls[0];
+                                Debug.Assert(ball.State == Ball.States.Attached);
+                                ball.Detach();
+                                ball.StartLaunch();
+                                State = States.GameRunning;
+                            }
                         }
                     }
                 }
@@ -60,25 +80,6 @@ namespace BreakoutExtreme.Components
                     }
 
                     State = States.PlayerTakingAim;
-                }
-
-                // GAME RUNNING STATE
-                if (State == States.PlayerTakingAim && Globals.ControlState.CursorSelectState == Controller.SelectStates.Released)
-                {
-                    var bricksActive = true;
-                    for (var i = 0; i < _bricks.Count; i++)
-                    {
-                        bricksActive &= _bricks[i].State == Brick.States.Active;
-                    }
-                    if (bricksActive)
-                    {
-                        Debug.Assert(_balls.Count == 1);
-                        var ball = _balls[0];
-                        Debug.Assert(ball.State == Ball.States.Attached);
-                        ball.Detach();
-                        ball.StartLaunch();
-                        State = States.GameRunning;
-                    }
                 }
 
                 // CLEARING
