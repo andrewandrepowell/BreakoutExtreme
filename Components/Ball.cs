@@ -4,7 +4,6 @@ using System;
 using MonoGame.Extended.ECS;
 using System.Diagnostics;
 using BreakoutExtreme.Utility;
-using BreakoutExtreme.Features;
 
 namespace BreakoutExtreme.Components
 {
@@ -111,8 +110,10 @@ namespace BreakoutExtreme.Components
             _parent = parent;
             _entity = entity;
             _shadow = Globals.Runner.CreateShadow(_animater);
+            _animater.Visibility = 1;
             _animater.Play(Animater.Animations.Ball);
             _particler.Stop();
+            _floatUp.Stop();
             _state = States.Active;
             _initialized = true;
         }
@@ -149,7 +150,10 @@ namespace BreakoutExtreme.Components
                 return;
             if ((_state == States.Destroying && !_destroyer.Running) ||
                 (_state == States.Despawning && _floatUp.State == RunningStates.Running && !_vanish.Running && !_shadow.VanishRunning))
+            {
+                _animater.Visibility = 0;
                 _state = States.Destroyed;
+            }
             _launcher.Update();
             _destroyer.Update();
         }

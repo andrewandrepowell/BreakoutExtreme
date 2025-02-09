@@ -83,7 +83,6 @@ namespace BreakoutExtreme.Components
 
                 var ball = _balls[0];
                 _ballInitialDisplacementFromPaddle = ball.GetCollider().Position - _paddle.GetCollider().Position;
-
                 _paddle.Spawn();
             }
 
@@ -94,13 +93,24 @@ namespace BreakoutExtreme.Components
         {
             Debug.Assert(Loaded);
 
+            if (_paddle.Initialized)
+                _paddle.RemoveEntity();
             for (var i = 0; i < _balls.Count; i++)
-            {
                 _balls[i].RemoveEntity();
-            }
-            _paddle.RemoveEntity();
+            for (var i = 0; i < _bricks.Count; i++)
+                _bricks[i].RemoveEntity();
+            for (var i = 0; i < _scorePopups.Count; i++)
+                _scorePopups[i].RemoveEntity();
+            for (var i = 0; i < _lasers.Count; i++)
+                _lasers[i].RemoveEntity();
+            for (var i = 0; i < _cannons.Count; i++)
+                _cannons[i].RemoveEntity();
 
             _balls.Clear();
+            _bricks.Clear();
+            _scorePopups.Clear();
+            _lasers.Clear();
+            _cannons.Clear();
             _paddle = null;
 
             State = States.Unloaded;
@@ -152,7 +162,6 @@ namespace BreakoutExtreme.Components
 
             {
                 _cleared = Globals.Runner.CreateCleared();
-                _cleared.Start();
             }
         }
     }

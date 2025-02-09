@@ -41,6 +41,7 @@ namespace BreakoutExtreme.Components
             _vanish.Start();
             _vanishShadower.Start();
             _vanishShadow.Start();
+            _running = true;
         }
         public void Reset(Entity entity)
         {

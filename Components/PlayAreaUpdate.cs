@@ -8,29 +8,32 @@ namespace BreakoutExtreme.Components
         {
             if (Loaded)
             {
-
                 // Apply user control
                 {
                     var controlState = Globals.ControlState;
                     var cursorSelected = controlState.CursorSelectState == Controller.SelectStates.Pressed || controlState.CursorSelectState == Controller.SelectStates.Held;
                     var cursorReleased = controlState.CursorSelectState == Controller.SelectStates.Released;
 
-                    // Stop moving the paddle around.
-                    if (_paddle.RunningMoveToTarget && ((cursorSelected && controlState.CursorPosition.X != _paddle.TargetToMoveTo) || cursorReleased))
+                    // When clearing, the paddle isn't available, so don't run paddle control.
+                    if (State != States.Clearing)
+                    {
+                        // Stop moving the paddle around.
+                        if (_paddle.RunningMoveToTarget && ((cursorSelected && controlState.CursorPosition.X != _paddle.TargetToMoveTo) || cursorReleased))
                         _paddle.StopMoveToTarget();
 
-                    // Start moving the paddle around to cursor.
-                    if (!_paddle.RunningMoveToTarget && cursorSelected)
-                        _paddle.StartMoveToTarget(controlState.CursorPosition.X);
+                        // Start moving the paddle around to cursor.
+                        if (!_paddle.RunningMoveToTarget && cursorSelected)
+                            _paddle.StartMoveToTarget(controlState.CursorPosition.X);
 
-                    // IMMA FIRIN MA LASSSER.
-                    if (State == States.GameRunning && cursorReleased)
-                    {
-                        var laser = Globals.Runner.CreateLaser();
-                        var collider = laser.GetCollider();
-                        collider.Position = _paddle.GetCollider().Bounds.BoundingRectangle.Center - (collider.Bounds.BoundingRectangle.Size / 2);
-                        _lasers.Add(laser);
-                        _paddle.LaserGlow();
+                        // IMMA FIRIN MA LASSSER.
+                        if (State == States.GameRunning && cursorReleased)
+                        {
+                            var laser = Globals.Runner.CreateLaser();
+                            var collider = laser.GetCollider();
+                            collider.Position = _paddle.GetCollider().Bounds.BoundingRectangle.Center - (collider.Bounds.BoundingRectangle.Size / 2);
+                            _lasers.Add(laser);
+                            _paddle.LaserGlow();
+                        }
                     }
                 }
 
@@ -50,7 +53,6 @@ namespace BreakoutExtreme.Components
                 {
                     {
                         Debug.Assert(_balls.Count == 1);
-                        Debug.Assert(_paddle != null);
                         var ball = _balls[0];
                         ball.Spawn();
                         ball.GetCollider().Position = _paddle.GetCollider().Position + _ballInitialDisplacementFromPaddle;
@@ -77,6 +79,34 @@ namespace BreakoutExtreme.Components
                         ball.StartLaunch();
                         State = States.GameRunning;
                     }
+                }
+
+                // CLEARING
+                if (State == States.GameRunning && _bricks.Count == 0 && _cannons.Count == 0)
+                {
+                    Debug.Assert(!_cleared.Running);
+
+                    _cleared.Start();
+
+                    _paddle.Despawn();
+                    for (var i = 0; i < _balls.Count; i++)
+                    {
+                        var ball = _balls[i];
+                        if (ball.State != Ball.States.Active)
+                            continue;
+                        ball.StopLaunch();
+                        ball.Despawn();
+                    }
+
+                    _parent.LevelsCleared++;
+
+                    State = States.Clearing;
+                }
+
+                // UNLOAD
+                if (State == States.Clearing && !_cleared.Running && _balls.Count == 0 && _paddle.State == Paddle.States.Destroyed)
+                {
+                    Unload();
                 }
 
                 // Remove any destroyed objects.

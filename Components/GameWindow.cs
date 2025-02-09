@@ -13,6 +13,7 @@ namespace BreakoutExtreme.Components
         private readonly RemainingBallsPanel _remainingBallsPanel;
         private readonly Button _menuButton;
         private int _score = 0;
+        private int _levelsCleared = 0;
         private void UpdateScorePanel()
         {
             _scorePanel.Text = $"{_score}";
@@ -31,6 +32,15 @@ namespace BreakoutExtreme.Components
                     return;
                 _score = value;
                 UpdateScorePanel();
+            }
+        }
+        public int LevelsCleared
+        {
+            get => _levelsCleared;
+            set
+            {
+                Debug.Assert(value >= 0);
+                _levelsCleared = value;
             }
         }
         public int RemainingBalls
@@ -103,8 +113,13 @@ namespace BreakoutExtreme.Components
         public void Update()
         {
             // temporary
-            if (!_playArea.Loaded)
-                _playArea.Load(PlayArea.Levels.Test);
+            if (!_playArea.Loaded && _levelsCleared < 2)
+            {
+                if (_levelsCleared == 0)
+                    _playArea.Load(PlayArea.Levels.Test2);
+                if (_levelsCleared == 1)
+                    _playArea.Load(PlayArea.Levels.Test);
+            }
 
             _menuButton.Update();
             _remainingBallsPanel.Update();

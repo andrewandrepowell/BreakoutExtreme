@@ -4,7 +4,8 @@
     {
         public enum Levels
         {
-            Test
+            Test,
+            Test2
         }
         public enum Components
         {
@@ -20,7 +21,8 @@
             Loaded,
             PlayerTakingAim,
             GameRunning,
-            SpawnNewBall
+            SpawnNewBall,
+            Clearing
         }
     }
 }

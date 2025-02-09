@@ -116,6 +116,7 @@ namespace BreakoutExtreme.Components
                 var worldBuilder = new WorldBuilder();
                 worldBuilder.AddSystem(new GameWindowSystem());
 
+                worldBuilder.AddSystem(new RemoveSystem<Paddle>());
                 worldBuilder.AddSystem(new RemoveSystem<Brick>());
                 worldBuilder.AddSystem(new RemoveSystem<Ball>());
                 worldBuilder.AddSystem(new RemoveSystem<Bomb>());
