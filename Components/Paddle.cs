@@ -49,6 +49,7 @@ namespace BreakoutExtreme.Components
         public bool Destroyed => _state == States.Destroyed;
         public States State => _state;
         public bool Initialized => _initialized;
+        public float TargetThreshold => _moveToTarget.Threshold;
         public void StartMoveToTarget(float x)
         {
             Debug.Assert(_initialized);

@@ -4,6 +4,7 @@ using MonoGame.Extended.ECS;
 using MonoGame.Extended;
 using MonoGame.Extended.Collections;
 using System.Diagnostics;
+using MonoGame.Extended.ECS.Systems;
 
 namespace BreakoutExtreme.Components
 {
@@ -114,7 +115,9 @@ namespace BreakoutExtreme.Components
 
             {
                 var worldBuilder = new WorldBuilder();
-                worldBuilder.AddSystem(new GameWindowSystem());
+
+                worldBuilder.AddSystem(new UpdateSystem<GameWindow>());
+                worldBuilder.AddSystem(new UpdateSystem<PlayArea>());
 
                 worldBuilder.AddSystem(new RemoveSystem<Paddle>());
                 worldBuilder.AddSystem(new RemoveSystem<Brick>());
@@ -135,11 +138,8 @@ namespace BreakoutExtreme.Components
                 worldBuilder.AddSystem(new UpdateSystem<Cleared>());
                 worldBuilder.AddSystem(new UpdateSystem<Dimmer>());
                 worldBuilder.AddSystem(new UpdateSystem<Menus>());
-
                 worldBuilder.AddSystem(new UpdateSystem<Button>());
                 worldBuilder.AddSystem(new UpdateSystem<RemainingBallsPanel>());
-
-                worldBuilder.AddSystem(new UpdateSystem<PlayArea>());
 
                 worldBuilder.AddSystem(new ColliderSystem(_collisionComponent));
                 worldBuilder.AddSystem(new PositionSystem());

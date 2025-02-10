@@ -1,4 +1,5 @@
 ﻿using System.Diagnostics;
+using System;
 
 namespace BreakoutExtreme.Components
 {
@@ -12,27 +13,33 @@ namespace BreakoutExtreme.Components
                 // Apply user control
                 {
                     var controlState = Globals.ControlState;
-                    var cursorInPlayArea = Globals.PlayAreaBounds.Contains(controlState.CursorPosition);
+                    var cursorInPlayArea = Globals.PlayAreaBounds.Top <= controlState.CursorPosition.Y && Globals.PlayAreaBounds.Bottom >= controlState.CursorPosition.Y;
                     var cursorSelected = controlState.CursorSelectState == Controller.SelectStates.Pressed || controlState.CursorSelectState == Controller.SelectStates.Held;
                     var cursorReleased = controlState.CursorSelectState == Controller.SelectStates.Released;
 
                     // When clearing, the paddle isn't available, so don't run paddle control.
                     if (State != States.Clearing && cursorInPlayArea)
                     {
+                        var paddleCenter = _paddle.GetCollider().Bounds.BoundingRectangle.Center;
+                        var cursorX = controlState.CursorPosition.X;
+                        var cursorReachedTarget = Math.Abs(paddleCenter.X - cursorX) <= _paddle.TargetThreshold;
+
+                        Console.WriteLine($"reached target: {cursorReachedTarget}, select: {cursorSelected}, release: {cursorReleased}, active: {_paddle.RunningMoveToTarget}");
+
                         // Stop moving the paddle around.
-                        if (_paddle.RunningMoveToTarget && ((cursorSelected && controlState.CursorPosition.X != _paddle.TargetToMoveTo) || cursorReleased))
-                        _paddle.StopMoveToTarget();
+                        if (_paddle.RunningMoveToTarget && ((cursorSelected && cursorReachedTarget) || cursorReleased))
+                            _paddle.StopMoveToTarget();
 
                         // Start moving the paddle around to cursor.
-                        if (!_paddle.RunningMoveToTarget && cursorSelected)
-                            _paddle.StartMoveToTarget(controlState.CursorPosition.X);
+                        if (!_paddle.RunningMoveToTarget && cursorSelected && !cursorReachedTarget)
+                            _paddle.StartMoveToTarget(cursorX);
 
                         // Execute laser firing logic.
                         if (State == States.GameRunning && cursorReleased)
                         {
                             var laser = Globals.Runner.CreateLaser(this);
                             var collider = laser.GetCollider();
-                            collider.Position = _paddle.GetCollider().Bounds.BoundingRectangle.Center - (collider.Bounds.BoundingRectangle.Size / 2);
+                            collider.Position = paddleCenter - (collider.Bounds.BoundingRectangle.Size / 2);
                             _lasers.Add(laser);
                             _paddle.LaserGlow();
                         }

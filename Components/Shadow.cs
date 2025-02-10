@@ -27,6 +27,7 @@ namespace BreakoutExtreme.Components
             _texturer.Parent = parent;
             _texturer.Position = _parent.Position + new Vector2(0, _displacement);
             _parent.GetAttacher().Attach(_texturer);
+            _vanish.Stop();
         }
         public Shadow()
         {

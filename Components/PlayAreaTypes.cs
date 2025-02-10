@@ -5,7 +5,8 @@
         public enum Levels
         {
             Test,
-            Test2
+            Test2,
+            Test3
         }
         public enum Components
         {

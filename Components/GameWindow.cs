@@ -5,7 +5,7 @@ using System.Diagnostics;
 
 namespace BreakoutExtreme.Components
 {
-    public class GameWindow
+    public class GameWindow : IUpdate
     {
         private readonly PlayArea _playArea;
         private readonly Panel _scorePanel;
@@ -14,6 +14,7 @@ namespace BreakoutExtreme.Components
         private readonly Button _menuButton;
         private readonly Dimmer _dimmer;
         private readonly Menus _menus;
+        private bool _menuLock;
         private int _score = 0;
         private int _levelsCleared = 0;
         private void UpdateScorePanel()
@@ -22,18 +23,18 @@ namespace BreakoutExtreme.Components
         }
         private void OpenMenu()
         {
-            if (!Globals.Paused)
-            {
-                Globals.Pause();
-                _dimmer.Start();
-                _menus.Start();
-            }
-            else
-            {
-                Globals.Resume();
-                _dimmer.Stop();
-                _menus.Stop();
-            }
+            if (_menuLock)
+                return;
+            Globals.Pause();
+            _dimmer.Start();
+            _menus.Start(); 
+        }
+        private void CloseMenu()
+        {
+            Globals.Resume();
+            _dimmer.Stop();
+            _menus.Stop();
+            _menuLock = true;
         }
         public int Score
         {
@@ -131,22 +132,26 @@ namespace BreakoutExtreme.Components
 
             {
                 _menus = Globals.Runner.CreateMenus();
+                _menuLock = false;
             }
         }
         public void Update()
         {
             // temporary
-            if (!_playArea.Loaded && _levelsCleared < 2)
+            if (!_playArea.Loaded && _levelsCleared < 3)
             {
                 if (_levelsCleared == 0)
                     _playArea.Load(PlayArea.Levels.Test2);
                 if (_levelsCleared == 1)
+                    _playArea.Load(PlayArea.Levels.Test3);
+                if (_levelsCleared == 2)
                     _playArea.Load(PlayArea.Levels.Test);
             }
 
             // Clicking anywhere closes the menu.
+            _menuLock = false;
             if (Globals.Paused && Globals.ControlState.CursorSelectState == Controller.SelectStates.Pressed)
-                OpenMenu();
+                CloseMenu();
         }
     }
 }
