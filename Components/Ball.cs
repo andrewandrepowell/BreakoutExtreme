@@ -132,7 +132,7 @@ namespace BreakoutExtreme.Components
             _floatUp = new();
             _animater.ShaderFeatures.Add(_floatUp);
             _collider = new(bounds: _bounds, parent: this, action: _collideAction);
-            _particler = new(Particler.Particles.BallTrail);
+            _particler = new(Particler.Particles.BallTrail) { Disposable = false };
             _launcher = new Launcher(this);
             _destroyer = new Destroyer(this);
             
@@ -146,6 +146,8 @@ namespace BreakoutExtreme.Components
         }
         public void Update()
         {
+            if (Globals.Paused)
+                return;
             if (!_initialized)
                 return;
             if ((_state == States.Destroying && !_destroyer.Running) ||

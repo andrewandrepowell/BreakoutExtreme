@@ -124,6 +124,8 @@ namespace BreakoutExtreme.Components
         }
         public void Update()
         {
+            if (Globals.Paused)
+                return;
             if (!_initialized)
                 return;
             if (_state == States.Spawning && !_shake.Running && !_scaleDown.Running && !_limitedFlash.Running && !_appear.Running)

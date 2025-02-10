@@ -58,6 +58,8 @@ namespace BreakoutExtreme.Components
         }
         public void Update()
         {
+            if (Globals.Paused)
+                return;
             var elapsedTime = Globals.GameTime.GetElapsedSeconds();
             Velocity += Acceleration * elapsedTime;
             Velocity *= Slick;

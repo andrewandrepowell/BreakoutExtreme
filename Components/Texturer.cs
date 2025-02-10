@@ -122,8 +122,10 @@ namespace BreakoutExtreme.Components
             }
         }
         public Animater Parent { get => _parent; set => _parent = value; }
+        public bool Pausable = true;
         public void Update()
         {
+            if (Globals.Paused && Pausable) return;
             UpdateShaderFeatures();
         }
 

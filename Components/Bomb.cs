@@ -6,7 +6,6 @@ using System.Diagnostics;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System;
-using BreakoutExtreme.Features;
 
 namespace BreakoutExtreme.Components
 {
@@ -139,6 +138,8 @@ namespace BreakoutExtreme.Components
         }
         public void Update()
         {
+            if (Globals.Paused)
+                return;
             if (!_initialized)
                 return;
 

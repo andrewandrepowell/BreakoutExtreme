@@ -100,11 +100,7 @@ namespace BreakoutExtreme.Systems
                     _animaters[i].Update();
 
                 for (var i = 0; i < _particlers.Count; i++)
-                {
-                    var particler = _particlers[i];
-                    if (!particler.Disposed)
-                        particler.Update();
-                }
+                    _particlers[i].Update();
             }
         }
         public void Draw(GameTime gameTime)
@@ -139,7 +135,7 @@ namespace BreakoutExtreme.Systems
                         for (var i = 0; i < _particlers.Count; i++)
                         {
                             var particler = _particlers[i];
-                            if (!particler.Disposed && particler.Layer == layer)
+                            if (particler.Layer == layer)
                                 particler.Draw();
                         }
                         spriteBatch.End();

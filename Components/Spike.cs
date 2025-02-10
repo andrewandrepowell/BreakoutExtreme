@@ -22,7 +22,7 @@ namespace BreakoutExtreme.Components
         }
         public Spike(Vector2 position)
         {
-            _animater = new();
+            _animater = new() { Pausable = false };
             _floatDown = new();
             _floatDown.Period = 2;
             _floatDown.MinHeight = Globals.GameBlockSize;

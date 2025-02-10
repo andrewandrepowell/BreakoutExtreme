@@ -86,7 +86,7 @@ namespace BreakoutExtreme.Components
         }
         public Layers Layer = Layers.Ground;
         public bool Running => _running;
-        public bool Disposable = true; // prevents the runner from disposing the particler if false. Used for pulled components.
+        public bool Disposable = true; // prevents the runner from disposing the particler if false. Used for pooled components.
         public ParticleEffect GetParticleEffect() => _particleEffect;
         public static void Load()
         {
@@ -139,12 +139,15 @@ namespace BreakoutExtreme.Components
         }
         public void Update()
         {
-            Debug.Assert(!_disposed);
+            if (Globals.Paused)
+                return;
+            if (_disposed) 
+                return;
             _particleEffect.Update(Globals.GameTime.GetElapsedSeconds());
         }
         public void Draw()
         {
-            Debug.Assert(!_disposed);
+            if (_disposed) return;
             Globals.SpriteBatch.Draw(_particleEffect);
         }
         public Particler(Particles particle = Particles.BallTrail)

@@ -18,8 +18,11 @@ namespace BreakoutExtreme.Components
         {
             Debug.Assert(floatStartTime >= 0);
             _floatStartTime = floatStartTime;
-            _animater = new Animater();
-            _animater.Visibility = 0;
+            _animater = new Animater()
+            {
+                Visibility = 0,
+                Pausable = false
+            };
             _float = new();
             _animater.ShaderFeatures.Add(_float);
             _floatAway = new();

@@ -6,7 +6,8 @@ namespace BreakoutExtreme.Components
     {
         public void Update()
         {
-            if (Loaded)
+            if (Loaded &&
+                !Globals.Paused)
             {
                 // Apply user control
                 {

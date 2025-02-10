@@ -11,10 +11,8 @@ namespace BreakoutExtreme
 {
     public static class Globals
     {
-#if DEBUG
         private static bool _initialized = false;
         private static bool _initializedLogger = false;
-#endif
         public const int GameBlockSize = 16;
         public const int GameHalfBlockSize = GameBlockSize / 2;
         public static readonly Rectangle GameWindowBlockBounds = new(0, 0, 22, 40);
@@ -29,10 +27,9 @@ namespace BreakoutExtreme
         public static readonly RectangleF GameWindowBounds = GameWindowBlockBounds.ToBounds();
         public static readonly RectangleF PlayAreaBounds = PlayAreaBlockBounds.ToBounds();
         public static readonly Random Random = new();
-#pragma warning disable CA2211
-        public static float GameWindowToResizeScalar = 1; 
-        public static Vector2 GameWindowToResizeOffset = Vector2.Zero;
-#pragma warning restore CA2211
+        public static float GameWindowToResizeScalar { get; private set; } = 1; 
+        public static Vector2 GameWindowToResizeOffset { get; private set; } = Vector2.Zero;
+        public static bool Paused { get; private set; } = false;
         public static SpriteBatch SpriteBatch { get; private set; }
         public static ContentManager ContentManager { get; private set; }
         public static GameTime GameTime { get; private set; }
@@ -45,10 +42,8 @@ namespace BreakoutExtreme
             Controller.ControlState controlState,
             Runner runner)
         {
-#if DEBUG
             Debug.Assert(!_initialized);
             _initialized = true;
-#endif
             SpriteBatch = spriteBatch;
             ContentManager = contentManager;
             ControlState = controlState;
@@ -56,20 +51,30 @@ namespace BreakoutExtreme
         }
         public static void Initialize(Texter logger)
         {
-#if DEBUG
             Debug.Assert(!_initializedLogger);
             _initializedLogger = true;
-#endif
             Logger = logger;
+        }
+        public static void Pause()
+        {
+            Debug.Assert(_initialized);
+            Paused = true;
+        }
+        public static void Resume()
+        {
+            Debug.Assert(_initialized);
+            Paused = false;
         }
         public static void Update(GameTime gameTime)
         {
+            Debug.Assert(_initialized);
+
             GameTime = gameTime;
 
             {
                 var windowSize = SpriteBatch.GraphicsDevice.Viewport.Bounds.Size;
 
-                var widthScalar = windowSize.X / GameWindowBounds.Width;
+                var widthScalar = (windowSize.X / GameWindowBounds.Width);
                 var heightScaledByWidthScalar = GameWindowBounds.Height * widthScalar;
                 if (heightScaledByWidthScalar < windowSize.Y || heightScaledByWidthScalar.EqualsWithTolerance(windowSize.Y))
                     GameWindowToResizeScalar = widthScalar;
@@ -77,7 +82,7 @@ namespace BreakoutExtreme
                     GameWindowToResizeScalar = windowSize.Y / GameWindowBounds.Height;
 
                 var widthScaledByResizeScalar = GameWindowBounds.Width * GameWindowToResizeScalar;
-                GameWindowToResizeOffset.X = (windowSize.X - widthScaledByResizeScalar) / 2;
+                GameWindowToResizeOffset = new(x: (windowSize.X - widthScaledByResizeScalar) / 2, y: GameWindowToResizeOffset.Y);
             }
         }
     }

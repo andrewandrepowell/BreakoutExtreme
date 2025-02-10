@@ -132,6 +132,8 @@ namespace BreakoutExtreme.Components
         }
         public void Update()
         {
+            if (Globals.Paused)
+                return;
             if (!_initialized)
                 return;
 

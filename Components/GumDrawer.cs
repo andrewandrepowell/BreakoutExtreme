@@ -110,6 +110,7 @@ namespace BreakoutExtreme.Components
         }
         public Bag<Shaders.Feature> ShaderFeatures => _shaderFeatures;
         public Layers Layer = Layers.Ground;
+        public bool Pausable = true;
         public void UpdateSizeImmediately()
         {
             UpdateRenderTarget();
@@ -124,6 +125,9 @@ namespace BreakoutExtreme.Components
         }
         public void Update()
         {
+            if (Globals.Paused && Pausable)
+                return;
+
             UpdateShaderFeatures();
 
             if (Visibility == 0)

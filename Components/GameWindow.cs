@@ -22,9 +22,15 @@ namespace BreakoutExtreme.Components
         private void OpenMenu()
         {
             if (_dimmer.State == RunningStates.Waiting)
+            {
+                Globals.Pause();
                 _dimmer.Start();
+            }
             else if (_dimmer.State == RunningStates.Running)
+            {
+                Globals.Resume();
                 _dimmer.Stop();
+            }
         }
         public int Score
         {

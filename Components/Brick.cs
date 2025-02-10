@@ -108,7 +108,7 @@ namespace BreakoutExtreme.Components
             _initialized = false;
             _animater = new();
             _collider = new(bounds: null, parent: this);
-            _particler = new(Particler.Particles.BrickBreak) { Layer = Layers.Foreground };
+            _particler = new(Particler.Particles.BrickBreak) { Layer = Layers.Foreground, Disposable = false };
             _shake = new();
             _animater.ShaderFeatures.Add(_shake);
             _cracks = new(_animater);
@@ -133,6 +133,8 @@ namespace BreakoutExtreme.Components
         }
         public void Update()
         {
+            if (Globals.Paused)
+                return;
             if (!_initialized)
                 return;
             if (_state == States.Spawning && !_shake.Running && !_scaleDown.Running && !_limitedFlash.Running && !_appear.Running)
