@@ -1,10 +1,11 @@
 ﻿using Microsoft.Xna.Framework;
 using System;
 using System.Diagnostics;
+using BreakoutExtreme.Utility;
 
 namespace BreakoutExtreme.Components
 {
-    public class RemainingBallsPanel
+    public class RemainingBallsPanel : IUpdate
     {
         private const int _maximumBalls = 3;
         private const float _distanceBetweenEachBall = 20;

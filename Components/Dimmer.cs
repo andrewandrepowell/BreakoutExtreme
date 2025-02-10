@@ -88,7 +88,7 @@ namespace BreakoutExtreme.Components
                     Position = Globals.GameWindowBounds.Center,
                     Layer = Layers.Dimmer,
                     Visibility = 0,
-                    Pausable = true
+                    Pausable = false
                 };
             }
 

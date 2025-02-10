@@ -7,10 +7,11 @@ using System;
 using MonoGame.Extended;
 using RenderingLibrary.Graphics;
 using RenderingLibrary;
+using BreakoutExtreme.Utility;
 
 namespace BreakoutExtreme.Components
 {
-    public class Button
+    public class Button : IUpdate
     {
         private static readonly ReadOnlyDictionary<States, string> _stateNineSliceAssetNames = new(new Dictionary<States, string>()
         {

@@ -12,7 +12,7 @@ namespace BreakoutExtreme.Components
             public bool Running { get; private set; } = false;
             public float Target { get; private set; }
             public float Threshold = 16;
-            public float Acceleration = 5000;
+            public float Acceleration = 7000;
             public void Start(float x)
             {
                 Debug.Assert(!Running);

@@ -59,6 +59,7 @@
     <Compile Include="Components\GumDrawer.cs" />
     <Compile Include="Components\Laser.cs" />
     <Compile Include="Components\LaserServiceCollisions.cs" />
+    <Compile Include="Components\Menus.cs" />
     <Compile Include="Components\PaddleLaserGlower.cs" />
     <Compile Include="Components\PulseGlower.cs" />
     <Compile Include="Components\ScorePopup.cs" />

@@ -13,6 +13,7 @@ namespace BreakoutExtreme.Components
         private readonly RemainingBallsPanel _remainingBallsPanel;
         private readonly Button _menuButton;
         private readonly Dimmer _dimmer;
+        private readonly Menus _menus;
         private int _score = 0;
         private int _levelsCleared = 0;
         private void UpdateScorePanel()
@@ -21,15 +22,17 @@ namespace BreakoutExtreme.Components
         }
         private void OpenMenu()
         {
-            if (_dimmer.State == RunningStates.Waiting)
+            if (!Globals.Paused)
             {
                 Globals.Pause();
                 _dimmer.Start();
+                _menus.Start();
             }
-            else if (_dimmer.State == RunningStates.Running)
+            else
             {
                 Globals.Resume();
                 _dimmer.Stop();
+                _menus.Stop();
             }
         }
         public int Score
@@ -61,7 +64,7 @@ namespace BreakoutExtreme.Components
         public GameWindow()
         {
             // Finally, instantiate the play area.
-            _playArea = new PlayArea(this);
+            _playArea = Globals.Runner.CreatePlayArea(this);
 
             // Create background area for UI.
             {
@@ -125,6 +128,10 @@ namespace BreakoutExtreme.Components
             {
                 _dimmer = Globals.Runner.CreateDimmer();
             }
+
+            {
+                _menus = Globals.Runner.CreateMenus();
+            }
         }
         public void Update()
         {
@@ -137,9 +144,9 @@ namespace BreakoutExtreme.Components
                     _playArea.Load(PlayArea.Levels.Test);
             }
 
-            _menuButton.Update();
-            _remainingBallsPanel.Update();
-            _playArea.Update();
+            // Clicking anywhere closes the menu.
+            if (Globals.Paused && Globals.ControlState.CursorSelectState == Controller.SelectStates.Pressed)
+                OpenMenu();
         }
     }
 }

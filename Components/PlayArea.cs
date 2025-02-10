@@ -2,14 +2,12 @@
 using System;
 using System.Linq;
 using System.Diagnostics;
-using MonoGame.Extended.Collections;
 using BreakoutExtreme.Utility;
 using Microsoft.Xna.Framework;
-using static BreakoutExtreme.Components.Cannon;
 
 namespace BreakoutExtreme.Components
 {
-    public partial class PlayArea
+    public partial class PlayArea : IUpdate
     {
         private readonly GameWindow _parent;
         private readonly GameBag<Ball> _balls = new();

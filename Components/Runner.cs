@@ -134,6 +134,12 @@ namespace BreakoutExtreme.Components
                 worldBuilder.AddSystem(new UpdateSystem<PulseGlower>());
                 worldBuilder.AddSystem(new UpdateSystem<Cleared>());
                 worldBuilder.AddSystem(new UpdateSystem<Dimmer>());
+                worldBuilder.AddSystem(new UpdateSystem<Menus>());
+
+                worldBuilder.AddSystem(new UpdateSystem<Button>());
+                worldBuilder.AddSystem(new UpdateSystem<RemainingBallsPanel>());
+
+                worldBuilder.AddSystem(new UpdateSystem<PlayArea>());
 
                 worldBuilder.AddSystem(new ColliderSystem(_collisionComponent));
                 worldBuilder.AddSystem(new PositionSystem());

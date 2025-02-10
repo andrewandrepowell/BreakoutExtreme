@@ -7,6 +7,24 @@ namespace BreakoutExtreme.Components
 {
     public partial class Runner
     {
+        public PlayArea CreatePlayArea(GameWindow parent)
+        {
+            Debug.Assert(_initialized);
+            var entity = _world.CreateEntity();
+            var playArea = new PlayArea(parent);
+            entity.Attach(playArea);
+            return playArea;
+        }
+        public Menus CreateMenus()
+        {
+            Debug.Assert(_initialized);
+            var entity = _world.CreateEntity();
+            var menus = new Menus();
+            var gumDrawer = menus.GetGumDrawer();
+            entity.Attach(menus);
+            entity.Attach(gumDrawer);
+            return menus;
+        }
         public Dimmer CreateDimmer()
         {
             Debug.Assert(_initialized);
@@ -32,8 +50,6 @@ namespace BreakoutExtreme.Components
         {
             Debug.Assert(_initialized);
             var entity = _world.CreateEntity();
-            //if (_bombPool.Count == 0)
-            //    _bombPool.AddToBack(new Bomb());
             _bombPool.RemoveFromFront(out var bomb);
             bomb.Reset(entity, bombEnum, position);
             var animater = bomb.GetAnimater();
@@ -50,8 +66,6 @@ namespace BreakoutExtreme.Components
         {
             Debug.Assert(_initialized);
             var entity = _world.CreateEntity();
-            //if (_cannonPool.Count == 0)
-            //    _cannonPool.AddToBack(new Cannon());
             _cannonPool.RemoveFromFront(out var cannon);
             cannon.Reset(entity, cannonEnum, position);
             var animater = cannon.GetAnimater();
@@ -85,8 +99,6 @@ namespace BreakoutExtreme.Components
         {
             Debug.Assert(_initialized);
             var entity = _world.CreateEntity();
-            //if (_pulseGlowerPool.Count == 0)
-            //    _pulseGlowerPool.AddToBack(new PulseGlower());
             _pulseGlowerPool.RemoveFromFront(out var pulseGlower);
             pulseGlower.Reset(entity, parent, color, minVisibility, maxVisibility, pulsePeriod);
             var texturer = pulseGlower.GetTexturer();
@@ -102,8 +114,6 @@ namespace BreakoutExtreme.Components
         {
             Debug.Assert(_initialized);
             var entity = _world.CreateEntity();
-            //if (_glowerPool.Count == 0)
-            //    _glowerPool.AddToBack(new Glower());
             _glowerPool.RemoveFromFront(out var glower);
             glower.Reset(entity, parent, color, minVisibility, maxVisibility, pulsePeriod, pulseRepeating, appearVanishPeriod);
             var texturer = glower.GetTexturer();
@@ -125,8 +135,6 @@ namespace BreakoutExtreme.Components
         {
             Debug.Assert(_initialized);
             var entity = _world.CreateEntity();
-            //if (_scorePopupPool.Count == 0)
-            //    _scorePopupPool.AddToBack(new ScorePopup());
             _scorePopupPool.RemoveFromFront(out var scorePopup);
             scorePopup.Reset(entity);
             var gumDrawer = scorePopup.GetGumDrawer();
