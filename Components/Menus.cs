@@ -10,6 +10,7 @@ namespace BreakoutExtreme.Components
 {
     public partial class Menus : IUpdate
     {
+        private const float _breakOutSplashY = (float)50 / 3;
         private readonly Bag<Window> _windows;
         private readonly ContainerRuntime _containerRuntime;
         private readonly ContainerRuntime _menuContainerRuntime;
@@ -48,6 +49,11 @@ namespace BreakoutExtreme.Components
             _vanish.Stop();
             _state = RunningStates.Waiting;
         }
+        public void Add(Window window)
+        {
+            _windows.Add(window);
+            _menuContainerRuntime.Children.Add(window.GetContainerRuntime());
+        }
         public void Update()
         {
             if (_state == RunningStates.Starting && !_appear.Running)
@@ -61,6 +67,7 @@ namespace BreakoutExtreme.Components
         public Menus()
         {
             _state = RunningStates.Waiting;
+            _windows = [];
 
             _containerRuntime = new ContainerRuntime()
             {
@@ -83,7 +90,7 @@ namespace BreakoutExtreme.Components
                 XUnits = Gum.Converters.GeneralUnitType.PixelsFromMiddle,
                 YOrigin = RenderingLibrary.Graphics.VerticalAlignment.Center,
                 YUnits = Gum.Converters.GeneralUnitType.Percentage,
-                Y = (float)100 / 3 
+                Y = _breakOutSplashY
             };
 
             _menuContainerRuntime = new()
@@ -96,18 +103,6 @@ namespace BreakoutExtreme.Components
                 WidthUnits = Gum.DataTypes.DimensionUnitType.RelativeToContainer,
                 HeightUnits = Gum.DataTypes.DimensionUnitType.Absolute
             };
-
-            _windows = [];
-            {
-                var test = new Window();
-                test.ForceStart();
-                test.Text = "We are trying to see if this works or not sdsd sdsd sasa fsds asssss ssdsd s.";
-                _windows.Add(test);
-            }
-            for (var i = 0; i < _windows.Count; i++)
-            {
-                _menuContainerRuntime.Children.Add(_windows[i].GetContainerRuntime());
-            }
 
             _containerRuntime.Children.Add(_breakOutSplashRuntime);
             _containerRuntime.Children.Add(_menuContainerRuntime);

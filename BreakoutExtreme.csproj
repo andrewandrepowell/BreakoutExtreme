@@ -60,6 +60,7 @@
     <Compile Include="Components\Laser.cs" />
     <Compile Include="Components\LaserServiceCollisions.cs" />
     <Compile Include="Components\Menus.cs" />
+    <Compile Include="Components\MenusButton.cs" />
     <Compile Include="Components\MenusWindow.cs" />
     <Compile Include="Components\PaddleLaserGlower.cs" />
     <Compile Include="Components\PulseGlower.cs" />

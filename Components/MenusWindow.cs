@@ -10,7 +10,7 @@ namespace BreakoutExtreme.Components
 {
     public partial class Menus
     {
-        private class Window : IUpdate
+        public class Window : IUpdate
         {
             private readonly static float _containerWidth = Globals.GameWindowBounds.Width * 2 / 3;
             private readonly static float _shiftAmount = (_containerWidth + Globals.GameWindowBounds.Width) / 2;
@@ -26,10 +26,7 @@ namespace BreakoutExtreme.Components
             public string Text
             {
                 get => _textRuntime.Text;
-                set
-                {
-                    _textRuntime.Text = value;
-                }
+                set => _textRuntime.Text = value;
             }
             public string ID;
             public RunningStates State => _state;

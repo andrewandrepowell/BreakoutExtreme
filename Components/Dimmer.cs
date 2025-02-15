@@ -12,7 +12,7 @@ namespace BreakoutExtreme.Components
         private readonly GumDrawer _gumDrawer;
         private readonly static Color _color = Color.Black;
         private const float _period = 0.5f;
-        private const float _maxVisibility = 0.5f;
+        private const float _maxVisibility = 0.75f;
         private float _time;
         private RunningStates _state;
         public RunningStates State => _state;
