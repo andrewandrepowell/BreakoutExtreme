@@ -2,6 +2,7 @@
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using MonoGame.Extended;
+using MonoGame.Extended.Collections;
 using MonoGameGum.GueDeriving;
 using RenderingLibrary;
 using RenderingLibrary.Graphics;
@@ -18,10 +19,12 @@ namespace BreakoutExtreme.Components
             private readonly static Color _textColor = Color.Black;
             private readonly TextRuntime _textRuntime;
             private readonly NineSliceRuntime _bgNineSliceRuntime;
+            private readonly ContainerRuntime _buttonContainerRuntime;
             private readonly NineSliceRuntime _fgNineSliceRuntime;
             private readonly ContainerRuntime _containerRuntime;
             private RunningStates _state;
             private float _shiftTime;
+            private Bag<Button> _buttons;
             public ContainerRuntime GetContainerRuntime() => _containerRuntime;
             public string Text
             {
@@ -62,6 +65,11 @@ namespace BreakoutExtreme.Components
                 _fgNineSliceRuntime.Alpha = 0;
                 _state = RunningStates.Stopping;
             }
+            public void Add(Button button)
+            {
+                _buttons.Add(button);
+                _buttonContainerRuntime.Children.Add(button.GetContainerRuntime());
+            }
             public void Update()
             {
                 if (_state == RunningStates.Starting)
@@ -90,6 +98,7 @@ namespace BreakoutExtreme.Components
             public Window()
             {
                 _state = RunningStates.Waiting;
+                _buttons = [];
 
                 _containerRuntime = new ContainerRuntime()
                 {
@@ -120,7 +129,19 @@ namespace BreakoutExtreme.Components
                     Green = _textColor.G,
                     Blue = _textColor.B,
                 };
-                
+
+                _buttonContainerRuntime = new ContainerRuntime()
+                {
+                    X = 0,
+                    XUnits = Gum.Converters.GeneralUnitType.PixelsFromMiddle,
+                    XOrigin = HorizontalAlignment.Center,
+                    YUnits = Gum.Converters.GeneralUnitType.PixelsFromSmall,
+                    Width = 0,
+                    WidthUnits = Gum.DataTypes.DimensionUnitType.RelativeToContainer,
+                    Height = 0,
+                    HeightUnits = Gum.DataTypes.DimensionUnitType.RelativeToChildren
+                };
+
                 {
                     var sourceFile = Globals.ContentManager.Load<Texture2D>("animations/menu_0");
                     _bgNineSliceRuntime = new NineSliceRuntime()
@@ -148,8 +169,11 @@ namespace BreakoutExtreme.Components
                 {
                     _containerRuntime.Children.Add(_bgNineSliceRuntime);
                     _containerRuntime.Children.Add(_textRuntime);
+                    _containerRuntime.Children.Add(_buttonContainerRuntime);
                     _containerRuntime.Children.Add(_fgNineSliceRuntime);
                 }
+
+                _buttonContainerRuntime.Y = _textRuntime.GetAbsoluteBottom();
             }
         }
     }

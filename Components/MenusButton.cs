@@ -51,6 +51,7 @@ namespace BreakoutExtreme.Components
             {
                 _state = States.Released;
 
+                _stateNodes = [];
                 foreach (ref var state in _states.AsSpan())
                 {
                     var config = _stateConfigs[state];
@@ -86,6 +87,7 @@ namespace BreakoutExtreme.Components
                     X = 0,
                     XUnits = Gum.Converters.GeneralUnitType.PixelsFromMiddle,
                     XOrigin = HorizontalAlignment.Center,
+                    HorizontalAlignment = HorizontalAlignment.Center,
                     Y = Globals.GameBlockSize,
                     YUnits = Gum.Converters.GeneralUnitType.PixelsFromSmall,
                     Width = -Globals.GameBlockSize,

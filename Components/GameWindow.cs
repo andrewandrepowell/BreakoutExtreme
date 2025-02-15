@@ -140,7 +140,10 @@ namespace BreakoutExtreme.Components
 
             {
                 _menus = Globals.Runner.CreateMenus();
-                _menus.Add(new() { Text = "We are testing something interesting" });
+                var window = new Menus.Window() { Text = "We are testing something interesting" };
+                var button = new Menus.Button() { Text = "Say what!?" };
+                window.Add(button);
+                _menus.Add(window);
             }
         }
         public void Update()
