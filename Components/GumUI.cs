@@ -38,6 +38,7 @@ namespace BreakoutExtreme.Components
                 Globals.ContentManager.Load<Texture2D>("animations/button_0");
                 Globals.ContentManager.Load<Texture2D>("animations/button_1");
                 Globals.ContentManager.Load<Texture2D>("animations/break_out_0");
+                Globals.ContentManager.Load<Texture2D>("animations/menu_0");
 #pragma warning restore CA1806
             }
         }

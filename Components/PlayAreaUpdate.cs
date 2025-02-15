@@ -24,8 +24,6 @@ namespace BreakoutExtreme.Components
                         var cursorX = controlState.CursorPosition.X;
                         var cursorReachedTarget = Math.Abs(paddleCenter.X - cursorX) <= _paddle.TargetThreshold;
 
-                        Console.WriteLine($"reached target: {cursorReachedTarget}, select: {cursorSelected}, release: {cursorReleased}, active: {_paddle.RunningMoveToTarget}");
-
                         // Stop moving the paddle around.
                         if (_paddle.RunningMoveToTarget && ((cursorSelected && cursorReachedTarget) || cursorReleased))
                             _paddle.StopMoveToTarget();
@@ -45,7 +43,7 @@ namespace BreakoutExtreme.Components
                         }
 
                         // GAME RUNNING STATE
-                        if (State == States.PlayerTakingAim && Globals.ControlState.CursorSelectState == Controller.SelectStates.Released)
+                        if (State == States.PlayerTakingAim && !_parent.MenuLocked && Globals.ControlState.CursorSelectState == Controller.SelectStates.Released)
                         {
                             var bricksActive = true;
                             for (var i = 0; i < _bricks.Count; i++)

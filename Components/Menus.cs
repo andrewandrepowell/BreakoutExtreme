@@ -1,12 +1,18 @@
 ﻿using BreakoutExtreme.Utility;
 using Microsoft.Xna.Framework.Graphics;
+using MonoGame.Extended.Collections;
 using MonoGameGum.GueDeriving;
+using RenderingLibrary;
+using System;
+
 
 namespace BreakoutExtreme.Components
 {
-    public class Menus : IUpdate
+    public partial class Menus : IUpdate
     {
+        private readonly Bag<Window> _windows;
         private readonly ContainerRuntime _containerRuntime;
+        private readonly ContainerRuntime _menuContainerRuntime;
         private readonly SpriteRuntime _breakOutSplashRuntime;
         private readonly GumDrawer _gumDrawer;
         private readonly Features.Appear _appear;
@@ -48,6 +54,9 @@ namespace BreakoutExtreme.Components
                 ForceStart();
             if (_state == RunningStates.Stopping && !_vanish.Running)
                 ForceStop();
+
+            for (var i = 0; i < _windows.Count; i++)
+                _windows[i].Update();
         }
         public Menus()
         {
@@ -58,7 +67,9 @@ namespace BreakoutExtreme.Components
                 X = 0,
                 Y = 0,
                 Width = Globals.GameWindowBounds.Width,
+                WidthUnits = Gum.DataTypes.DimensionUnitType.Absolute,
                 Height = Globals.GameWindowBounds.Height,
+                HeightUnits = Gum.DataTypes.DimensionUnitType.Absolute
             };
 
             _breakOutSplashRuntime = new SpriteRuntime()
@@ -74,7 +85,35 @@ namespace BreakoutExtreme.Components
                 YUnits = Gum.Converters.GeneralUnitType.Percentage,
                 Y = (float)100 / 3 
             };
+
+            _menuContainerRuntime = new()
+            {
+                X = 0,
+                XUnits = Gum.Converters.GeneralUnitType.PixelsFromMiddle,
+                XOrigin = RenderingLibrary.Graphics.HorizontalAlignment.Center,
+                YUnits = Gum.Converters.GeneralUnitType.PixelsFromSmall,
+                Width = 0,
+                WidthUnits = Gum.DataTypes.DimensionUnitType.RelativeToContainer,
+                HeightUnits = Gum.DataTypes.DimensionUnitType.Absolute
+            };
+
+            _windows = [];
+            {
+                var test = new Window();
+                test.ForceStart();
+                test.Text = "We are trying to see if this works or not sdsd sdsd sasa fsds asssss ssdsd s.";
+                _windows.Add(test);
+            }
+            for (var i = 0; i < _windows.Count; i++)
+            {
+                _menuContainerRuntime.Children.Add(_windows[i].GetContainerRuntime());
+            }
+
             _containerRuntime.Children.Add(_breakOutSplashRuntime);
+            _containerRuntime.Children.Add(_menuContainerRuntime);
+
+            _menuContainerRuntime.Y = _breakOutSplashRuntime.GetAbsoluteBottom();
+            _menuContainerRuntime.Height = Globals.GameWindowBounds.Height - _breakOutSplashRuntime.GetAbsoluteBottom();
 
             _gumDrawer = new GumDrawer(_containerRuntime)
             {

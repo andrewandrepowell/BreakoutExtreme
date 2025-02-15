@@ -14,7 +14,8 @@ namespace BreakoutExtreme.Components
         private readonly Button _menuButton;
         private readonly Dimmer _dimmer;
         private readonly Menus _menus;
-        private bool _menuLock;
+        private const float _menuLockPeriod = 0.25f;
+        private float _menuLockTime;
         private int _score = 0;
         private int _levelsCleared = 0;
         private void UpdateScorePanel()
@@ -23,19 +24,23 @@ namespace BreakoutExtreme.Components
         }
         private void OpenMenu()
         {
-            if (_menuLock)
-                return;
+            MenuLock();
             Globals.Pause();
             _dimmer.Start();
             _menus.Start(); 
         }
         private void CloseMenu()
         {
+            MenuLock();
             Globals.Resume();
             _dimmer.Stop();
             _menus.Stop();
-            _menuLock = true;
         }
+        public void MenuLock()
+        {
+            _menuLockTime = _menuLockPeriod;
+        }
+        public bool MenuLocked => _menuLockTime > 0;
         public int Score
         {
             get => _score;
@@ -119,7 +124,10 @@ namespace BreakoutExtreme.Components
             {
                 _menuButton = Globals.Runner.CreateButton(
                     parent: this, 
-                    action: (object parent) => OpenMenu(), 
+                    action: (object parent) =>
+                    {
+                        OpenMenu(); 
+                    }, 
                     bounds: Globals.MenuButtonBlockBounds.ToBounds(), 
                     text: "Menu");
             }
@@ -132,7 +140,6 @@ namespace BreakoutExtreme.Components
 
             {
                 _menus = Globals.Runner.CreateMenus();
-                _menuLock = false;
             }
         }
         public void Update()
@@ -149,9 +156,11 @@ namespace BreakoutExtreme.Components
             }
 
             // Clicking anywhere closes the menu.
-            _menuLock = false;
-            if (Globals.Paused && Globals.ControlState.CursorSelectState == Controller.SelectStates.Pressed)
+            if (Globals.Paused && Globals.ControlState.CursorSelectState == Controller.SelectStates.Pressed && !MenuLocked)
                 CloseMenu();
+
+            if (_menuLockTime > 0)
+                _menuLockTime -= Globals.GameTime.GetElapsedSeconds();
         }
     }
 }
