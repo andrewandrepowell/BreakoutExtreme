@@ -21,7 +21,7 @@ namespace BreakoutExtreme.Components
             private readonly static Color _textColor = Color.Black;
             private readonly TextRuntime _textRuntime;
             private readonly NineSliceRuntime _bgNineSliceRuntime;
-            private readonly ContainerRuntime _buttonContainerRuntime;
+            private readonly ContainerRuntime _stackContainerRuntime;
             private readonly NineSliceRuntime _fgNineSliceRuntime;
             private readonly ContainerRuntime _containerRuntime;
             private RunningStates _state;
@@ -65,7 +65,6 @@ namespace BreakoutExtreme.Components
                 _fgNineSliceRuntime.Alpha = 255;
                 for (var i = 0; i < _buttons.Count; i++)
                     _buttons[i].Running = false;
-                UpdateOffsets();
                 _state = RunningStates.Starting;
             }
             public void Stop() 
@@ -83,23 +82,7 @@ namespace BreakoutExtreme.Components
                 Debug.Assert(_state == RunningStates.Waiting);
                 button.Running = false;
                 _buttons.Add(button);
-                _buttonContainerRuntime.Children.Add(button.GetContainerRuntime());
-            }
-            public void UpdateOffsets()
-            {
-                for (var i = 0; i < _buttons.Count; i++)
-                {
-                    var buttonContainerRuntime = _buttons[i].GetContainerRuntime();
-                    if (i == 0)
-                    {
-                        buttonContainerRuntime.Y = _textRuntime.GetAbsoluteHeight();
-                    }
-                    else
-                    {
-                        var prevContainerRuntime = _buttons[i - 1].GetContainerRuntime();
-                        buttonContainerRuntime.Y = prevContainerRuntime.Y + prevContainerRuntime.GetAbsoluteHeight();
-                    }
-                }
+                _stackContainerRuntime.Children.Add(button.GetContainerRuntime());
             }
             public void UpdateBounds()
             {
@@ -153,7 +136,7 @@ namespace BreakoutExtreme.Components
                     Width = Globals.GameBlockSize,
                     WidthUnits = Gum.DataTypes.DimensionUnitType.RelativeToChildren,
                     Height = Globals.GameBlockSize,
-                    HeightUnits = Gum.DataTypes.DimensionUnitType.RelativeToChildren
+                    HeightUnits = Gum.DataTypes.DimensionUnitType.RelativeToChildren,
                 };
 
                 _textRuntime = new TextRuntime()
@@ -173,16 +156,17 @@ namespace BreakoutExtreme.Components
                     Blue = _textColor.B,
                 };
 
-                _buttonContainerRuntime = new ContainerRuntime()
+                _stackContainerRuntime = new ContainerRuntime()
                 {
                     X = 0,
                     XUnits = Gum.Converters.GeneralUnitType.PixelsFromMiddle,
                     XOrigin = HorizontalAlignment.Center,
                     YUnits = Gum.Converters.GeneralUnitType.PixelsFromSmall,
                     Width = 0,
-                    WidthUnits = Gum.DataTypes.DimensionUnitType.RelativeToContainer,
+                    WidthUnits = Gum.DataTypes.DimensionUnitType.RelativeToChildren,
                     Height = 0,
-                    HeightUnits = Gum.DataTypes.DimensionUnitType.RelativeToChildren
+                    HeightUnits = Gum.DataTypes.DimensionUnitType.RelativeToChildren,
+                    ChildrenLayout = Gum.Managers.ChildrenLayout.TopToBottomStack,
                 };
 
                 {
@@ -210,13 +194,11 @@ namespace BreakoutExtreme.Components
                 }
 
                 {
+                    _stackContainerRuntime.Children.Add(_textRuntime);
                     _containerRuntime.Children.Add(_bgNineSliceRuntime);
-                    _containerRuntime.Children.Add(_textRuntime);
-                    _containerRuntime.Children.Add(_buttonContainerRuntime);
+                    _containerRuntime.Children.Add(_stackContainerRuntime);
                     _containerRuntime.Children.Add(_fgNineSliceRuntime);
                 }
-
-                _buttonContainerRuntime.Y = _textRuntime.GetAbsoluteBottom();
 
                 ForceStop();
             }
