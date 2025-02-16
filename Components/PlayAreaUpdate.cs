@@ -17,8 +17,8 @@ namespace BreakoutExtreme.Components
                     var cursorSelected = controlState.CursorSelectState == Controller.SelectStates.Pressed || controlState.CursorSelectState == Controller.SelectStates.Held;
                     var cursorReleased = controlState.CursorSelectState == Controller.SelectStates.Released;
 
-                    // When clearing, the paddle isn't available, so don't run paddle control.
-                    if (State != States.Clearing && cursorInPlayArea && !_parent.MenuLocked)
+                    // When game ending or level clearing, the paddle isn't available, so don't run paddle control.
+                    if (State != States.Clearing && State != States.GameEnding && cursorInPlayArea && !_parent.MenuLocked)
                     {
                         var paddleCenter = _paddle.GetCollider().Bounds.BoundingRectangle.Center;
                         var cursorX = controlState.CursorPosition.X;
@@ -73,6 +73,15 @@ namespace BreakoutExtreme.Components
                     State = States.SpawnNewBall;
                 }
 
+                // GAME END STATE
+                if (State == States.GameRunning && _balls.Count == 0 && _parent.RemainingBalls == 0)
+                {
+                    Debug.Assert(!_gameEnd.Running);
+                    _gameEnd.Start();
+                    _paddle.Destroy();
+                    State = States.GameEnding;
+                }
+
                 // PLAYER TAKING AIM STATE 
                 // It's imperative the SPAWN NEW BALL STATE takes place before this one.
                 if (State == States.Loaded || State == States.SpawnNewBall)
@@ -111,7 +120,8 @@ namespace BreakoutExtreme.Components
                 }
 
                 // UNLOAD
-                if (State == States.Clearing && !_cleared.Running && _balls.Count == 0 && _paddle.State == Paddle.States.Destroyed)
+                if ((State == States.Clearing && !_cleared.Running && _balls.Count == 0 && _paddle.Destroyed) ||
+                    (State == States.GameEnding && !_gameEnd.Running && _paddle.Destroyed))
                 {
                     Unload();
                 }

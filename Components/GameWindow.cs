@@ -223,7 +223,7 @@ namespace BreakoutExtreme.Components
         public void Update()
         {
             // temporary
-            if (!_playArea.Loaded && _levelsCleared < 3)
+            if (!_playArea.Loaded && _levelsCleared < 3 && RemainingBalls > 0)
             {
                 if (_levelsCleared == 0)
                     _playArea.Load(PlayArea.Levels.Test2);
@@ -239,6 +239,7 @@ namespace BreakoutExtreme.Components
                 !MenuLocked && !_menus.IsCursorInWindow() && !_menus.Busy)
                 CloseMenu();
 
+            // A timer is put on opening/closing the menu to prevent unintended actions when closing/opening the main menu.
             if (_menuLockTime > 0)
                 _menuLockTime -= Globals.GameTime.GetElapsedSeconds();
         }

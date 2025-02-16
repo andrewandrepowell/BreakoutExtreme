@@ -14,13 +14,15 @@ namespace BreakoutExtreme.Components
             Laser,
             Cannon,
             Bomb,
-            Cleared
+            Cleared,
+            GameEnd
         }
         public enum Animations
         {
             Ball,
             BallDead,
             Paddle,
+            PaddleDead,
             BrickLarge,
             BrickLargeDead,
             CrackSmall,
@@ -33,7 +35,8 @@ namespace BreakoutExtreme.Components
             CannonDead,
             Bomb,
             BombDead,
-            Cleared
+            Cleared,
+            GameEnd
         }
     }
 }

@@ -23,7 +23,8 @@
             PlayerTakingAim,
             GameRunning,
             SpawnNewBall,
-            Clearing
+            Clearing,
+            GameEnding
         }
     }
 }

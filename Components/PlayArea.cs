@@ -16,7 +16,8 @@ namespace BreakoutExtreme.Components
         private readonly GameBag<Laser> _lasers = new();
         private readonly GameBag<Cannon> _cannons = new();
         private readonly DeathWall _deathWall;
-        private readonly Cleared _cleared;
+        private readonly Splasher _cleared;
+        private readonly Splasher _gameEnd;
         private Paddle _paddle = null;
         private Levels _level = Levels.Test;
         private Vector2 _ballInitialDisplacementFromPaddle;
@@ -163,9 +164,10 @@ namespace BreakoutExtreme.Components
                 ninePatcher.Bounds = new Rectangle(Globals.PlayAreaBlockBounds.X + 1, Globals.PlayAreaBlockBounds.Y + 1, Globals.PlayAreaBlockBounds.Width - 2, Globals.PlayAreaBlockBounds.Height - 1).ToBounds();
             }
 
-
+            // Create the splash animations.
             {
-                _cleared = Globals.Runner.CreateCleared();
+                _cleared = Globals.Runner.CreateSplasher(Splasher.Splashes.Cleared);
+                _gameEnd = Globals.Runner.CreateSplasher(Splasher.Splashes.GameEnd);
             }
         }
     }

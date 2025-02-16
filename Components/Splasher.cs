@@ -1,11 +1,18 @@
 ﻿using BreakoutExtreme.Utility;
 using MonoGame.Extended.ECS;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Diagnostics;
 
 namespace BreakoutExtreme.Components
 {
-    public class Cleared : IRemoveEntity, IUpdate
+    public class Splasher : IRemoveEntity, IUpdate
     {
+        private readonly static ReadOnlyDictionary<Splashes, SplashConfig> _splashConfigs = new(new Dictionary<Splashes, SplashConfig>() 
+        {
+            { Splashes.Cleared, new(Animater.Animations.Cleared) },
+            { Splashes.GameEnd, new(Animater.Animations.GameEnd) },
+        });
         private readonly Animater _animater;
         private readonly Features.ScaleDown _scaleDown;
         private readonly Features.Shine _shine;
@@ -23,6 +30,13 @@ namespace BreakoutExtreme.Components
         private bool _initialized;
         private Entity _entity;
         private bool _running;
+        private Splashes _splash;
+        private SplashConfig _splashConfig;
+        private class SplashConfig(Animater.Animations animation)
+        {
+            public readonly Animater.Animations Animation = animation;
+        }
+        public enum Splashes { Cleared, GameEnd }
         public bool Running => _running;
         public Animater GetAnimater() => _animater;
         public void Start()
@@ -43,13 +57,15 @@ namespace BreakoutExtreme.Components
             _vanishShadow.Start();
             _running = true;
         }
-        public void Reset(Entity entity)
+        public void Reset(Entity entity, Splashes splash)
         {
             Debug.Assert(!_initialized);
             _entity = entity;
+            _splash = splash;
+            _splashConfig = _splashConfigs[splash];
             _animater.Position = Globals.PlayAreaBounds.Center;
             _animater.Visibility = 0;
-            _animater.Play(Animater.Animations.Cleared);
+            _animater.Play(_splashConfig.Animation);
             _shadower = Globals.Runner.CreateShadower(_animater, _animater.Position);
             {
                 var texturer = _shadower.GetTexturer();
@@ -153,7 +169,7 @@ namespace BreakoutExtreme.Components
                 _running = false;
             }
         }
-        public Cleared()
+        public Splasher()
         {
             _animater = new Animater();
             _scaleDown = new();

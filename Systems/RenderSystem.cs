@@ -74,8 +74,9 @@ namespace BreakoutExtreme.Systems
                 _gumDrawers.Clear();
                 _particlers.Clear();
                 _texturers.Clear();
-                foreach (var entityId in ActiveEntities)
+                for (var i = 0; i < ActiveEntities.Count; i++)
                 {
+                    var entityId = ActiveEntities[i];
                     if (_animaterMapper.Has(entityId))
                         _animaters.Add(_animaterMapper.Get(entityId));
                     if (_ninePatcherMapper.Has(entityId))

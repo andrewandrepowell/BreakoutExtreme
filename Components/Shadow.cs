@@ -25,6 +25,7 @@ namespace BreakoutExtreme.Components
             _parent = parent;
             _initialized = true;
             _texturer.Parent = parent;
+            _texturer.Visibility = _visibility;
             _texturer.Position = _parent.Position + new Vector2(0, _displacement);
             _parent.GetAttacher().Attach(_texturer);
             _vanish.Stop();

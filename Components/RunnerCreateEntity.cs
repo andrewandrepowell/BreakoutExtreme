@@ -35,16 +35,16 @@ namespace BreakoutExtreme.Components
             entity.Attach(gumDrawer);
             return dimmer;
         }
-        public Cleared CreateCleared()
+        public Splasher CreateSplasher(Splasher.Splashes splash)
         {
             Debug.Assert(_initialized);
             var entity = _world.CreateEntity();
-            var cleared = new Cleared();
-            cleared.Reset(entity);
-            var animater = cleared.GetAnimater();
-            entity.Attach(cleared);
+            var splasher = new Splasher();
+            splasher.Reset(entity, splash);
+            var animater = splasher.GetAnimater();
+            entity.Attach(splasher);
             entity.Attach(animater);
-            return cleared;
+            return splasher;
         }
         public Bomb CreateBomb(Bomb.Bombs bombEnum, Vector2 position)
         {

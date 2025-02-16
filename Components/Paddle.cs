@@ -20,6 +20,7 @@ namespace BreakoutExtreme.Components
         private readonly Features.LimitedFlash _limitedFlash;
         private readonly Features.Vanish _vanish;
         private readonly Features.FloatUp _floatUp;
+        private readonly Features.Shake _shake;
         private Entity _entity;
         private Shadow _shadow;
         private bool _initialized;
@@ -41,7 +42,7 @@ namespace BreakoutExtreme.Components
             }
             _moveToTarget.ServiceCollision(node);
         }
-        public enum States { Active, Despawning, Destroyed }
+        public enum States { Active, Despawning, Destroying, Destroyed }
         public Animater GetAnimater() => _animater;
         public Collider GetCollider() => _collider;
         public float TargetToMoveTo => _moveToTarget.Target;
@@ -83,6 +84,16 @@ namespace BreakoutExtreme.Components
             _shadow.VanishStart();
             _state = States.Despawning;
         }
+        public void Destroy()
+        {
+            Debug.Assert(_initialized);
+            Debug.Assert(_state == States.Active);
+            _animater.Play(Animater.Animations.PaddleDead);
+            _vanish.Start();
+            _shake.Start();
+            _shadow.VanishStart();
+            _state = States.Destroying;
+        }
         public void Reset(Entity entity)
         {
             Debug.Assert(!_initialized);
@@ -92,6 +103,7 @@ namespace BreakoutExtreme.Components
             _shadow = Globals.Runner.CreateShadow(_animater);
             _laserGlower.Reset();
             _floatUp.Stop();
+            _shake.Stop();
             _state = States.Active;
             _initialized = true;
         }
@@ -104,9 +116,11 @@ namespace BreakoutExtreme.Components
             _limitedFlash = new();
             _floatUp = new();
             _vanish = new();
+            _shake = new();
             _animater.ShaderFeatures.Add(_limitedFlash);
             _animater.ShaderFeatures.Add(_floatUp);
             _animater.ShaderFeatures.Add(_vanish);
+            _animater.ShaderFeatures.Add(_shake);
             _initialized = false;
         }
         public void RemoveEntity()
@@ -123,7 +137,8 @@ namespace BreakoutExtreme.Components
                 return;
             if (!_initialized)
                 return;
-            if (_state == States.Despawning && _floatUp.State == RunningStates.Running && !_vanish.Running && !_shadow.VanishRunning)
+            if ((_state == States.Despawning && _floatUp.State == RunningStates.Running && !_vanish.Running && !_shadow.VanishRunning) ||
+                (_state == States.Destroying && !_vanish.Running && !_shake.Running && !_shadow.VanishRunning))
             {
                 _animater.Visibility = 0;
                 _state = States.Destroyed;

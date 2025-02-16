@@ -1,6 +1,7 @@
 ﻿using BreakoutExtreme.Shaders;
 using MonoGame.Extended;
 using System.Diagnostics;
+using System;
 
 namespace BreakoutExtreme.Features
 {
@@ -10,14 +11,15 @@ namespace BreakoutExtreme.Features
         private float _time = 0;
         private float _delayPeriod = 0;
         private float _delayTime;
+        private bool _running = false;
         public override bool UpdateVisibility(ref float visibility)
         {
-            if (!Running)
+            if (!_running)
                 return false;
             visibility *= (_time / _period);
             return true;
         }
-        public bool Running { get; private set; } = false;
+        public bool Running => _running;
         public float Period
         {
             get => _period;
@@ -42,15 +44,15 @@ namespace BreakoutExtreme.Features
         {
             _time = _period;
             _delayTime = _delayPeriod;
-            Running = true;
+            _running = true;
         }
         public void Stop()
         {
-            Running = false;
+            _running = false;
         }
         public override void Update()
         {
-            if (Running)
+            if (_running)
             {
                 if (_time <= 0)
                     Stop();
