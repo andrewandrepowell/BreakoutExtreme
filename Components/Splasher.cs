@@ -12,6 +12,7 @@ namespace BreakoutExtreme.Components
         {
             { Splashes.Cleared, new(Animater.Animations.Cleared) },
             { Splashes.GameEnd, new(Animater.Animations.GameEnd) },
+            { Splashes.GameStart, new(Animater.Animations.GameStart) },
         });
         private readonly Animater _animater;
         private readonly Features.ScaleDown _scaleDown;
@@ -36,7 +37,7 @@ namespace BreakoutExtreme.Components
         {
             public readonly Animater.Animations Animation = animation;
         }
-        public enum Splashes { Cleared, GameEnd }
+        public enum Splashes { Cleared, GameEnd, GameStart }
         public bool Running => _running;
         public Animater GetAnimater() => _animater;
         public void Start()

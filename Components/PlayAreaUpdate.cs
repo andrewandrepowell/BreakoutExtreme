@@ -7,8 +7,7 @@ namespace BreakoutExtreme.Components
     {
         public void Update()
         {
-            if (Loaded &&
-                !Globals.Paused)
+            if (Loaded && !Globals.Paused)
             {
                 // Apply user control
                 {
@@ -43,7 +42,7 @@ namespace BreakoutExtreme.Components
                         }
 
                         // GAME RUNNING STATE
-                        if (State == States.PlayerTakingAim && !_parent.MenuLocked && Globals.ControlState.CursorSelectState == Controller.SelectStates.Released)
+                        if (State == States.PlayerTakingAim && !_gameStart.Running && !_parent.MenuLocked && Globals.ControlState.CursorSelectState == Controller.SelectStates.Released)
                         {
                             var bricksActive = true;
                             for (var i = 0; i < _bricks.Count; i++)

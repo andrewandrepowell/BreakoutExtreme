@@ -15,7 +15,8 @@ namespace BreakoutExtreme.Components
             Cannon,
             Bomb,
             Cleared,
-            GameEnd
+            GameEnd,
+            GameStart
         }
         public enum Animations
         {
@@ -36,7 +37,8 @@ namespace BreakoutExtreme.Components
             Bomb,
             BombDead,
             Cleared,
-            GameEnd
+            GameEnd,
+            GameStart
         }
     }
 }

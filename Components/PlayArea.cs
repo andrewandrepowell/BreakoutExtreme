@@ -18,6 +18,7 @@ namespace BreakoutExtreme.Components
         private readonly DeathWall _deathWall;
         private readonly Splasher _cleared;
         private readonly Splasher _gameEnd;
+        private readonly Splasher _gameStart;
         private Paddle _paddle = null;
         private Levels _level = Levels.Test;
         private Vector2 _ballInitialDisplacementFromPaddle;
@@ -53,7 +54,6 @@ namespace BreakoutExtreme.Components
             }
         }
         public States State { get; private set; } = States.Unloaded;
-        public GameWindow Parent => _parent;
         public void Load(Levels level)
         {
             Debug.Assert(!Loaded);
@@ -115,28 +115,9 @@ namespace BreakoutExtreme.Components
 
             State = States.Unloaded;
         }
-        public void UpdateScore(Vector2 position)
+        public void GameStart()
         {
-            var scorePopup = Globals.Runner.CreateScorePopup();
-            scorePopup.Text = "+1";
-            scorePopup.GetGumDrawer().Position = position;
-            _scorePopups.Add(scorePopup);
-            _parent.Score++;
-        }
-        public void UpdateScore(Cannon cannon)
-        {
-            var collider = cannon.GetCollider();
-            UpdateScore(collider.Position);
-        }
-        public void UpdateScore(Brick brick)
-        {
-            var collider = brick.GetCollider();
-            UpdateScore(collider.Position + (Vector2)(collider.Size / 2));
-        }
-        public void UpdateScore(Bomb bomb)
-        {
-            var collider = bomb.GetCollider();
-            UpdateScore(collider.Position);
+            _gameStart.Start();
         }
         public PlayArea(GameWindow parent)
         {
@@ -168,6 +149,7 @@ namespace BreakoutExtreme.Components
             {
                 _cleared = Globals.Runner.CreateSplasher(Splasher.Splashes.Cleared);
                 _gameEnd = Globals.Runner.CreateSplasher(Splasher.Splashes.GameEnd);
+                _gameStart = Globals.Runner.CreateSplasher(Splasher.Splashes.GameStart);
             }
         }
     }

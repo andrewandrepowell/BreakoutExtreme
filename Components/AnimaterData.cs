@@ -19,6 +19,7 @@ namespace BreakoutExtreme.Components
             { Spriters.Bomb, "animations/bomb_0" },
             { Spriters.Cleared, "animations/cleared_0" },
             { Spriters.GameEnd, "animations/game_end_0" },
+            { Spriters.GameStart, "animations/game_start_0" },
         });
         private static readonly ReadOnlyDictionary<Spriters, Size> _spriterRegionSizes = new(new Dictionary<Spriters, Size>
         {
@@ -32,6 +33,7 @@ namespace BreakoutExtreme.Components
             { Spriters.Bomb, new Size(80, 80) },
             { Spriters.Cleared, new Size(208, 96) },
             { Spriters.GameEnd, new Size(240, 96) },
+            { Spriters.GameStart, new Size(240, 96) },
         });
         private static readonly ReadOnlyDictionary<Animations, string> _animationNames = new(new Dictionary<Animations, string>
         {
@@ -53,6 +55,7 @@ namespace BreakoutExtreme.Components
             { Animations.BombDead, "bomb_1" },
             { Animations.Cleared, "cleared_0" },
             { Animations.GameEnd, "game_end_0" },
+            { Animations.GameStart, "game_start_0" },
         });
         private static readonly ReadOnlyDictionary<Spriters, Action<Spriter>> _spriterConfigureAnimations = new(new Dictionary<Spriters, Action<Spriter>>
         {
@@ -133,6 +136,13 @@ namespace BreakoutExtreme.Components
                 {
                     spriter.Add(_animationNames[Animations.GameEnd], [0]);
                 }
+            },
+            {
+                Spriters.GameStart,
+                delegate(Spriter spriter)
+                {
+                    spriter.Add(_animationNames[Animations.GameStart], [0]);
+                }
             }
         });
         private static readonly ReadOnlyDictionary<Animations, Spriters> _animationSpriters = new(new Dictionary<Animations, Spriters>()
@@ -155,6 +165,7 @@ namespace BreakoutExtreme.Components
             { Animations.BombDead, Spriters.Bomb },
             { Animations.Cleared, Spriters.Cleared },
             { Animations.GameEnd, Spriters.GameEnd },
+            { Animations.GameStart, Spriters.GameStart },
         });
         private readonly Dictionary<Spriters, Spriter> _spriters = [];
     }

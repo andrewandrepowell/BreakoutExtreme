@@ -17,10 +17,15 @@ namespace BreakoutExtreme.Components
         private const float _menuLockPeriod = 0.25f;
         private float _menuLockTime;
         private int _score = 0;
+        private int _highScore = 0;
         private int _levelsCleared = 0;
         private void UpdateScorePanel()
         {
             _scorePanel.Text = $"{_score}";
+        }
+        private void UpdateHighScorePanel()
+        {
+            _highScorePanel.Text = $"{_highScore}";
         }
         private void OpenMenu()
         {
@@ -53,6 +58,17 @@ namespace BreakoutExtreme.Components
                     return;
                 _score = value;
                 UpdateScorePanel();
+            }
+        }
+        public int HighScore
+        {
+            get => _highScore;
+            set
+            {
+                Debug.Assert(value >= 0);
+                Debug.Assert(value >= _highScore);
+                _highScore = value;
+                UpdateHighScorePanel();
             }
         }
         public int LevelsCleared
@@ -222,15 +238,26 @@ namespace BreakoutExtreme.Components
         }
         public void Update()
         {
-            // temporary
-            if (!_playArea.Loaded && _levelsCleared < 3 && RemainingBalls > 0)
+            // For now, loop through the levels.
+            if (!_playArea.Loaded && RemainingBalls > 0)
             {
-                if (_levelsCleared == 0)
+                if (RemainingBalls == 0)
+                    _playArea.GameStart();
+                if (LevelsCleared % 3 == 0)
                     _playArea.Load(PlayArea.Levels.Test2);
-                if (_levelsCleared == 1)
+                else if (LevelsCleared % 3 == 1)
                     _playArea.Load(PlayArea.Levels.Test3);
-                if (_levelsCleared == 2)
+                else if (LevelsCleared % 3 == 2)
                     _playArea.Load(PlayArea.Levels.Test);
+            }
+
+            // If game is over, reset the state of the game.
+            if (!_playArea.Loaded && RemainingBalls == 0)
+            {
+                HighScore = Score;
+                Score = 0;
+                RemainingBalls = 3;
+                LevelsCleared = 0;
             }
 
             // Clicking anywhere closes the menu.

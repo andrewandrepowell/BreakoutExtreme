@@ -48,6 +48,7 @@
     <Compile Include="Components\Button.cs" />
     <Compile Include="Components\Cannon.cs" />
     <Compile Include="Components\CannonFirer.cs" />
+    <Compile Include="Components\PlayAreaUpdateScore.cs" />
     <Compile Include="Components\Splasher.cs" />
     <Compile Include="Components\Collider.cs" />
     <Compile Include="Components\Controller.cs" />
