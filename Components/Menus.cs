@@ -4,6 +4,8 @@ using MonoGame.Extended.Collections;
 using MonoGameGum.GueDeriving;
 using RenderingLibrary;
 using System;
+using System.Diagnostics;
+using System.Linq;
 
 
 namespace BreakoutExtreme.Components
@@ -19,8 +21,29 @@ namespace BreakoutExtreme.Components
         private readonly Features.Appear _appear;
         private readonly Features.Vanish _vanish;
         private RunningStates _state;
+        private Window _window;
         public GumDrawer GetGumDrawer() => _gumDrawer;
         public RunningStates State => _state;
+        public void Goto(string id = "")
+        {
+            for (var i = 0; i < _windows.Count; i++)
+            {
+                var window = _windows[i];
+                if (window.ID == id)
+                {
+                    _window = window;
+                    window.Start();
+                }
+                else if (window.State != RunningStates.Waiting)
+                    window.Stop();
+            }
+        }
+        public bool IsCursorInWindow()
+        {
+            if (_window == null)
+                return false;
+            return _window.IsCursorInBounds();
+        }
         public void Start()
         {
             _gumDrawer.Visibility = 1;
@@ -33,6 +56,8 @@ namespace BreakoutExtreme.Components
             _gumDrawer.Visibility = 1;
             _appear.Stop();
             _vanish.Stop();
+            for (var i = 0; i < _windows.Count; i++)
+                _windows[i].UpdateBounds();
             _state = RunningStates.Running;
         }
         public void Stop()
@@ -51,6 +76,7 @@ namespace BreakoutExtreme.Components
         }
         public void Add(Window window)
         {
+            Debug.Assert(_windows.All(x=>x.ID != window.ID));
             _windows.Add(window);
             _menuContainerRuntime.Children.Add(window.GetContainerRuntime());
         }
@@ -66,7 +92,6 @@ namespace BreakoutExtreme.Components
         }
         public Menus()
         {
-            _state = RunningStates.Waiting;
             _windows = [];
 
             _containerRuntime = new ContainerRuntime()
@@ -121,6 +146,8 @@ namespace BreakoutExtreme.Components
             _vanish = new();
             _gumDrawer.ShaderFeatures.Add(_appear);
             _gumDrawer.ShaderFeatures.Add(_vanish);
+
+            ForceStop();
         }
     }
 }

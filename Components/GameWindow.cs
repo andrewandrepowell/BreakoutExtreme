@@ -27,7 +27,8 @@ namespace BreakoutExtreme.Components
             MenuLock();
             Globals.Pause();
             _dimmer.Start();
-            _menus.Start(); 
+            _menus.Start();
+            _menus.Goto("test");
         }
         private void CloseMenu()
         {
@@ -35,6 +36,7 @@ namespace BreakoutExtreme.Components
             Globals.Resume();
             _dimmer.Stop();
             _menus.Stop();
+            _menus.Goto();
         }
         public void MenuLock()
         {
@@ -140,7 +142,7 @@ namespace BreakoutExtreme.Components
 
             {
                 _menus = Globals.Runner.CreateMenus();
-                var window = new Menus.Window() { Text = "We are testing something interesting" };
+                var window = new Menus.Window() { ID  = "test", Text = "We are testing something interesting" };
                 var button = new Menus.Button() { Text = "Say what!?" };
                 window.Add(button);
                 _menus.Add(window);
@@ -160,7 +162,7 @@ namespace BreakoutExtreme.Components
             }
 
             // Clicking anywhere closes the menu.
-            if (Globals.Paused && Globals.ControlState.CursorSelectState == Controller.SelectStates.Pressed && !MenuLocked)
+            if (Globals.Paused && Globals.ControlState.CursorSelectState == Controller.SelectStates.Pressed && !MenuLocked && !_menus.IsCursorInWindow())
                 CloseMenu();
 
             if (_menuLockTime > 0)

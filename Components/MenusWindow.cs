@@ -6,6 +6,8 @@ using MonoGame.Extended.Collections;
 using MonoGameGum.GueDeriving;
 using RenderingLibrary;
 using RenderingLibrary.Graphics;
+using System.Diagnostics;
+using System;
 
 namespace BreakoutExtreme.Components
 {
@@ -25,6 +27,7 @@ namespace BreakoutExtreme.Components
             private RunningStates _state;
             private float _shiftTime;
             private Bag<Button> _buttons;
+            private RectangleF _bounds;
             public ContainerRuntime GetContainerRuntime() => _containerRuntime;
             public string Text
             {
@@ -39,6 +42,8 @@ namespace BreakoutExtreme.Components
                 _containerRuntime.Visible = true;
                 _containerRuntime.X = 0;
                 _fgNineSliceRuntime.Alpha = 0;
+                for (var i = 0; i < _buttons.Count; i++)
+                    _buttons[i].Running = true;
                 _state = RunningStates.Running;
             }
             public void ForceStop() 
@@ -47,6 +52,8 @@ namespace BreakoutExtreme.Components
                 _containerRuntime.Visible = false;
                 _containerRuntime.X = _shiftAmount;
                 _fgNineSliceRuntime.Alpha = 255;
+                for (var i = 0; i < _buttons.Count; i++)
+                    _buttons[i].Running = false;
                 _state = RunningStates.Waiting;
             }
             public void Start() 
@@ -55,21 +62,37 @@ namespace BreakoutExtreme.Components
                 _containerRuntime.Visible = true;
                 _containerRuntime.X = -_shiftAmount;
                 _fgNineSliceRuntime.Alpha = 255;
+                for (var i = 0; i < _buttons.Count; i++)
+                    _buttons[i].Running = false;
                 _state = RunningStates.Starting;
             }
             public void Stop() 
-            {
+            { 
                 _shiftTime = _shiftPeriod;
                 _containerRuntime.Visible = true;
                 _containerRuntime.X = 0;
                 _fgNineSliceRuntime.Alpha = 0;
+                for (var i = 0; i < _buttons.Count; i++)
+                    _buttons[i].Running = false;
                 _state = RunningStates.Stopping;
             }
             public void Add(Button button)
             {
+                Debug.Assert(_state == RunningStates.Waiting);
+                button.Running = false;
                 _buttons.Add(button);
                 _buttonContainerRuntime.Children.Add(button.GetContainerRuntime());
             }
+            public void UpdateBounds()
+            {
+                _bounds = new(
+                    x: _containerRuntime.GetAbsoluteX(),
+                    y: _containerRuntime.GetAbsoluteY(),
+                    width: _containerRuntime.GetAbsoluteWidth(),
+                    height: _containerRuntime.GetAbsoluteHeight());
+                Console.WriteLine($"{_bounds}");
+            }
+            public bool IsCursorInBounds() => _bounds.Contains(Globals.ControlState.CursorPosition);
             public void Update()
             {
                 if (_state == RunningStates.Starting)
@@ -83,6 +106,7 @@ namespace BreakoutExtreme.Components
                     else
                         ForceStart();
                 }
+
                 if (_state == RunningStates.Stopping)
                 {
                     var shiftRatio = _shiftTime / _shiftPeriod;
@@ -94,10 +118,12 @@ namespace BreakoutExtreme.Components
                     else
                         ForceStop();
                 }
+
+                for (var i = 0; i < _buttons.Count; i++)
+                    _buttons[i].Update();
             }
             public Window()
             {
-                _state = RunningStates.Waiting;
                 _buttons = [];
 
                 _containerRuntime = new ContainerRuntime()
@@ -174,6 +200,8 @@ namespace BreakoutExtreme.Components
                 }
 
                 _buttonContainerRuntime.Y = _textRuntime.GetAbsoluteBottom();
+
+                ForceStop();
             }
         }
     }

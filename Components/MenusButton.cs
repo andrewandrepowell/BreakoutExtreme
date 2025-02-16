@@ -7,6 +7,7 @@ using System.Collections.ObjectModel;
 using Microsoft.Xna.Framework;
 using System.Diagnostics;
 using RenderingLibrary;
+using MonoGame.Extended;
 
 namespace BreakoutExtreme.Components
 {
@@ -14,6 +15,7 @@ namespace BreakoutExtreme.Components
     {
         public class Button
         {
+            private const float _pressedPeriod = 0.5f;
             private readonly static States[] _states = Enum.GetValues<States>();
             private readonly static ReadOnlyDictionary<States, StateConfig> _stateConfigs = new(new Dictionary<States, StateConfig>() 
             {
@@ -25,6 +27,10 @@ namespace BreakoutExtreme.Components
             private readonly NineSliceRuntime _nineSliceRuntime;
             private readonly ContainerRuntime _containerRuntime;
             private readonly Dictionary<States, StateNode> _stateNodes;
+            private RectangleF _bounds;
+            private bool _running;
+            private Action<object> _action;
+            private object _parent;
             private class StateConfig(string nineSliceAssetName)
             {
                 public readonly string NineSliceAssetName = nineSliceAssetName;
@@ -39,6 +45,7 @@ namespace BreakoutExtreme.Components
             private void UpdateStateProperties()
             {
                 var node = _stateNodes[_state];
+                var config = _stateConfigs[_state];
                 _nineSliceRuntime.SourceFile = node.NineSliceTexture;
             }
             public ContainerRuntime GetContainerRuntime() => _containerRuntime;
@@ -47,9 +54,61 @@ namespace BreakoutExtreme.Components
                 get => _textRuntime.Text;
                 set => _textRuntime.Text = value;
             }
+            public bool Running
+            {
+                get => _running;
+                set
+                {
+                    _running = value;
+                    if (_running)
+                        UpdateBounds();
+                }
+            }
+            public Action<object> Action
+            {
+                get => _action;
+                set => _action = value;
+            }
+            public object Parent
+            {
+                get => _parent;
+                set => _parent = value;
+            }
+            public void UpdateBounds()
+            {
+                _bounds = new(
+                    x: _containerRuntime.GetAbsoluteX(),
+                    y: _containerRuntime.GetAbsoluteY(),
+                    width: _containerRuntime.GetAbsoluteWidth(),
+                    height: _containerRuntime.GetAbsoluteHeight());
+            }
+            public void Update()
+            {
+                if (_running)
+                {
+                    var controlStates = Globals.ControlState;
+                    if (controlStates.CursorSelectState == Controller.SelectStates.Pressed && _bounds.Contains(controlStates.CursorPosition))
+                    {
+                        _pressedTime = _pressedPeriod;
+                        if (_action != null) _action(_parent);
+                        _state = States.Pressed;
+                        UpdateStateProperties();
+                    }
+                }
+
+                if (_state == States.Pressed && _pressedTime <= 0)
+                {
+                    _state = States.Released;
+                    UpdateStateProperties();
+                }
+
+                if (_pressedTime > 0)
+                    _pressedTime -= Globals.GameTime.GetElapsedSeconds();
+            }
             public Button()
             {
                 _state = States.Released;
+                _running = false;
 
                 _stateNodes = [];
                 foreach (ref var state in _states.AsSpan())
