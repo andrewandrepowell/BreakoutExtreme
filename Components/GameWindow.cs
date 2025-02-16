@@ -28,7 +28,7 @@ namespace BreakoutExtreme.Components
             Globals.Pause();
             _dimmer.Start();
             _menus.Start();
-            _menus.Goto("test");
+            _menus.Goto("main");
         }
         private void CloseMenu()
         {
@@ -128,6 +128,8 @@ namespace BreakoutExtreme.Components
                     parent: this, 
                     action: (object parent) =>
                     {
+                        if (_menus.Busy)
+                            return;
                         OpenMenu(); 
                     }, 
                     bounds: Globals.MenuButtonBlockBounds.ToBounds(), 
@@ -142,10 +144,80 @@ namespace BreakoutExtreme.Components
 
             {
                 _menus = Globals.Runner.CreateMenus();
-                var window = new Menus.Window() { ID  = "test", Text = "We are testing something interesting" };
-                var button = new Menus.Button() { Text = "Say what!?" };
-                window.Add(button);
-                _menus.Add(window);
+                var mainWindow = new Menus.Window() 
+                { 
+                    ID  = "main", 
+                    Text = "Welcome to Break Out Extreme! Check the help to learn how to play!"
+                };
+                var helpWindow = new Menus.Window()
+                {
+                    ID = "help",
+                    Text =
+                    "How to Play:\n" +
+                    "\n" +
+                    "Resume / Start the game by tapping the screen outside of the menu!\n" +
+                    "\n" +
+                    "Drag the Paddle to bounce the Ball away from the Spikes!\n" +
+                    "\n" +
+                    "Tap the Paddle to fire a Laser to destroy Bombs!\n" +
+                    "\n" +
+                    "Clear Levels by breaking all Bricks with the Ball!\n"
+                };
+                var optionsWindow = new Menus.Window()
+                {
+                    ID = "options",
+                    Text = "Options - TBA"
+                };
+                var creditsWindow = new Menus.Window()
+                {
+                    ID = "credits",
+                    Text = 
+                    "Andrew Powell - Game Design, Programming, and Art\n" +
+                    "Tools:\n" +
+                    "MonoGame / KNI - Game Engine\n" +
+                    "MonoGame Extended - ECS, Collisions, Particle Effects, and More\n" +
+                    "Gum - UI and Menus"
+                };
+                var helpButton = new Menus.Button()
+                {
+                    Text = "Help",
+                    Action = (object o) => _menus.Goto("help")
+                };
+                var optionsButton = new Menus.Button()
+                {
+                    Text = "Options",
+                    Action = (object o) => _menus.Goto("options")
+                };
+                var creditsButton = new Menus.Button()
+                {
+                    Text = "Credits",
+                    Action = (object o) => _menus.Goto("credits")
+                };
+                var helpBackButton = new Menus.Button()
+                {
+                    Text = "Back",
+                    Action = (object o) => _menus.Goto(_menus.PrevID)
+                };
+                var optionsBackButton = new Menus.Button()
+                {
+                    Text = "Back",
+                    Action = (object o) => _menus.Goto(_menus.PrevID)
+                };
+                var creditsBackButton = new Menus.Button()
+                {
+                    Text = "Back",
+                    Action = (object o) => _menus.Goto(_menus.PrevID)
+                };
+                mainWindow.Add(helpButton);
+                mainWindow.Add(optionsButton);
+                mainWindow.Add(creditsButton);
+                helpWindow.Add(helpBackButton);
+                optionsWindow.Add(optionsBackButton);
+                creditsWindow.Add(creditsBackButton);
+                _menus.Add(mainWindow);
+                _menus.Add(helpWindow);
+                _menus.Add(optionsWindow);
+                _menus.Add(creditsWindow);
             }
         }
         public void Update()
@@ -162,7 +234,9 @@ namespace BreakoutExtreme.Components
             }
 
             // Clicking anywhere closes the menu.
-            if (Globals.Paused && Globals.ControlState.CursorSelectState == Controller.SelectStates.Pressed && !MenuLocked && !_menus.IsCursorInWindow())
+            if (Globals.Paused && 
+                Globals.ControlState.CursorSelectState == Controller.SelectStates.Pressed && 
+                !MenuLocked && !_menus.IsCursorInWindow() && !_menus.Busy)
                 CloseMenu();
 
             if (_menuLockTime > 0)

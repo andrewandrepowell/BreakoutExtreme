@@ -18,7 +18,7 @@ namespace BreakoutExtreme.Components
                     var cursorReleased = controlState.CursorSelectState == Controller.SelectStates.Released;
 
                     // When clearing, the paddle isn't available, so don't run paddle control.
-                    if (State != States.Clearing && cursorInPlayArea)
+                    if (State != States.Clearing && cursorInPlayArea && !_parent.MenuLocked)
                     {
                         var paddleCenter = _paddle.GetCollider().Bounds.BoundingRectangle.Center;
                         var cursorX = controlState.CursorPosition.X;

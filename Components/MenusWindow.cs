@@ -44,6 +44,7 @@ namespace BreakoutExtreme.Components
                 _fgNineSliceRuntime.Alpha = 0;
                 for (var i = 0; i < _buttons.Count; i++)
                     _buttons[i].Running = true;
+                UpdateBounds();
                 _state = RunningStates.Running;
             }
             public void ForceStop() 
@@ -64,6 +65,7 @@ namespace BreakoutExtreme.Components
                 _fgNineSliceRuntime.Alpha = 255;
                 for (var i = 0; i < _buttons.Count; i++)
                     _buttons[i].Running = false;
+                UpdateOffsets();
                 _state = RunningStates.Starting;
             }
             public void Stop() 
@@ -83,6 +85,22 @@ namespace BreakoutExtreme.Components
                 _buttons.Add(button);
                 _buttonContainerRuntime.Children.Add(button.GetContainerRuntime());
             }
+            public void UpdateOffsets()
+            {
+                for (var i = 0; i < _buttons.Count; i++)
+                {
+                    var buttonContainerRuntime = _buttons[i].GetContainerRuntime();
+                    if (i == 0)
+                    {
+                        buttonContainerRuntime.Y = _textRuntime.GetAbsoluteHeight();
+                    }
+                    else
+                    {
+                        var prevContainerRuntime = _buttons[i - 1].GetContainerRuntime();
+                        buttonContainerRuntime.Y = prevContainerRuntime.Y + prevContainerRuntime.GetAbsoluteHeight();
+                    }
+                }
+            }
             public void UpdateBounds()
             {
                 _bounds = new(
@@ -90,7 +108,6 @@ namespace BreakoutExtreme.Components
                     y: _containerRuntime.GetAbsoluteY(),
                     width: _containerRuntime.GetAbsoluteWidth(),
                     height: _containerRuntime.GetAbsoluteHeight());
-                Console.WriteLine($"{_bounds}");
             }
             public bool IsCursorInBounds() => _bounds.Contains(Globals.ControlState.CursorPosition);
             public void Update()

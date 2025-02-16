@@ -22,10 +22,12 @@ namespace BreakoutExtreme.Components
         private readonly Features.Vanish _vanish;
         private RunningStates _state;
         private Window _window;
+        private string _prevID;
         public GumDrawer GetGumDrawer() => _gumDrawer;
         public RunningStates State => _state;
         public void Goto(string id = "")
         {
+            Debug.Assert(!Busy);
             for (var i = 0; i < _windows.Count; i++)
             {
                 var window = _windows[i];
@@ -35,7 +37,11 @@ namespace BreakoutExtreme.Components
                     window.Start();
                 }
                 else if (window.State != RunningStates.Waiting)
+                {
+                    if (window.State == RunningStates.Running)
+                        _prevID = window.ID;
                     window.Stop();
+                }
             }
         }
         public bool IsCursorInWindow()
@@ -44,6 +50,20 @@ namespace BreakoutExtreme.Components
                 return false;
             return _window.IsCursorInBounds();
         }
+        public bool Busy
+        {
+            get
+            {
+                for (var i = 0; i < _windows.Count; i++)
+                {
+                    var window = _windows[i];
+                    if (window.State == RunningStates.Starting || window.State == RunningStates.Stopping)
+                        return true;
+                }
+                return false;
+            }
+        }
+        public string PrevID => _prevID;
         public void Start()
         {
             _gumDrawer.Visibility = 1;
@@ -56,8 +76,6 @@ namespace BreakoutExtreme.Components
             _gumDrawer.Visibility = 1;
             _appear.Stop();
             _vanish.Stop();
-            for (var i = 0; i < _windows.Count; i++)
-                _windows[i].UpdateBounds();
             _state = RunningStates.Running;
         }
         public void Stop()
