@@ -10,6 +10,16 @@ namespace BreakoutExtreme.Components
     {
         private class Launcher(Ball parent)
         {
+            private const float _horizontalLimitDegrees = 30;
+            private readonly static Vector2 _horizontalLimitVector = new(
+                (float)Math.Cos(_horizontalLimitDegrees / 180 * Math.PI),
+                (float)Math.Sin(_horizontalLimitDegrees / 180 * Math.PI));
+            private readonly static Vector2 _horizontaLimitVectorLower = new(
+                _horizontalLimitVector.Y, 
+                -_horizontalLimitVector.X);
+            private readonly static Vector2 _horizontaLimitVectorUpper = new(
+                -_horizontalLimitVector.Y,
+                _horizontalLimitVector.X);
             private readonly Ball _parent = parent;
             public bool Running { get; private set; } = false;
             public Vector2 Acceleration = new(0, -5000);
@@ -95,6 +105,27 @@ namespace BreakoutExtreme.Components
                             var newAcceleration = accelerationMagnitude * newDirection;
                             var newVelocity = velocityMagitude * newDirection;
                             Acceleration = newAcceleration;
+                            collider.Velocity = newVelocity;
+                        }
+                    }
+                }
+
+                // Handle horizontal correction logic.
+                {
+                    if (_parent.State == States.Active && Running)
+                    {
+                        var accelerationMagnitude = Acceleration.Length();
+                        var accelerationDirection = Acceleration / accelerationMagnitude;
+                        var accelerationSign = new Vector2(Math.Sign(accelerationDirection.X), Math.Sign(accelerationDirection.Y));
+                        var accelerationPosDirection = accelerationDirection * accelerationSign;
+                        var correctionRequired = accelerationPosDirection.Dot(_horizontaLimitVectorLower) > accelerationPosDirection.Dot(_horizontaLimitVectorUpper);
+                        if (correctionRequired)
+                        {
+                            var velocityMagitude = collider.Velocity.Length();
+                            var newDirection = _horizontalLimitVector * accelerationSign;
+                            var newAcceleration = newDirection * accelerationMagnitude;
+                            var newVelocity = newDirection * velocityMagitude;
+                            Acceleration = _horizontalLimitVector * accelerationSign * accelerationMagnitude;
                             collider.Velocity = newVelocity;
                         }
                     }

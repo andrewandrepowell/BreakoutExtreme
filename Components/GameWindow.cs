@@ -258,6 +258,7 @@ namespace BreakoutExtreme.Components
             }
 
             Reset(); // Start the game.
+            OpenMenu(); // Have the menu opened at game start.
         }
         public void Update()
         {
