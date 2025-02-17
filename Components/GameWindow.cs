@@ -27,8 +27,9 @@ namespace BreakoutExtreme.Components
         {
             _highScorePanel.Text = $"{_highScore}";
         }
-        private void Start()
+        private void Reset()
         {
+            Debug.Assert(!_playArea.Loaded);
             if (Score > HighScore)
                 HighScore = Score;
             Score = 0;
@@ -218,6 +219,16 @@ namespace BreakoutExtreme.Components
                     Text = "Credits",
                     Action = (object o) => _menus.Goto("credits")
                 };
+                var restartButton = new Menus.Button()
+                {
+                    Text = "Restart",
+                    Action = (object o) =>
+                    {
+                        CloseMenu();
+                        _playArea.Unload();
+                        Reset();
+                    }
+                };
                 var helpBackButton = new Menus.Button()
                 {
                     Text = "Back",
@@ -236,6 +247,7 @@ namespace BreakoutExtreme.Components
                 mainWindow.Add(helpButton);
                 mainWindow.Add(optionsButton);
                 mainWindow.Add(creditsButton);
+                mainWindow.Add(restartButton);
                 helpWindow.Add(helpBackButton);
                 optionsWindow.Add(optionsBackButton);
                 creditsWindow.Add(creditsBackButton);
@@ -245,7 +257,7 @@ namespace BreakoutExtreme.Components
                 _menus.Add(creditsWindow);
             }
 
-            Start(); // Start the game.
+            Reset(); // Start the game.
         }
         public void Update()
         {
@@ -262,7 +274,7 @@ namespace BreakoutExtreme.Components
 
             // If game is over, reset the state of the game.
             if (!_playArea.Loaded && RemainingBalls == 0)
-                Start();
+                Reset();
 
             // Clicking anywhere closes the menu.
             if (Globals.Paused && 
