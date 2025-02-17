@@ -81,7 +81,7 @@ namespace BreakoutExtreme.Components
             Debug.Assert(_state == States.Active);
             _floatUp.Start();
             _vanish.Start();
-            _shadow.VanishStart();
+            _shadow.Start();
             _state = States.Despawning;
         }
         public void Destroy()
@@ -91,7 +91,7 @@ namespace BreakoutExtreme.Components
             _animater.Play(Animater.Animations.PaddleDead);
             _vanish.Start();
             _shake.Start();
-            _shadow.VanishStart();
+            _shadow.Start();
             _state = States.Destroying;
         }
         public void Reset(Entity entity)
@@ -137,8 +137,8 @@ namespace BreakoutExtreme.Components
                 return;
             if (!_initialized)
                 return;
-            if ((_state == States.Despawning && _floatUp.State == RunningStates.Running && !_vanish.Running && !_shadow.VanishRunning) ||
-                (_state == States.Destroying && !_vanish.Running && !_shake.Running && !_shadow.VanishRunning))
+            if ((_state == States.Despawning && _floatUp.State == RunningStates.Running && !_vanish.Running && !_shadow.Running) ||
+                (_state == States.Destroying && !_vanish.Running && !_shake.Running && !_shadow.Running))
             {
                 _animater.Visibility = 0;
                 _state = States.Destroyed;

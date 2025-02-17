@@ -20,29 +20,29 @@ namespace BreakoutExtreme.Components
         private void UpdateShaderFeatures()
         {
             {
+                var prevDrawOffset = _shaderDrawOffset;
+                var prevVisibility = _shaderVisibility;
+                var prevScale = _shaderScale;
+                var prevRotation = _shaderRotation;
                 _shaderDrawOffset = Vector2.Zero;
                 _shaderVisibility = 1;
                 _shaderScale = 1;
                 _shaderRotation = 0;
-                var updateDrawPosition = false;
-                var updateVisibility = false;
-                var updateScale = false;
-                var updateRotation = false;
                 for (var i = 0; i < _shaderFeatures.Count; i++)
                 {
                     var feature = _shaderFeatures[i];
-                    updateDrawPosition |= feature.UpdateDrawOffset(ref _shaderDrawOffset);
-                    updateVisibility |= feature.UpdateVisibility(ref _shaderVisibility);
-                    updateScale |= feature.UpdateScale(ref _shaderScale);
-                    updateRotation |= feature.UpdateRotation(ref _shaderRotation);
+                    feature.UpdateDrawOffset(ref _shaderDrawOffset);
+                    feature.UpdateVisibility(ref _shaderVisibility);
+                    feature.UpdateScale(ref _shaderScale);
+                    feature.UpdateRotation(ref _shaderRotation);
                 }
-                if (updateDrawPosition)
+                if (_shaderDrawOffset != prevDrawOffset)
                     UpdateDrawPosition();
-                if (updateVisibility)
+                if (_shaderVisibility != prevVisibility)
                     UpdateDrawColor();
-                if (updateScale)
+                if (_shaderScale != prevScale)
                     UpdateDrawScale();
-                if (updateRotation)
+                if (_shaderRotation != prevRotation)
                     UpdateDrawRotation();
             }
 

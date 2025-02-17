@@ -20,7 +20,7 @@ namespace BreakoutExtreme.Components
                 _parent._shake.Period = _shakePeriod;
                 _parent._shake.Start();
                 _parent._flash.Start();
-                _parent._shadow.VanishStart();
+                _parent._shadow.Start();
                 _running = true;
             }
             public void Update()

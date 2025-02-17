@@ -3,6 +3,7 @@ using MonoGame.Extended;
 using Microsoft.Xna.Framework;
 using BreakoutExtreme.Utility;
 using System.Diagnostics;
+using BreakoutExtreme.Features;
 
 
 namespace BreakoutExtreme.Components
@@ -68,7 +69,7 @@ namespace BreakoutExtreme.Components
             _shake.Start();
             _cracks.Degree = Features.Cracks.Degrees.None;
             _vanish.Start();
-            _shadow.VanishStart();
+            _shadow.Start();
             _animater.Play(_brickDeadAnimations[_brick]);
 
             _state = States.Destroying;
@@ -82,19 +83,24 @@ namespace BreakoutExtreme.Components
             _animater.Play(_brickAnimations[brick]);
             _collider.Bounds = _brickBounds[brick];
             _collider.Position = position;
+            _shake.Stop();
             _shake.DelayPeriod = position.X * _spawnFactor;
             _shake.Period = _spawnPeriod;
             _shake.Start();
             _cracks.Degree = 0;
+            _shine.Stop();
             _shine.RepeatPeriod = _shineRepeatPeriod;
             _shine.DelayPeriod = _shineDirection.Dot(position) * _shineDelayControl;
             _shine.Start();
+            _scaleDown.Stop();
             _scaleDown.MaxScale = _spawnMaxScale;
             _scaleDown.DelayPeriod = position.X * _spawnFactor;
             _scaleDown.Period = _spawnPeriod;
             _scaleDown.Start();
+            _limitedFlash.Stop();
             _limitedFlash.LimitedPeriod = position.X * _spawnFactor + _spawnPeriod;
             _limitedFlash.Start();
+            _appear.Stop();
             _appear.Period = _spawnPeriod;
             _appear.DelayPeriod = position.X * _spawnFactor;
             _appear.Start();
@@ -144,7 +150,7 @@ namespace BreakoutExtreme.Components
                 _state = States.Active;
             }
 
-            if (_state == States.Destroying && !_vanish.Running && !_shadow.VanishRunning)
+            if (_state == States.Destroying && !_vanish.Running && !_shadow.Running)
                 _state = States.Destroyed;
         }
     }

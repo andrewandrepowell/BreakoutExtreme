@@ -91,7 +91,7 @@ namespace BreakoutExtreme.Components
             _shake.Start();
             _cracks.Degree = Features.Cracks.Degrees.None;
             _vanish.Start();
-            _shadow.VanishStart();
+            _shadow.Start();
             _animater.Play(_configNode.Dead);
 
             _state = States.Destroying;
@@ -153,7 +153,7 @@ namespace BreakoutExtreme.Components
                 _state = States.Active;
             }
 
-            if (_state == States.Destroying && !_shake.Running && !_vanish.Running && !_shadow.VanishRunning)
+            if (_state == States.Destroying && !_shake.Running && !_vanish.Running && !_shadow.Running)
                 _state = States.Destroyed;
 
             if (_state == States.Detonating && _detonater.State == Detonater.States.Finished)

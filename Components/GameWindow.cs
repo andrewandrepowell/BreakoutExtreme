@@ -27,6 +27,15 @@ namespace BreakoutExtreme.Components
         {
             _highScorePanel.Text = $"{_highScore}";
         }
+        private void Start()
+        {
+            if (Score > HighScore)
+                HighScore = Score;
+            Score = 0;
+            RemainingBalls = 3;
+            LevelsCleared = 0;
+            _playArea.GameStart();
+        }
         private void OpenMenu()
         {
             MenuLock();
@@ -235,14 +244,14 @@ namespace BreakoutExtreme.Components
                 _menus.Add(optionsWindow);
                 _menus.Add(creditsWindow);
             }
+
+            Start(); // Start the game.
         }
         public void Update()
         {
             // For now, loop through the levels.
             if (!_playArea.Loaded && RemainingBalls > 0)
             {
-                if (RemainingBalls == 0)
-                    _playArea.GameStart();
                 if (LevelsCleared % 3 == 0)
                     _playArea.Load(PlayArea.Levels.Test2);
                 else if (LevelsCleared % 3 == 1)
@@ -253,12 +262,7 @@ namespace BreakoutExtreme.Components
 
             // If game is over, reset the state of the game.
             if (!_playArea.Loaded && RemainingBalls == 0)
-            {
-                HighScore = Score;
-                Score = 0;
-                RemainingBalls = 3;
-                LevelsCleared = 0;
-            }
+                Start();
 
             // Clicking anywhere closes the menu.
             if (Globals.Paused && 

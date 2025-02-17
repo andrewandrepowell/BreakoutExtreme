@@ -12,7 +12,7 @@ namespace BreakoutExtreme.Components
         {
             { Splashes.Cleared, new(Animater.Animations.Cleared) },
             { Splashes.GameEnd, new(Animater.Animations.GameEnd) },
-            { Splashes.GameStart, new(Animater.Animations.GameStart) },
+            { Splashes.GameStart, new(Animater.Animations.GameStart ) },
         });
         private readonly Animater _animater;
         private readonly Features.ScaleDown _scaleDown;
@@ -165,6 +165,7 @@ namespace BreakoutExtreme.Components
                 !_vanishShadower.Running &&
                 !_vanishShadow.Running)
             {
+                _shadow.GetTexturer().Visibility = 0;
                 _shine.Stop();
                 _dash.Stop();
                 _running = false;

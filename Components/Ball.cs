@@ -92,7 +92,7 @@ namespace BreakoutExtreme.Components
             Debug.Assert(!_launcher.Running);
             _floatUp.Start();
             _vanish.Start();
-            _shadow.VanishStart();
+            _shadow.Start();
             _particler.Stop();
             _state = States.Despawning;
         }
@@ -151,7 +151,7 @@ namespace BreakoutExtreme.Components
             if (!_initialized)
                 return;
             if ((_state == States.Destroying && !_destroyer.Running) ||
-                (_state == States.Despawning && _floatUp.State == RunningStates.Running && !_vanish.Running && !_shadow.VanishRunning))
+                (_state == States.Despawning && _floatUp.State == RunningStates.Running && !_vanish.Running && !_shadow.Running))
             {
                 _animater.Visibility = 0;
                 _state = States.Destroyed;
