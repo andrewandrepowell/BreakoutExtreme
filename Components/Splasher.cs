@@ -10,9 +10,9 @@ namespace BreakoutExtreme.Components
     {
         private readonly static ReadOnlyDictionary<Splashes, SplashConfig> _splashConfigs = new(new Dictionary<Splashes, SplashConfig>() 
         {
-            { Splashes.Cleared, new(Animater.Animations.Cleared) },
-            { Splashes.GameEnd, new(Animater.Animations.GameEnd) },
-            { Splashes.GameStart, new(Animater.Animations.GameStart ) },
+            { Splashes.Cleared, new(animation: Animater.Animations.Cleared) },
+            { Splashes.GameEnd, new(animation: Animater.Animations.GameEnd) },
+            { Splashes.GameStart, new(animation: Animater.Animations.GameStart, scale: 1.85f) },
         });
         private readonly Animater _animater;
         private readonly Features.ScaleDown _scaleDown;
@@ -33,9 +33,10 @@ namespace BreakoutExtreme.Components
         private bool _running;
         private Splashes _splash;
         private SplashConfig _splashConfig;
-        private class SplashConfig(Animater.Animations animation)
+        private class SplashConfig(Animater.Animations animation, float scale = 2)
         {
             public readonly Animater.Animations Animation = animation;
+            public readonly float Scale = scale;
         }
         public enum Splashes { Cleared, GameEnd, GameStart }
         public bool Running => _running;
@@ -70,7 +71,7 @@ namespace BreakoutExtreme.Components
             _shadower = Globals.Runner.CreateShadower(_animater, _animater.Position);
             {
                 var texturer = _shadower.GetTexturer();
-                texturer.Scale = 2;
+                texturer.Scale = _splashConfig.Scale;
                 texturer.ShowBase = false;
                 texturer.Visibility = 1f;
                 Debug.Assert(texturer.ShaderFeatures.Count == 0);
@@ -82,13 +83,13 @@ namespace BreakoutExtreme.Components
             {
                 var texturer = _shadow.GetTexturer();
                 texturer.Visibility = 0;
-                texturer.Scale = 2;
+                texturer.Scale = _splashConfig.Scale;
                 texturer.ShaderFeatures.Add(_floatRightShadow);
                 texturer.ShaderFeatures.Add(_vanishShadow);
                 texturer.ShaderFeatures.Add(_appearShadow);
             }
             _scaleDown.MaxScale = 6;
-            _scaleDown.MinScale = 2;
+            _scaleDown.MinScale = _splashConfig.Scale;
             _scaleDown.DelayPeriod = 0;
             _scaleDown.Period = 2;
             _scaleDown.Stop();

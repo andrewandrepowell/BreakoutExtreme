@@ -33,7 +33,7 @@ namespace BreakoutExtreme.Components
             { Spriters.Bomb, new Size(80, 80) },
             { Spriters.Cleared, new Size(208, 96) },
             { Spriters.GameEnd, new Size(240, 96) },
-            { Spriters.GameStart, new Size(240, 96) },
+            { Spriters.GameStart, new Size(256, 96) },
         });
         private static readonly ReadOnlyDictionary<Animations, string> _animationNames = new(new Dictionary<Animations, string>
         {
