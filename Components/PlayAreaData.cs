@@ -35,9 +35,16 @@ namespace BreakoutExtreme.Components
                 }
             },
             {
-                Components.ThickBrick, (PlayArea playArea, Vector2 position) =>
+                Components.BrickSmall, (PlayArea playArea, Vector2 position) =>
                 {
-                    var brick = Globals.Runner.CreateBrick(Brick.Bricks.ThickBrick, position);
+                    var brick = Globals.Runner.CreateBrick(Brick.Bricks.Small, position);
+                    playArea._bricks.Add(brick);
+                }
+            },
+            {
+                Components.BrickLarge, (PlayArea playArea, Vector2 position) =>
+                {
+                    var brick = Globals.Runner.CreateBrick(Brick.Bricks.Large, position);
                     playArea._bricks.Add(brick);
                 }
             },
@@ -54,7 +61,8 @@ namespace BreakoutExtreme.Components
             { Components.None, '_' },
             { Components.Ball, 'o' },
             { Components.Paddle, 'P' },
-            { Components.ThickBrick, 'B' },
+            { Components.BrickSmall, 'b' },
+            { Components.BrickLarge, 'B' },
             { Components.Cannon, 'C' }
         });
         private static readonly ReadOnlyDictionary<char, Components> _symbolComponents = new(_componentSymbols.ToDictionary(e => e.Value, e => e.Key));

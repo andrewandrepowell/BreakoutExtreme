@@ -6,7 +6,8 @@ namespace BreakoutExtreme.Components
     {
         public enum Bricks
         {
-            ThickBrick
+            Small,
+            Large
         }
         public enum States
         {

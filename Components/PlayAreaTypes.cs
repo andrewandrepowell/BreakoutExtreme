@@ -13,7 +13,8 @@
             None,
             Ball,
             Paddle,
-            ThickBrick,
+            BrickSmall,
+            BrickLarge,
             Cannon
         }
         public enum States
