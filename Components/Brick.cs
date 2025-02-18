@@ -3,7 +3,6 @@ using MonoGame.Extended;
 using Microsoft.Xna.Framework;
 using BreakoutExtreme.Utility;
 using System.Diagnostics;
-using BreakoutExtreme.Features;
 
 
 namespace BreakoutExtreme.Components
@@ -31,7 +30,8 @@ namespace BreakoutExtreme.Components
         private Entity _entity;
         private Bricks _brick;
         private Shadow _shadow;
-        private States _state = States.Active;
+        private States _state;
+        private BrickConfig _config;
         public Bricks GetBrick() => _brick;
         public Animater GetAnimater() => _animater;
         public Collider GetCollider() => _collider;
@@ -70,7 +70,7 @@ namespace BreakoutExtreme.Components
             _cracks.Degree = Features.Cracks.Degrees.None;
             _vanish.Start();
             _shadow.Start();
-            _animater.Play(_brickDeadAnimations[_brick]);
+            _animater.Play(_config.DeadAnimation);
 
             _state = States.Destroying;
         }
@@ -79,9 +79,10 @@ namespace BreakoutExtreme.Components
             Debug.Assert(!_initialized);
             _entity = entity;
             _brick = brick;
+            _config = _brickConfigs[brick];
             _shadow = Globals.Runner.CreateShadow(_animater);
-            _animater.Play(_brickAnimations[brick]);
-            _collider.Bounds = _brickBounds[brick];
+            _animater.Play(_config.ActiveAnimation);
+            _collider.Bounds = _config.Bounds;
             _collider.Position = position;
             _shake.Stop();
             _shake.DelayPeriod = position.X * _spawnFactor;
@@ -104,7 +105,7 @@ namespace BreakoutExtreme.Components
             _appear.Period = _spawnPeriod;
             _appear.DelayPeriod = position.X * _spawnFactor;
             _appear.Start();
-            TotalHP = _brickTotalHPs[brick];
+            TotalHP = _config.TotalHP;
             CurrentHP = TotalHP;
             _state = States.Spawning;
             _initialized = true;
