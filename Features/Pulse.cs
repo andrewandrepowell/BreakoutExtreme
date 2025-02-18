@@ -9,6 +9,7 @@ namespace BreakoutExtreme.Features
     public class Pulse : Feature
     {
         private float _period = 1;
+        private float _halfPeriod = 0.5f;
         private float _time;
         private float _minVisibility = 0.25f;
         private float _maxVisibility = 0.75f;
@@ -51,6 +52,7 @@ namespace BreakoutExtreme.Features
                 Debug.Assert(!_running);
                 Debug.Assert(_period >= 0);
                 _period = value;
+                _halfPeriod = value / 2;
             }
         }
         public bool Repeating
@@ -69,9 +71,9 @@ namespace BreakoutExtreme.Features
                 return false;
 
             if (_brightening)
-                visibility *= MathHelper.Lerp(_maxVisibility, _minVisibility, MathHelper.Max(0, _time) / _period);
+                visibility *= MathHelper.Lerp(_maxVisibility, _minVisibility, MathHelper.Max(0, _time) / _halfPeriod);
             else
-                visibility *= MathHelper.Lerp(_minVisibility, _maxVisibility, MathHelper.Max(0, _time) / _period);
+                visibility *= MathHelper.Lerp(_minVisibility, _maxVisibility, MathHelper.Max(0, _time) / _halfPeriod);
 
             return true;
         }
@@ -81,7 +83,7 @@ namespace BreakoutExtreme.Features
             Debug.Assert(_maxVisibility <= 1);
             Debug.Assert(_maxVisibility >= _minVisibility);
             Debug.Assert(_minVisibility >= 0);
-            _time = _period / 2;
+            _time = _halfPeriod;
             _brightening = _startDark;
             _running = true;
         }
@@ -104,7 +106,7 @@ namespace BreakoutExtreme.Features
                 }
                 else
                 {
-                    _time += (_period / 2);
+                    _time += _halfPeriod;
                 }
             }
 

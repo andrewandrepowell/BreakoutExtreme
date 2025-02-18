@@ -13,6 +13,7 @@
             None,
             Ball,
             Paddle,
+            PowerMultiBall,
             BrickSmall,
             BrickLarge,
             Cannon

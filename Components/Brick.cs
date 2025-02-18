@@ -32,6 +32,7 @@ namespace BreakoutExtreme.Components
         private Shadow _shadow;
         private States _state;
         private BrickConfig _config;
+        private Glower _glower;
         public Bricks GetBrick() => _brick;
         public Animater GetAnimater() => _animater;
         public Collider GetCollider() => _collider;
@@ -81,6 +82,16 @@ namespace BreakoutExtreme.Components
             _brick = brick;
             _config = _brickConfigs[brick];
             _shadow = Globals.Runner.CreateShadow(_animater);
+            if (_config.Glow.HasValue)
+                _glower = Globals.Runner.CreateGlower(
+                    parent: _animater,
+                    color: _config.Glow.Value,
+                    minVisibility: 0,
+                    maxVisibility: .75f,
+                    pulsePeriod: 4,
+                    pulseRepeating: true,
+                    appearVanishPeriod: 0);
+            _animater.Color = _config.Tint;
             _animater.Play(_config.ActiveAnimation);
             _collider.Bounds = _config.Bounds;
             _collider.Position = position;
@@ -136,6 +147,8 @@ namespace BreakoutExtreme.Components
             Debug.Assert(_initialized);
             Globals.Runner.RemoveEntity(_entity);
             _shadow.RemoveEntity();
+            if (_config.Glow.HasValue)
+                _glower.RemoveEntity();
             _initialized = false;
         }
         public void Update()
