@@ -2,6 +2,7 @@
 using Microsoft.Xna.Framework;
 using System;
 using System.Diagnostics;
+using BreakoutExtreme.Utility;
 
 namespace BreakoutExtreme.Components
 {
@@ -231,12 +232,12 @@ namespace BreakoutExtreme.Components
             entity.Attach(gameWindow);
             return gameWindow;
         }
-        public Brick CreateBrick(Brick.Bricks brickEnum, Vector2 position)
+        public Brick CreateBrick(Brick.Bricks brickEnum, Vector2 position, Powers? power = null)
         {
             Debug.Assert(_initialized);
             var entity = _world.CreateEntity();
             _brickPool.RemoveFromFront(out var brick);
-            brick.Reset(entity, brickEnum, position);
+            brick.Reset(entity, brickEnum, position, power);
             var animater = brick.GetAnimater();
             var collider = brick.GetCollider();
             var particler = brick.GetParticler();
@@ -259,8 +260,8 @@ namespace BreakoutExtreme.Components
             entity.Attach(ball);
             entity.Attach(animater);
             entity.Attach(collider);
-            _collisionComponent.Insert(collider);
             entity.Attach(particler);
+            _collisionComponent.Insert(collider);
             return ball;
         }
         public Paddle CreatePaddle()

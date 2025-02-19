@@ -9,7 +9,7 @@ namespace BreakoutExtreme.Components
 {
     public partial class Ball : IUpdate, IRemoveEntity, IDestroyed
     {
-        private static readonly CircleF _bounds = new(Vector2.Zero, Globals.GameHalfBlockSize);
+        private static readonly CircleF _bounds = new(Globals.PlayAreaBounds.Center, Globals.GameHalfBlockSize);
         private static readonly Action<Collider.CollideNode> _collideAction = (Collider.CollideNode node) => ((Ball)node.Current.Parent).ServiceCollision(node);
         private readonly Animater _animater;
         private readonly Collider _collider;
@@ -37,9 +37,10 @@ namespace BreakoutExtreme.Components
                 node.Other.Parent is Paddle || 
                 (node.Other.Parent is Brick brick && brick.State == Brick.States.Active) ||
                 (node.Other.Parent is Cannon cannon && cannon.State == Cannon.States.Active) ||
+                (node.Other.Parent is Ball ball && ball.State == States.Active) ||
                 (node.Other.Parent is DeathWall deathWall && !deathWall.Running))
-            { 
-                    node.CorrectPosition();
+            {
+                node.CorrectPosition();
             }
 
             // Run other service collision handlers.
@@ -67,11 +68,11 @@ namespace BreakoutExtreme.Components
             _attachedPaddle.GetCollider().GetAttacher().Detach(_collider);
             _state = States.Active;
         }
-        public void StartLaunch()
+        public void StartLaunch(Vector2? acceleration = null)
         {
             Debug.Assert(_initialized);
             Debug.Assert(_state == States.Active);
-            _launcher.Start();
+            _launcher.Start(acceleration);
         }
         public void StopLaunch()
         {

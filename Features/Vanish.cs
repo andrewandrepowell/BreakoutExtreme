@@ -26,7 +26,7 @@ namespace BreakoutExtreme.Features
             set
             {
                 Debug.Assert(!Running);
-                Debug.Assert(_period > 0);
+                Debug.Assert(value > 0);
                 _period = value;
             }
         }

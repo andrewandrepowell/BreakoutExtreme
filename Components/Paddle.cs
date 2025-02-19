@@ -10,7 +10,7 @@ namespace BreakoutExtreme.Components
 {
     public partial class Paddle : IUpdate, IRemoveEntity, IDestroyed
     {
-        private static readonly Rectangle _blockBounds = new(Globals.PlayAreaBlockBounds.X, Globals.PlayAreaBlockBounds.Y, 5, 1);
+        private static readonly Rectangle _blockBounds = new(Globals.PlayAreaBlockBounds.Center.X, Globals.PlayAreaBlockBounds.Center.Y, 5, 1);
         private static readonly RectangleF _bounds = _blockBounds.ToBounds();
         private static readonly Action<Collider.CollideNode> _collideAction = (Collider.CollideNode node) => ((Paddle)node.Current.Parent).ServiceCollision(node);
         private readonly Animater _animater;
@@ -34,11 +34,19 @@ namespace BreakoutExtreme.Components
             {
                 node.CorrectPosition();
             }
-            else if (node.Other.Parent is Ball && _collider.Velocity.X != 0)
+            else if (node.Other.Parent is Ball ball)
             {
-                _collider.Position = new Vector2(
-                    x: _collider.Position.X - node.PenetrationVector.X, 
-                    y: _collider.Position.Y);
+                var ballCollider = ball.GetCollider();
+                ballCollider.Position = new Vector2(
+                    x: ballCollider.Position.X,
+                    y: ballCollider.Position.Y + node.PenetrationVector.Y);
+
+                if (_collider.Velocity.X != 0)
+                {
+                    _collider.Position = new Vector2(
+                        x: _collider.Position.X - node.PenetrationVector.X,
+                        y: _collider.Position.Y);
+                }
             }
             _moveToTarget.ServiceCollision(node);
         }

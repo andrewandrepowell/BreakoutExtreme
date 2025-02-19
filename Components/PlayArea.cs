@@ -119,6 +119,12 @@ namespace BreakoutExtreme.Components
         {
             _gameStart.Start();
         }
+        public Ball CreateBall()
+        {
+            var ball = Globals.Runner.CreateBall(this);
+            _balls.Add(ball);
+            return ball;
+        }
         public PlayArea(GameWindow parent)
         {
             _parent = parent;

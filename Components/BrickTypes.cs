@@ -1,5 +1,6 @@
 ﻿using MonoGame.Extended;
 using Microsoft.Xna.Framework;
+using BreakoutExtreme.Utility;
 
 namespace BreakoutExtreme.Components
 {

@@ -33,6 +33,7 @@ namespace BreakoutExtreme.Components
         private States _state;
         private BrickConfig _config;
         private Glower _glower;
+        private Powers? _power;
         public Bricks GetBrick() => _brick;
         public Animater GetAnimater() => _animater;
         public Collider GetCollider() => _collider;
@@ -40,6 +41,7 @@ namespace BreakoutExtreme.Components
         public int TotalHP;
         public int CurrentHP;
         public States State => _state;
+        public Powers? Power => _power;
         public bool Destroyed => _state == States.Destroyed;
         public void Damage()
         {
@@ -58,7 +60,6 @@ namespace BreakoutExtreme.Components
             {
                 Destroy();
             }
-
         }
         public void Destroy()
         {
@@ -75,12 +76,13 @@ namespace BreakoutExtreme.Components
 
             _state = States.Destroying;
         }
-        public void Reset(Entity entity, Bricks brick, Vector2 position)
+        public void Reset(Entity entity, Bricks brick, Vector2 position, Powers? power = null)
         {
             Debug.Assert(!_initialized);
             _entity = entity;
             _brick = brick;
             _config = _brickConfigs[brick];
+            _power = power;
             _shadow = Globals.Runner.CreateShadow(_animater);
             if (_config.Glow.HasValue)
                 _glower = Globals.Runner.CreateGlower(
@@ -90,7 +92,7 @@ namespace BreakoutExtreme.Components
                     maxVisibility: .75f,
                     pulsePeriod: 4,
                     pulseRepeating: true,
-                    appearVanishPeriod: 0);
+                    appearVanishPeriod: 1);
             _animater.Color = _config.Tint;
             _animater.Play(_config.ActiveAnimation);
             _collider.Bounds = _config.Bounds;

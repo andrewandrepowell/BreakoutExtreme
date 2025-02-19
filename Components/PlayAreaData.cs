@@ -18,10 +18,9 @@ namespace BreakoutExtreme.Components
             {
                 Components.Ball, (PlayArea playArea, Vector2 position) =>
                 {
-                    var ball = Globals.Runner.CreateBall(playArea);
+                    var ball = playArea.CreateBall();
                     var collider = ball.GetCollider();
                     collider.Position = position + (Vector2)(collider.Size / 2);
-                    playArea._balls.Add(ball);
                 }
             },
             {
@@ -37,7 +36,7 @@ namespace BreakoutExtreme.Components
             {
                 Components.PowerMultiBall, (PlayArea playArea, Vector2 position) =>
                 {
-                    var brick = Globals.Runner.CreateBrick(Brick.Bricks.Power, position);
+                    var brick = Globals.Runner.CreateBrick(Brick.Bricks.Power, position, Utility.Powers.MultiBall);
                     playArea._bricks.Add(brick);
                 }
             },

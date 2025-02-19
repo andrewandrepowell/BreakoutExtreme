@@ -3,6 +3,7 @@ using Microsoft.Xna.Framework;
 using MonoGame.Extended;
 using System.Diagnostics;
 using System;
+using MonoGame.Extended.Collections;
 
 namespace BreakoutExtreme.Components
 {
@@ -21,6 +22,7 @@ namespace BreakoutExtreme.Components
                 -_horizontalLimitVector.Y,
                 _horizontalLimitVector.X);
             private readonly Ball _parent = parent;
+            private readonly Deque<Brick> _powerBricks = [];
             public bool Running { get; private set; } = false;
             public Vector2 Acceleration = new(0, -5000);
             public void ServiceCollision(Collider.CollideNode node)
@@ -28,6 +30,8 @@ namespace BreakoutExtreme.Components
                 Debug.Assert(_parent._initialized);
                 Debug.Assert(_parent.State == States.Active);
                 var collider = _parent.GetCollider();
+
+                Console.WriteLine($"Before Ball: {collider.Velocity}, {Acceleration}, {Running}, {collider.Bounds.BoundingRectangle}");
 
                 // Handle rectangular bounce logic.
                 {
@@ -48,13 +52,13 @@ namespace BreakoutExtreme.Components
                         if (xBounce || (!yBounce && xClosest))
                         {
                             if (Running)
-                                Acceleration.X *= -1;
+                                Acceleration = new Vector2(-Acceleration.X, Acceleration.Y);
                             collider.Velocity.X *= -1;
                         }
                         else
                         {
                             if (Running)
-                                Acceleration.Y *= -1;
+                                Acceleration = new Vector2(Acceleration.X, -Acceleration.Y);
                             collider.Velocity.Y *= -1;
                         }
                     }
@@ -62,11 +66,16 @@ namespace BreakoutExtreme.Components
 
                 // Handle circular bounce logic.
                 {
+                    var cannon = node.Other.Parent as Cannon;
+                    var ball = node.Other.Parent as Ball;
                     if (_parent.State == States.Active && (
-                        (node.Other.Parent is Cannon cannon && cannon.State == Cannon.States.Active)))
+                        (cannon != null && cannon.State == Cannon.States.Active) ||
+                        (ball != null && ball.State == States.Active)))
                     {
-                        var cannonCollider = cannon.GetCollider();
-                        var normalBasis = Vector2.Normalize(collider.Position - cannonCollider.Position);
+                        var circularCollider = 
+                            (cannon != null) ? cannon.GetCollider() :
+                            (ball != null) ? ball.GetCollider() : null;
+                        var normalBasis = Vector2.Normalize(collider.Position - circularCollider.Position);
                         var orthogBasis = new Vector2(x: -normalBasis.Y, y: normalBasis.X);
                         {
                             var normalMag = normalBasis.Dot(collider.Velocity);
@@ -138,9 +147,17 @@ namespace BreakoutExtreme.Components
                     {
                         brick.Damage();
 
-                        // Update the score once the brick is destroyed.
+                        // Perform actions if brick is destroyed.
                         if (brick.State != Brick.States.Active)
+                        {
+                            // Update score.
                             _parent._parent.UpdateScore(brick);
+
+                            // Create power if power bricks.
+                            Debug.Assert(_powerBricks.Count < 8);
+                            if (brick.GetBrick() == Brick.Bricks.Power)
+                                _powerBricks.AddToBack(brick);
+                        }
                     }
                 }
 
@@ -174,13 +191,17 @@ namespace BreakoutExtreme.Components
                         _parent.Destroy();
                     }    
                 }
+
+                Console.WriteLine($"After Ball: {collider.Velocity}, {Acceleration}, {Running}, {collider.Bounds.BoundingRectangle}");
             }
-            public void Start()
+            public void Start(Vector2? acceleration = null)
             {
                 Debug.Assert(_parent._initialized);
                 Debug.Assert(!_parent._particler.Running);
                 Debug.Assert(!Running);
                 _parent._particler.Start();
+                //if (acceleration.HasValue)
+                //    Acceleration = acceleration.Value;
                 Running = true;
             }
             public void Stop()
@@ -192,6 +213,7 @@ namespace BreakoutExtreme.Components
                 collider.Acceleration = Vector2.Zero;
                 collider.Velocity = Vector2.Zero;
                 _parent._particler.Stop();
+                _powerBricks.Clear();
                 Running = false;
             }
             public void Update()
@@ -199,6 +221,28 @@ namespace BreakoutExtreme.Components
                 if (Running)
                 {
                     _parent._collider.Acceleration += Acceleration;
+                }
+
+                // 
+                {
+                    while (_powerBricks.RemoveFromFront(out var brick))
+                    { 
+                        Debug.Assert(brick.GetBrick() == Brick.Bricks.Power);
+                        Debug.Assert(brick.Power.HasValue);
+                        switch (brick.Power.Value)
+                        {
+                            case Powers.MultiBall:
+                                {
+                                    var ball = _parent._parent.CreateBall();
+                                    var brickCollider = brick.GetCollider();
+                                    var ballCollider = ball.GetCollider();
+                                    ballCollider.Position = brickCollider.Position + (Vector2)(brickCollider.Size / 2);
+                                    ball.StartLaunch();
+                                    ball.Spawn();
+                                }
+                                break;
+                        }
+                    }
                 }
             }
         }
