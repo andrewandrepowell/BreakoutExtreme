@@ -8,6 +8,20 @@ namespace BreakoutExtreme.Components
 {
     public partial class Runner
     {
+        public Power CreatePower(Powers powerEnum, PlayArea parent)
+        {
+            Debug.Assert(_initialized);
+            var entity = _world.CreateEntity();
+            _powerPool.RemoveFromFront(out var power);
+            power.Reset(entity, powerEnum, parent);
+            var animater = power.GetAnimater();
+            var collider = power.GetCollider();
+            entity.Attach(power);
+            entity.Attach(animater);
+            entity.Attach(collider);
+            _collisionComponent.Insert(collider);
+            return power;
+        }
         public PlayArea CreatePlayArea(GameWindow parent)
         {
             Debug.Assert(_initialized);

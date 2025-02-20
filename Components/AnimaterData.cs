@@ -68,6 +68,7 @@ namespace BreakoutExtreme.Components
             { Animations.GameStart, "game_start_0" },
             { Animations.PowerBackpane, "powers_0" },
             { Animations.PowerProtection, "powers_1" },
+            { Animations.PowerProtectionDead, "powers_2" },
         });
         private static readonly ReadOnlyDictionary<Spriters, Action<Spriter>> _spriterConfigureAnimations = new(new Dictionary<Spriters, Action<Spriter>>
         {
@@ -173,7 +174,8 @@ namespace BreakoutExtreme.Components
                 delegate(Spriter spriter)
                 {
                     spriter.Add(_animationNames[Animations.PowerBackpane], [0]);
-                    spriter.Add(_animationNames[Animations.PowerProtection], [1]);
+                    spriter.Add(_animationNames[Animations.PowerProtection], [2]);
+                    spriter.Add(_animationNames[Animations.PowerProtectionDead], [3]);
                 }
             }
         });
@@ -206,6 +208,7 @@ namespace BreakoutExtreme.Components
             { Animations.GameStart, Spriters.GameStart },
             { Animations.PowerBackpane, Spriters.Powers },
             { Animations.PowerProtection, Spriters.Powers },
+            { Animations.PowerProtectionDead, Spriters.Powers },
         });
         private readonly Dictionary<Spriters, Spriter> _spriters = [];
     }

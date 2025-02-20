@@ -24,6 +24,7 @@ namespace BreakoutExtreme.Components
         readonly private Deque<Paddle> _paddlePool = new();
         readonly private Deque<Shadow> _shadowPool = new();
         readonly private Deque<Shadower> _shadowerPool = new();
+        readonly private Deque<Power> _powerPool = new();
         private bool _initialized = false;
         public void RemoveEntity(Entity entity)
         {
@@ -52,6 +53,8 @@ namespace BreakoutExtreme.Components
                 _shadowPool.AddToBack(entity.Get<Shadow>());
             if (entity.Has<Shadower>())
                 _shadowerPool.AddToBack(entity.Get<Shadower>());
+            if (entity.Has<Power>())
+                _powerPool.AddToBack(entity.Get<Power>());
 
             if (entity.Has<Collider>())
                 _collisionComponent.Remove(entity.Get<Collider>());
@@ -73,38 +76,20 @@ namespace BreakoutExtreme.Components
             {
                 for (var i = 0; i < _poolSize; i++)
                 {
-                    var scorePopup = new ScorePopup();
-                    _scorePopupPool.AddToBack(scorePopup);
-
-                    var glower = new Glower();
-                    _glowerPool.AddToBack(glower);
-
-                    var pulseGlower = new PulseGlower();
-                    _pulseGlowerPool.AddToBack(pulseGlower);
-
-                    var laser = new Laser();
-                    _laserPool.AddToBack(laser);
-
-                    var cannon = new Cannon();
-                    _cannonPool.AddToBack(cannon);
-
-                    var bomb = new Bomb();
-                    _bombPool.AddToBack(bomb);
-
-                    var ball = new Ball();
-                    _ballPool.AddToBack(ball);
-
-                    var brick = new Brick();
-                    _brickPool.AddToBack(brick);
-
-                    var shadow = new Shadow();
-                    _shadowPool.AddToBack(shadow);
-
-                    var shadower = new Shadower();
-                    _shadowerPool.AddToBack(shadower);
+                    _scorePopupPool.AddToBack(new());
+                    _glowerPool.AddToBack(new());
+                    _pulseGlowerPool.AddToBack(new());
+                    _laserPool.AddToBack(new());
+                    _cannonPool.AddToBack(new());
+                    _bombPool.AddToBack(new());
+                    _ballPool.AddToBack(new());
+                    _brickPool.AddToBack(new());
+                    _shadowPool.AddToBack(new());
+                    _shadowerPool.AddToBack(new());
+                    _powerPool.AddToBack(new());
                 }
 
-                _paddlePool.AddToBack(new Paddle());
+                _paddlePool.AddToBack(new());
             }
 
             _initialized = true;
@@ -126,6 +111,7 @@ namespace BreakoutExtreme.Components
                 worldBuilder.AddSystem(new RemoveSystem<ScorePopup>());
                 worldBuilder.AddSystem(new RemoveSystem<Laser>());
                 worldBuilder.AddSystem(new RemoveSystem<Cannon>());
+                worldBuilder.AddSystem(new RemoveSystem<Power>());
 
                 worldBuilder.AddSystem(new UpdateSystem<Paddle>());
                 worldBuilder.AddSystem(new UpdateSystem<Ball>());
@@ -141,6 +127,7 @@ namespace BreakoutExtreme.Components
                 worldBuilder.AddSystem(new UpdateSystem<Button>());
                 worldBuilder.AddSystem(new UpdateSystem<RemainingBallsPanel>());
                 worldBuilder.AddSystem(new UpdateSystem<Shadow>());
+                worldBuilder.AddSystem(new UpdateSystem<Power>());
 
                 worldBuilder.AddSystem(new ColliderSystem(_collisionComponent));
                 worldBuilder.AddSystem(new PositionSystem());
