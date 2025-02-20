@@ -174,7 +174,7 @@ namespace BreakoutExtreme.Components
         }
         public Splasher()
         {
-            _animater = new Animater();
+            _animater = new Animater() { Layer = Layers.Foreground };
             _scaleDown = new();
             _shine = new();
             _appear = new();

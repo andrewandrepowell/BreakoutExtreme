@@ -21,6 +21,7 @@ namespace BreakoutExtreme.Components
             { Spriters.Cleared, "animations/cleared_0" },
             { Spriters.GameEnd, "animations/game_end_0" },
             { Spriters.GameStart, "animations/game_start_0" },
+            { Spriters.Powers, "animations/powers_0" },
         });
         private static readonly ReadOnlyDictionary<Spriters, Size> _spriterRegionSizes = new(new Dictionary<Spriters, Size>
         {
@@ -36,6 +37,7 @@ namespace BreakoutExtreme.Components
             { Spriters.Cleared, new Size(208, 96) },
             { Spriters.GameEnd, new Size(240, 96) },
             { Spriters.GameStart, new Size(256, 96) },
+            { Spriters.Powers, new Size(48, 48) },
         });
         private static readonly ReadOnlyDictionary<Animations, string> _animationNames = new(new Dictionary<Animations, string>
         {
@@ -51,6 +53,10 @@ namespace BreakoutExtreme.Components
             { Animations.CrackMedium, "crack_1" },
             { Animations.CrackLarge, "crack_2" },
             { Animations.Spike, "spike_0" },
+            { Animations.SpikeSolidifying, "spike_1" },
+            { Animations.SpikeSolid, "spike_2" },
+            { Animations.SpikeEdgeSolidifying, "spike_3" },
+            { Animations.SpikeEdgeSolid, "spike_4" },
             { Animations.Laser, "laser_0" },
             { Animations.Cannon, "cannon_0" },
             { Animations.CannonDead, "cannon_1" },
@@ -60,6 +66,8 @@ namespace BreakoutExtreme.Components
             { Animations.Cleared, "cleared_0" },
             { Animations.GameEnd, "game_end_0" },
             { Animations.GameStart, "game_start_0" },
+            { Animations.PowerBackpane, "powers_0" },
+            { Animations.PowerProtection, "powers_1" },
         });
         private static readonly ReadOnlyDictionary<Spriters, Action<Spriter>> _spriterConfigureAnimations = new(new Dictionary<Spriters, Action<Spriter>>
         {
@@ -109,6 +117,10 @@ namespace BreakoutExtreme.Components
                 delegate(Spriter spriter)
                 {
                     spriter.Add(_animationNames[Animations.Spike], [0, 1, 2, 3, 2, 1], 1, true);
+                    spriter.Add(_animationNames[Animations.SpikeSolidifying], [4, 5, 6, 7], 0.5f);
+                    spriter.Add(_animationNames[Animations.SpikeSolid], [7]);
+                    spriter.Add(_animationNames[Animations.SpikeEdgeSolidifying], [8, 9, 10, 11], 0.5f);
+                    spriter.Add(_animationNames[Animations.SpikeEdgeSolid], [11]);
                 }
             },
             {
@@ -155,6 +167,14 @@ namespace BreakoutExtreme.Components
                 {
                     spriter.Add(_animationNames[Animations.GameStart], [0]);
                 }
+            },
+            {
+                Spriters.Powers,
+                delegate(Spriter spriter)
+                {
+                    spriter.Add(_animationNames[Animations.PowerBackpane], [0]);
+                    spriter.Add(_animationNames[Animations.PowerProtection], [1]);
+                }
             }
         });
         private static readonly ReadOnlyDictionary<Animations, Spriters> _animationSpriters = new(new Dictionary<Animations, Spriters>()
@@ -171,6 +191,10 @@ namespace BreakoutExtreme.Components
             { Animations.CrackMedium, Spriters.Cracks },
             { Animations.CrackLarge, Spriters.Cracks },
             { Animations.Spike, Spriters.Spike },
+            { Animations.SpikeSolidifying, Spriters.Spike },
+            { Animations.SpikeSolid, Spriters.Spike },
+            { Animations.SpikeEdgeSolidifying, Spriters.Spike },
+            { Animations.SpikeEdgeSolid, Spriters.Spike },
             { Animations.Laser, Spriters.Laser },
             { Animations.Cannon, Spriters.Cannon },
             { Animations.CannonFire, Spriters.Cannon },
@@ -180,6 +204,8 @@ namespace BreakoutExtreme.Components
             { Animations.Cleared, Spriters.Cleared },
             { Animations.GameEnd, Spriters.GameEnd },
             { Animations.GameStart, Spriters.GameStart },
+            { Animations.PowerBackpane, Spriters.Powers },
+            { Animations.PowerProtection, Spriters.Powers },
         });
         private readonly Dictionary<Spriters, Spriter> _spriters = [];
     }
