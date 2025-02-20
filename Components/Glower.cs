@@ -15,8 +15,8 @@ namespace BreakoutExtreme.Components
         private Animater _parent;
         private bool _initialized;
         public Texturer GetTexturer() => _texturer;
-        public bool VanishRunning => _vanish.Running;
-        public void VanishStart() => _vanish.Start();
+        public bool Running => _vanish.Running;
+        public void Start() => _vanish.Start();
         public void Reset(
             Entity entity, Animater parent, Color color, 
             float minVisibility, float maxVisibility, float pulsePeriod, bool pulseRepeating, float appearVanishPeriod)

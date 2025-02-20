@@ -69,7 +69,7 @@ namespace BreakoutExtreme.Components
             _shake.Start();
             _vanish.Start();
             _flash.Stop();
-            _glower.VanishStart();
+            _glower.Start();
             _state = States.Destroying;
         }
         public void Despawn()
@@ -80,7 +80,7 @@ namespace BreakoutExtreme.Components
             _shake.Stop();
             _vanish.Start();
             _flash.Start();
-            _glower.VanishStart();
+            _glower.Start();
             _state = States.Despawning;
         }
         public void Reset(Entity entity, Powers power, PlayArea parent)
@@ -122,7 +122,7 @@ namespace BreakoutExtreme.Components
             {
                 _collider.Acceleration += _acceleration;
             }
-            if ((_state == States.Despawning || _state == States.Destroying) && !_vanish.Running && !_glower.VanishRunning)
+            if ((_state == States.Despawning || _state == States.Destroying) && !_vanish.Running && !_glower.Running)
             {
                 _shake.Stop();
                 _state = States.Destroyed;

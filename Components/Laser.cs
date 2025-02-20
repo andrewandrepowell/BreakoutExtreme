@@ -62,8 +62,8 @@ namespace BreakoutExtreme.Components
             Debug.Assert(_initialized);
             _collider.Acceleration = Vector2.Zero;
             _collider.Velocity = Vector2.Zero;
-            _thickGlower.VanishStart();
-            _thinGlower.VanishStart();
+            _thickGlower.Start();
+            _thinGlower.Start();
             _vanish.Start();
             _state = States.Destroying;
         }
@@ -84,7 +84,7 @@ namespace BreakoutExtreme.Components
             if (_state == States.Active)
                 _collider.Acceleration += _acceleration;
 
-            if (_state == States.Destroying && !_thickGlower.VanishRunning && !_thickGlower.VanishRunning && !_vanish.Running)
+            if (_state == States.Destroying && !_thickGlower.Running && !_thickGlower.Running && !_vanish.Running)
                 _state = States.Destroyed;
         }
         public Laser()
