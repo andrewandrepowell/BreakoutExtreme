@@ -17,7 +17,8 @@ namespace BreakoutExtreme.Components
             Bomb,
             Cleared,
             GameEnd,
-            GameStart
+            GameStart,
+            Powers
         }
         public enum Animations
         {
@@ -33,6 +34,10 @@ namespace BreakoutExtreme.Components
             CrackMedium,
             CrackLarge,
             Spike,
+            SpikeSolidifying,
+            SpikeSolid,
+            SpikeEdgeSolidifying,
+            SpikeEdgeSolid,
             Laser,
             Cannon,
             CannonFire,
@@ -41,7 +46,9 @@ namespace BreakoutExtreme.Components
             BombDead,
             Cleared,
             GameEnd,
-            GameStart
+            GameStart,
+            PowerBackpane,
+            PowerProtection
         }
     }
 }
