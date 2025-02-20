@@ -31,8 +31,6 @@ namespace BreakoutExtreme.Components
                 Debug.Assert(_parent.State == States.Active);
                 var collider = _parent.GetCollider();
 
-                Console.WriteLine($"Before Ball: {collider.Velocity}, {Acceleration}, {Running}, {collider.Bounds.BoundingRectangle}");
-
                 // Handle rectangular bounce logic.
                 {
                     if (_parent.State == States.Active && 
@@ -191,8 +189,6 @@ namespace BreakoutExtreme.Components
                         _parent.Destroy();
                     }    
                 }
-
-                Console.WriteLine($"After Ball: {collider.Velocity}, {Acceleration}, {Running}, {collider.Bounds.BoundingRectangle}");
             }
             public void Start(Vector2? acceleration = null)
             {
@@ -223,22 +219,29 @@ namespace BreakoutExtreme.Components
                     _parent._collider.Acceleration += Acceleration;
                 }
 
-                // 
+                // Generate powers upon destruction of a power brick.
                 {
                     while (_powerBricks.RemoveFromFront(out var brick))
                     { 
                         Debug.Assert(brick.GetBrick() == Brick.Bricks.Power);
                         Debug.Assert(brick.Power.HasValue);
+                        var brickCollider = brick.GetCollider();
                         switch (brick.Power.Value)
                         {
                             case Powers.MultiBall:
                                 {
                                     var ball = _parent._parent.CreateBall();
-                                    var brickCollider = brick.GetCollider();
+                                    
                                     var ballCollider = ball.GetCollider();
                                     ballCollider.Position = brickCollider.Position + (Vector2)(brickCollider.Size / 2);
                                     ball.StartLaunch();
                                     ball.Spawn();
+                                }
+                                break;
+                            case Powers.Protection:
+                                {
+                                    var power = Globals.Runner.CreatePower(brick.Power.Value, _parent._parent);
+                                    power.GetCollider().Position = brickCollider.Position;
                                 }
                                 break;
                         }

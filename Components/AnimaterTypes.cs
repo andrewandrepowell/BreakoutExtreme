@@ -48,7 +48,8 @@ namespace BreakoutExtreme.Components
             GameEnd,
             GameStart,
             PowerBackpane,
-            PowerProtection
+            PowerProtection,
+            PowerProtectionDead
         }
     }
 }
