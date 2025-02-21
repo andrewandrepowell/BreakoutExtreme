@@ -157,11 +157,11 @@ namespace BreakoutExtreme.Components
             entity.Attach(gumDrawer);
             return scorePopup;
         }
-        public Spike CreateSpike(Vector2 position)
+        public Spike CreateSpike(Vector2 position, Spike.Edges edge)
         {
             Debug.Assert(_initialized);
             var entity = _world.CreateEntity();
-            var spike = new Spike(position);
+            var spike = new Spike(position, edge);
             var animater = spike.GetAnimater();
             entity.Attach(spike);
             entity.Attach(animater);

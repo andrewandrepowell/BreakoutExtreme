@@ -128,6 +128,7 @@ namespace BreakoutExtreme.Components
                 worldBuilder.AddSystem(new UpdateSystem<RemainingBallsPanel>());
                 worldBuilder.AddSystem(new UpdateSystem<Shadow>());
                 worldBuilder.AddSystem(new UpdateSystem<Power>());
+                worldBuilder.AddSystem(new UpdateSystem<DeathWall>());
 
                 worldBuilder.AddSystem(new ColliderSystem(_collisionComponent));
                 worldBuilder.AddSystem(new PositionSystem());

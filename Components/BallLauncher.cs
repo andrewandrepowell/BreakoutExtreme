@@ -37,7 +37,7 @@ namespace BreakoutExtreme.Components
                         (node.Other.Parent is Wall || 
                          node.Other.Parent is Paddle || 
                         (node.Other.Parent is Brick brick && brick.State == Brick.States.Active) ||
-                        (node.Other.Parent is DeathWall deathWall && !deathWall.Running)))
+                        (node.Other.Parent is DeathWall deathWall && deathWall.State == DeathWall.States.Protecting)))
                     {
                         var otherBounds = node.Other.Bounds.BoundingRectangle;
                         var position = collider.Position;
@@ -184,7 +184,7 @@ namespace BreakoutExtreme.Components
                 // Handle collision with death wall.
                 {
                     if (_parent.State == States.Active && 
-                        node.Other.Parent is DeathWall deathWall && deathWall.Running)
+                        node.Other.Parent is DeathWall deathWall && deathWall.State == DeathWall.States.Active)
                     {
                         _parent.Destroy();
                     }    

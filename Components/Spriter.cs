@@ -105,6 +105,7 @@ namespace BreakoutExtreme.Components
         public Vector2 Position;
         public float Scale = 1;
         public float Rotation = 0;
+        public SpriteEffects SpriteEffect = SpriteEffects.None;
         public void Update()
         {
             if (_running && _node.Period > 0)
@@ -146,7 +147,7 @@ namespace BreakoutExtreme.Components
                 rotation: Rotation,
                 origin: _origin,
                 scale: Scale,
-                effects: SpriteEffects.None,
+                effects: SpriteEffect,
                 layerDepth: 0);
         }
     }

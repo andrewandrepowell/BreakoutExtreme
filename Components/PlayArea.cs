@@ -125,6 +125,13 @@ namespace BreakoutExtreme.Components
             _balls.Add(ball);
             return ball;
         }
+        public void Protect()
+        {
+            if (_deathWall.State == DeathWall.States.Active)
+                _deathWall.Protect();
+            else if (_deathWall.State == DeathWall.States.Protecting && _deathWall.ProtectTimed)
+                _deathWall.ReleaseProtect();
+        }
         public PlayArea(GameWindow parent)
         {
             _parent = parent;
@@ -134,7 +141,13 @@ namespace BreakoutExtreme.Components
                 Globals.Runner.CreateWall(new RectangleF(Globals.PlayAreaBounds.X, Globals.PlayAreaBounds.Y, Globals.GameBlockSize, Globals.PlayAreaBounds.Height));
                 Globals.Runner.CreateWall(new RectangleF(Globals.PlayAreaBounds.X + Globals.PlayAreaBounds.Width - Globals.GameBlockSize, Globals.PlayAreaBounds.Y, Globals.GameBlockSize, Globals.PlayAreaBounds.Height));
                 Globals.Runner.CreateWall(new RectangleF(Globals.PlayAreaBounds.X + Globals.GameBlockSize, Globals.PlayAreaBounds.Y, Globals.PlayAreaBounds.Width - 2 * Globals.GameBlockSize, Globals.GameBlockSize));
+            }
+
+            // Create the death wall.
+            {
                 _deathWall = Globals.Runner.CreateDeathWall(new RectangleF(Globals.PlayAreaBounds.X + Globals.GameBlockSize, Globals.PlayAreaBounds.Y + Globals.PlayAreaBounds.Height - Globals.GameBlockSize, Globals.PlayAreaBounds.Width - 2 * Globals.GameBlockSize, Globals.GameBlockSize));
+                _deathWall.ProtectTimed = true;
+                _deathWall.ProtectPeriod = 15;
             }
 
             // Create the wall texture.

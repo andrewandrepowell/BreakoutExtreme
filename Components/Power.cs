@@ -52,7 +52,11 @@ namespace BreakoutExtreme.Components
                 Destroy();
 
             if (_state == States.Active && paddle != null)
+            {
+                if (_power == Powers.Protection)
+                    _parent.Protect();
                 Despawn();
+            }
         }
         public enum States { Active, Despawning, Destroying, Destroyed }
         public States State => _state;

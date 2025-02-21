@@ -18,6 +18,7 @@ namespace BreakoutExtreme.Components
         private Color _color = Color.White;
         private float _scale = 1;
         private float _rotation = 0, _shaderRotation = 0f;
+        private SpriteEffects _spriteEffect = SpriteEffects.None;
         private void UpdateShaderFeatures()
         {
             {
@@ -82,6 +83,10 @@ namespace BreakoutExtreme.Components
         private void UpdateSpriterColor()
         {
             _spriter.Color = Color * Visibility * _shaderVisibility;
+        }
+        private void UpdateSpriterSpriteEffect()
+        {
+            _spriter.SpriteEffect = _spriteEffect;
         }
         public static void Load()
         {
@@ -149,6 +154,16 @@ namespace BreakoutExtreme.Components
                 UpdateSpriterColor();
             }
         }
+        public SpriteEffects SpriteEffect
+        {
+            get => _spriteEffect;
+            set
+            {
+                if (_spriteEffect == value) return;
+                _spriteEffect = value;
+                UpdateSpriterSpriteEffect();
+            }
+        }
         public bool ShowBase = true;
         public bool Pausable = true;
         public readonly Bag<Shaders.Feature> ShaderFeatures = [];
@@ -164,6 +179,7 @@ namespace BreakoutExtreme.Components
             UpdateSpriterColor();
             UpdateSpriterScale();
             UpdateSpriterRotation();
+            UpdateSpriterSpriteEffect();
         }
         public void Play(Animations animation)
         {
@@ -177,6 +193,7 @@ namespace BreakoutExtreme.Components
             UpdateSpriterColor();
             UpdateSpriterScale();
             UpdateSpriterRotation();
+            UpdateSpriterSpriteEffect();
             _spriter.Play(_animationNames[Animation]);
         }
         public void Stop()

@@ -38,7 +38,7 @@ namespace BreakoutExtreme.Components
                 (node.Other.Parent is Brick brick && brick.State == Brick.States.Active) ||
                 (node.Other.Parent is Cannon cannon && cannon.State == Cannon.States.Active) ||
                 (node.Other.Parent is Ball ball && ball.State == States.Active) ||
-                (node.Other.Parent is DeathWall deathWall && !deathWall.Running))
+                (node.Other.Parent is DeathWall deathWall))
             {
                 node.CorrectPosition();
             }

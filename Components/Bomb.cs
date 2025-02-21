@@ -117,6 +117,7 @@ namespace BreakoutExtreme.Components
             _entity = entity;
             _bomb = bomb;
             _configNode = _configNodes[bomb];
+            _animater.Visibility = 1;
             _animater.Play(_configNode.Active);
             _shadow = Globals.Runner.CreateShadow(_animater);
             _shadow.GetTexturer().ShaderFeatures.Add(_rock);
@@ -154,10 +155,16 @@ namespace BreakoutExtreme.Components
             }
 
             if (_state == States.Destroying && !_shake.Running && !_vanish.Running && !_shadow.Running)
+            {
+                _animater.Visibility = 0;
                 _state = States.Destroyed;
+            }
 
             if (_state == States.Detonating && _detonater.State == Detonater.States.Finished)
+            {
+                _animater.Visibility = 0;
                 Destroy();
+            }
 
             _detonater.Update();
         }
