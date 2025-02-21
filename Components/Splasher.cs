@@ -3,6 +3,7 @@ using MonoGame.Extended.ECS;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
+using System;
 
 namespace BreakoutExtreme.Components
 {
@@ -45,6 +46,7 @@ namespace BreakoutExtreme.Components
         {
             Debug.Assert(_initialized);
             _animater.Visibility = 1;
+            _shadower.GetTexturer().Visibility = 1f;
             _shadow.GetTexturer().Visibility = 0.5f;
             _scaleDown.Start();
             _shine.Start();
@@ -67,13 +69,14 @@ namespace BreakoutExtreme.Components
             _splashConfig = _splashConfigs[splash];
             _animater.Position = Globals.PlayAreaBounds.Center;
             _animater.Visibility = 0;
+            _animater.Scale = _splashConfig.Scale;
             _animater.Play(_splashConfig.Animation);
             _shadower = Globals.Runner.CreateShadower(_animater, _animater.Position);
             {
                 var texturer = _shadower.GetTexturer();
                 texturer.Scale = _splashConfig.Scale;
                 texturer.ShowBase = false;
-                texturer.Visibility = 1f;
+                texturer.Visibility = 0;
                 Debug.Assert(texturer.ShaderFeatures.Count == 0);
                 texturer.ShaderFeatures.Add(_dash);
                 texturer.ShaderFeatures.Add(_floatRightShadower);
@@ -89,7 +92,7 @@ namespace BreakoutExtreme.Components
                 texturer.ShaderFeatures.Add(_appearShadow);
             }
             _scaleDown.MaxScale = 6;
-            _scaleDown.MinScale = _splashConfig.Scale;
+            _scaleDown.MinScale = 1;
             _scaleDown.DelayPeriod = 0;
             _scaleDown.Period = 2;
             _scaleDown.Stop();
@@ -166,6 +169,7 @@ namespace BreakoutExtreme.Components
                 !_vanishShadower.Running &&
                 !_vanishShadow.Running)
             {
+                _animater.Visibility = 0;
                 _shadow.GetTexturer().Visibility = 0;
                 _shine.Stop();
                 _dash.Stop();
@@ -174,7 +178,7 @@ namespace BreakoutExtreme.Components
         }
         public Splasher()
         {
-            _animater = new Animater() { Layer = Layers.Foreground };
+            _animater = new Animater() { Layer = Layers.Foreground, Visibility = 0 };
             _scaleDown = new();
             _shine = new();
             _appear = new();

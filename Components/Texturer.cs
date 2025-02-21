@@ -46,8 +46,9 @@ namespace BreakoutExtreme.Components
                     UpdateDrawRotation();
             }
 
-            for (var i = 0; i < _shaderFeatures.Count; i++)
-                _shaderFeatures[i].Update();
+            if (!(Globals.Paused && Pausable))
+                for (var i = 0; i < _shaderFeatures.Count; i++)
+                    _shaderFeatures[i].Update();
         }
         private void UpdateDrawRotation()
         {
@@ -125,7 +126,6 @@ namespace BreakoutExtreme.Components
         public bool Pausable = true;
         public void Update()
         {
-            if (Globals.Paused && Pausable) return;
             UpdateShaderFeatures();
         }
 

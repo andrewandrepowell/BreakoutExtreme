@@ -2,6 +2,7 @@
 using MonoGame.Extended;
 using System.Diagnostics;
 using System;
+using Microsoft.Xna.Framework;
 
 namespace BreakoutExtreme.Features
 {
@@ -12,11 +13,13 @@ namespace BreakoutExtreme.Features
         private float _delayPeriod = 0;
         private float _delayTime;
         private bool _running = false;
+        private bool _extraFrame = false;
+        private float _visibility;
         public override bool UpdateVisibility(ref float visibility)
         {
-            if (!_running)
+            if (!_running && !_extraFrame)
                 return false;
-            visibility *= (_time / _period);
+            visibility *= _visibility;
             return true;
         }
         public bool Running => _running;
@@ -42,6 +45,8 @@ namespace BreakoutExtreme.Features
         }
         public void Start()
         {
+            _visibility = 1;
+            _extraFrame = true;
             _time = _period;
             _delayTime = _delayPeriod;
             _running = true;
@@ -54,6 +59,7 @@ namespace BreakoutExtreme.Features
         {
             if (_running)
             {
+                _visibility = MathHelper.Max(_time, 0) / _period;
                 if (_time <= 0)
                     Stop();
                 var timeElapsed = Globals.GameTime.GetElapsedSeconds();
@@ -61,6 +67,10 @@ namespace BreakoutExtreme.Features
                     _delayTime -= timeElapsed;
                 else
                     _time -= timeElapsed;
+            }
+            else if (_extraFrame)
+            {
+                _extraFrame = false;
             }
         }
     }

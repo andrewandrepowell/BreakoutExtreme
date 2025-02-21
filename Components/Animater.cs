@@ -21,34 +21,35 @@ namespace BreakoutExtreme.Components
         private void UpdateShaderFeatures()
         {
             {
+                var prevDrawOffset = _shaderDrawOffset;
+                var prevVisibility = _shaderVisibility;
+                var prevScale = _shaderScale;
+                var prevRotation = _shaderRotation;
                 _shaderDrawOffset = Vector2.Zero;
                 _shaderVisibility = 1;
                 _shaderScale = 1;
                 _shaderRotation = 0;
-                var updateDrawPosition = false;
-                var updateVisibility = false;
-                var updateScale = false;
-                var updateRotation = false;
                 for (var i = 0; i < ShaderFeatures.Count; i++)
                 {
                     var feature = ShaderFeatures[i];
-                    updateDrawPosition |= feature.UpdateDrawOffset(ref _shaderDrawOffset);
-                    updateVisibility |= feature.UpdateVisibility(ref _shaderVisibility);
-                    updateScale |= feature.UpdateScale(ref  _shaderScale);
-                    updateRotation |= feature.UpdateRotation(ref _shaderRotation);
+                    feature.UpdateDrawOffset(ref _shaderDrawOffset);
+                    feature.UpdateVisibility(ref _shaderVisibility);
+                    feature.UpdateScale(ref  _shaderScale);
+                    feature.UpdateRotation(ref _shaderRotation);
                 }
-                if (updateDrawPosition)
+                if (_shaderDrawOffset != prevDrawOffset)
                     UpdateSpriterDrawPosition();
-                if (updateVisibility)
+                if (_shaderVisibility != prevVisibility)
                     UpdateSpriterColor();
-                if (updateScale)
+                if (_shaderScale != prevScale)
                     UpdateSpriterScale();
-                if (updateRotation)
+                if (_shaderRotation != prevRotation)
                     UpdateSpriterRotation();
             }
 
-            for (var i = 0; i < ShaderFeatures.Count; i++)
-                ShaderFeatures[i].Update();
+            if (!(Globals.Paused && Pausable))
+                for (var i = 0; i < ShaderFeatures.Count; i++)
+                    ShaderFeatures[i].Update();
         }
         private void UpdateSpriters()
         {
@@ -184,10 +185,9 @@ namespace BreakoutExtreme.Components
         }
         public void Update()
         {
-            if (Globals.Paused && Pausable)
-                return;
             UpdateShaderFeatures();
-            _spriter.Update();
+            if (!(Globals.Paused && Pausable))
+                _spriter.Update();
         }
         public void Draw()
         {

@@ -94,6 +94,7 @@ namespace BreakoutExtreme.Components
                     pulseRepeating: true,
                     appearVanishPeriod: 1);
             _animater.Color = _config.Tint;
+            _animater.Visibility = 1;
             _animater.Play(_config.ActiveAnimation);
             _collider.Bounds = _config.Bounds;
             _collider.Position = position;
@@ -167,7 +168,10 @@ namespace BreakoutExtreme.Components
             }
 
             if (_state == States.Destroying && !_vanish.Running && !_shadow.Running)
+            {
+                _animater.Visibility = 0;
                 _state = States.Destroyed;
+            }
         }
     }
 }
