@@ -15,6 +15,7 @@
             Paddle,
             PowerMultiBall,
             PowerProtection,
+            PowerNewBall,
             BrickSmall,
             BrickLarge,
             Cannon

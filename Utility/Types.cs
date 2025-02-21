@@ -9,7 +9,7 @@ namespace BreakoutExtreme.Utility
     public enum RoundingModes { Floor, Round, Ceil }
     public enum RunningStates { Waiting, Starting, Running, Stopping }
     public enum Layers { Shadow, Ground, Foreground, Dimmer, Menus }
-    public enum Powers { MultiBall, Protection }
+    public enum Powers { MultiBall, Protection, NewBall }
     public interface IUpdate
     {
         public void Update();

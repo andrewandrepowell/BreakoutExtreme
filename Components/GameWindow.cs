@@ -33,6 +33,7 @@ namespace BreakoutExtreme.Components
             if (Score > HighScore)
                 HighScore = Score;
             Score = 0;
+            _remainingBallsPanel.FlashNewBall = false;
             RemainingBalls = 3;
             LevelsCleared = 0;
             _playArea.GameStart();
@@ -94,6 +95,17 @@ namespace BreakoutExtreme.Components
         {
             get => _remainingBallsPanel.RemainingBalls;
             set => _remainingBallsPanel.RemainingBalls = value;
+        }
+        public static int MaximumBalls => RemainingBallsPanel.MaximumBalls;
+        public void DropBall()
+        {
+            _remainingBallsPanel.FlashNewBall = false;
+            RemainingBalls--;
+        }
+        public void NewBall()
+        {
+            _remainingBallsPanel.FlashNewBall = true;
+            RemainingBalls++;
         }
         public GameWindow()
         {

@@ -231,13 +231,13 @@ namespace BreakoutExtreme.Components
                             case Powers.MultiBall:
                                 {
                                     var ball = _parent._parent.CreateBall();
-                                    
                                     var ballCollider = ball.GetCollider();
                                     ballCollider.Position = brickCollider.Position + (Vector2)(brickCollider.Size / 2);
                                     ball.StartLaunch();
                                     ball.Spawn();
                                 }
                                 break;
+                            case Powers.NewBall:
                             case Powers.Protection:
                                 {
                                     var power = Globals.Runner.CreatePower(brick.Power.Value, _parent._parent);

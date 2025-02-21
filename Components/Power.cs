@@ -13,11 +13,12 @@ namespace BreakoutExtreme.Components
     {
         private readonly static ReadOnlyDictionary<Powers, Config> _powerConfigs = new(new Dictionary<Powers, Config>() 
         {
-            { Powers.Protection, new(Animater.Animations.PowerProtection, Animater.Animations.PowerProtectionDead) }
+            { Powers.Protection, new(Animater.Animations.PowerProtection, Animater.Animations.PowerProtectionDead, 500) },
+            { Powers.NewBall, new(Animater.Animations.PowerNewBall, Animater.Animations.PowerNewBallDead, 1000) }
         });
         private readonly static RectangleF _bounds = new Rectangle(Globals.PlayAreaBlockBounds.X, Globals.PlayAreaBlockBounds.Y, 1, 1).ToBounds();
         private readonly static Action<Collider.CollideNode> _collideAction = (Collider.CollideNode node) => ((Power)node.Current.Parent).ServiceCollision(node);
-        private readonly static Vector2 _acceleration = new(0, 500);
+        private Vector2 _acceleration;
         private bool _initialized;
         private Entity _entity;
         private Powers _power;
@@ -30,10 +31,14 @@ namespace BreakoutExtreme.Components
         private Features.LimitedFlash _flash;
         private Features.Vanish _vanish;
         private Features.Shake _shake;
-        private class Config(Animater.Animations activeAnimations, Animater.Animations deadAnimation)
+        private class Config(
+            Animater.Animations activeAnimations, 
+            Animater.Animations deadAnimation, 
+            float verticalAcceleration)
         {
             public readonly Animater.Animations ActiveAnimation = activeAnimations;
             public readonly Animater.Animations DeadAnimation = deadAnimation;
+            public readonly float VerticalAcceleration = verticalAcceleration;
         }
         private void ServiceCollision(Collider.CollideNode node)
         {
@@ -52,9 +57,22 @@ namespace BreakoutExtreme.Components
                 Destroy();
 
             if (_state == States.Active && paddle != null)
-            {
-                if (_power == Powers.Protection)
-                    _parent.Protect();
+            { 
+                switch (_power)
+                {
+                    case Powers.Protection:
+                        {
+                            _parent.Protect();
+                        }
+                        break;
+                    case Powers.NewBall:
+                        {
+                            var gameWindow = _parent.Parent;
+                            if (gameWindow.RemainingBalls < GameWindow.MaximumBalls)
+                                gameWindow.NewBall();
+                        }
+                        break;
+                }
                 Despawn();
             }
         }
@@ -94,6 +112,7 @@ namespace BreakoutExtreme.Components
             _power = power;
             _parent = parent;
             _config = _powerConfigs[power];
+            _acceleration.Y = _config.VerticalAcceleration;
             _glower = Globals.Runner.CreateGlower(
                 parent: _animater,
                 color: Color.Yellow,

@@ -14,6 +14,7 @@ namespace BreakoutExtreme.Components
         private readonly DisplayBall[] _displayBalls;
         private readonly Vector2 _position;
         private int _remainingBalls = 3;
+        private bool _flashNewBall = true;
         private void UpdateDisplayBalls()
         {
             Debug.Assert(_remainingBalls >= 0 || _remainingBalls <= _maximumBalls);
@@ -27,12 +28,19 @@ namespace BreakoutExtreme.Components
                 if (i < _remainingBalls && !displayBall.Running)
                 {
                     displayBall.Start();
+                    if (_flashNewBall)
+                        displayBall.Flash();
                 }
                 else if (i >= _remainingBalls && displayBall.Running)
                 {
                     displayBall.Stop();
                 }
             }
+        }
+        public bool FlashNewBall
+        {
+            get => _flashNewBall;
+            set => _flashNewBall = value;
         }
         public static int MaximumBalls => _maximumBalls;
         public int RemainingBalls

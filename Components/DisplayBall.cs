@@ -11,6 +11,7 @@ namespace BreakoutExtreme.Components
         private readonly Features.FloatUp _floatAway;
         private readonly Features.Vanish _vanish;
         private readonly Features.Appear _appear;
+        private readonly Features.LimitedFlash _flash;
         private float _floatStartTime;
         private RunningStates _state = RunningStates.Waiting;
         public Animater GetAnimater() => _animater;
@@ -32,8 +33,11 @@ namespace BreakoutExtreme.Components
             _animater.ShaderFeatures.Add(_vanish);
             _appear = new();
             _animater.ShaderFeatures.Add(_appear);
+            _flash = new();
+            _animater.ShaderFeatures.Add(_flash);
         }
         public bool Running => _state == RunningStates.Starting || _state == RunningStates.Running;
+        public void Flash() => _flash.Start();
         public void Start()
         {
             _animater.Play(Animater.Animations.Ball);

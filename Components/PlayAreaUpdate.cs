@@ -68,7 +68,7 @@ namespace BreakoutExtreme.Components
                     var ball = Globals.Runner.CreateBall(this);
                     ball.GetCollider().Position = _paddle.GetCollider().Position + _ballInitialDisplacementFromPaddle;
                     _balls.Add(ball);
-                    _parent.RemainingBalls--;
+                    _parent.DropBall();
                     State = States.SpawnNewBall;
                 }
 
