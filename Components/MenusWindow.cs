@@ -142,7 +142,7 @@ namespace BreakoutExtreme.Components
                 _textRuntime = new TextRuntime()
                 {
                     Text = "Hello World",
-                    BitmapFont = new BitmapFont("fonts/montserrat/montserrat_0.fnt", SystemManagers.Default),
+                    BitmapFont = GumUI.MontserratSmall,
                     X = Globals.GameBlockSize,
                     XUnits = Gum.Converters.GeneralUnitType.PixelsFromSmall,
                     Y = Globals.GameBlockSize,

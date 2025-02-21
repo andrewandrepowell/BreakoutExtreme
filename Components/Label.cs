@@ -54,7 +54,7 @@ namespace BreakoutExtreme.Components
 
             {
                 _textRuntime = new TextRuntime();
-                _textRuntime.BitmapFont = new BitmapFont("fonts/montserrat/montserrat_1.fnt", SystemManagers.Default);
+                _textRuntime.BitmapFont = GumUI.MontserratLarge;
                 _textRuntime.Width = 0;
                 _textRuntime.Height = 0;
                 _textRuntime.WidthUnits = Gum.DataTypes.DimensionUnitType.RelativeToContainer;

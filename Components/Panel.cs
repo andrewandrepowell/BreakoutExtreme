@@ -89,7 +89,7 @@ namespace BreakoutExtreme.Components
             {
                 _textRuntime = new()
                 {
-                    BitmapFont = new BitmapFont("fonts/montserrat/montserrat_1.fnt", SystemManagers.Default),
+                    BitmapFont = GumUI.MontserratLarge,
                     X = Globals.GameBlockSize,
                     Y = 0,
                     Width = -Globals.GameBlockSize * 2,

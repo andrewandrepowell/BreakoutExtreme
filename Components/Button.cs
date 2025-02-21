@@ -90,7 +90,7 @@ namespace BreakoutExtreme.Components
             {
                 _textRuntime = new()
                 {
-                    BitmapFont = new BitmapFont("fonts/montserrat/montserrat_1.fnt", SystemManagers.Default),
+                    BitmapFont = GumUI.MontserratLarge,
                     WidthUnits = Gum.DataTypes.DimensionUnitType.RelativeToContainer,
                     HeightUnits = Gum.DataTypes.DimensionUnitType.RelativeToContainer,
                     VerticalAlignment = VerticalAlignment.Center,
