@@ -11,6 +11,7 @@ namespace BreakoutExtreme.Components
         {
             { Spriters.Ball, "animations/ball_0" },
             { Spriters.Paddle, "animations/paddle_0" },
+            { Spriters.PaddleLarge, "animations/paddle_1" },
             { Spriters.BrickSmall, "animations/brick_0" },
             { Spriters.BrickLarge, "animations/brick_2" },
             { Spriters.Cracks, "animations/cracks_0" },
@@ -27,6 +28,7 @@ namespace BreakoutExtreme.Components
         {
             { Spriters.Ball, new Size(80, 80) },
             { Spriters.Paddle, new Size(144, 80) },
+            { Spriters.PaddleLarge, new Size(192, 80) },
             { Spriters.BrickSmall, new Size(80, 80) },
             { Spriters.BrickLarge, new Size(112, 80) },
             { Spriters.Cracks, new Size(16, 16) },
@@ -44,7 +46,9 @@ namespace BreakoutExtreme.Components
             { Animations.Ball, "ball_0" },
             { Animations.BallDead, "ball_1" },
             { Animations.Paddle, "paddle_0" },
-            { Animations.PaddleDead, "paddle_dead_0" },
+            { Animations.PaddleDead, "paddle_1" },
+            { Animations.PaddleLarge, "paddle_0" },
+            { Animations.PaddleLargeDead, "paddle_1" },
             { Animations.BrickSmall, "brick_0" },
             { Animations.BrickSmallDead, "brick_1" },
             { Animations.BrickLarge, "brick_0" },
@@ -71,6 +75,8 @@ namespace BreakoutExtreme.Components
             { Animations.PowerProtectionDead, "powers_2" },
             { Animations.PowerNewBall, "powers_3" },
             { Animations.PowerNewBallDead, "powers_4" },
+            { Animations.PowerEnlargePaddle, "powers_5" },
+            { Animations.PowerEnlargePaddleDead, "powers_6" },
         });
         private static readonly ReadOnlyDictionary<Spriters, Action<Spriter>> _spriterConfigureAnimations = new(new Dictionary<Spriters, Action<Spriter>>
         {
@@ -88,6 +94,14 @@ namespace BreakoutExtreme.Components
                 {
                     spriter.Add(_animationNames[Animations.Paddle], [0]);
                     spriter.Add(_animationNames[Animations.PaddleDead], [1]);
+                }
+            },
+            {
+                Spriters.PaddleLarge,
+                delegate(Spriter spriter)
+                {
+                    spriter.Add(_animationNames[Animations.PaddleLarge], [0]);
+                    spriter.Add(_animationNames[Animations.PaddleLargeDead], [1]);
                 }
             },
             {
@@ -180,6 +194,8 @@ namespace BreakoutExtreme.Components
                     spriter.Add(_animationNames[Animations.PowerProtectionDead], [3]);
                     spriter.Add(_animationNames[Animations.PowerNewBall], [6]);
                     spriter.Add(_animationNames[Animations.PowerNewBallDead], [7]);
+                    spriter.Add(_animationNames[Animations.PowerEnlargePaddle], [10]);
+                    spriter.Add(_animationNames[Animations.PowerEnlargePaddleDead], [11]);
                 }
             }
         });
@@ -189,6 +205,8 @@ namespace BreakoutExtreme.Components
             { Animations.BallDead, Spriters.Ball },
             { Animations.Paddle, Spriters.Paddle },
             { Animations.PaddleDead, Spriters.Paddle },
+            { Animations.PaddleLarge, Spriters.PaddleLarge },
+            { Animations.PaddleLargeDead, Spriters.PaddleLarge },
             { Animations.BrickSmall, Spriters.BrickSmall },
             { Animations.BrickSmallDead, Spriters.BrickSmall },
             { Animations.BrickLarge, Spriters.BrickLarge },
@@ -215,6 +233,8 @@ namespace BreakoutExtreme.Components
             { Animations.PowerProtectionDead, Spriters.Powers },
             { Animations.PowerNewBall, Spriters.Powers },
             { Animations.PowerNewBallDead, Spriters.Powers },
+            { Animations.PowerEnlargePaddle, Spriters.Powers },
+            { Animations.PowerEnlargePaddleDead, Spriters.Powers },
         });
         private readonly Dictionary<Spriters, Spriter> _spriters = [];
     }

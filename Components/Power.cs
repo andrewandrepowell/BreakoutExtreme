@@ -13,6 +13,7 @@ namespace BreakoutExtreme.Components
     {
         private readonly static ReadOnlyDictionary<Powers, Config> _powerConfigs = new(new Dictionary<Powers, Config>() 
         {
+            { Powers.EnlargePaddle, new(Animater.Animations.PowerEnlargePaddle, Animater.Animations.PowerEnlargePaddleDead, 250) },
             { Powers.Protection, new(Animater.Animations.PowerProtection, Animater.Animations.PowerProtectionDead, 500) },
             { Powers.NewBall, new(Animater.Animations.PowerNewBall, Animater.Animations.PowerNewBallDead, 1000) }
         });
@@ -46,17 +47,20 @@ namespace BreakoutExtreme.Components
                 return;
 
             var deathWall = node.Other.Parent as DeathWall;
-            var paddle = node.Other.Parent as Paddle;
+            var deathWallCollided = deathWall != null;
 
-            if (_state == States.Active && (deathWall != null || paddle != null))
+            var paddle = node.Other.Parent as Paddle;
+            var paddleCollided = paddle != null && paddle.State == Paddle.States.Active;
+
+            if (_state == States.Active && (deathWallCollided || paddleCollided))
             {
                 node.CorrectPosition();
             }
 
-            if (_state == States.Active && deathWall != null)
+            if (_state == States.Active && deathWallCollided)
                 Destroy();
 
-            if (_state == States.Active && paddle != null)
+            if (_state == States.Active && paddleCollided)
             { 
                 switch (_power)
                 {
@@ -70,6 +74,11 @@ namespace BreakoutExtreme.Components
                             var gameWindow = _parent.Parent;
                             if (gameWindow.RemainingBalls < GameWindow.MaximumBalls)
                                 gameWindow.NewBall();
+                        }
+                        break;
+                    case Powers.EnlargePaddle:
+                        {
+                            paddle.Enlarge();
                         }
                         break;
                 }

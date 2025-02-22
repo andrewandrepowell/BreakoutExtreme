@@ -237,6 +237,7 @@ namespace BreakoutExtreme.Components
                                     ball.Spawn();
                                 }
                                 break;
+                            case Powers.EnlargePaddle:
                             case Powers.NewBall:
                             case Powers.Protection:
                                 {

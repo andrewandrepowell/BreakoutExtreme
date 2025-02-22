@@ -33,13 +33,6 @@
 #begin fonts/montserrat/montserrat.fnt
 /importer:BitmapFontImporter
 /processor:BitmapFontProcessor
-/processorParam:ColorKeyColor=255, 0, 255, 255
-/processorParam:ColorKeyEnabled=True
-/processorParam:GenerateMipmaps=False
-/processorParam:PremultiplyAlpha=True
-/processorParam:ResizeToPowerOfTwo=False
-/processorParam:MakeSquare=False
-/processorParam:TextureFormat=Color
 /build:fonts/montserrat/montserrat.fnt
 
 #begin animations/ball_0.png
@@ -153,13 +146,6 @@
 #begin effects/silhouette_0.fx
 /importer:EffectImporter
 /processor:EffectProcessor
-/processorParam:ColorKeyColor=255, 0, 255, 255
-/processorParam:ColorKeyEnabled=True
-/processorParam:GenerateMipmaps=False
-/processorParam:PremultiplyAlpha=True
-/processorParam:ResizeToPowerOfTwo=False
-/processorParam:MakeSquare=False
-/processorParam:TextureFormat=Color
 /processorParam:DebugMode=Auto
 /processorParam:Defines=
 /build:effects/silhouette_0.fx
@@ -174,20 +160,11 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/processorParam:DebugMode=Auto
-/processorParam:Defines=
 /build:animations/cracks_0.png
 
 #begin effects/pattern_0.fx
 /importer:EffectImporter
 /processor:EffectProcessor
-/processorParam:ColorKeyColor=255, 0, 255, 255
-/processorParam:ColorKeyEnabled=True
-/processorParam:GenerateMipmaps=False
-/processorParam:PremultiplyAlpha=True
-/processorParam:ResizeToPowerOfTwo=False
-/processorParam:MakeSquare=False
-/processorParam:TextureFormat=Color
 /processorParam:DebugMode=Auto
 /processorParam:Defines=
 /build:effects/pattern_0.fx
@@ -202,8 +179,6 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/processorParam:DebugMode=Auto
-/processorParam:Defines=
 /build:animations/spike_0.png
 
 #begin animations/particle_0.png
@@ -216,8 +191,6 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/processorParam:DebugMode=Auto
-/processorParam:Defines=
 /build:animations/particle_0.png
 
 #begin animations/particle_1.png
@@ -230,20 +203,11 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/processorParam:DebugMode=Auto
-/processorParam:Defines=
 /build:animations/particle_1.png
 
 #begin effects/hightlight_canvasitem_0.fx
 /importer:EffectImporter
 /processor:EffectProcessor
-/processorParam:ColorKeyColor=255, 0, 255, 255
-/processorParam:ColorKeyEnabled=True
-/processorParam:GenerateMipmaps=False
-/processorParam:PremultiplyAlpha=True
-/processorParam:ResizeToPowerOfTwo=False
-/processorParam:MakeSquare=False
-/processorParam:TextureFormat=Color
 /processorParam:DebugMode=Auto
 /processorParam:Defines=
 /build:effects/hightlight_canvasitem_0.fx
@@ -258,8 +222,6 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/processorParam:DebugMode=Auto
-/processorParam:Defines=
 /build:animations/button_0.png
 
 #begin animations/button_1.png
@@ -272,8 +234,6 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/processorParam:DebugMode=Auto
-/processorParam:Defines=
 /build:animations/button_1.png
 
 #begin animations/laser_0.png
@@ -286,20 +246,11 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/processorParam:DebugMode=Auto
-/processorParam:Defines=
 /build:animations/laser_0.png
 
 #begin effects/blur_0.fx
 /importer:EffectImporter
 /processor:EffectProcessor
-/processorParam:ColorKeyColor=255, 0, 255, 255
-/processorParam:ColorKeyEnabled=True
-/processorParam:GenerateMipmaps=False
-/processorParam:PremultiplyAlpha=True
-/processorParam:ResizeToPowerOfTwo=False
-/processorParam:MakeSquare=False
-/processorParam:TextureFormat=Color
 /processorParam:DebugMode=Auto
 /processorParam:Defines=
 /build:effects/blur_0.fx
@@ -314,8 +265,6 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/processorParam:DebugMode=Auto
-/processorParam:Defines=
 /build:animations/bomb_0.png
 
 #begin animations/cannon_0.png
@@ -328,8 +277,6 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/processorParam:DebugMode=Auto
-/processorParam:Defines=
 /build:animations/cannon_0.png
 
 #begin animations/fireball_0.png
@@ -342,8 +289,6 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/processorParam:DebugMode=Auto
-/processorParam:Defines=
 /build:animations/fireball_0.png
 
 #begin animations/particle_2.png
@@ -356,8 +301,6 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/processorParam:DebugMode=Auto
-/processorParam:Defines=
 /build:animations/particle_2.png
 
 #begin animations/cleared_0.png
@@ -370,20 +313,11 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/processorParam:DebugMode=Auto
-/processorParam:Defines=
 /build:animations/cleared_0.png
 
 #begin effects/mask_blur_0.fx
 /importer:EffectImporter
 /processor:EffectProcessor
-/processorParam:ColorKeyColor=255, 0, 255, 255
-/processorParam:ColorKeyEnabled=True
-/processorParam:GenerateMipmaps=False
-/processorParam:PremultiplyAlpha=True
-/processorParam:ResizeToPowerOfTwo=False
-/processorParam:MakeSquare=False
-/processorParam:TextureFormat=Color
 /processorParam:DebugMode=Auto
 /processorParam:Defines=
 /build:effects/mask_blur_0.fx
@@ -398,8 +332,6 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/processorParam:DebugMode=Auto
-/processorParam:Defines=
 /build:animations/break_out_0.png
 
 #begin animations/menu_0.png
@@ -412,8 +344,6 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/processorParam:DebugMode=Auto
-/processorParam:Defines=
 /build:animations/menu_0.png
 
 #begin animations/game_end_0.png
@@ -426,8 +356,6 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/processorParam:DebugMode=Auto
-/processorParam:Defines=
 /build:animations/game_end_0.png
 
 #begin animations/game_start_0.png
@@ -440,8 +368,6 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/processorParam:DebugMode=Auto
-/processorParam:Defines=
 /build:animations/game_start_0.png
 
 #begin animations/brick_0.png
@@ -454,8 +380,6 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/processorParam:DebugMode=Auto
-/processorParam:Defines=
 /build:animations/brick_0.png
 
 #begin animations/powers_0.png
@@ -468,7 +392,17 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/processorParam:DebugMode=Auto
-/processorParam:Defines=
 /build:animations/powers_0.png
+
+#begin animations/paddle_1.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255, 0, 255, 255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:animations/paddle_1.png
 

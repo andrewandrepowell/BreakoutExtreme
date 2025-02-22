@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk.BlazorWebAssembly">
+﻿<Project Sdk="Microsoft.NET.Sdk.BlazorWebAssembly">
 
   <PropertyGroup>
     <EnableDefaultCompileItems>false</EnableDefaultCompileItems>
@@ -48,6 +48,7 @@
     <Compile Include="Components\Button.cs" />
     <Compile Include="Components\Cannon.cs" />
     <Compile Include="Components\CannonFirer.cs" />
+    <Compile Include="Components\PaddleEnlarge.cs" />
     <Compile Include="Components\PlayAreaUpdateScore.cs" />
     <Compile Include="Components\Power.cs" />
     <Compile Include="Components\Splasher.cs" />

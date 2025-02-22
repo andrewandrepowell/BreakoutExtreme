@@ -4,14 +4,14 @@ using System;
 using Microsoft.Xna.Framework;
 using BreakoutExtreme.Utility;
 using System.Diagnostics;
+using System.Collections.ObjectModel;
+using System.Collections.Generic;
 
 
 namespace BreakoutExtreme.Components
 {
     public partial class Paddle : IUpdate, IRemoveEntity, IDestroyed
     {
-        private static readonly Rectangle _blockBounds = new(Globals.PlayAreaBlockBounds.Center.X, Globals.PlayAreaBlockBounds.Center.Y, 5, 1);
-        private static readonly RectangleF _bounds = _blockBounds.ToBounds();
         private static readonly Action<Collider.CollideNode> _collideAction = (Collider.CollideNode node) => ((Paddle)node.Current.Parent).ServiceCollision(node);
         private readonly Animater _animater;
         private readonly Collider _collider;
@@ -26,6 +26,7 @@ namespace BreakoutExtreme.Components
         private bool _initialized;
         private States _state;
         private PlayArea _parent;
+
         private void ServiceCollision(Collider.CollideNode node)
         {
             if (!_initialized)
@@ -96,7 +97,7 @@ namespace BreakoutExtreme.Components
         {
             Debug.Assert(_initialized);
             Debug.Assert(_state == States.Active);
-            _animater.Play(Animater.Animations.PaddleDead);
+            _animater.Play(_sizeConfig.DeadAnimation);
             _vanish.Start();
             _shake.Start();
             _shadow.Start();
@@ -106,19 +107,20 @@ namespace BreakoutExtreme.Components
         {
             Debug.Assert(!_initialized);
             _entity = entity;
+            _size = Sizes.Normal;
             _animater.Visibility = 1;
-            _animater.Play(Animater.Animations.Paddle);
             _shadow = Globals.Runner.CreateShadow(_animater);
             _laserGlower.Reset();
             _floatUp.Stop();
             _shake.Stop();
             _state = States.Active;
             _initialized = true;
+            UpdateSizeConfig();
         }
         public Paddle()
         {
             _animater = new();
-            _collider = new(bounds: _bounds, parent: this, action: _collideAction);
+            _collider = new(bounds: null, parent: this, action: _collideAction);
             _moveToTarget = new(this);
             _laserGlower = new(this);
             _limitedFlash = new();
@@ -152,6 +154,7 @@ namespace BreakoutExtreme.Components
                 _state = States.Destroyed;
             }
             _moveToTarget.Update();
+            UpdateSize();
         }
     }
 }
