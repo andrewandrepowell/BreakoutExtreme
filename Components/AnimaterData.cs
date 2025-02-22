@@ -17,6 +17,7 @@ namespace BreakoutExtreme.Components
             { Spriters.Cracks, "animations/cracks_0" },
             { Spriters.Spike, "animations/spike_0" },
             { Spriters.Laser, "animations/laser_0" },
+            { Spriters.EmpoweredLaser, "animations/laser_1" },
             { Spriters.Cannon, "animations/cannon_0" },
             { Spriters.Bomb, "animations/bomb_0" },
             { Spriters.Cleared, "animations/cleared_0" },
@@ -34,6 +35,7 @@ namespace BreakoutExtreme.Components
             { Spriters.Cracks, new Size(16, 16) },
             { Spriters.Spike, new Size(80, 80) },
             { Spriters.Laser, new Size(80, 96) },
+            { Spriters.EmpoweredLaser, new Size(80, 96) },
             { Spriters.Cannon, new Size(96, 96) },
             { Spriters.Bomb, new Size(80, 80) },
             { Spriters.Cleared, new Size(208, 96) },
@@ -62,6 +64,7 @@ namespace BreakoutExtreme.Components
             { Animations.SpikeEdgeSolidifying, "spike_3" },
             { Animations.SpikeEdgeSolid, "spike_4" },
             { Animations.Laser, "laser_0" },
+            { Animations.EmpoweredLaser, "laser_0" },
             { Animations.Cannon, "cannon_0" },
             { Animations.CannonDead, "cannon_1" },
             { Animations.CannonFire, "cannon_2" },
@@ -77,6 +80,8 @@ namespace BreakoutExtreme.Components
             { Animations.PowerNewBallDead, "powers_4" },
             { Animations.PowerEnlargePaddle, "powers_5" },
             { Animations.PowerEnlargePaddleDead, "powers_6" },
+            { Animations.PowerEmpoweredLaser, "powers_7" },
+            { Animations.PowerEmpoweredLaserDead, "powers_8" },
         });
         private static readonly ReadOnlyDictionary<Spriters, Action<Spriter>> _spriterConfigureAnimations = new(new Dictionary<Spriters, Action<Spriter>>
         {
@@ -148,6 +153,13 @@ namespace BreakoutExtreme.Components
                 }
             },
             {
+                Spriters.EmpoweredLaser,
+                delegate(Spriter spriter)
+                {
+                    spriter.Add(_animationNames[Animations.EmpoweredLaser], [3, 4, 5], 0.15f, true);
+                }
+            },
+            {
                 Spriters.Cannon,
                 delegate(Spriter spriter)
                 {
@@ -196,6 +208,8 @@ namespace BreakoutExtreme.Components
                     spriter.Add(_animationNames[Animations.PowerNewBallDead], [7]);
                     spriter.Add(_animationNames[Animations.PowerEnlargePaddle], [10]);
                     spriter.Add(_animationNames[Animations.PowerEnlargePaddleDead], [11]);
+                    spriter.Add(_animationNames[Animations.PowerEmpoweredLaser], [14]);
+                    spriter.Add(_animationNames[Animations.PowerEmpoweredLaserDead], [15]);
                 }
             }
         });
@@ -220,6 +234,7 @@ namespace BreakoutExtreme.Components
             { Animations.SpikeEdgeSolidifying, Spriters.Spike },
             { Animations.SpikeEdgeSolid, Spriters.Spike },
             { Animations.Laser, Spriters.Laser },
+            { Animations.EmpoweredLaser, Spriters.EmpoweredLaser },
             { Animations.Cannon, Spriters.Cannon },
             { Animations.CannonFire, Spriters.Cannon },
             { Animations.CannonDead, Spriters.Cannon },
@@ -235,6 +250,8 @@ namespace BreakoutExtreme.Components
             { Animations.PowerNewBallDead, Spriters.Powers },
             { Animations.PowerEnlargePaddle, Spriters.Powers },
             { Animations.PowerEnlargePaddleDead, Spriters.Powers },
+            { Animations.PowerEmpoweredLaser, Spriters.Powers },
+            { Animations.PowerEmpoweredLaserDead, Spriters.Powers },
         });
         private readonly Dictionary<Spriters, Spriter> _spriters = [];
     }

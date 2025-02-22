@@ -14,6 +14,7 @@ namespace BreakoutExtreme.Components
             Cracks,
             Spike,
             Laser,
+            EmpoweredLaser,
             Cannon,
             Bomb,
             Cleared,
@@ -42,6 +43,7 @@ namespace BreakoutExtreme.Components
             SpikeEdgeSolidifying,
             SpikeEdgeSolid,
             Laser,
+            EmpoweredLaser,
             Cannon,
             CannonFire,
             CannonDead,
@@ -56,7 +58,9 @@ namespace BreakoutExtreme.Components
             PowerNewBall,
             PowerNewBallDead,
             PowerEnlargePaddle,
-            PowerEnlargePaddleDead
+            PowerEnlargePaddleDead,
+            PowerEmpoweredLaser,
+            PowerEmpoweredLaserDead,
         }
     }
 }
