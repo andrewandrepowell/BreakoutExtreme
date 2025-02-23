@@ -5,6 +5,7 @@ using MonoGame.Extended;
 using System.Collections.ObjectModel;
 using System.Collections.Generic;
 using BreakoutExtreme.Utility;
+using System;
 
 namespace BreakoutExtreme.Components
 {
@@ -14,6 +15,7 @@ namespace BreakoutExtreme.Components
         {
             { Cannons.Normal, new(active: Animater.Animations.Cannon, fire: Animater.Animations.CannonFire, dead: Animater.Animations.CannonDead, totalHP: 3) }
         });
+        private static readonly Action<Collider.CollideNode> _collideAction = (Collider.CollideNode node) => ((Cannon)node.Current.Parent).ServiceCollision(node);
         private const float _spawnFactor = 0.005f;
         private const float _spawnPeriod = 0.5f;
         private static readonly CircleF _bounds = new(Vector2.Zero, Globals.GameBlockSize);
@@ -46,6 +48,24 @@ namespace BreakoutExtreme.Components
             public readonly Animater.Animations Fire = fire;
             public readonly Animater.Animations Dead = dead;
             public readonly int TotalHP = totalHP;
+        }
+        private void ServiceCollision(Collider.CollideNode node)
+        {
+            if (!_initialized)
+                return;
+
+            var ball = node.Other.Parent as Ball;
+            var ballCollided = ball != null && ball.State == Ball.States.Active;
+            var laser = node.Other.Parent as Laser;
+            var laserCollided = laser != null && laser.State == Laser.States.Active;
+
+            if (_state == States.Active)
+            {
+                if (ballCollided)
+                    ball.GetCollider().Position += node.PenetrationVector;
+                else if (laserCollided)
+                    laser.GetCollider().Position += node.PenetrationVector;
+            }
         }
         public enum Cannons { Normal }
         public enum States { Spawning, Active, Destroying, Destroyed }
@@ -158,7 +178,7 @@ namespace BreakoutExtreme.Components
             _animater.ShaderFeatures.Add(_appear);
             _float = new();
             _animater.ShaderFeatures.Add(_float);
-            _collider = new(_bounds, this);
+            _collider = new(_bounds, this, _collideAction);
             _particler = new(Particler.Particles.CannonBlast) { Disposable = false, Layer = Layers.Foreground };
             _firer = new(this);
         }

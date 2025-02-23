@@ -12,14 +12,16 @@ namespace BreakoutExtreme.Components
             bool brickCollision;
             bool bombCollision;
             bool wallCollision;
+            bool cannonCollision;
             {
                 brickCollision = node.Other.Parent is Brick brick && brick.State == Brick.States.Active;
                 bombCollision = node.Other.Parent is Bomb bomb && bomb.State == Bomb.States.Active;
                 wallCollision = node.Other.Parent is Wall;
+                cannonCollision = node.Other.Parent is Cannon cannon && cannon.State == Cannon.States.Active;
             }
 
             // Always apply correction first
-            if (brickCollision || wallCollision)
+            if (brickCollision || wallCollision || cannonCollision)
             {
                 node.CorrectPosition();
             }
@@ -41,7 +43,7 @@ namespace BreakoutExtreme.Components
             }
 
             // Destroy upon contact.
-            if (_state == States.Active && (brickCollision || wallCollision || bombCollision))
+            if (_state == States.Active && (brickCollision || wallCollision || bombCollision || cannonCollision))
             {
                 Destroy();
             }
