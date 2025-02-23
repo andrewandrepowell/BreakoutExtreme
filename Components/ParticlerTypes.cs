@@ -1,11 +1,4 @@
-﻿using Microsoft.Xna.Framework.Graphics;
-using MonoGame.Extended.Particles;
-using MonoGame.Extended.Particles.Profiles;
-using Microsoft.Xna.Framework;
-using System;
-using MonoGame.Extended;
-
-namespace BreakoutExtreme.Components
+﻿namespace BreakoutExtreme.Components
 {
     public partial class Particler
     {
@@ -14,7 +7,8 @@ namespace BreakoutExtreme.Components
             BallTrail,
             BrickBreak,
             CannonBlast,
-            BombBlast
+            BombBlast,
+            Empowered
         }
     }
 }

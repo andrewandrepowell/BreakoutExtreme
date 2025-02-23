@@ -70,6 +70,15 @@ namespace BreakoutExtreme.Components
         }
         public enum Sizes { Normal, Large }
         public Sizes Size => _size;
+        public Vector2 DisplacementSizeIncrease
+        {
+            get
+            {
+                var normalSize = _sizeConfigs[Sizes.Normal].Bounds.Size;
+                var currentSize = _sizeConfig.Bounds.Size;
+                return (currentSize - normalSize) / 2;
+            }
+        }
         public float SizePeriod
         {
             get => _sizePeriod;

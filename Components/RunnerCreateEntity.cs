@@ -286,9 +286,11 @@ namespace BreakoutExtreme.Components
             paddle.Reset(entity);
             var animator = paddle.GetAnimater();
             var collider = paddle.GetCollider();
+            var particler = paddle.GetParticler();
             entity.Attach(paddle);
             entity.Attach(animator);
             entity.Attach(collider);
+            entity.Attach(particler);
             _collisionComponent.Insert(collider);
             return paddle;
         }

@@ -15,7 +15,8 @@ namespace BreakoutExtreme.Components
         {
             { Powers.EnlargePaddle, new(Animater.Animations.PowerEnlargePaddle, Animater.Animations.PowerEnlargePaddleDead, 250) },
             { Powers.Protection, new(Animater.Animations.PowerProtection, Animater.Animations.PowerProtectionDead, 500) },
-            { Powers.NewBall, new(Animater.Animations.PowerNewBall, Animater.Animations.PowerNewBallDead, 1000) }
+            { Powers.NewBall, new(Animater.Animations.PowerNewBall, Animater.Animations.PowerNewBallDead, 1000) },
+            { Powers.Empowered, new(Animater.Animations.PowerEmpoweredLaser, Animater.Animations.PowerEmpoweredLaserDead, 1500) }
         });
         private readonly static RectangleF _bounds = new Rectangle(Globals.PlayAreaBlockBounds.X, Globals.PlayAreaBlockBounds.Y, 1, 1).ToBounds();
         private readonly static Action<Collider.CollideNode> _collideAction = (Collider.CollideNode node) => ((Power)node.Current.Parent).ServiceCollision(node);
@@ -79,6 +80,11 @@ namespace BreakoutExtreme.Components
                     case Powers.EnlargePaddle:
                         {
                             paddle.Enlarge();
+                        }
+                        break;
+                    case Powers.Empowered:
+                        {
+                            paddle.StartEmpower();
                         }
                         break;
                 }

@@ -23,13 +23,15 @@ namespace BreakoutExtreme.Components
             { Particles.BrickBreak, "animations/particle_1" },
             { Particles.CannonBlast, "animations/fireball_0" },
             { Particles.BombBlast, "animations/fireball_0" },
+            { Particles.Empowered, "animations/empowered_0" },
         });
         private readonly static ReadOnlyDictionary<Particles, Size> _particleRegionSizes = new(new Dictionary<Particles, Size>()
         {
             { Particles.BallTrail, new Size(1, 1) },
             { Particles.BrickBreak, new Size(16, 16) },
             { Particles.CannonBlast, new Size(16, 16) },
-            { Particles.BombBlast, new Size(16, 16) }
+            { Particles.BombBlast, new Size(16, 16) },
+            { Particles.Empowered, new(112, 112) }
         });
         private readonly static ReadOnlyDictionary<Particles, Func<Texture2DRegion[], ParticleEffect>> _particleCreateActions = new(new Dictionary<Particles, Func<Texture2DRegion[], ParticleEffect>>() 
         {
@@ -205,6 +207,37 @@ namespace BreakoutExtreme.Components
                             },
                         }
                     };
+                    return particleEffect;
+                }
+            },
+            {
+                           
+                Particles.Empowered,
+                delegate(Texture2DRegion[] textureRegions)
+                {
+                    var particleEffect = new ParticleEffect();
+                    var profile = Profile.Circle(64, Profile.CircleRadiation.Out);
+                    var parameters = new ParticleReleaseParameters()
+                    {
+                        Quantity = 1,
+                        Speed = new Range<float>(100, 100),
+                        Rotation = 0,
+                        Scale = new Range<float>(0.90f, 1.1f)
+                    };
+                    var opacityFastModifier = new OpacityFastFadeModifier();
+                    for (var i = 0; i < textureRegions.Length; i++)
+                    {
+                        particleEffect.Emitters.Add(new(
+                            textureRegion: textureRegions[i],
+                            capacity: 50,
+                            lifeSpan: TimeSpan.FromSeconds(0.25f),
+                            profile: profile)
+                        {
+                            Parameters = parameters,
+                            Modifiers = { opacityFastModifier },
+                            AutoTriggerFrequency = 0.25f
+                        });
+                    }
                     return particleEffect;
                 }
             }

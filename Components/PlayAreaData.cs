@@ -34,7 +34,14 @@ namespace BreakoutExtreme.Components
                 }
             },
             {
-                Components.PowerEnlargePaddle, (PlayArea playArea, Vector2 position) =>
+                Components.PowerEmpowered, (PlayArea playArea, Vector2 position) =>
+                {
+                    var brick = Globals.Runner.CreateBrick(Brick.Bricks.Power, position, Utility.Powers.Empowered);
+                    playArea._bricks.Add(brick);
+                }
+            },
+            {
+                Components.PowerEnlarge, (PlayArea playArea, Vector2 position) =>
                 {
                     var brick = Globals.Runner.CreateBrick(Brick.Bricks.Power, position, Utility.Powers.EnlargePaddle);
                     playArea._bricks.Add(brick);
@@ -91,7 +98,8 @@ namespace BreakoutExtreme.Components
             { Components.PowerMultiBall, '0' },
             { Components.PowerProtection, '1' },
             { Components.PowerNewBall, '2' },
-            { Components.PowerEnlargePaddle, '3' },
+            { Components.PowerEnlarge, '3' },
+            { Components.PowerEmpowered, '4' },
             { Components.BrickSmall, 'S' },
             { Components.BrickLarge, 'B' },
             { Components.Cannon, 'C' }

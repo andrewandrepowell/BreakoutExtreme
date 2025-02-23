@@ -15,8 +15,10 @@ namespace BreakoutExtreme.Components
         private static readonly Action<Collider.CollideNode> _collideAction = (Collider.CollideNode node) => ((Paddle)node.Current.Parent).ServiceCollision(node);
         private readonly Animater _animater;
         private readonly Collider _collider;
+        private readonly Particler _particler;
         private readonly LaserGlower _laserGlower;
         private readonly MoveToTarget _moveToTarget;
+        private readonly Empower _empower;
         private readonly Features.LimitedFlash _limitedFlash;
         private readonly Features.Vanish _vanish;
         private readonly Features.FloatUp _floatUp;
@@ -54,6 +56,7 @@ namespace BreakoutExtreme.Components
         public enum States { Active, Despawning, Destroying, Destroyed }
         public Animater GetAnimater() => _animater;
         public Collider GetCollider() => _collider;
+        public Particler GetParticler() => _particler;
         public float TargetToMoveTo => _moveToTarget.Target;
         public bool RunningMoveToTarget => _moveToTarget.Running;
         public bool Destroyed => _state == States.Destroyed;
@@ -77,6 +80,12 @@ namespace BreakoutExtreme.Components
             Debug.Assert(_initialized);
             Debug.Assert(_state == States.Active);
             _laserGlower.Start();
+        }
+        public void StartEmpower()
+        {
+            Debug.Assert(_initialized);
+            Debug.Assert(_state == States.Active);
+            _empower.Start();
         }
         public void Spawn()
         {
@@ -111,6 +120,7 @@ namespace BreakoutExtreme.Components
             _animater.Visibility = 1;
             _shadow = Globals.Runner.CreateShadow(_animater);
             _laserGlower.Reset();
+            _empower.Reset();
             _floatUp.Stop();
             _shake.Stop();
             _state = States.Active;
@@ -121,8 +131,11 @@ namespace BreakoutExtreme.Components
         {
             _animater = new();
             _collider = new(bounds: null, parent: this, action: _collideAction);
+            _particler = new(Particler.Particles.Empowered){ Disposable = false };
+            _particler.Stop();
             _moveToTarget = new(this);
             _laserGlower = new(this);
+            _empower = new(this);
             _limitedFlash = new();
             _floatUp = new();
             _vanish = new();
@@ -139,6 +152,7 @@ namespace BreakoutExtreme.Components
             Globals.Runner.RemoveEntity(_entity);
             _shadow.RemoveEntity();
             _laserGlower.RemoveEntity();
+            _empower.RemoveEntity();
             _initialized = false;
         }
         public void Update()
@@ -155,6 +169,7 @@ namespace BreakoutExtreme.Components
             }
             _moveToTarget.Update();
             UpdateSize();
+            _empower.Update();
         }
     }
 }

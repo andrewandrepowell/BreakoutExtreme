@@ -196,8 +196,8 @@ namespace BreakoutExtreme.Components
                 Debug.Assert(!_parent._particler.Running);
                 Debug.Assert(!Running);
                 _parent._particler.Start();
-                //if (acceleration.HasValue)
-                //    Acceleration = acceleration.Value;
+                if (acceleration.HasValue)
+                    Acceleration = acceleration.Value;
                 Running = true;
             }
             public void Stop()
@@ -237,6 +237,7 @@ namespace BreakoutExtreme.Components
                                     ball.Spawn();
                                 }
                                 break;
+                            case Powers.Empowered:
                             case Powers.EnlargePaddle:
                             case Powers.NewBall:
                             case Powers.Protection:

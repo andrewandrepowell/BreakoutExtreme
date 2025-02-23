@@ -15,6 +15,30 @@ namespace BreakoutExtreme.Components
             private PulseGlower _thinPulseGlower;
             private Paddle _parent = parent;
             private bool _initialized = false;
+            private bool _empowered = false;
+            private void UpdatePulseGlowerColors()
+            {
+                if (_empowered)
+                {
+                    _thickPulseGlower.GetTexturer().Color = new Color(251, 213, 218);
+                    _thinPulseGlower.GetTexturer().Color = new Color(201, 59, 205);
+                }
+                else
+                {
+                    _thickPulseGlower.GetTexturer().Color = Color.Orange;
+                    _thinPulseGlower.GetTexturer().Color = Color.Red;
+                }
+            }
+            public bool Empowered
+            {
+                get => _empowered;
+                set
+                {
+                    Debug.Assert(_initialized);
+                    _empowered = value;
+                    UpdatePulseGlowerColors();
+                }
+            }
             public void Reset()
             {
                 Debug.Assert(!_initialized);
@@ -30,6 +54,7 @@ namespace BreakoutExtreme.Components
                     minVisibility: _minGlowVisibility,
                     maxVisibility: _maxThinGlowVisibility,
                     pulsePeriod: _pulsePeriod);
+                _empowered = false;
                 _initialized = true;
             }
             public void Start()

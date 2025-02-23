@@ -48,6 +48,7 @@
     <Compile Include="Components\Button.cs" />
     <Compile Include="Components\Cannon.cs" />
     <Compile Include="Components\CannonFirer.cs" />
+    <Compile Include="Components\PaddleEmpowered.cs" />
     <Compile Include="Components\PaddleEnlarge.cs" />
     <Compile Include="Components\PlayAreaUpdateScore.cs" />
     <Compile Include="Components\Power.cs" />
