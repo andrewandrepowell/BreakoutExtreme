@@ -112,6 +112,7 @@ namespace BreakoutExtreme.Components
             _entity = entity;
             _cannon = cannon;
             _configNode = _cannonConfigNodes[cannon];
+            _animater.Visibility = 1;
             _animater.Play(_configNode.Active);
             _shadow = Globals.Runner.CreateShadow(_animater);
             _shake.DelayPeriod = position.X * _spawnFactor;
@@ -156,7 +157,10 @@ namespace BreakoutExtreme.Components
             }
 
             if (_state == States.Destroying && !_vanish.Running && !_shadow.Running)
+            {
+                _animater.Visibility = 0;
                 _state = States.Destroyed;
+            }
 
             _firer.Update();
         }
