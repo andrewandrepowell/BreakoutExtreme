@@ -4,6 +4,7 @@ using System;
 using MonoGame.Extended.ECS;
 using System.Diagnostics;
 using BreakoutExtreme.Utility;
+using MonoGame.Extended.Collections;
 
 namespace BreakoutExtreme.Components
 {
@@ -46,6 +47,14 @@ namespace BreakoutExtreme.Components
             // Run other service collision handlers.
             _launcher.ServiceCollision(node);
         }
+        public static void ServiceApplyDamage(
+            Collider.CollideNode node,
+            PlayArea playArea,
+            Deque<Brick> powerBricks) => Launcher.ServiceApplyDamage(node, playArea, powerBricks);
+        public static void ServicePowerBricks(
+            Deque<Brick> powerBricks, 
+            PlayArea playArea) =>
+            Launcher.ServicePowerBricks(powerBricks, playArea);
         public Animater GetAnimater() => _animater;
         public Collider GetCollider() => _collider;
         public Particler GetParticler() => _particler;

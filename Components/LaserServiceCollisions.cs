@@ -34,6 +34,12 @@ namespace BreakoutExtreme.Components
                     _parent.UpdateScore(bomb);
             }
 
+            // Reuse the service damage operations from the ball if the laser is empowered.
+            if (_state == States.Active && _empowered)
+            {
+                Ball.ServiceApplyDamage(node: node, playArea: _parent, powerBricks: _powerBricks);
+            }
+
             // Destroy upon contact.
             if (_state == States.Active && (brickCollision || wallCollision || bombCollision))
             {

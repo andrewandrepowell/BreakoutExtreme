@@ -4,6 +4,9 @@ using BreakoutExtreme.Utility;
 using MonoGame.Extended;
 using System.Diagnostics;
 using System;
+using System.Collections.ObjectModel;
+using System.Collections.Generic;
+using MonoGame.Extended.Collections;
 
 namespace BreakoutExtreme.Components
 {
@@ -27,19 +30,35 @@ namespace BreakoutExtreme.Components
         private States _state = States.Active;
         private PlayArea _parent;
         private Vector2 _acceleration = new(0, -6000);
+        private bool _empowered;
+        private Deque<Brick> _powerBricks = [];
+        private readonly static ReadOnlyDictionary<bool, EmpoweredConfig> _empoweredConfigs = new(new Dictionary<bool, EmpoweredConfig>() 
+        {
+            { false, new(Color.Orange, Color.Red, Animater.Animations.Laser) },
+            { true, new(new Color(251, 213, 218), new Color(201, 59, 205), Animater.Animations.EmpoweredLaser) }
+        });
+        private class EmpoweredConfig(Color thickGlowerColor, Color thinGlowerColor, Animater.Animations animation)
+        {
+            public readonly Color ThickGlowerColor = thickGlowerColor;
+            public readonly Color ThinGlowerColor = thinGlowerColor;
+            public readonly Animater.Animations Animation = animation;
+        }
         public enum States { Active, Destroying, Destroyed }
         public States State => _state;
         public bool Destroyed => _state == States.Destroyed;
         public Collider GetCollider() => _collider;
         public Animater GetAnimater() => _animater;
-        public void Reset(Entity entity, PlayArea parent)
+        public void Reset(Entity entity, PlayArea parent, bool empowered = false)
         {
             Debug.Assert(!_initialized);
             _entity = entity;
             _parent = parent;
+            _empowered = empowered;
+            var empoweredConfig = _empoweredConfigs[empowered];
+            _animater.Play(empoweredConfig.Animation);
             _thickGlower = Globals.Runner.CreateGlower(
                 parent: _animater,
-                color: Color.Orange,
+                color: empoweredConfig.ThickGlowerColor,
                 minVisibility: _minGlowVisibility,
                 maxVisibility: _maxThickGlowVisibility,
                 pulsePeriod: _pulsePeriod,
@@ -47,7 +66,7 @@ namespace BreakoutExtreme.Components
                 appearVanishPeriod: _appearVanishPeriod);
             _thinGlower = Globals.Runner.CreateGlower(
                 parent: _animater,
-                color: Color.Red,
+                color: empoweredConfig.ThinGlowerColor,
                 minVisibility: _minGlowVisibility,
                 maxVisibility: _maxThinGlowVisibility,
                 pulsePeriod: _pulsePeriod,
@@ -81,11 +100,14 @@ namespace BreakoutExtreme.Components
                 return;
             if (!_initialized)
                 return;
+
             if (_state == States.Active)
                 _collider.Acceleration += _acceleration;
 
             if (_state == States.Destroying && !_thickGlower.Running && !_thickGlower.Running && !_vanish.Running)
                 _state = States.Destroyed;
+
+            Ball.ServicePowerBricks(powerBricks: _powerBricks, playArea: _parent);
         }
         public Laser()
         {

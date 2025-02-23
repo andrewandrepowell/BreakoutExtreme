@@ -4,6 +4,7 @@ using MonoGame.Extended;
 using System.Diagnostics;
 using System;
 using MonoGame.Extended.Collections;
+using System.Xml.Linq;
 
 namespace BreakoutExtreme.Components
 {
@@ -25,6 +26,74 @@ namespace BreakoutExtreme.Components
             private readonly Deque<Brick> _powerBricks = [];
             public bool Running { get; private set; } = false;
             public Vector2 Acceleration = new(0, -5000);
+            public static void ServiceApplyDamage(
+                Collider.CollideNode node, 
+                PlayArea playArea, 
+                Deque<Brick> powerBricks)
+            {
+                // Handle damaging a brick logic.
+                {
+                    if (node.Other.Parent is Brick brick && brick.State == Brick.States.Active)
+                    {
+                        brick.Damage();
+
+                        // Perform actions if brick is destroyed.
+                        if (brick.State != Brick.States.Active)
+                        {
+                            // Update score.
+                            playArea.UpdateScore(brick);
+
+                            // Create power if power bricks.
+                            Debug.Assert(powerBricks.Count < 8);
+                            if (brick.GetBrick() == Brick.Bricks.Power)
+                                powerBricks.AddToBack(brick);
+                        }
+                    }
+                }
+
+                // Handle damaging a cannon logic.
+                {
+                    if (node.Other.Parent is Cannon cannon && cannon.State == Cannon.States.Active)
+                    {
+                        cannon.Damage();
+
+                        // Update the score once the cannon is destroyed.
+                        if (cannon.State == Cannon.States.Destroying)
+                            playArea.UpdateScore(cannon);
+                    }
+                }
+            }
+            public static void ServicePowerBricks(Deque<Brick> powerBricks, PlayArea playArea)
+            {
+                
+                while (powerBricks.RemoveFromFront(out var brick))
+                {
+                    Debug.Assert(brick.GetBrick() == Brick.Bricks.Power);
+                    Debug.Assert(brick.Power.HasValue);
+                    var brickCollider = brick.GetCollider();
+                    switch (brick.Power.Value)
+                    {
+                        case Powers.MultiBall:
+                            {
+                                var ball = playArea.CreateBall();
+                                var ballCollider = ball.GetCollider();
+                                ballCollider.Position = brickCollider.Position + (Vector2)(brickCollider.Size / 2);
+                                ball.StartLaunch();
+                                ball.Spawn();
+                            }
+                            break;
+                        case Powers.Empowered:
+                        case Powers.EnlargePaddle:
+                        case Powers.NewBall:
+                        case Powers.Protection:
+                            {
+                                var power = Globals.Runner.CreatePower(brick.Power.Value, playArea);
+                                power.GetCollider().Position = brickCollider.Position;
+                            }
+                            break;
+                    }
+                } 
+            }
             public void ServiceCollision(Collider.CollideNode node)
             {
                 Debug.Assert(_parent._initialized);
@@ -138,38 +207,13 @@ namespace BreakoutExtreme.Components
                     }
                 }
 
-                // Handle damaging a brick logic.
+                // Handle collisions related to applying damage.
+                if (_parent.State == States.Active)
                 {
-                    if (_parent.State == States.Active && 
-                        node.Other.Parent is Brick brick && brick.State == Brick.States.Active)
-                    {
-                        brick.Damage();
-
-                        // Perform actions if brick is destroyed.
-                        if (brick.State != Brick.States.Active)
-                        {
-                            // Update score.
-                            _parent._parent.UpdateScore(brick);
-
-                            // Create power if power bricks.
-                            Debug.Assert(_powerBricks.Count < 8);
-                            if (brick.GetBrick() == Brick.Bricks.Power)
-                                _powerBricks.AddToBack(brick);
-                        }
-                    }
-                }
-
-                // Handle damaging a cannon logic.
-                {
-                    if (_parent.State == States.Active &&
-                        node.Other.Parent is Cannon cannon && cannon.State == Cannon.States.Active)
-                    {
-                        cannon.Damage();
-
-                        // Update the score once the cannon is destroyed.
-                        if (cannon.State == Cannon.States.Destroying)
-                            _parent._parent.UpdateScore(cannon);
-                    }
+                    ServiceApplyDamage(
+                        node: node,
+                        playArea: _parent._parent,
+                        powerBricks: _powerBricks);
                 }
 
                 // Handle collision with denotating bomb.
@@ -220,35 +264,7 @@ namespace BreakoutExtreme.Components
                 }
 
                 // Generate powers upon destruction of a power brick.
-                {
-                    while (_powerBricks.RemoveFromFront(out var brick))
-                    { 
-                        Debug.Assert(brick.GetBrick() == Brick.Bricks.Power);
-                        Debug.Assert(brick.Power.HasValue);
-                        var brickCollider = brick.GetCollider();
-                        switch (brick.Power.Value)
-                        {
-                            case Powers.MultiBall:
-                                {
-                                    var ball = _parent._parent.CreateBall();
-                                    var ballCollider = ball.GetCollider();
-                                    ballCollider.Position = brickCollider.Position + (Vector2)(brickCollider.Size / 2);
-                                    ball.StartLaunch();
-                                    ball.Spawn();
-                                }
-                                break;
-                            case Powers.Empowered:
-                            case Powers.EnlargePaddle:
-                            case Powers.NewBall:
-                            case Powers.Protection:
-                                {
-                                    var power = Globals.Runner.CreatePower(brick.Power.Value, _parent._parent);
-                                    power.GetCollider().Position = brickCollider.Position;
-                                }
-                                break;
-                        }
-                    }
-                }
+                ServicePowerBricks(powerBricks: _powerBricks, playArea: _parent._parent);
             }
         }
     }

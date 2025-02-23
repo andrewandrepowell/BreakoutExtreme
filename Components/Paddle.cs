@@ -81,6 +81,7 @@ namespace BreakoutExtreme.Components
             Debug.Assert(_state == States.Active);
             _laserGlower.Start();
         }
+        public bool Empowered => _empower.Running;
         public void StartEmpower()
         {
             Debug.Assert(_initialized);
@@ -151,8 +152,8 @@ namespace BreakoutExtreme.Components
             Debug.Assert(_initialized);
             Globals.Runner.RemoveEntity(_entity);
             _shadow.RemoveEntity();
-            _laserGlower.RemoveEntity();
             _empower.RemoveEntity();
+            _laserGlower.RemoveEntity();
             _initialized = false;
         }
         public void Update()

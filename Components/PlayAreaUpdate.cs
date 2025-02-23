@@ -34,7 +34,7 @@ namespace BreakoutExtreme.Components
                         // Execute laser firing logic.
                         if (State == States.GameRunning && cursorReleased)
                         {
-                            var laser = Globals.Runner.CreateLaser(this);
+                            var laser = Globals.Runner.CreateLaser(this, _paddle.Empowered);
                             var collider = laser.GetCollider();
                             collider.Position = paddleCenter - (collider.Bounds.BoundingRectangle.Size / 2);
                             _lasers.Add(laser);
