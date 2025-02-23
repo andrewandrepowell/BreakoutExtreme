@@ -86,14 +86,12 @@ namespace BreakoutExtreme.Components
                 if (State == States.Loaded || State == States.SpawnNewBall)
                 {
                     {
-                        if (_paddle.Size == Paddle.Sizes.Large)
-                            _paddle.ReleaseEnlarge();
-                    }
-                    {
                         Debug.Assert(_balls.Count == 1);
                         var ball = _balls[0];
                         ball.Spawn();
-                        ball.GetCollider().Position = _paddle.GetCollider().Position + _ballInitialDisplacementFromPaddle;
+                        ball.GetCollider().Position = _paddle.GetCollider().Position 
+                            +_ballInitialDisplacementFromPaddle
+                            +_paddle.DisplacementSizeIncrease;
                         ball.AttachTo(_paddle);
                     }
 
