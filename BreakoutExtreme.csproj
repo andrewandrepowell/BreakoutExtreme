@@ -103,6 +103,7 @@
     <Compile Include="Features\FloatUp.cs" />
     <Compile Include="Features\Glow.cs" />
     <Compile Include="Features\LimitedFlash.cs" />
+    <Compile Include="Features\ParticlerGlow.cs" />
     <Compile Include="Features\Pulse.cs" />
     <Compile Include="Features\Rock.cs" />
     <Compile Include="Features\ScaleDown.cs" />

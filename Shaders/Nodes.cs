@@ -4,6 +4,7 @@ using MonoGame.Extended;
 using System;
 using BreakoutExtreme.Utility;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace BreakoutExtreme.Shaders
 {
@@ -135,6 +136,23 @@ namespace BreakoutExtreme.Shaders
             SpriteTextureDimensions = Effect.Parameters["SpriteTextureDimensions"];
             Spread = Effect.Parameters["Spread"];
             Mask = Effect.Parameters["Mask"];
+        }
+    }
+    public class SurroundBlurNode
+    {
+        public readonly Effect Effect;
+        public readonly EffectParameter SpriteTextureDimensions;
+        public readonly EffectParameter Color;
+        public void Configure(Size textureSize, Color color)
+        {
+            SpriteTextureDimensions.SetValue(textureSize.ToVector2());
+            Color.SetValue(color.ToVector4());
+        }
+        public SurroundBlurNode()
+        {
+            Effect = Globals.ContentManager.Load<Effect>($"effects/surround_blur_0");
+            SpriteTextureDimensions = Effect.Parameters["SpriteTextureDimensions"];
+            Color = Effect.Parameters["Color"];
         }
     }
 }

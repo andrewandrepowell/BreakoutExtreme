@@ -6,6 +6,7 @@
         Blur,
         Pattern,
         HighlightCanvasItem,
-        MaskBlur
+        MaskBlur,
+        SurroundBlur
     }
 }

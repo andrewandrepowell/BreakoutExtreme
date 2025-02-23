@@ -7,6 +7,7 @@ using Microsoft.Xna.Framework.Graphics;
 using MonoGame.Extended.Collections;
 using System;
 using System.Diagnostics;
+using static BreakoutExtreme.Components.NinePatcher;
 
 namespace BreakoutExtreme.Systems
 {
@@ -136,10 +137,29 @@ namespace BreakoutExtreme.Systems
                         for (var i = 0; i < _particlers.Count; i++)
                         {
                             var particler = _particlers[i];
-                            if (particler.Layer == layer)
+                            if (particler.Layer == layer && particler.ShowBase)
                                 particler.Draw();
                         }
                         spriteBatch.End();
+
+                        for (var i = 0; i < _particlers.Count; i++)
+                        {
+                            var particler = _particlers[i];
+                            var shaderFeatures = particler.ShaderFeatures;
+                            Debug.Assert(shaderFeatures.Count <= 32);
+                            if (particler.Layer == layer)
+                            {
+                                for (var j = 0; j < shaderFeatures.Count; j++)
+                                {
+                                    var shaderFeature = shaderFeatures[j];
+                                    if (!shaderFeature.Script.HasValue)
+                                        continue;
+                                    _shaderController.Begin(shaderFeature);
+                                    particler.Draw();
+                                    spriteBatch.End();
+                                }
+                            }
+                        }
                     }
 
                     {

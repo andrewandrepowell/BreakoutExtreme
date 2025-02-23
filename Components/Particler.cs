@@ -6,6 +6,8 @@ using MonoGame.Extended.Particles;
 using System;
 using System.Diagnostics;
 using BreakoutExtreme.Utility;
+using MonoGame.Extended.Collections;
+using BreakoutExtreme.Shaders;
 
 
 namespace BreakoutExtreme.Components
@@ -15,8 +17,27 @@ namespace BreakoutExtreme.Components
         private bool _disposed = false;
         private Particles _particle = Particles.BallTrail;
         private ParticleEffect _particleEffect;
-        private Vector2 _position;
+        private Vector2 _position, _shaderDrawOffset;
         private bool _running;
+        private Bag<Feature> _shaderFeatures;
+        private void UpdateShaderFeatures()
+        {
+            {
+                var prevDrawOffset = _shaderDrawOffset;
+                _shaderDrawOffset = Vector2.Zero;
+                for (var i = 0; i < _shaderFeatures.Count; i++)
+                {
+                    var feature = _shaderFeatures[i];
+                    feature.UpdateDrawOffset(ref _shaderDrawOffset);
+                }
+                if (_shaderDrawOffset != prevDrawOffset)
+                    UpdateParticleEffectPosition();
+            }
+
+            if (!Globals.Paused)
+                for (var i = 0; i < _shaderFeatures.Count; i++)
+                    _shaderFeatures[i].Update();
+        }
         private void UpdateRunning()
         {
             _running = _particleEffect.Emitters[0].AutoTrigger;
@@ -37,8 +58,8 @@ namespace BreakoutExtreme.Components
         private void UpdateParticleEffectPosition()
         {
             _particleEffect.Position = new Vector2(
-                x: (float)Math.Floor(_position.X), 
-                y: (float)Math.Floor(_position.Y));
+                x: (float)Math.Floor(_position.X + _shaderDrawOffset.X), 
+                y: (float)Math.Floor(_position.Y + _shaderDrawOffset.Y));
         }
         private void UpdateParticleEffects()
         {
@@ -88,6 +109,8 @@ namespace BreakoutExtreme.Components
         public bool Running => _running;
         public bool Disposable = true; // prevents the runner from disposing the particler if false. Used for pooled components.
         public ParticleEffect GetParticleEffect() => _particleEffect;
+        public Bag<Feature> ShaderFeatures => _shaderFeatures;
+        public bool ShowBase = true;
         public static void Load()
         {
             var particler = new Particler();
@@ -139,11 +162,9 @@ namespace BreakoutExtreme.Components
         }
         public void Update()
         {
-            if (Globals.Paused)
-                return;
-            if (_disposed) 
-                return;
-            _particleEffect.Update(Globals.GameTime.GetElapsedSeconds());
+            if (_disposed) return;
+            UpdateShaderFeatures();
+            if (!Globals.Paused) _particleEffect.Update(Globals.GameTime.GetElapsedSeconds());
         }
         public void Draw()
         {
@@ -153,12 +174,12 @@ namespace BreakoutExtreme.Components
         public Particler(Particles particle = Particles.BallTrail)
         {
             _particle = particle;
+            _shaderFeatures = [];
             UpdateParticleEffects();
             UpdateParticleEffect();
             UpdateRunning();
             UpdateParticleEffectAutoTrigger();
             UpdateParticleEffectPosition();
         }
-
     }
 }

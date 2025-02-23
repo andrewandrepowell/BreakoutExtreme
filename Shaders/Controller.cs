@@ -10,6 +10,7 @@ namespace BreakoutExtreme.Shaders
         private readonly PatternNode _patternNode = new();
         private readonly HighlightCanvasItemNode _highlightCanvasItemNode = new();
         private readonly MaskBlurNode _maskBlurNode = new();
+        private readonly SurroundBlurNode _surroundBlurNode = new();
         public void Begin(Feature feature)
         {
             Effect effect = null;
@@ -34,6 +35,10 @@ namespace BreakoutExtreme.Shaders
                 case Scripts.MaskBlur:
                     feature.UpdateShaderNode(_maskBlurNode);
                     effect = _maskBlurNode.Effect;
+                    break;
+                case Scripts.SurroundBlur:
+                    feature.UpdateShaderNode(_surroundBlurNode);
+                    effect = _surroundBlurNode.Effect;
                     break;
             }
             Globals.SpriteBatch.Begin(effect: effect, samplerState: SamplerState.PointClamp);

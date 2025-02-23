@@ -430,3 +430,9 @@
 /processorParam:TextureFormat=Color
 /build:animations/empowered_0.png
 
+#begin effects/surround_blur_0.fx
+/importer:EffectImporter
+/processor:EffectProcessor
+/processorParam:DebugMode=Auto
+/build:effects/surround_blur_0.fx
+

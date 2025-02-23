@@ -1,11 +1,8 @@
 ﻿using MonoGame.Extended.ECS;
-using MonoGame.Extended;
 using System;
 using Microsoft.Xna.Framework;
 using BreakoutExtreme.Utility;
 using System.Diagnostics;
-using System.Collections.ObjectModel;
-using System.Collections.Generic;
 
 
 namespace BreakoutExtreme.Components
@@ -23,6 +20,7 @@ namespace BreakoutExtreme.Components
         private readonly Features.Vanish _vanish;
         private readonly Features.FloatUp _floatUp;
         private readonly Features.Shake _shake;
+        private readonly Features.ParticlerGlow _particlerGlow;
         private Entity _entity;
         private Shadow _shadow;
         private bool _initialized;
@@ -141,10 +139,13 @@ namespace BreakoutExtreme.Components
             _floatUp = new();
             _vanish = new();
             _shake = new();
+            _particlerGlow = new(_particler) { Color = new Color(251, 213, 218) };
+            _particlerGlow.Start();
             _animater.ShaderFeatures.Add(_limitedFlash);
             _animater.ShaderFeatures.Add(_floatUp);
             _animater.ShaderFeatures.Add(_vanish);
             _animater.ShaderFeatures.Add(_shake);
+            _particler.ShaderFeatures.Add(_particlerGlow);
             _initialized = false;
         }
         public void RemoveEntity()
