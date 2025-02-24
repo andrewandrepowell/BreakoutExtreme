@@ -3,6 +3,7 @@ using System;
 using Microsoft.Xna.Framework;
 using BreakoutExtreme.Utility;
 using System.Diagnostics;
+using MonoGame.Extended;
 
 
 namespace BreakoutExtreme.Components
@@ -26,6 +27,8 @@ namespace BreakoutExtreme.Components
         private bool _initialized;
         private States _state;
         private PlayArea _parent;
+        private Ball _attachedBall;
+        private bool _attached;
 
         private void ServiceCollision(Collider.CollideNode node)
         {
@@ -60,6 +63,31 @@ namespace BreakoutExtreme.Components
         public bool Destroyed => _state == States.Destroyed;
         public States State => _state;
         public bool Initialized => _initialized;
+        public bool Attached => _attached;
+        public void Attach(Ball ball)
+        {
+            Debug.Assert(_initialized);
+            Debug.Assert(_state == States.Active);
+            Debug.Assert(!_attached);
+            var ballCollider = ball.GetCollider();
+            ball.Attach();
+            ballCollider.Position = _collider.Position + new Vector2(
+                x: _collider.Size.Width / 2,
+                y: -((CircleF)ballCollider.Bounds).Radius);
+            _collider.GetAttacher().Attach(ballCollider);
+            _attachedBall = ball;
+            _attached = true;
+        }
+        public void Detach()
+        {
+            Debug.Assert(_initialized);
+            Debug.Assert(_state == States.Active);
+            Debug.Assert(_attached);
+            _attachedBall.Detach();
+            var ballCollider = _attachedBall.GetCollider();
+            _collider.GetAttacher().Detach(ballCollider);
+            _attached = false;
+        }
         public float TargetThreshold => _moveToTarget.Threshold;
         public void StartMoveToTarget(float x)
         {
@@ -96,6 +124,7 @@ namespace BreakoutExtreme.Components
         {
             Debug.Assert(_initialized);
             Debug.Assert(_state == States.Active);
+            Debug.Assert(!_attached);
             _floatUp.Start();
             _vanish.Start();
             _shadow.Start();
@@ -105,6 +134,7 @@ namespace BreakoutExtreme.Components
         {
             Debug.Assert(_initialized);
             Debug.Assert(_state == States.Active);
+            Debug.Assert(!_attached);
             _animater.Play(_sizeConfig.DeadAnimation);
             _vanish.Start();
             _shake.Start();

@@ -25,7 +25,6 @@ namespace BreakoutExtreme.Components
         private PlayArea _parent;
         private Entity _entity;
         private Shadow _shadow;
-        private Paddle _attachedPaddle;
         private States _state;
         private bool _initialized;
         private void ServiceCollision(Collider.CollideNode node)
@@ -63,20 +62,16 @@ namespace BreakoutExtreme.Components
         public States State => _state;
         public bool LaunchRunning => _launcher.Running;
         public bool Destroyed => _state == States.Destroyed;
-        public void AttachTo(Paddle paddle)
+        public void Attach()
         {
             Debug.Assert(_initialized);
             Debug.Assert(_state == States.Active);
-            var paddleCollider = paddle.GetCollider();
-            paddleCollider.GetAttacher().Attach(_collider);
-            _attachedPaddle = paddle;
             _state = States.Attached;
         }
         public void Detach()
         {
             Debug.Assert(_initialized);
             Debug.Assert(_state == States.Attached);
-            _attachedPaddle.GetCollider().GetAttacher().Detach(_collider);
             _state = States.Active;
         }
         public void StartLaunch(Vector2? acceleration = null)

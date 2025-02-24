@@ -21,7 +21,6 @@ namespace BreakoutExtreme.Components
         private readonly Splasher _gameStart;
         private Paddle _paddle = null;
         private Levels _level = Levels.Test;
-        private Vector2 _ballInitialDisplacementFromPaddle;
         public bool Loaded => State != States.Unloaded;
         static PlayArea()
         {
@@ -82,7 +81,6 @@ namespace BreakoutExtreme.Components
                 Debug.Assert(_paddle != null);
 
                 var ball = _balls[0];
-                _ballInitialDisplacementFromPaddle = ball.GetCollider().Position - _paddle.GetCollider().Position;
                 _paddle.Spawn();
             }
 

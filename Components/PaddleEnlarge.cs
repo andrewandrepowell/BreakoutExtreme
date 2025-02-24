@@ -70,15 +70,6 @@ namespace BreakoutExtreme.Components
         }
         public enum Sizes { Normal, Large }
         public Sizes Size => _size;
-        public Vector2 DisplacementSizeIncrease
-        {
-            get
-            {
-                var normalSize = _sizeConfigs[Sizes.Normal].Bounds.Size;
-                var currentSize = _sizeConfig.Bounds.Size;
-                return (currentSize - normalSize) / 2;
-            }
-        }
         public float SizePeriod
         {
             get => _sizePeriod;
@@ -94,9 +85,16 @@ namespace BreakoutExtreme.Components
             Debug.Assert(_initialized);
             Debug.Assert(_state == States.Active);
             _sizeTime = _sizePeriod;
-            _size = Sizes.Large;
             _limitedFlash.Start();
+            _size = Sizes.Large;
             UpdateSizeConfig();
+
+            // Update attached ball.
+            if (_attached)
+            {
+                Detach();
+                Attach(_attachedBall);
+            }
         }
         public void ReleaseEnlarge()
         {

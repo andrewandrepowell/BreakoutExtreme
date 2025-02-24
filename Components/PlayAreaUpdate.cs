@@ -53,8 +53,8 @@ namespace BreakoutExtreme.Components
                             {
                                 Debug.Assert(_balls.Count == 1);
                                 var ball = _balls[0];
-                                Debug.Assert(ball.State == Ball.States.Attached);
-                                ball.Detach();
+                                Debug.Assert(_paddle.Attached);
+                                _paddle.Detach();
                                 ball.StartLaunch();
                                 State = States.GameRunning;
                             }
@@ -66,7 +66,6 @@ namespace BreakoutExtreme.Components
                 if (State == States.GameRunning && _balls.Count == 0 && _parent.RemainingBalls > 0)
                 {
                     var ball = Globals.Runner.CreateBall(this);
-                    ball.GetCollider().Position = _paddle.GetCollider().Position + _ballInitialDisplacementFromPaddle;
                     _balls.Add(ball);
                     _parent.DropBall();
                     State = States.SpawnNewBall;
@@ -89,10 +88,7 @@ namespace BreakoutExtreme.Components
                         Debug.Assert(_balls.Count == 1);
                         var ball = _balls[0];
                         ball.Spawn();
-                        ball.GetCollider().Position = _paddle.GetCollider().Position 
-                            +_ballInitialDisplacementFromPaddle
-                            +_paddle.DisplacementSizeIncrease;
-                        ball.AttachTo(_paddle);
+                        _paddle.Attach(ball);
                     }
 
                     State = States.PlayerTakingAim;
