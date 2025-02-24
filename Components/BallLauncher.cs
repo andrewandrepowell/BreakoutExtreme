@@ -4,7 +4,7 @@ using MonoGame.Extended;
 using System.Diagnostics;
 using System;
 using MonoGame.Extended.Collections;
-using System.Xml.Linq;
+
 
 namespace BreakoutExtreme.Components
 {
@@ -12,6 +12,7 @@ namespace BreakoutExtreme.Components
     {
         private class Launcher(Ball parent)
         {
+            private readonly static Vector2 _defaultAcceleration = new(0, -5000);
             private const float _horizontalLimitDegrees = 30;
             private readonly static Vector2 _horizontalLimitVector = new(
                 (float)Math.Cos(_horizontalLimitDegrees / 180 * Math.PI),
@@ -63,7 +64,7 @@ namespace BreakoutExtreme.Components
                     }
                 }
             }
-            public static void ServicePowerBricks(Deque<Brick> powerBricks, PlayArea playArea)
+            public static void ServicePowerBricks(Deque<Brick> powerBricks, PlayArea playArea, Collider collider)
             {
                 
                 while (powerBricks.RemoveFromFront(out var brick))
@@ -77,8 +78,9 @@ namespace BreakoutExtreme.Components
                             {
                                 var ball = playArea.CreateBall();
                                 var ballCollider = ball.GetCollider();
+                                var acceleration = (Vector2?)(collider.Acceleration.EqualsWithTolerence(Vector2.Zero) ? null : -collider.Acceleration);
                                 ballCollider.Position = brickCollider.Position + (Vector2)(brickCollider.Size / 2);
-                                ball.StartLaunch();
+                                ball.StartLaunch(acceleration);
                                 ball.Spawn();
                             }
                             break;
@@ -242,6 +244,9 @@ namespace BreakoutExtreme.Components
                 _parent._particler.Start();
                 if (acceleration.HasValue)
                     Acceleration = acceleration.Value;
+                else
+                    Acceleration = _defaultAcceleration;
+                Debug.Assert(!Acceleration.EqualsWithTolerence(Vector2.Zero));
                 Running = true;
             }
             public void Stop()
@@ -264,7 +269,10 @@ namespace BreakoutExtreme.Components
                 }
 
                 // Generate powers upon destruction of a power brick.
-                ServicePowerBricks(powerBricks: _powerBricks, playArea: _parent._parent);
+                ServicePowerBricks(
+                    powerBricks: _powerBricks, 
+                    playArea: _parent._parent, 
+                    collider: _parent._collider);
             }
         }
     }

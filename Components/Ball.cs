@@ -54,8 +54,9 @@ namespace BreakoutExtreme.Components
             Launcher.ServiceApplyDamage(node, playArea, powerBricks);
         public static void ServicePowerBricks(
             Deque<Brick> powerBricks, 
-            PlayArea playArea) =>
-            Launcher.ServicePowerBricks(powerBricks, playArea);
+            PlayArea playArea,
+            Collider collider) =>
+            Launcher.ServicePowerBricks(powerBricks, playArea, collider);
         public Animater GetAnimater() => _animater;
         public Collider GetCollider() => _collider;
         public Particler GetParticler() => _particler;

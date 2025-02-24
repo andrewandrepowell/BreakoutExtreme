@@ -107,7 +107,7 @@ namespace BreakoutExtreme.Components
             if (_state == States.Destroying && !_thickGlower.Running && !_thickGlower.Running && !_vanish.Running)
                 _state = States.Destroyed;
 
-            Ball.ServicePowerBricks(powerBricks: _powerBricks, playArea: _parent);
+            Ball.ServicePowerBricks(powerBricks: _powerBricks, playArea: _parent, collider: _collider);
         }
         public Laser()
         {
