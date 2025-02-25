@@ -278,7 +278,7 @@ namespace BreakoutExtreme.Components
             if (!_playArea.Loaded && RemainingBalls > 0)
             {
                 if (LevelsCleared % 3 == 0)
-                    _playArea.Load(PlayArea.Levels.Test2);
+                    _playArea.Load(PlayArea.Levels.Beginner2);
                 else if (LevelsCleared % 3 == 1)
                     _playArea.Load(PlayArea.Levels.Test3);
                 else if (LevelsCleared % 3 == 2)

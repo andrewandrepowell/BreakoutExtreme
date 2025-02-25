@@ -109,7 +109,7 @@ namespace BreakoutExtreme.Components
             { Components.PowerEmpowered, '4' },
             { Components.BrickSmall, 'S' },
             { Components.BrickMedium, 'M' },
-            { Components.BrickLarge, 'B' },
+            { Components.BrickLarge, 'L' },
             { Components.Cannon, 'C' }
         });
         private static readonly ReadOnlyDictionary<char, Components> _symbolComponents = new(_componentSymbols.ToDictionary(e => e.Value, e => e.Key));

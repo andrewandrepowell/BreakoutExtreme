@@ -1,16 +1,14 @@
 ﻿using BreakoutExtreme.Systems;
 using MonoGame.Extended.Collisions;
 using MonoGame.Extended.ECS;
-using MonoGame.Extended;
 using MonoGame.Extended.Collections;
 using System.Diagnostics;
-using MonoGame.Extended.ECS.Systems;
 
 namespace BreakoutExtreme.Components
 {
     public partial class Runner
     {
-        private const int _poolSize = 32;
+        private const int _poolSize = 64;
         readonly private World _world;
         readonly private CollisionComponent _collisionComponent;
         readonly private Deque<ScorePopup> _scorePopupPool = new();

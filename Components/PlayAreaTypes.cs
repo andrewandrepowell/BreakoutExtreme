@@ -6,7 +6,10 @@
         {
             Test,
             Test2,
-            Test3
+            Test3,
+            Beginner0,
+            Beginner1,
+            Beginner2
         }
         public enum Components
         {

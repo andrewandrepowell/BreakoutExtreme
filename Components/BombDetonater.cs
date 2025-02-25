@@ -13,7 +13,7 @@ namespace BreakoutExtreme.Components
         {
             private readonly static float _detonationHeight = Globals.PlayAreaBounds.Bottom - Globals.PlayAreaBounds.Height * 0.25f;
             private readonly static Vector2 _soaringAcceleration = new Vector2(x: 0, y: -5000);
-            private readonly static float _detonationRadius = Globals.PlayAreaBounds.Width * 1 / 3;
+            private readonly static float _detonationRadius = Globals.PlayAreaBounds.Width * 1 / 6;
             private readonly static CircleF _detonationBounds = new CircleF(Vector2.Zero, _detonationRadius);
             private const float _detonationThreshold = Globals.GameBlockSize;
             private const float _detonationPeriod = 2;
