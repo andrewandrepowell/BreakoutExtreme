@@ -13,6 +13,7 @@ namespace BreakoutExtreme.Components
             { Spriters.Paddle, "animations/paddle_0" },
             { Spriters.PaddleLarge, "animations/paddle_1" },
             { Spriters.BrickSmall, "animations/brick_0" },
+            { Spriters.BrickMedium, "animations/brick_1" },
             { Spriters.BrickLarge, "animations/brick_2" },
             { Spriters.Cracks, "animations/cracks_0" },
             { Spriters.Spike, "animations/spike_0" },
@@ -31,6 +32,7 @@ namespace BreakoutExtreme.Components
             { Spriters.Paddle, new Size(144, 80) },
             { Spriters.PaddleLarge, new Size(192, 80) },
             { Spriters.BrickSmall, new Size(80, 80) },
+            { Spriters.BrickMedium, new Size(96, 80) },
             { Spriters.BrickLarge, new Size(112, 80) },
             { Spriters.Cracks, new Size(16, 16) },
             { Spriters.Spike, new Size(80, 80) },
@@ -53,6 +55,8 @@ namespace BreakoutExtreme.Components
             { Animations.PaddleLargeDead, "paddle_1" },
             { Animations.BrickSmall, "brick_0" },
             { Animations.BrickSmallDead, "brick_1" },
+            { Animations.BrickMedium, "brick_0" },
+            { Animations.BrickMediumDead, "brick_1" },
             { Animations.BrickLarge, "brick_0" },
             { Animations.BrickLargeDead, "brick_1" },
             { Animations.CrackSmall, "crack_0" },
@@ -115,6 +119,14 @@ namespace BreakoutExtreme.Components
                 {
                     spriter.Add(_animationNames[Animations.BrickSmall], [0]);
                     spriter.Add(_animationNames[Animations.BrickSmallDead], [1]);
+                }
+            },
+            {
+                Spriters.BrickMedium,
+                delegate(Spriter spriter)
+                {
+                    spriter.Add(_animationNames[Animations.BrickMedium], [0]);
+                    spriter.Add(_animationNames[Animations.BrickMediumDead], [1]);
                 }
             },
             {
@@ -223,6 +235,8 @@ namespace BreakoutExtreme.Components
             { Animations.PaddleLargeDead, Spriters.PaddleLarge },
             { Animations.BrickSmall, Spriters.BrickSmall },
             { Animations.BrickSmallDead, Spriters.BrickSmall },
+            { Animations.BrickMedium, Spriters.BrickMedium },
+            { Animations.BrickMediumDead, Spriters.BrickMedium },
             { Animations.BrickLarge, Spriters.BrickLarge },
             { Animations.BrickLargeDead, Spriters.BrickLarge },
             { Animations.CrackSmall, Spriters.Cracks },
