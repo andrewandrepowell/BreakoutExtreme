@@ -15,6 +15,7 @@ namespace BreakoutExtreme.Components
         private readonly GameBag<ScorePopup> _scorePopups = new();
         private readonly GameBag<Laser> _lasers = new();
         private readonly GameBag<Cannon> _cannons = new();
+        private readonly GameBag<Bomb> _bombs = new();
         private readonly DeathWall _deathWall;
         private readonly Splasher _cleared;
         private readonly Splasher _gameEnd;
@@ -122,6 +123,22 @@ namespace BreakoutExtreme.Components
             var ball = Globals.Runner.CreateBall(this);
             _balls.Add(ball);
             return ball;
+        }
+        public Bomb CreateBomb(Bomb.Bombs bombEnum, Vector2 position)
+        {
+            var bomb = Globals.Runner.CreateBomb(bombEnum, position);
+            _bombs.Add(bomb);
+            return bomb;
+        }
+        public void DestroyBombs()
+        {
+            for (var i = 0; i < _bombs.Count; i++)
+            {
+                var bomb = _bombs[i];
+                if (bomb.State != Bomb.States.Spawning && bomb.State != Bomb.States.Active)
+                    continue;
+                bomb.Destroy();
+            }
         }
         public void Protect()
         {

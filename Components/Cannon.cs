@@ -38,6 +38,7 @@ namespace BreakoutExtreme.Components
         private int _currentHP;
         private States _state;
         private Firer _firer;
+        private PlayArea _parent;
         private class ConfigNode(
             Animater.Animations active,
             Animater.Animations fire, 
@@ -106,11 +107,12 @@ namespace BreakoutExtreme.Components
 
             _state = States.Destroying;
         }
-        public void Reset(Entity entity, Cannons cannon, Vector2 position)
+        public void Reset(Entity entity, Cannons cannon, Vector2 position, PlayArea parent)
         {
             Debug.Assert(!_initialized);
             _entity = entity;
             _cannon = cannon;
+            _parent = parent;
             _configNode = _cannonConfigNodes[cannon];
             _animater.Visibility = 1;
             _animater.Play(_configNode.Active);

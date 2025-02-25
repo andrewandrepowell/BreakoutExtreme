@@ -85,7 +85,7 @@ namespace BreakoutExtreme.Components
             {
                 Components.Cannon, (PlayArea playArea, Vector2 position) =>
                 {
-                    var cannon = Globals.Runner.CreateCannon(Cannon.Cannons.Normal, position);
+                    var cannon = Globals.Runner.CreateCannon(Cannon.Cannons.Normal, position, playArea);
                     playArea._cannons.Add(cannon);
                 }
             }

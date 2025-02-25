@@ -77,6 +77,7 @@ namespace BreakoutExtreme.Components
                     Debug.Assert(!_gameEnd.Running);
                     _gameEnd.Start();
                     _paddle.Destroy();
+                    DestroyBombs();
                     State = States.GameEnding;
                 }
 
@@ -110,6 +111,7 @@ namespace BreakoutExtreme.Components
                         ball.StopLaunch();
                         ball.Despawn();
                     }
+                    DestroyBombs();
 
                     _parent.LevelsCleared++;
 
@@ -117,8 +119,8 @@ namespace BreakoutExtreme.Components
                 }
 
                 // UNLOAD
-                if ((State == States.Clearing && !_cleared.Running && _balls.Count == 0 && _paddle.Destroyed) ||
-                    (State == States.GameEnding && !_gameEnd.Running && _paddle.Destroyed))
+                if ((State == States.Clearing && !_cleared.Running && _balls.Count == 0 && _paddle.Destroyed && _bombs.Count == 0) ||
+                    (State == States.GameEnding && !_gameEnd.Running && _paddle.Destroyed && _bombs.Count == 0))
                 {
                     Unload();
                 }
@@ -130,6 +132,7 @@ namespace BreakoutExtreme.Components
                     _scorePopups.Destroy();
                     _lasers.Destroy();
                     _cannons.Destroy();
+                    _bombs.Destroy();
                 }
             }
         }

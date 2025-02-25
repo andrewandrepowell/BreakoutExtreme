@@ -84,7 +84,7 @@ namespace BreakoutExtreme.Components
         public void Destroy()
         {
             Debug.Assert(_initialized);
-            Debug.Assert(State == States.Active || State == States.Detonating);
+            Debug.Assert(State == States.Active || State == States.Detonating || State == States.Spawning);
             Debug.Assert(!_vanish.Running);
             _currentHP = 0;
 
@@ -171,7 +171,7 @@ namespace BreakoutExtreme.Components
         public Bomb()
         {
             _initialized = false;
-            _animater = new();
+            _animater = new() { Layer = Layers.Foreground };
             _shake = new();
             _animater.ShaderFeatures.Add(_shake);
             _cracks = new(_animater);

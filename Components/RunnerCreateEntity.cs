@@ -77,12 +77,12 @@ namespace BreakoutExtreme.Components
             _collisionComponent.Insert(collider);
             return bomb;
         }
-        public Cannon CreateCannon(Cannon.Cannons cannonEnum, Vector2 position)
+        public Cannon CreateCannon(Cannon.Cannons cannonEnum, Vector2 position, PlayArea parent)
         {
             Debug.Assert(_initialized);
             var entity = _world.CreateEntity();
             _cannonPool.RemoveFromFront(out var cannon);
-            cannon.Reset(entity, cannonEnum, position);
+            cannon.Reset(entity, cannonEnum, position, parent);
             var animater = cannon.GetAnimater();
             var collider = cannon.GetCollider();
             var particler = cannon.GetParticler();

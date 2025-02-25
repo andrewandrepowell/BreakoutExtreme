@@ -22,7 +22,7 @@ namespace BreakoutExtreme.Components
                 Debug.Assert(_parent._particler.Particle == Particler.Particles.CannonBlast);
                 _parent._animater.Play(_parent._configNode.Fire);
                 _parent._particler.Trigger();
-                Globals.Runner.CreateBomb(Bomb.Bombs.Normal, _parent._collider.Position);
+                _parent._parent.CreateBomb(Bomb.Bombs.Normal, _parent._collider.Position);
                 _firing = true;
             }
             public void Reset()
