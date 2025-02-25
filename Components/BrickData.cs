@@ -27,6 +27,13 @@ namespace BreakoutExtreme.Components
                     totalHP: 1)
             },
             {
+                Bricks.Medium,
+                new(bounds: new Rectangle(Globals.PlayAreaBlockBounds.X, Globals.PlayAreaBlockBounds.Y, 2, 1).ToBounds(),
+                    activeAnimation: Animater.Animations.BrickMedium,
+                    deadAnimation: Animater.Animations.BrickMediumDead,
+                    totalHP: 2)
+            },
+            {
                 Bricks.Large,
                 new(bounds: new Rectangle(Globals.PlayAreaBlockBounds.X, Globals.PlayAreaBlockBounds.Y, 3, 1).ToBounds(),
                     activeAnimation: Animater.Animations.BrickLarge,

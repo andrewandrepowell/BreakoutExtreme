@@ -104,6 +104,8 @@ namespace BreakoutExtreme.Components
                 _lasers[i].RemoveEntity();
             for (var i = 0; i < _cannons.Count; i++)
                 _cannons[i].RemoveEntity();
+            for (var i = 0; i < _bombs.Count; i++)
+                _bombs[i].RemoveEntity();
 
             _balls.Clear();
             _bricks.Clear();

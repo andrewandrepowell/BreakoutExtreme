@@ -10,6 +10,7 @@ namespace BreakoutExtreme.Components
         {
             Power,
             Small,
+            Medium,
             Large
         }
         public enum States

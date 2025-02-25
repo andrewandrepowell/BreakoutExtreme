@@ -19,6 +19,7 @@
             PowerEnlarge,
             PowerEmpowered,
             BrickSmall,
+            BrickMedium,
             BrickLarge,
             Cannon
         }

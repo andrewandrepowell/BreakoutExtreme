@@ -76,6 +76,13 @@ namespace BreakoutExtreme.Components
                 }
             },
             {
+                Components.BrickMedium, (PlayArea playArea, Vector2 position) =>
+                {
+                    var brick = Globals.Runner.CreateBrick(Brick.Bricks.Medium, position);
+                    playArea._bricks.Add(brick);
+                }
+            },
+            {
                 Components.BrickLarge, (PlayArea playArea, Vector2 position) =>
                 {
                     var brick = Globals.Runner.CreateBrick(Brick.Bricks.Large, position);
@@ -101,6 +108,7 @@ namespace BreakoutExtreme.Components
             { Components.PowerEnlarge, '3' },
             { Components.PowerEmpowered, '4' },
             { Components.BrickSmall, 'S' },
+            { Components.BrickMedium, 'M' },
             { Components.BrickLarge, 'B' },
             { Components.Cannon, 'C' }
         });
