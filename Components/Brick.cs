@@ -3,12 +3,14 @@ using MonoGame.Extended;
 using Microsoft.Xna.Framework;
 using BreakoutExtreme.Utility;
 using System.Diagnostics;
+using System;
 
 
 namespace BreakoutExtreme.Components
 {
     public partial class Brick : IUpdate, IRemoveEntity, IDestroyed
     {
+        private static readonly Action<Collider.CollideNode> _collideAction = (Collider.CollideNode node) => ((Brick)node.Current.Parent).ServiceCollision(node);
         private const float _shakePeriod = 0.5f;
         private static readonly Vector2 _shineDirection = Vector2.Normalize(new Vector2(1, 1));
         private const float _shineRepeatPeriod = 7.5f;
@@ -34,6 +36,19 @@ namespace BreakoutExtreme.Components
         private BrickConfig _config;
         private Glower _glower;
         private Powers? _power;
+        private void ServiceCollision(Collider.CollideNode node)
+        {
+            if (!_initialized)
+                return;
+
+            var ball = node.Other.Parent as Ball;
+            var ballCollided = ball != null && ball.State == Ball.States.Active;
+
+            if (_state == States.Active && ballCollided)
+            {
+                node.Other.Position += node.PenetrationVector;
+            }
+        }
         public Bricks GetBrick() => _brick;
         public Animater GetAnimater() => _animater;
         public Collider GetCollider() => _collider;
@@ -128,7 +143,7 @@ namespace BreakoutExtreme.Components
         {
             _initialized = false;
             _animater = new();
-            _collider = new(bounds: null, parent: this);
+            _collider = new(bounds: null, parent: this, action: _collideAction);
             _particler = new(Particler.Particles.BrickBreak) { Layer = Layers.Foreground, Disposable = false };
             _shake = new();
             _animater.ShaderFeatures.Add(_shake);
