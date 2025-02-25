@@ -25,6 +25,10 @@ namespace BreakoutExtreme.Components
                 _horizontalLimitVector.X);
             private readonly Ball _parent = parent;
             private readonly Deque<Brick> _powerBricks = [];
+            private const float _bounceLockPeriod = (float)1 / 30;
+            private float _bounceLockTime;
+            private bool _bounceLocked => _bounceLockTime > 0;
+            private void LockBounce() => _bounceLockTime = _bounceLockPeriod;
             public bool Running { get; private set; } = false;
             public Vector2 Acceleration = new(0, -5000);
             public static void ServiceApplyDamage(
@@ -105,6 +109,7 @@ namespace BreakoutExtreme.Components
                 // Handle rectangular bounce logic.
                 {
                     if (_parent.State == States.Active && 
+                        !_bounceLocked &&
                         (node.Other.Parent is Wall || 
                          node.Other.Parent is Paddle || 
                         (node.Other.Parent is Brick brick && brick.State == Brick.States.Active) ||
@@ -130,6 +135,8 @@ namespace BreakoutExtreme.Components
                                 Acceleration = new Vector2(Acceleration.X, -Acceleration.Y);
                             collider.Velocity.Y *= -1;
                         }
+
+                        LockBounce();
                     }
                 }
 
@@ -273,6 +280,9 @@ namespace BreakoutExtreme.Components
                     powerBricks: _powerBricks, 
                     playArea: _parent._parent, 
                     collider: _parent._collider);
+
+                if (_bounceLocked)
+                    _bounceLockTime -= Globals.GameTime.GetElapsedSeconds();
             }
         }
     }
