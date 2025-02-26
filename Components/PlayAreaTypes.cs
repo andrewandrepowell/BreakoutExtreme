@@ -11,7 +11,8 @@
             Beginner1,
             Beginner2,
             Beginner3,
-            Beginner4
+            Beginner4,
+            Loop0,
         }
         public enum Components
         {
