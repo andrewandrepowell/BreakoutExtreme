@@ -9,7 +9,8 @@
             Test3,
             Beginner0,
             Beginner1,
-            Beginner2
+            Beginner2,
+            Beginner3
         }
         public enum Components
         {

@@ -70,6 +70,7 @@ namespace BreakoutExtreme.Components
         }
         public enum Cannons { Normal }
         public enum States { Spawning, Active, Destroying, Destroyed }
+        public static CircleF Bounds => _bounds;
         public States State => _state;
         public bool Destroyed => _state == States.Destroyed;
         public Animater GetAnimater() => _animater;
