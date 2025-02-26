@@ -12,7 +12,7 @@ namespace BreakoutExtreme.Components
             private bool _firing = false;
             private readonly Cannon _parent = parent;
             private float _delayTime;
-            private const float _period = 10;
+            private const float _period = 15;
             private float _time;
             public void Fire()
             {

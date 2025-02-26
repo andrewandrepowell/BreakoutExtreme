@@ -10,7 +10,8 @@
             Beginner0,
             Beginner1,
             Beginner2,
-            Beginner3
+            Beginner3,
+            Beginner4
         }
         public enum Components
         {
