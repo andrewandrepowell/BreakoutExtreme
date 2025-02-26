@@ -13,6 +13,7 @@
             Beginner3,
             Beginner4,
             Loop0,
+            Loop1,
         }
         public enum Components
         {
