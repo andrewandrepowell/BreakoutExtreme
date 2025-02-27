@@ -8,7 +8,7 @@ namespace BreakoutExtreme.Components
 {
     public partial class Runner
     {
-        private const int _poolSize = 64;
+        private const int _poolSize = 128;
         readonly private World _world;
         readonly private CollisionComponent _collisionComponent;
         readonly private Deque<ScorePopup> _scorePopupPool = new();

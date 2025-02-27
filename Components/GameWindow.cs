@@ -277,7 +277,7 @@ namespace BreakoutExtreme.Components
             // For now, loop through the levels.
             if (!_playArea.Loaded && RemainingBalls > 0)
             {
-                var levels = 7;
+                var levels = 10;
                 if (LevelsCleared % levels == 0)
                     _playArea.Load(PlayArea.Levels.Beginner0);
                 else if (LevelsCleared % levels == 1)
@@ -290,8 +290,12 @@ namespace BreakoutExtreme.Components
                     _playArea.Load(PlayArea.Levels.Beginner4);
                 else if (LevelsCleared % levels == 5)
                     _playArea.Load(PlayArea.Levels.Loop0);
-                else if (LevelsCleared % levels == 6)
+                else if (LevelsCleared % levels == 7)
                     _playArea.Load(PlayArea.Levels.Loop1);
+                else if (LevelsCleared % levels == 8)
+                    _playArea.Load(PlayArea.Levels.Loop2);
+                else if (LevelsCleared % levels == 9)
+                    _playArea.Load(PlayArea.Levels.Loop3);
             }
 
             // If game is over, reset the state of the game.
