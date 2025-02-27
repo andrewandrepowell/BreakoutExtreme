@@ -1,1 +1,3 @@
-﻿
+﻿body {
+    -webkit-user-select: none; /* Disables highlighting on the game when running on safari on iphone. */
+}
