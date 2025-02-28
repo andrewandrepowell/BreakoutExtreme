@@ -52,6 +52,7 @@
     <Compile Include="Components\PaddleEnlarge.cs" />
     <Compile Include="Components\PlayAreaUpdateScore.cs" />
     <Compile Include="Components\Power.cs" />
+    <Compile Include="Components\Sounder.cs" />
     <Compile Include="Components\Splasher.cs" />
     <Compile Include="Components\Collider.cs" />
     <Compile Include="Components\Controller.cs" />

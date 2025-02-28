@@ -448,3 +448,33 @@
 /processorParam:TextureFormat=Color
 /build:animations/brick_1.png
 
+#begin sounds/brick_0.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:sounds/brick_0.wav
+
+#begin sounds/brick_1.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:sounds/brick_1.wav
+
+#begin sounds/brick_2.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:sounds/brick_2.wav
+
+#begin sounds/brick_3.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:sounds/brick_3.wav
+
+#begin sounds/brick_4.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:sounds/brick_4.wav
+

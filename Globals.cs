@@ -30,6 +30,9 @@ namespace BreakoutExtreme
         public static float GameWindowToResizeScalar { get; private set; } = 1; 
         public static Vector2 GameWindowToResizeOffset { get; private set; } = Vector2.Zero;
         public static bool Paused { get; private set; } = false;
+        public static float MasterVolume { get; private set; } = 0.5f;
+        public static float SFXVolume { get; private set; } = 0.5f;
+        public static float MusicVolume { get; private set; } = 0.5f;
         public static SpriteBatch SpriteBatch { get; private set; }
         public static ContentManager ContentManager { get; private set; }
         public static GameTime GameTime { get; private set; }
