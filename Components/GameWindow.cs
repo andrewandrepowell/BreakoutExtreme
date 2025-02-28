@@ -27,17 +27,6 @@ namespace BreakoutExtreme.Components
         {
             _highScorePanel.Text = $"{_highScore}";
         }
-        private void Reset()
-        {
-            Debug.Assert(!_playArea.Loaded);
-            if (Score > HighScore)
-                HighScore = Score;
-            Score = 0;
-            _remainingBallsPanel.FlashNewBall = false;
-            RemainingBalls = 3;
-            LevelsCleared = 0;
-            _playArea.GameStart();
-        }
         private void OpenMenu()
         {
             MenuLock();
@@ -106,6 +95,17 @@ namespace BreakoutExtreme.Components
         {
             _remainingBallsPanel.FlashNewBall = true;
             RemainingBalls++;
+        }
+        public void Reset()
+        {
+            Debug.Assert(!_playArea.Loaded);
+            if (Score > HighScore)
+                HighScore = Score;
+            Score = 0;
+            _remainingBallsPanel.FlashNewBall = false;
+            RemainingBalls = 3;
+            LevelsCleared = 0;
+            _playArea.GameStart();
         }
         public GameWindow()
         {
@@ -275,9 +275,9 @@ namespace BreakoutExtreme.Components
         public void Update()
         {
             // For now, loop through the levels.
-            if (!_playArea.Loaded && RemainingBalls > 0)
+            if (!_playArea.Loaded && (RemainingBalls > 0 || _playArea.BallInPlay))
             {
-                var levels = 10;
+                var levels = 9;
                 if (LevelsCleared % levels == 0)
                     _playArea.Load(PlayArea.Levels.Beginner0);
                 else if (LevelsCleared % levels == 1)
@@ -290,16 +290,16 @@ namespace BreakoutExtreme.Components
                     _playArea.Load(PlayArea.Levels.Beginner4);
                 else if (LevelsCleared % levels == 5)
                     _playArea.Load(PlayArea.Levels.Loop0);
-                else if (LevelsCleared % levels == 7)
+                else if (LevelsCleared % levels == 6)
                     _playArea.Load(PlayArea.Levels.Loop1);
-                else if (LevelsCleared % levels == 8)
+                else if (LevelsCleared % levels == 7)
                     _playArea.Load(PlayArea.Levels.Loop2);
-                else if (LevelsCleared % levels == 9)
+                else if (LevelsCleared % levels == 8)
                     _playArea.Load(PlayArea.Levels.Loop3);
             }
 
             // If game is over, reset the state of the game.
-            if (!_playArea.Loaded && RemainingBalls == 0)
+            if (!_playArea.Loaded && RemainingBalls == 0 && !_playArea.BallInPlay)
                 Reset();
 
             // Clicking anywhere closes the menu.

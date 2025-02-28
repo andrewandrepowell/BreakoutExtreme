@@ -22,6 +22,7 @@ namespace BreakoutExtreme.Components
         private readonly Splasher _gameStart;
         private Paddle _paddle = null;
         private Levels _level = Levels.Test;
+        private bool _ballInPlay = false;
         public bool Loaded => State != States.Unloaded;
         static PlayArea()
         {
@@ -54,6 +55,7 @@ namespace BreakoutExtreme.Components
             }
         }
         public States State { get; private set; } = States.Unloaded;
+        public bool BallInPlay => _ballInPlay;
         public void Load(Levels level)
         {
             Debug.Assert(!Loaded);

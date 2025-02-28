@@ -75,6 +75,7 @@ namespace BreakoutExtreme.Components
                 if (State == States.GameRunning && _balls.Count == 0 && _parent.RemainingBalls == 0)
                 {
                     Debug.Assert(!_gameEnd.Running);
+                    _ballInPlay = false;
                     _gameEnd.Start();
                     _paddle.Destroy();
                     DestroyBombs();
@@ -88,6 +89,7 @@ namespace BreakoutExtreme.Components
                     {
                         Debug.Assert(_balls.Count == 1);
                         var ball = _balls[0];
+                        _ballInPlay = true;
                         ball.Spawn();
                         _paddle.Attach(ball);
                     }
