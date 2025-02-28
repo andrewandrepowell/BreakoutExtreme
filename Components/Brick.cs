@@ -108,7 +108,7 @@ namespace BreakoutExtreme.Components
                     pulsePeriod: 4,
                     pulseRepeating: true,
                     appearVanishPeriod: 1);
-            _animater.Color = _config.Tint;
+            _animater.Color = (power.HasValue) ? _powerConfigs[power.Value].Tint : _config.Tint;
             _animater.Visibility = 1;
             _animater.Play(_config.ActiveAnimation);
             _collider.Bounds = _config.Bounds;

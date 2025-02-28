@@ -35,5 +35,6 @@ namespace BreakoutExtreme.Components
             public readonly Color Tint = (tint.HasValue ? tint.Value : Color.White);
             public readonly Color? Glow = glow;
         }
+        private record PowerConfig(Color Tint);
     }
 }

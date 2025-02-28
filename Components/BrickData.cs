@@ -8,6 +8,14 @@ namespace BreakoutExtreme.Components
 {
     public partial class Brick
     {
+        private static readonly ReadOnlyDictionary<Powers, PowerConfig> _powerConfigs = new(new Dictionary<Powers, PowerConfig>() 
+        {
+            { Powers.NewBall, new(Tint: new(0xcf573cff)) },
+            { Powers.MultiBall, new(Tint: new(0x411d31ff)) },
+            { Powers.Empowered, new(Tint: new(0xdf2c95ff)) },
+            { Powers.Protection, new(Tint: new(0xa1bbe6ff)) },
+            { Powers.EnlargePaddle, new(Tint: new(0x788c8cff)) },
+        });
         private static readonly ReadOnlyDictionary<Bricks, BrickConfig> _brickConfigs = new(new Dictionary<Bricks, BrickConfig>() 
         {
             {
@@ -16,7 +24,6 @@ namespace BreakoutExtreme.Components
                     activeAnimation: Animater.Animations.BrickSmall,
                     deadAnimation: Animater.Animations.BrickSmallDead,
                     totalHP: 1,
-                    tint: Color.Yellow,
                     glow: Color.LightCyan)
             },
             {
