@@ -36,6 +36,7 @@ namespace BreakoutExtreme.Components
         private BrickConfig _config;
         private Glower _glower;
         private Powers? _power;
+        private Sounder _sounder;
         private void ServiceCollision(Collider.CollideNode node)
         {
             if (!_initialized)
@@ -69,6 +70,7 @@ namespace BreakoutExtreme.Components
                 _shake.Start();
                 _cracks.Degree = (Features.Cracks.Degrees)(TotalHP - CurrentHP);
                 _particler.Trigger();
+                _sounder.Play(Sounder.Sounds.Brick);
             }
 
             if (CurrentHP == 0)
@@ -159,6 +161,7 @@ namespace BreakoutExtreme.Components
             _animater.ShaderFeatures.Add(_limitedFlash);
             _appear = new();
             _animater.ShaderFeatures.Add(_appear);
+            _sounder = Globals.Runner.GetSounder();
         }
         public void RemoveEntity()
         {

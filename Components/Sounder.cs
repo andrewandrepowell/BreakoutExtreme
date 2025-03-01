@@ -12,12 +12,13 @@ namespace BreakoutExtreme.Components
 {
     public class Sounder : IUpdate
     {
-        private const float _volumeMultiplier = 1000;
+        private const float _volumeA = 1000;
+        private const float _volumeB = 1 / _volumeA;
+        private readonly static float _volumeC = (float)(20 * Math.Log10(_volumeB));
         public static float ConvertVolumeForSEI(float volume)
         {
             Debug.Assert(volume >= 0 && volume <= 1);
-            var x = (1 - volume) * _volumeMultiplier;
-            var y = (float)Math.Pow(10, -x / 20);
+            var y = (float)(-(20 * Math.Log10(Math.Max(volume, _volumeB)) - _volumeC) / _volumeC);
             return y;
         }
         public enum SoundTypes { SFX, Music }
@@ -39,8 +40,6 @@ namespace BreakoutExtreme.Components
             }
             public void Play()
             {
-                if (IsPlaying)
-                    Stop();
                 if (_config.Random)
                     _currentIndex = Globals.Random.Next(_nodes.Length);
                 else
@@ -136,6 +135,10 @@ namespace BreakoutExtreme.Components
         {
             for (var i = 0; i < _soundNodeValues.Count; i++)
                 _soundNodeValues[i].Update();
+        }
+        public Sounder()
+        {
+            SoundEffect.MasterVolume = 1;
         }
     }
 }

@@ -23,7 +23,9 @@ namespace BreakoutExtreme.Components
         readonly private Deque<Shadow> _shadowPool = new();
         readonly private Deque<Shadower> _shadowerPool = new();
         readonly private Deque<Power> _powerPool = new();
+        readonly private Sounder _sounder = new();
         private bool _initialized = false;
+        public Sounder GetSounder() => _sounder;
         public void RemoveEntity(Entity entity)
         {
             Debug.Assert(_initialized);
@@ -137,6 +139,7 @@ namespace BreakoutExtreme.Components
         public void Update()
         {
             Debug.Assert(_initialized);
+            _sounder.Update();
             _world.Update(Globals.GameTime);
         }
         public void Draw()

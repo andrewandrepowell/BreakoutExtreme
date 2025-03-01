@@ -68,6 +68,7 @@ namespace BreakoutExtreme
                 Texter.Load();
                 Animater.Load();
                 Particler.Load();
+                Sounder.Load();
 
                 _logger = new() { Color = Color.Yellow };
                 Globals.Initialize(_logger);
@@ -106,12 +107,7 @@ namespace BreakoutExtreme
                 Globals.Update(gameTime);
                 _controller.Update();
                 _runner.Update();
-
-                //var controllerState = _controller.GetControlState();
-                //var windowSize = _spriteBatch.GraphicsDevice.Viewport.Bounds.Size;
-                //_testTexter.Message = $"Cursor Position: {controllerState.CursorPosition}. Cursor State: {controllerState.CursorSelectState}";
                 _logger.Position = _logger.Size / 2;
-
                 base.Update(gameTime);
 #if DEBUG
             }
