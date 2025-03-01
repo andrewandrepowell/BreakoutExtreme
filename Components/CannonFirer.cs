@@ -23,6 +23,7 @@ namespace BreakoutExtreme.Components
                 _parent._animater.Play(_parent._configNode.Fire);
                 _parent._particler.Trigger();
                 _parent._parent.CreateBomb(Bomb.Bombs.Normal, _parent._collider.Position);
+                _parent._sounder.Play(Sounder.Sounds.Cannon);
                 _firing = true;
             }
             public void Reset()

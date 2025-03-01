@@ -22,7 +22,7 @@ namespace BreakoutExtreme.Components
             return y;
         }
         public enum SoundTypes { SFX, Music }
-        public enum Sounds { Brick, BrickBreak, Paddle, Wall, Laser, Empower, Whistle }
+        public enum Sounds { Brick, BrickBreak, Paddle, Wall, Laser, Empower, Whistle, Cannon }
         private enum SoundSamples 
         { 
             Brick0, Brick1, Brick2, Brick3, Brick4, 
@@ -30,7 +30,8 @@ namespace BreakoutExtreme.Components
             Paddle0, Paddle1, Paddle2, Paddle3, Paddle4,
             Laser0, Laser1, Laser2, Laser3, Laser4,
             Empower0, Empower1, Empower2, Empower3, Empower4,
-            Wall0, Whistle0
+            Wall0, Whistle0,
+            Cannon0, Cannon1, Cannon2
         }
         private class SoundNode(SoundSampleNode[] Nodes, SoundConfig Config)
         {
@@ -96,6 +97,9 @@ namespace BreakoutExtreme.Components
             { SoundSamples.Empower2, new("sounds/empower_2", 0.1f) },
             { SoundSamples.Empower3, new("sounds/empower_3", 0.1f) },
             { SoundSamples.Empower4, new("sounds/empower_4", 0.1f) },
+            { SoundSamples.Cannon0, new("sounds/cannon_0", 0.1f) },
+            { SoundSamples.Cannon1, new("sounds/cannon_1", 0.1f) },
+            { SoundSamples.Cannon2, new("sounds/cannon_2", 0.1f) },
             { SoundSamples.Wall0, new("sounds/wall_0", 0.1f) },
             { SoundSamples.Whistle0, new("sounds/whistle_0", 0.1f) },
         });
@@ -106,6 +110,7 @@ namespace BreakoutExtreme.Components
             { Sounds.Paddle, new(SoundTypes.SFX, [SoundSamples.Paddle0, SoundSamples.Paddle1, SoundSamples.Paddle2, SoundSamples.Paddle3, SoundSamples.Paddle4], true) },
             { Sounds.Laser, new(SoundTypes.SFX, [SoundSamples.Laser0, SoundSamples.Laser1, SoundSamples.Laser2, SoundSamples.Laser3, SoundSamples.Laser4], true) },
             { Sounds.Empower, new(SoundTypes.SFX, [SoundSamples.Empower0, SoundSamples.Empower1, SoundSamples.Empower2, SoundSamples.Empower3, SoundSamples.Empower4], true) },
+            { Sounds.Cannon, new(SoundTypes.SFX, [SoundSamples.Cannon0, SoundSamples.Cannon1, SoundSamples.Cannon2], true) },
             { Sounds.Wall, new(SoundTypes.SFX, [SoundSamples.Wall0], true) },
             { Sounds.Whistle, new(SoundTypes.SFX, [SoundSamples.Whistle0], true) },
         });

@@ -610,3 +610,21 @@
 /processorParam:Quality=Best
 /build:sounds/whistle_0.wav
 
+#begin sounds/cannon_0.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:sounds/cannon_0.wav
+
+#begin sounds/cannon_1.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:sounds/cannon_1.wav
+
+#begin sounds/cannon_2.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:sounds/cannon_2.wav
+
