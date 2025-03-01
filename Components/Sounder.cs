@@ -27,7 +27,8 @@ namespace BreakoutExtreme.Components
         { 
             Brick0, Brick1, Brick2, Brick3, Brick4, 
             BrickBreak0, BrickBreak1, BrickBreak2, BrickBreak3, BrickBreak4,
-            Paddle0, Wall0 
+            Paddle0, Paddle1, Paddle2, Paddle3, Paddle4,
+            Wall0 
         }
         private class SoundNode(SoundSampleNode[] Nodes, SoundConfig Config)
         {
@@ -79,13 +80,17 @@ namespace BreakoutExtreme.Components
             { SoundSamples.BrickBreak3, new("sounds/brick_break_3", 0.5f) },
             { SoundSamples.BrickBreak4, new("sounds/brick_break_4", 0.5f) },
             { SoundSamples.Paddle0, new("sounds/paddle_0", 0.1f) },
+            { SoundSamples.Paddle1, new("sounds/paddle_1", 0.1f) },
+            { SoundSamples.Paddle2, new("sounds/paddle_2", 0.1f) },
+            { SoundSamples.Paddle3, new("sounds/paddle_3", 0.1f) },
+            { SoundSamples.Paddle4, new("sounds/paddle_4", 0.1f) },
             { SoundSamples.Wall0, new("sounds/wall_0", 0.1f) },
         });
         private readonly static ReadOnlyDictionary<Sounds, SoundConfig> _soundConfigs = new(new Dictionary<Sounds, SoundConfig>() 
         {
             { Sounds.Brick, new(SoundTypes.SFX, [SoundSamples.Brick0, SoundSamples.Brick1, SoundSamples.Brick2, SoundSamples.Brick3, SoundSamples.Brick4], true) },
             { Sounds.BrickBreak, new(SoundTypes.SFX, [SoundSamples.BrickBreak0, SoundSamples.BrickBreak1, SoundSamples.BrickBreak2, SoundSamples.BrickBreak3, SoundSamples.BrickBreak4], true) },
-            { Sounds.Paddle, new(SoundTypes.SFX, [SoundSamples.Paddle0], true) },
+            { Sounds.Paddle, new(SoundTypes.SFX, [SoundSamples.Paddle0, SoundSamples.Paddle1, SoundSamples.Paddle2, SoundSamples.Paddle3, SoundSamples.Paddle4], true) },
             { Sounds.Wall, new(SoundTypes.SFX, [SoundSamples.Wall0], true) },
         });
         private Bag<SoundNode> _soundNodeValues = [];

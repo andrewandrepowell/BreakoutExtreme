@@ -520,3 +520,27 @@
 /processorParam:Quality=Best
 /build:sounds/wall_0.wav
 
+#begin sounds/paddle_1.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:sounds/paddle_1.wav
+
+#begin sounds/paddle_2.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:sounds/paddle_2.wav
+
+#begin sounds/paddle_3.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:sounds/paddle_3.wav
+
+#begin sounds/paddle_4.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:sounds/paddle_4.wav
+
