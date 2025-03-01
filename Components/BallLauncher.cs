@@ -169,7 +169,7 @@ namespace BreakoutExtreme.Components
 
                 // Handle paddle bounce adjustment logic.
                 {
-                    if (_parent.State == States.Active && node.Other.Parent is Paddle)
+                    if (_parent.State == States.Active && node.Other.Parent is Paddle paddle)
                     {
                         if (Running && !Acceleration.EqualsWithTolerence(Vector2.Zero) && !collider.Velocity.EqualsWithTolerence(Vector2.Zero) && Acceleration.Y < 0)
                         {
@@ -191,6 +191,11 @@ namespace BreakoutExtreme.Components
                             var newVelocity = velocityMagitude * newDirection;
                             Acceleration = newAcceleration;
                             collider.Velocity = newVelocity;
+                        }
+
+                        // Play bounce operations specific to paddle.
+                        {
+                            paddle.Bounce();
                         }
                     }
                 }
@@ -241,6 +246,14 @@ namespace BreakoutExtreme.Components
                     {
                         _parent.Destroy();
                     }    
+                }
+
+                // Handle collision with wall.
+                {
+                    if (_parent.State == States.Active && node.Other.Parent is Wall wall)
+                    {
+                        wall.Bounce();
+                    }
                 }
             }
             public void Start(Vector2? acceleration = null)

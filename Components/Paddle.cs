@@ -29,7 +29,7 @@ namespace BreakoutExtreme.Components
         private PlayArea _parent;
         private Ball _attachedBall;
         private bool _attached;
-
+        private Sounder _sounder;
         private void ServiceCollision(Collider.CollideNode node)
         {
             if (!_initialized)
@@ -156,6 +156,10 @@ namespace BreakoutExtreme.Components
             _initialized = true;
             UpdateSizeConfig();
         }
+        public void Bounce()
+        {
+            _sounder.Play(Sounder.Sounds.Paddle);
+        }
         public Paddle()
         {
             _animater = new();
@@ -176,6 +180,7 @@ namespace BreakoutExtreme.Components
             _animater.ShaderFeatures.Add(_vanish);
             _animater.ShaderFeatures.Add(_shake);
             _particler.ShaderFeatures.Add(_particlerGlow);
+            _sounder = Globals.Runner.GetSounder();
             _initialized = false;
         }
         public void RemoveEntity()

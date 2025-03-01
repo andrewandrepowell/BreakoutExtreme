@@ -508,3 +508,15 @@
 /processorParam:Quality=Best
 /build:sounds/brick_break_4.wav
 
+#begin sounds/paddle_0.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:sounds/paddle_0.wav
+
+#begin sounds/wall_0.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:sounds/wall_0.wav
+

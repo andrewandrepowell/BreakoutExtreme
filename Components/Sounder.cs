@@ -22,8 +22,13 @@ namespace BreakoutExtreme.Components
             return y;
         }
         public enum SoundTypes { SFX, Music }
-        public enum Sounds { Brick, BrickBreak }
-        private enum SoundSamples { Brick0, Brick1, Brick2, Brick3, Brick4, BrickBreak0, BrickBreak1, BrickBreak2, BrickBreak3, BrickBreak4 }
+        public enum Sounds { Brick, BrickBreak, Paddle, Wall }
+        private enum SoundSamples 
+        { 
+            Brick0, Brick1, Brick2, Brick3, Brick4, 
+            BrickBreak0, BrickBreak1, BrickBreak2, BrickBreak3, BrickBreak4,
+            Paddle0, Wall0 
+        }
         private class SoundNode(SoundSampleNode[] Nodes, SoundConfig Config)
         {
             private int _currentIndex = -1;
@@ -73,11 +78,15 @@ namespace BreakoutExtreme.Components
             { SoundSamples.BrickBreak2, new("sounds/brick_break_2", 0.5f) },
             { SoundSamples.BrickBreak3, new("sounds/brick_break_3", 0.5f) },
             { SoundSamples.BrickBreak4, new("sounds/brick_break_4", 0.5f) },
+            { SoundSamples.Paddle0, new("sounds/paddle_0", 0.1f) },
+            { SoundSamples.Wall0, new("sounds/wall_0", 0.1f) },
         });
         private readonly static ReadOnlyDictionary<Sounds, SoundConfig> _soundConfigs = new(new Dictionary<Sounds, SoundConfig>() 
         {
             { Sounds.Brick, new(SoundTypes.SFX, [SoundSamples.Brick0, SoundSamples.Brick1, SoundSamples.Brick2, SoundSamples.Brick3, SoundSamples.Brick4], true) },
-            { Sounds.BrickBreak, new(SoundTypes.SFX, [SoundSamples.BrickBreak0, SoundSamples.BrickBreak1, SoundSamples.BrickBreak2, SoundSamples.BrickBreak3, SoundSamples.BrickBreak4], true) }
+            { Sounds.BrickBreak, new(SoundTypes.SFX, [SoundSamples.BrickBreak0, SoundSamples.BrickBreak1, SoundSamples.BrickBreak2, SoundSamples.BrickBreak3, SoundSamples.BrickBreak4], true) },
+            { Sounds.Paddle, new(SoundTypes.SFX, [SoundSamples.Paddle0], true) },
+            { Sounds.Wall, new(SoundTypes.SFX, [SoundSamples.Wall0], true) },
         });
         private Bag<SoundNode> _soundNodeValues = [];
         private readonly Dictionary<Sounds, SoundNode> _soundNodes = [];
