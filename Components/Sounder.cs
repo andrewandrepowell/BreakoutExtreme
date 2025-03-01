@@ -22,12 +22,14 @@ namespace BreakoutExtreme.Components
             return y;
         }
         public enum SoundTypes { SFX, Music }
-        public enum Sounds { Brick, BrickBreak, Paddle, Wall }
+        public enum Sounds { Brick, BrickBreak, Paddle, Wall, Laser, Empower }
         private enum SoundSamples 
         { 
             Brick0, Brick1, Brick2, Brick3, Brick4, 
             BrickBreak0, BrickBreak1, BrickBreak2, BrickBreak3, BrickBreak4,
             Paddle0, Paddle1, Paddle2, Paddle3, Paddle4,
+            Laser0, Laser1, Laser2, Laser3, Laser4,
+            Empower0, Empower1, Empower2, Empower3, Empower4,
             Wall0 
         }
         private class SoundNode(SoundSampleNode[] Nodes, SoundConfig Config)
@@ -84,6 +86,16 @@ namespace BreakoutExtreme.Components
             { SoundSamples.Paddle2, new("sounds/paddle_2", 0.1f) },
             { SoundSamples.Paddle3, new("sounds/paddle_3", 0.1f) },
             { SoundSamples.Paddle4, new("sounds/paddle_4", 0.1f) },
+            { SoundSamples.Laser0, new("sounds/laser_0", 0.1f) },
+            { SoundSamples.Laser1, new("sounds/laser_1", 0.1f) },
+            { SoundSamples.Laser2, new("sounds/laser_2", 0.1f) },
+            { SoundSamples.Laser3, new("sounds/laser_3", 0.1f) },
+            { SoundSamples.Laser4, new("sounds/laser_4", 0.1f) },
+            { SoundSamples.Empower0, new("sounds/empower_0", 0.1f) },
+            { SoundSamples.Empower1, new("sounds/empower_1", 0.1f) },
+            { SoundSamples.Empower2, new("sounds/empower_2", 0.1f) },
+            { SoundSamples.Empower3, new("sounds/empower_3", 0.1f) },
+            { SoundSamples.Empower4, new("sounds/empower_4", 0.1f) },
             { SoundSamples.Wall0, new("sounds/wall_0", 0.1f) },
         });
         private readonly static ReadOnlyDictionary<Sounds, SoundConfig> _soundConfigs = new(new Dictionary<Sounds, SoundConfig>() 
@@ -91,6 +103,8 @@ namespace BreakoutExtreme.Components
             { Sounds.Brick, new(SoundTypes.SFX, [SoundSamples.Brick0, SoundSamples.Brick1, SoundSamples.Brick2, SoundSamples.Brick3, SoundSamples.Brick4], true) },
             { Sounds.BrickBreak, new(SoundTypes.SFX, [SoundSamples.BrickBreak0, SoundSamples.BrickBreak1, SoundSamples.BrickBreak2, SoundSamples.BrickBreak3, SoundSamples.BrickBreak4], true) },
             { Sounds.Paddle, new(SoundTypes.SFX, [SoundSamples.Paddle0, SoundSamples.Paddle1, SoundSamples.Paddle2, SoundSamples.Paddle3, SoundSamples.Paddle4], true) },
+            { Sounds.Laser, new(SoundTypes.SFX, [SoundSamples.Laser0, SoundSamples.Laser1, SoundSamples.Laser2, SoundSamples.Laser3, SoundSamples.Laser4], true) },
+            { Sounds.Empower, new(SoundTypes.SFX, [SoundSamples.Empower0, SoundSamples.Empower1, SoundSamples.Empower2, SoundSamples.Empower3, SoundSamples.Empower4], true) },
             { Sounds.Wall, new(SoundTypes.SFX, [SoundSamples.Wall0], true) },
         });
         private Bag<SoundNode> _soundNodeValues = [];

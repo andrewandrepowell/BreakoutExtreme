@@ -32,16 +32,18 @@ namespace BreakoutExtreme.Components
         private Vector2 _acceleration = new(0, -6000);
         private bool _empowered;
         private Deque<Brick> _powerBricks = [];
+        private Sounder _sounder;
         private readonly static ReadOnlyDictionary<bool, EmpoweredConfig> _empoweredConfigs = new(new Dictionary<bool, EmpoweredConfig>() 
         {
-            { false, new(Color.Orange, Color.Red, Animater.Animations.Laser) },
-            { true, new(new Color(251, 213, 218), new Color(201, 59, 205), Animater.Animations.EmpoweredLaser) }
+            { false, new(Color.Orange, Color.Red, Animater.Animations.Laser, Sounder.Sounds.Laser) },
+            { true, new(new Color(251, 213, 218), new Color(201, 59, 205), Animater.Animations.EmpoweredLaser, Sounder.Sounds.Empower) }
         });
-        private class EmpoweredConfig(Color thickGlowerColor, Color thinGlowerColor, Animater.Animations animation)
+        private class EmpoweredConfig(Color thickGlowerColor, Color thinGlowerColor, Animater.Animations animation, Sounder.Sounds sound)
         {
             public readonly Color ThickGlowerColor = thickGlowerColor;
             public readonly Color ThinGlowerColor = thinGlowerColor;
             public readonly Animater.Animations Animation = animation;
+            public readonly Sounder.Sounds Sound = sound;
         }
         public enum States { Active, Destroying, Destroyed }
         public States State => _state;
@@ -73,6 +75,7 @@ namespace BreakoutExtreme.Components
                 pulseRepeating: true,
                 appearVanishPeriod: _appearVanishPeriod);
             _appear.Start();
+            _sounder.Play(empoweredConfig.Sound);
             _state = States.Active;
             _initialized = true;
         }
@@ -119,6 +122,7 @@ namespace BreakoutExtreme.Components
             _vanish = new() { Period = _appearVanishPeriod };
             _animater.ShaderFeatures.Add(_vanish);
             _collider = new(_bounds, this, _collideAction);
+            _sounder = Globals.Runner.GetSounder();
         }
     }
 }

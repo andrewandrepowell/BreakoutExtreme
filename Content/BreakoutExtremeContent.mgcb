@@ -544,3 +544,63 @@
 /processorParam:Quality=Best
 /build:sounds/paddle_4.wav
 
+#begin sounds/laser_0.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:sounds/laser_0.wav
+
+#begin sounds/laser_1.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:sounds/laser_1.wav
+
+#begin sounds/laser_2.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:sounds/laser_2.wav
+
+#begin sounds/laser_3.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:sounds/laser_3.wav
+
+#begin sounds/laser_4.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:sounds/laser_4.wav
+
+#begin sounds/empower_1.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:sounds/empower_1.wav
+
+#begin sounds/empower_2.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:sounds/empower_2.wav
+
+#begin sounds/empower_3.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:sounds/empower_3.wav
+
+#begin sounds/empower_4.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:sounds/empower_4.wav
+
+#begin sounds/empower_0.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:sounds/empower_0.wav
+
