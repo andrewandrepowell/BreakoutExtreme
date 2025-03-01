@@ -42,6 +42,7 @@ namespace BreakoutExtreme.Components
                     Debug.Assert(emitter.Modifiers.Count == 3 && emitter.Modifiers[1] is CircleContainerModifier);
                     ((CircleContainerModifier)emitter.Modifiers[1]).Radius = _detonationRadius;
                 }
+                _parent._sounder.Play(Sounder.Sounds.Whistle);
                 _state = States.Soaring;
             }
             public void Update()

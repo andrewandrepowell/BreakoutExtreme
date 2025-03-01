@@ -604,3 +604,9 @@
 /processorParam:Quality=Best
 /build:sounds/empower_0.wav
 
+#begin sounds/whistle_0.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:sounds/whistle_0.wav
+

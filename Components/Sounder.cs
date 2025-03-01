@@ -22,7 +22,7 @@ namespace BreakoutExtreme.Components
             return y;
         }
         public enum SoundTypes { SFX, Music }
-        public enum Sounds { Brick, BrickBreak, Paddle, Wall, Laser, Empower }
+        public enum Sounds { Brick, BrickBreak, Paddle, Wall, Laser, Empower, Whistle }
         private enum SoundSamples 
         { 
             Brick0, Brick1, Brick2, Brick3, Brick4, 
@@ -30,7 +30,7 @@ namespace BreakoutExtreme.Components
             Paddle0, Paddle1, Paddle2, Paddle3, Paddle4,
             Laser0, Laser1, Laser2, Laser3, Laser4,
             Empower0, Empower1, Empower2, Empower3, Empower4,
-            Wall0 
+            Wall0, Whistle0
         }
         private class SoundNode(SoundSampleNode[] Nodes, SoundConfig Config)
         {
@@ -97,6 +97,7 @@ namespace BreakoutExtreme.Components
             { SoundSamples.Empower3, new("sounds/empower_3", 0.1f) },
             { SoundSamples.Empower4, new("sounds/empower_4", 0.1f) },
             { SoundSamples.Wall0, new("sounds/wall_0", 0.1f) },
+            { SoundSamples.Whistle0, new("sounds/whistle_0", 0.1f) },
         });
         private readonly static ReadOnlyDictionary<Sounds, SoundConfig> _soundConfigs = new(new Dictionary<Sounds, SoundConfig>() 
         {
@@ -106,6 +107,7 @@ namespace BreakoutExtreme.Components
             { Sounds.Laser, new(SoundTypes.SFX, [SoundSamples.Laser0, SoundSamples.Laser1, SoundSamples.Laser2, SoundSamples.Laser3, SoundSamples.Laser4], true) },
             { Sounds.Empower, new(SoundTypes.SFX, [SoundSamples.Empower0, SoundSamples.Empower1, SoundSamples.Empower2, SoundSamples.Empower3, SoundSamples.Empower4], true) },
             { Sounds.Wall, new(SoundTypes.SFX, [SoundSamples.Wall0], true) },
+            { Sounds.Whistle, new(SoundTypes.SFX, [SoundSamples.Whistle0], true) },
         });
         private Bag<SoundNode> _soundNodeValues = [];
         private readonly Dictionary<Sounds, SoundNode> _soundNodes = [];
