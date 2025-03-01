@@ -90,6 +90,7 @@ namespace BreakoutExtreme.Components
             _vanish.Start();
             _shadow.Start();
             _animater.Play(_config.DeadAnimation);
+            _sounder.Play(Sounder.Sounds.BrickBreak);
 
             _state = States.Destroying;
         }

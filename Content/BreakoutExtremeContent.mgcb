@@ -478,3 +478,33 @@
 /processorParam:Quality=Best
 /build:sounds/brick_4.wav
 
+#begin sounds/brick_break_0.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:sounds/brick_break_0.wav
+
+#begin sounds/brick_break_1.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:sounds/brick_break_1.wav
+
+#begin sounds/brick_break_2.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:sounds/brick_break_2.wav
+
+#begin sounds/brick_break_3.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:sounds/brick_break_3.wav
+
+#begin sounds/brick_break_4.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:sounds/brick_break_4.wav
+
