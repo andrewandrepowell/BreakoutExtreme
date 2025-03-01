@@ -39,6 +39,7 @@ namespace BreakoutExtreme.Components
         private States _state;
         private Firer _firer;
         private PlayArea _parent;
+        private Sounder _sounder;
         private class ConfigNode(
             Animater.Animations active,
             Animater.Animations fire, 
@@ -85,6 +86,7 @@ namespace BreakoutExtreme.Components
                 _currentHP -= 1;
                 _shake.Start();
                 _cracks.Degree = (Features.Cracks.Degrees)(_totalHP - _currentHP);
+                _sounder.Play(Sounder.Sounds.Brick);
             }
 
             if (_currentHP == 0)
@@ -105,6 +107,7 @@ namespace BreakoutExtreme.Components
             _vanish.Start();
             _shadow.Start();
             _animater.Play(_configNode.Dead);
+            _sounder.Play(Sounder.Sounds.BrickBreak);
 
             _state = States.Destroying;
         }
@@ -188,6 +191,7 @@ namespace BreakoutExtreme.Components
             _collider = new(_bounds, this, _collideAction);
             _particler = new(Particler.Particles.CannonBlast) { Disposable = false, Layer = Layers.Foreground };
             _firer = new(this);
+            _sounder = Globals.Runner.GetSounder();
         }
     }
 }
