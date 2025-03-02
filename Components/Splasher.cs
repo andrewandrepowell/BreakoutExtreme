@@ -61,6 +61,7 @@ namespace BreakoutExtreme.Components
             _vanishShadower.Start();
             _vanishShadow.Start();
             _sounder.Play(Sounder.Sounds.SplashDrop);
+            _sounder.Play(Sounder.Sounds.SplashVanish);
             _running = true;
         }
         public void Reset(Entity entity, Splashes splash)

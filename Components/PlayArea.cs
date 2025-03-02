@@ -151,7 +151,7 @@ namespace BreakoutExtreme.Components
             if (_deathWall.State == DeathWall.States.Active)
                 _deathWall.Protect();
             else if (_deathWall.State == DeathWall.States.Protecting && _deathWall.ProtectTimed)
-                _deathWall.ReleaseProtect();
+                _deathWall.ResetProtect();
         }
         public GameWindow Parent => _parent;
         public PlayArea(GameWindow parent)

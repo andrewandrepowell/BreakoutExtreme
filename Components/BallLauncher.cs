@@ -280,6 +280,7 @@ namespace BreakoutExtreme.Components
                 Debug.Assert(!_parent._particler.Running);
                 Debug.Assert(!Running);
                 _parent._particler.Start();
+                _parent._sounder.Play(Sounder.Sounds.Launch);
                 if (acceleration.HasValue)
                     Acceleration = acceleration.Value;
                 else

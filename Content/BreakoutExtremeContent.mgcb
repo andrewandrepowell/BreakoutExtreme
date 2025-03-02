@@ -688,3 +688,15 @@
 /processorParam:Quality=Best
 /build:sounds/splash_drop_0.wav
 
+#begin sounds/splash_vanish_0.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:sounds/splash_vanish_0.wav
+
+#begin sounds/launch_0.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:sounds/launch_0.wav
+
