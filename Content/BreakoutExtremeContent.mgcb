@@ -628,3 +628,9 @@
 /processorParam:Quality=Best
 /build:sounds/cannon_2.wav
 
+#begin sounds/explosion_0.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:sounds/explosion_0.wav
+

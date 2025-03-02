@@ -22,7 +22,7 @@ namespace BreakoutExtreme.Components
             return y;
         }
         public enum SoundTypes { SFX, Music }
-        public enum Sounds { Brick, BrickBreak, Paddle, Wall, Laser, Empower, Whistle, Cannon }
+        public enum Sounds { Brick, BrickBreak, Paddle, Wall, Laser, Empower, Whistle, Cannon, Explosion }
         private enum SoundSamples 
         { 
             Brick0, Brick1, Brick2, Brick3, Brick4, 
@@ -31,7 +31,8 @@ namespace BreakoutExtreme.Components
             Laser0, Laser1, Laser2, Laser3, Laser4,
             Empower0, Empower1, Empower2, Empower3, Empower4,
             Wall0, Whistle0,
-            Cannon0, Cannon1, Cannon2
+            Cannon0, Cannon1, Cannon2,
+            Explosion0
         }
         private class SoundNode(SoundSampleNode[] Nodes, SoundConfig Config)
         {
@@ -39,6 +40,7 @@ namespace BreakoutExtreme.Components
             private SoundSampleNode _currentNode = Nodes[0];
             private readonly SoundSampleNode[] _nodes = Nodes;
             private readonly SoundConfig _config = Config;
+            private bool _playing = false;
             public void UpdateVolume()
             {
                 _currentNode.SoundEffectInstance.Volume = ConvertVolumeForSEI(
@@ -53,21 +55,36 @@ namespace BreakoutExtreme.Components
                     _currentIndex = Globals.Random.Next(_nodes.Length);
                 else
                     _currentIndex = (_currentIndex + 1) % _nodes.Length;
+                if (_config.Repeat)
+                    _playing = true;
                 _currentNode = _nodes[_currentIndex];
                 _currentNode.SoundEffectInstance.Play();
                 UpdateVolume();
             }
             public void Stop()
             {
+                if (_config.Repeat)
+                    _playing = false;
                 _currentNode.SoundEffectInstance.Stop();
                 Debug.Assert(_nodes.All(x => x.SoundEffectInstance.State != SoundState.Playing));
             }
-            public bool IsPlaying => _currentNode.SoundEffectInstance.State == SoundState.Playing;
+            public bool IsPlaying
+            {
+                get
+                {
+                    if (_config.Repeat)
+                        return _playing;
+                    else
+                        return _currentNode.SoundEffectInstance.State == SoundState.Playing;
+                }
+            }
             public void Update()
             {
+                if (_config.Repeat && _playing && _currentNode.SoundEffectInstance.State != SoundState.Playing)
+                    Play();
             }
         }
-        private record SoundConfig(SoundTypes SoundType, SoundSamples[] SoundSamples, bool Random);
+        private record SoundConfig(SoundTypes SoundType, SoundSamples[] SoundSamples, bool Random = false, bool Repeat = false);
         private record SoundSampleConfig(string Identifier, float Volume);
         private record SoundSampleNode(SoundEffectInstance SoundEffectInstance, SoundSampleConfig Config);
         private readonly static ReadOnlyDictionary<SoundSamples, SoundSampleConfig> _soundSampleConfigs = new(new Dictionary<SoundSamples, SoundSampleConfig>() 
@@ -102,6 +119,7 @@ namespace BreakoutExtreme.Components
             { SoundSamples.Cannon2, new("sounds/cannon_2", 0.1f) },
             { SoundSamples.Wall0, new("sounds/wall_0", 0.1f) },
             { SoundSamples.Whistle0, new("sounds/whistle_0", 0.1f) },
+            { SoundSamples.Explosion0, new("sounds/explosion_0", 0.1f) },
         });
         private readonly static ReadOnlyDictionary<Sounds, SoundConfig> _soundConfigs = new(new Dictionary<Sounds, SoundConfig>() 
         {
@@ -113,6 +131,7 @@ namespace BreakoutExtreme.Components
             { Sounds.Cannon, new(SoundTypes.SFX, [SoundSamples.Cannon0, SoundSamples.Cannon1, SoundSamples.Cannon2], true) },
             { Sounds.Wall, new(SoundTypes.SFX, [SoundSamples.Wall0], true) },
             { Sounds.Whistle, new(SoundTypes.SFX, [SoundSamples.Whistle0], true) },
+            { Sounds.Explosion, new(SoundTypes.SFX, [SoundSamples.Explosion0], true, true) },
         });
         private Bag<SoundNode> _soundNodeValues = [];
         private readonly Dictionary<Sounds, SoundNode> _soundNodes = [];

@@ -63,6 +63,7 @@ namespace BreakoutExtreme.Components
                     _parent._particler.Start();
                     _parent._shake.Period = _detonationPeriod;
                     _parent._shake.Start();
+                    _parent._sounder.Play(Sounder.Sounds.Explosion);
                     _state = States.Detonating;
                 }
 
@@ -72,6 +73,7 @@ namespace BreakoutExtreme.Components
                     _parent._collider.Bounds = new CircleF(_parent._collider.Position, Bomb._bounds.Radius);
                     _parent._animater.Play(_parent._configNode.Active);
                     _parent._particler.Stop();
+                    _parent._sounder.Stop(Sounder.Sounds.Explosion);
                     _state = States.Finished;
                 }
             }
