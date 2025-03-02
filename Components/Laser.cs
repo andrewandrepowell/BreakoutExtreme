@@ -57,6 +57,7 @@ namespace BreakoutExtreme.Components
             _parent = parent;
             _empowered = empowered;
             var empoweredConfig = _empoweredConfigs[empowered];
+            _animater.Visibility = 1;
             _animater.Play(empoweredConfig.Animation);
             _thickGlower = Globals.Runner.CreateGlower(
                 parent: _animater,
@@ -108,7 +109,10 @@ namespace BreakoutExtreme.Components
                 _collider.Acceleration += _acceleration;
 
             if (_state == States.Destroying && !_thickGlower.Running && !_thickGlower.Running && !_vanish.Running)
+            {
+                _animater.Visibility = 0;
                 _state = States.Destroyed;
+            }
 
             Ball.ServicePowerBricks(powerBricks: _powerBricks, playArea: _parent, collider: _collider);
         }
