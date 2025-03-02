@@ -634,3 +634,27 @@
 /processorParam:Quality=Best
 /build:sounds/explosion_0.wav
 
+#begin sounds/explosion_1.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:sounds/explosion_1.wav
+
+#begin sounds/explosion_2.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:sounds/explosion_2.wav
+
+#begin sounds/explosion_3.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:sounds/explosion_3.wav
+
+#begin sounds/explosion_4.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:sounds/explosion_4.wav
+

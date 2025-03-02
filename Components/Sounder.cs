@@ -32,7 +32,7 @@ namespace BreakoutExtreme.Components
             Empower0, Empower1, Empower2, Empower3, Empower4,
             Wall0, Whistle0,
             Cannon0, Cannon1, Cannon2,
-            Explosion0
+            Explosion0, Explosion1, Explosion2, Explosion3, Explosion4,
         }
         private class SoundNode(SoundSampleNode[] Nodes, SoundConfig Config)
         {
@@ -120,6 +120,10 @@ namespace BreakoutExtreme.Components
             { SoundSamples.Wall0, new("sounds/wall_0", 0.1f) },
             { SoundSamples.Whistle0, new("sounds/whistle_0", 0.1f) },
             { SoundSamples.Explosion0, new("sounds/explosion_0", 0.1f) },
+            { SoundSamples.Explosion1, new("sounds/explosion_1", 0.1f) },
+            { SoundSamples.Explosion2, new("sounds/explosion_2", 0.1f) },
+            { SoundSamples.Explosion3, new("sounds/explosion_3", 0.1f) },
+            { SoundSamples.Explosion4, new("sounds/explosion_4", 0.1f) },
         });
         private readonly static ReadOnlyDictionary<Sounds, SoundConfig> _soundConfigs = new(new Dictionary<Sounds, SoundConfig>() 
         {
@@ -131,7 +135,7 @@ namespace BreakoutExtreme.Components
             { Sounds.Cannon, new(SoundTypes.SFX, [SoundSamples.Cannon0, SoundSamples.Cannon1, SoundSamples.Cannon2], true) },
             { Sounds.Wall, new(SoundTypes.SFX, [SoundSamples.Wall0], true) },
             { Sounds.Whistle, new(SoundTypes.SFX, [SoundSamples.Whistle0], true) },
-            { Sounds.Explosion, new(SoundTypes.SFX, [SoundSamples.Explosion0], true, true) },
+            { Sounds.Explosion, new(SoundTypes.SFX, [SoundSamples.Explosion0, SoundSamples.Explosion1, SoundSamples.Explosion2, SoundSamples.Explosion3, SoundSamples.Explosion4], true, true) },
         });
         private Bag<SoundNode> _soundNodeValues = [];
         private readonly Dictionary<Sounds, SoundNode> _soundNodes = [];
