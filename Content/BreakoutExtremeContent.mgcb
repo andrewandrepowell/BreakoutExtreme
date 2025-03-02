@@ -700,3 +700,21 @@
 /processorParam:Quality=Best
 /build:sounds/launch_0.wav
 
+#begin sounds/menu_0.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:sounds/menu_0.wav
+
+#begin sounds/pause_0.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:sounds/pause_0.wav
+
+#begin sounds/resume_0.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:sounds/resume_0.wav
+

@@ -26,7 +26,8 @@ namespace BreakoutExtreme.Components
         public enum Sounds 
         { 
             Brick, BrickBreak, Paddle, Wall, Laser, Empower, Whistle, 
-            Cannon, Explosion, BallBreak, PaddleBreak, Launch,
+            Cannon, Explosion, BallBreak, PaddleBreak, Launch, Menu,
+            Pause,Resume,
             SplashDrop, SplashVanish, 
             PowerRevealed, PowerAcquired
         }
@@ -37,7 +38,8 @@ namespace BreakoutExtreme.Components
             Paddle0, Paddle1, Paddle2, Paddle3, Paddle4,
             Laser0, Laser1, Laser2, Laser3, Laser4,
             Empower0, Empower1, Empower2, Empower3, Empower4,
-            Wall0, Whistle0, BallBreak0, PaddleBreak0, Launch0,
+            Wall0, Whistle0, BallBreak0, PaddleBreak0, Launch0, Menu0,
+            Pause0, Resume0,
             PowerRevealed0, PowerAcquired0,
             SplashDrop0, SplashVanish0,
             Cannon0, Cannon1, Cannon2,
@@ -158,6 +160,9 @@ namespace BreakoutExtreme.Components
             { SoundSamples.Explosion4, new("sounds/explosion_4", 0.1f) },
             { SoundSamples.BallBreak0, new("sounds/ball_break_0", 0.1f) },
             { SoundSamples.PaddleBreak0, new("sounds/paddle_break_0", 0.1f) },
+            { SoundSamples.Menu0, new("sounds/menu_0", 0.1f) },
+            { SoundSamples.Pause0, new("sounds/pause_0", 0.1f) },
+            { SoundSamples.Resume0, new("sounds/resume_0", 0.1f) },
         });
         private readonly static ReadOnlyDictionary<Sounds, SoundConfig> _soundConfigs = new(new Dictionary<Sounds, SoundConfig>() 
         {
@@ -175,6 +180,9 @@ namespace BreakoutExtreme.Components
             { Sounds.PowerRevealed, new(SoundTypes.SFX, [SoundSamples.PowerRevealed0], true) },
             { Sounds.PowerAcquired, new(SoundTypes.SFX, [SoundSamples.PowerAcquired0], true) },
             { Sounds.Launch, new(SoundTypes.SFX, [SoundSamples.Launch0], true) },
+            { Sounds.Menu, new(SoundTypes.SFX, [SoundSamples.Menu0], true) },
+            { Sounds.Pause, new(SoundTypes.SFX, [SoundSamples.Pause0], true) },
+            { Sounds.Resume, new(SoundTypes.SFX, [SoundSamples.Resume0], true) },
             { Sounds.SplashDrop, new(SoundTypes.SFX, [SoundSamples.SplashDrop0], true, Delay: true, DelayPeriod: 2f) },
             { Sounds.SplashVanish, new(SoundTypes.SFX, [SoundSamples.SplashVanish0], true, Delay: true, DelayPeriod: 3.5f) },
         });

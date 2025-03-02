@@ -20,6 +20,7 @@ namespace BreakoutExtreme.Components
         private readonly GumDrawer _gumDrawer;
         private readonly Features.Appear _appear;
         private readonly Features.Vanish _vanish;
+        private readonly Sounder _sounder;
         private RunningStates _state;
         private Window _window;
         private string _prevID;
@@ -69,6 +70,7 @@ namespace BreakoutExtreme.Components
             _gumDrawer.Visibility = 1;
             _appear.Start();
             _vanish.Stop();
+            _sounder.Play(Sounder.Sounds.Pause);
             _state = RunningStates.Starting;
         }
         public void ForceStart()
@@ -83,6 +85,7 @@ namespace BreakoutExtreme.Components
             _gumDrawer.Visibility = 1;
             _appear.Stop();
             _vanish.Start();
+            _sounder.Play(Sounder.Sounds.Resume);
             _state = RunningStates.Stopping;
         }
         public void ForceStop()
@@ -111,6 +114,7 @@ namespace BreakoutExtreme.Components
         public Menus()
         {
             _windows = [];
+            _sounder = Globals.Runner.GetSounder();
 
             _containerRuntime = new ContainerRuntime()
             {

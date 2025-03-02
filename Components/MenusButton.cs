@@ -27,6 +27,7 @@ namespace BreakoutExtreme.Components
             private readonly NineSliceRuntime _nineSliceRuntime;
             private readonly ContainerRuntime _containerRuntime;
             private readonly Dictionary<States, StateNode> _stateNodes;
+            private readonly Sounder _sounder;
             private RectangleF _bounds;
             private bool _running;
             private Action<object> _action;
@@ -91,6 +92,7 @@ namespace BreakoutExtreme.Components
                     {
                         _pressedTime = _pressedPeriod;
                         if (_action != null) _action(_parent);
+                        _sounder.Play(Sounder.Sounds.Menu);
                         _state = States.Pressed;
                         UpdateStateProperties();
                     }
@@ -108,6 +110,7 @@ namespace BreakoutExtreme.Components
             public Button()
             {
                 _state = States.Released;
+                _sounder = Globals.Runner.GetSounder();
                 _running = false;
 
                 _stateNodes = [];

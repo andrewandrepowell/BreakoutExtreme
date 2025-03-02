@@ -38,6 +38,7 @@ namespace BreakoutExtreme.Components
         private readonly Action<object> _action;
         private readonly object _parent;
         private readonly RectangleF _bounds;
+        private readonly Sounder _sounder;
         private States _state;
         private float _pressedTime;
 
@@ -63,6 +64,7 @@ namespace BreakoutExtreme.Components
             _parent = parent;
             _action = action;
             _bounds = bounds;
+            _sounder = Globals.Runner.GetSounder();
             _state = States.Released;
 
             {
