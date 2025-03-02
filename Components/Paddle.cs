@@ -114,6 +114,12 @@ namespace BreakoutExtreme.Components
             Debug.Assert(_state == States.Active);
             _empower.Start();
         }
+        public void RunBounceEffects()
+        {
+            Debug.Assert(_initialized);
+            Debug.Assert(_state == States.Active);
+            _sounder.Play(Sounder.Sounds.Paddle);
+        }
         public void Spawn()
         {
             Debug.Assert(_initialized);
@@ -155,10 +161,6 @@ namespace BreakoutExtreme.Components
             _state = States.Active;
             _initialized = true;
             UpdateSizeConfig();
-        }
-        public void Bounce()
-        {
-            _sounder.Play(Sounder.Sounds.Paddle);
         }
         public Paddle()
         {

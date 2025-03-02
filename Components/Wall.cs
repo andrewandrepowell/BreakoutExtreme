@@ -7,7 +7,7 @@ namespace BreakoutExtreme.Components
         private Collider _collider;
         private Sounder _sounder;
         public Collider GetCollider() => _collider;
-        public void Bounce()
+        public void RunBounceEffects()
         {
             _sounder.Play(Sounder.Sounds.Wall);
         }

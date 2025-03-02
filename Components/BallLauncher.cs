@@ -193,9 +193,9 @@ namespace BreakoutExtreme.Components
                             collider.Velocity = newVelocity;
                         }
 
-                        // Play bounce operations specific to paddle.
+                        // Play bounce effects on paddle.
                         {
-                            paddle.Bounce();
+                            paddle.RunBounceEffects();
                         }
                     }
                 }
@@ -248,11 +248,19 @@ namespace BreakoutExtreme.Components
                     }    
                 }
 
-                // Handle collision with wall.
+                // Play bounce effects on wall.
                 {
                     if (_parent.State == States.Active && node.Other.Parent is Wall wall)
                     {
-                        wall.Bounce();
+                        wall.RunBounceEffects();
+                    }
+                }
+
+                // Play bounce effects on ball.
+                {
+                    if (_parent.State == States.Active && node.Other.Parent is Ball ball)
+                    {
+                        ball.RunBounceEffects();
                     }
                 }
             }

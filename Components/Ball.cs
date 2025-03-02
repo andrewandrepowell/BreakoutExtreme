@@ -26,6 +26,7 @@ namespace BreakoutExtreme.Components
         private Entity _entity;
         private Shadow _shadow;
         private States _state;
+        private Sounder _sounder;
         private bool _initialized;
         private void ServiceCollision(Collider.CollideNode node)
         {
@@ -86,6 +87,12 @@ namespace BreakoutExtreme.Components
             Debug.Assert(_state == States.Active);
             _launcher.Stop();
         }
+        public void RunBounceEffects()
+        {
+            Debug.Assert(_initialized);
+            Debug.Assert(_state == States.Active);
+            _sounder.Play(Sounder.Sounds.Paddle);
+        }
         public void Spawn()
         {
             Debug.Assert(_initialized);
@@ -142,7 +149,7 @@ namespace BreakoutExtreme.Components
             _particler = new(Particler.Particles.BallTrail) { Disposable = false };
             _launcher = new Launcher(this);
             _destroyer = new Destroyer(this);
-            
+            _sounder = Globals.Runner.GetSounder();
         }
         public void RemoveEntity()
         {
