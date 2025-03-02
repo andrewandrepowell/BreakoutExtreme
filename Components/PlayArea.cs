@@ -94,6 +94,8 @@ namespace BreakoutExtreme.Components
         {
             Debug.Assert(Loaded);
 
+            if (_paddle.Attached)
+                _paddle.Detach();
             if (_paddle.Initialized)
                 _paddle.RemoveEntity();
             for (var i = 0; i < _balls.Count; i++)

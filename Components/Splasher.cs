@@ -29,6 +29,7 @@ namespace BreakoutExtreme.Components
         private readonly Features.FloatRight _floatRightShadow;
         private Shadow _shadow;
         private Shadower _shadower;
+        private Sounder _sounder;
         private bool _initialized;
         private Entity _entity;
         private bool _running;
@@ -59,6 +60,7 @@ namespace BreakoutExtreme.Components
             _vanish.Start();
             _vanishShadower.Start();
             _vanishShadow.Start();
+            _sounder.Play(Sounder.Sounds.SplashDrop);
             _running = true;
         }
         public void Reset(Entity entity, Splashes splash)
@@ -195,6 +197,7 @@ namespace BreakoutExtreme.Components
             _animater.ShaderFeatures.Add(_appear);
             _animater.ShaderFeatures.Add(_floatRight);
             _animater.ShaderFeatures.Add(_vanish);
+            _sounder = Globals.Runner.GetSounder();
             _running = false;
             _initialized = false;
         }

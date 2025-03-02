@@ -682,3 +682,9 @@
 /processorParam:Quality=Best
 /build:sounds/power_acquired_0.wav
 
+#begin sounds/splash_drop_0.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:sounds/splash_drop_0.wav
+

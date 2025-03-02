@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using MonoGame.Extended.Collections;
 using System.Linq;
 using BreakoutExtreme.Utility;
+using MonoGame.Extended;
 
 
 namespace BreakoutExtreme.Components
@@ -25,7 +26,7 @@ namespace BreakoutExtreme.Components
         public enum Sounds 
         { 
             Brick, BrickBreak, Paddle, Wall, Laser, Empower, Whistle, 
-            Cannon, Explosion, BallBreak, PaddleBreak, 
+            Cannon, Explosion, BallBreak, PaddleBreak, SplashDrop,
             PowerRevealed, PowerAcquired
         }
         private enum SoundSamples 
@@ -35,7 +36,7 @@ namespace BreakoutExtreme.Components
             Paddle0, Paddle1, Paddle2, Paddle3, Paddle4,
             Laser0, Laser1, Laser2, Laser3, Laser4,
             Empower0, Empower1, Empower2, Empower3, Empower4,
-            Wall0, Whistle0, BallBreak0, PaddleBreak0, PowerRevealed0, PowerAcquired0,
+            Wall0, Whistle0, BallBreak0, PaddleBreak0, PowerRevealed0, PowerAcquired0, SplashDrop0, 
             Cannon0, Cannon1, Cannon2,
             Explosion0, Explosion1, Explosion2, Explosion3, Explosion4,
         }
@@ -46,6 +47,8 @@ namespace BreakoutExtreme.Components
             private readonly SoundSampleNode[] _nodes = Nodes;
             private readonly SoundConfig _config = Config;
             private bool _playing = false;
+            private float _delayTime;
+            private bool _hasPlayed = false;
             public void UpdateVolume()
             {
                 _currentNode.SoundEffectInstance.Volume = ConvertVolumeForSEI(
@@ -54,21 +57,31 @@ namespace BreakoutExtreme.Components
                     (_config.SoundType == SoundTypes.SFX ? Globals.SFXVolume : 
                     (_config.SoundType == SoundTypes.Music ? Globals.MasterVolume : 1)));
             }
-            public void Play()
+            public void Play(bool ignoreDelay = false)
             {
+                Debug.Assert(_config.DelayPeriod >= 0);
+                if (IsPlaying)
+                    Stop();
                 if (_config.Random)
                     _currentIndex = Globals.Random.Next(_nodes.Length);
                 else
                     _currentIndex = (_currentIndex + 1) % _nodes.Length;
-                if (_config.Repeat)
+                if (_config.Delay)
+                {
+                    
+                    _delayTime = ignoreDelay ? 0 : _config.DelayPeriod;
+                    _hasPlayed = (ignoreDelay || _config.DelayPeriod == 0);
+                }
+                if (_config.Repeat || _config.Delay)
                     _playing = true;
                 _currentNode = _nodes[_currentIndex];
-                _currentNode.SoundEffectInstance.Play();
+                if (!_config.Delay || _delayTime <= 0)
+                    _currentNode.SoundEffectInstance.Play();
                 UpdateVolume();
             }
             public void Stop()
             {
-                if (_config.Repeat)
+                if (_config.Repeat || _config.Delay)
                     _playing = false;
                 _currentNode.SoundEffectInstance.Stop();
                 Debug.Assert(_nodes.All(x => x.SoundEffectInstance.State != SoundState.Playing));
@@ -77,7 +90,7 @@ namespace BreakoutExtreme.Components
             {
                 get
                 {
-                    if (_config.Repeat)
+                    if (_config.Repeat || _config.Delay)
                         return _playing;
                     else
                         return _currentNode.SoundEffectInstance.State == SoundState.Playing;
@@ -85,11 +98,17 @@ namespace BreakoutExtreme.Components
             }
             public void Update()
             {
-                if (_config.Repeat && _playing && _currentNode.SoundEffectInstance.State != SoundState.Playing)
-                    Play();
+                if (Globals.Paused)
+                    return;
+                if ((_config.Repeat || (_config.Delay && !_hasPlayed)) && _playing && _currentNode.SoundEffectInstance.State != SoundState.Playing && (!_config.Delay || _delayTime <= 0))
+                    Play(ignoreDelay: true);
+                if (_config.Delay && _hasPlayed && !_config.Repeat && _playing && _currentNode.SoundEffectInstance.State != SoundState.Playing && _delayTime <= 0)
+                    Stop();
+                if (_config.Delay && _delayTime > 0)
+                    _delayTime -= Globals.GameTime.GetElapsedSeconds();
             }
         }
-        private record SoundConfig(SoundTypes SoundType, SoundSamples[] SoundSamples, bool Random = false, bool Repeat = false);
+        private record SoundConfig(SoundTypes SoundType, SoundSamples[] SoundSamples, bool Random = false, bool Repeat = false, bool Delay = false, float DelayPeriod = 0);
         private record SoundSampleConfig(string Identifier, float Volume);
         private record SoundSampleNode(SoundEffectInstance SoundEffectInstance, SoundSampleConfig Config);
         private readonly static ReadOnlyDictionary<SoundSamples, SoundSampleConfig> _soundSampleConfigs = new(new Dictionary<SoundSamples, SoundSampleConfig>() 
@@ -126,6 +145,7 @@ namespace BreakoutExtreme.Components
             { SoundSamples.Whistle0, new("sounds/whistle_0", 0.1f) },
             { SoundSamples.PowerRevealed0, new("sounds/power_revealed_0", 0.1f) },
             { SoundSamples.PowerAcquired0, new("sounds/power_acquired_0", 0.1f) },
+            { SoundSamples.SplashDrop0, new("sounds/splash_drop_0", 0.1f) },
             { SoundSamples.Explosion0, new("sounds/explosion_0", 0.1f) },
             { SoundSamples.Explosion1, new("sounds/explosion_1", 0.1f) },
             { SoundSamples.Explosion2, new("sounds/explosion_2", 0.1f) },
@@ -149,6 +169,7 @@ namespace BreakoutExtreme.Components
             { Sounds.PaddleBreak, new(SoundTypes.SFX, [SoundSamples.PaddleBreak0], true) },
             { Sounds.PowerRevealed, new(SoundTypes.SFX, [SoundSamples.PowerRevealed0], true) },
             { Sounds.PowerAcquired, new(SoundTypes.SFX, [SoundSamples.PowerAcquired0], true) },
+            { Sounds.SplashDrop, new(SoundTypes.SFX, [SoundSamples.SplashDrop0], true, Delay: true, DelayPeriod: 2f) },
         });
         private Bag<SoundNode> _soundNodeValues = [];
         private readonly Dictionary<Sounds, SoundNode> _soundNodes = [];
