@@ -22,7 +22,12 @@ namespace BreakoutExtreme.Components
             return y;
         }
         public enum SoundTypes { SFX, Music }
-        public enum Sounds { Brick, BrickBreak, Paddle, Wall, Laser, Empower, Whistle, Cannon, Explosion, BallBreak, PaddleBreak }
+        public enum Sounds 
+        { 
+            Brick, BrickBreak, Paddle, Wall, Laser, Empower, Whistle, 
+            Cannon, Explosion, BallBreak, PaddleBreak, 
+            PowerRevealed, PowerAcquired
+        }
         private enum SoundSamples 
         { 
             Brick0, Brick1, Brick2, Brick3, Brick4, 
@@ -30,7 +35,7 @@ namespace BreakoutExtreme.Components
             Paddle0, Paddle1, Paddle2, Paddle3, Paddle4,
             Laser0, Laser1, Laser2, Laser3, Laser4,
             Empower0, Empower1, Empower2, Empower3, Empower4,
-            Wall0, Whistle0, BallBreak0, PaddleBreak0,
+            Wall0, Whistle0, BallBreak0, PaddleBreak0, PowerRevealed0, PowerAcquired0,
             Cannon0, Cannon1, Cannon2,
             Explosion0, Explosion1, Explosion2, Explosion3, Explosion4,
         }
@@ -119,6 +124,8 @@ namespace BreakoutExtreme.Components
             { SoundSamples.Cannon2, new("sounds/cannon_2", 0.1f) },
             { SoundSamples.Wall0, new("sounds/wall_0", 0.1f) },
             { SoundSamples.Whistle0, new("sounds/whistle_0", 0.1f) },
+            { SoundSamples.PowerRevealed0, new("sounds/power_revealed_0", 0.1f) },
+            { SoundSamples.PowerAcquired0, new("sounds/power_acquired_0", 0.1f) },
             { SoundSamples.Explosion0, new("sounds/explosion_0", 0.1f) },
             { SoundSamples.Explosion1, new("sounds/explosion_1", 0.1f) },
             { SoundSamples.Explosion2, new("sounds/explosion_2", 0.1f) },
@@ -140,6 +147,8 @@ namespace BreakoutExtreme.Components
             { Sounds.Explosion, new(SoundTypes.SFX, [SoundSamples.Explosion0, SoundSamples.Explosion1, SoundSamples.Explosion2, SoundSamples.Explosion3, SoundSamples.Explosion4], true, true) },
             { Sounds.BallBreak, new(SoundTypes.SFX, [SoundSamples.BallBreak0], true) },
             { Sounds.PaddleBreak, new(SoundTypes.SFX, [SoundSamples.PaddleBreak0], true) },
+            { Sounds.PowerRevealed, new(SoundTypes.SFX, [SoundSamples.PowerRevealed0], true) },
+            { Sounds.PowerAcquired, new(SoundTypes.SFX, [SoundSamples.PowerAcquired0], true) },
         });
         private Bag<SoundNode> _soundNodeValues = [];
         private readonly Dictionary<Sounds, SoundNode> _soundNodes = [];

@@ -670,3 +670,15 @@
 /processorParam:Quality=Best
 /build:sounds/paddle_break_0.wav
 
+#begin sounds/power_revealed_0.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:sounds/power_revealed_0.wav
+
+#begin sounds/power_acquired_0.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:sounds/power_acquired_0.wav
+

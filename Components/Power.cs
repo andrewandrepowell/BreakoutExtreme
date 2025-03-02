@@ -30,6 +30,7 @@ namespace BreakoutExtreme.Components
         private States _state;
         private Glower _glower;
         private PlayArea _parent;
+        private Sounder _sounder;
         private Features.LimitedFlash _flash;
         private Features.Vanish _vanish;
         private Features.Shake _shake;
@@ -118,6 +119,7 @@ namespace BreakoutExtreme.Components
             _vanish.Start();
             _flash.Start();
             _glower.Start();
+            _sounder.Play(Sounder.Sounds.PowerAcquired);
             _state = States.Despawning;
         }
         public void Reset(Entity entity, Powers power, PlayArea parent)
@@ -140,6 +142,7 @@ namespace BreakoutExtreme.Components
             _vanish.Stop();
             _shake.Stop();
             _flash.Start();
+            _sounder.Play(Sounder.Sounds.PowerRevealed);
             _state = States.Active;
             _initialized = true;
         }
@@ -177,6 +180,7 @@ namespace BreakoutExtreme.Components
             _animater.ShaderFeatures.Add(_flash);
             _animater.ShaderFeatures.Add(_vanish);
             _animater.ShaderFeatures.Add(_shake);
+            _sounder = Globals.Runner.GetSounder();
         }
     }
 }
