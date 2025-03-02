@@ -22,7 +22,7 @@ namespace BreakoutExtreme.Components
             return y;
         }
         public enum SoundTypes { SFX, Music }
-        public enum Sounds { Brick, BrickBreak, Paddle, Wall, Laser, Empower, Whistle, Cannon, Explosion }
+        public enum Sounds { Brick, BrickBreak, Paddle, Wall, Laser, Empower, Whistle, Cannon, Explosion, BallBreak }
         private enum SoundSamples 
         { 
             Brick0, Brick1, Brick2, Brick3, Brick4, 
@@ -30,7 +30,7 @@ namespace BreakoutExtreme.Components
             Paddle0, Paddle1, Paddle2, Paddle3, Paddle4,
             Laser0, Laser1, Laser2, Laser3, Laser4,
             Empower0, Empower1, Empower2, Empower3, Empower4,
-            Wall0, Whistle0,
+            Wall0, Whistle0, BallBreak0,
             Cannon0, Cannon1, Cannon2,
             Explosion0, Explosion1, Explosion2, Explosion3, Explosion4,
         }
@@ -124,6 +124,7 @@ namespace BreakoutExtreme.Components
             { SoundSamples.Explosion2, new("sounds/explosion_2", 0.1f) },
             { SoundSamples.Explosion3, new("sounds/explosion_3", 0.1f) },
             { SoundSamples.Explosion4, new("sounds/explosion_4", 0.1f) },
+            { SoundSamples.BallBreak0, new("sounds/ball_break_0", 0.1f) },
         });
         private readonly static ReadOnlyDictionary<Sounds, SoundConfig> _soundConfigs = new(new Dictionary<Sounds, SoundConfig>() 
         {
@@ -136,6 +137,7 @@ namespace BreakoutExtreme.Components
             { Sounds.Wall, new(SoundTypes.SFX, [SoundSamples.Wall0], true) },
             { Sounds.Whistle, new(SoundTypes.SFX, [SoundSamples.Whistle0], true) },
             { Sounds.Explosion, new(SoundTypes.SFX, [SoundSamples.Explosion0, SoundSamples.Explosion1, SoundSamples.Explosion2, SoundSamples.Explosion3, SoundSamples.Explosion4], true, true) },
+            { Sounds.BallBreak, new(SoundTypes.SFX, [SoundSamples.BallBreak0], true) },
         });
         private Bag<SoundNode> _soundNodeValues = [];
         private readonly Dictionary<Sounds, SoundNode> _soundNodes = [];

@@ -658,3 +658,9 @@
 /processorParam:Quality=Best
 /build:sounds/explosion_4.wav
 
+#begin sounds/ball_break_0.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:sounds/ball_break_0.wav
+

@@ -117,6 +117,7 @@ namespace BreakoutExtreme.Components
             _launcher.Stop();
             _destroyer.Start();
             _particler.Stop();
+            _sounder.Play(Sounder.Sounds.BallBreak);
             _state = States.Destroying;
         }
         public void Reset(Entity entity, PlayArea parent)
