@@ -4,6 +4,7 @@ using MonoGame.Extended;
 using System.Diagnostics;
 using System;
 using MonoGame.Extended.Collections;
+using System.Reflection.Metadata;
 
 
 namespace BreakoutExtreme.Components
@@ -192,11 +193,6 @@ namespace BreakoutExtreme.Components
                             Acceleration = newAcceleration;
                             collider.Velocity = newVelocity;
                         }
-
-                        // Play bounce effects on paddle.
-                        {
-                            paddle.RunBounceEffects();
-                        }
                     }
                 }
 
@@ -248,19 +244,33 @@ namespace BreakoutExtreme.Components
                     }    
                 }
 
-                // Play bounce effects on wall.
+                // Play bounce effects depending on what the ball collided with.
                 {
-                    if (_parent.State == States.Active && node.Other.Parent is Wall wall)
                     {
-                        wall.RunBounceEffects();
+                        if (_parent.State == States.Active && 
+                            node.Other.Parent is DeathWall deathWall && 
+                            deathWall.State == DeathWall.States.Protecting)
+                        {
+                            deathWall.RunBounceEffects();
+                        }
                     }
-                }
-
-                // Play bounce effects on ball.
-                {
-                    if (_parent.State == States.Active && node.Other.Parent is Ball ball)
                     {
-                        ball.RunBounceEffects();
+                        if (_parent.State == States.Active && node.Other.Parent is Paddle paddle)
+                        {
+                            paddle.RunBounceEffects();
+                        }
+                    }
+                    {
+                        if (_parent.State == States.Active && node.Other.Parent is Wall wall)
+                        {
+                            wall.RunBounceEffects();
+                        }
+                    }
+                    {
+                        if (_parent.State == States.Active && node.Other.Parent is Ball ball)
+                        {
+                            ball.RunBounceEffects();
+                        }
                     }
                 }
             }

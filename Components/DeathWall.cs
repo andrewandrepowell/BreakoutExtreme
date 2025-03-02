@@ -15,6 +15,7 @@ namespace BreakoutExtreme.Components
         private bool _protectTimed = false;
         private float _protectPeriod = 10;
         private float _protectTime;
+        private Sounder _sounder;
         private void ServiceCollision(Collider.CollideNode node)
         {
         }
@@ -62,6 +63,11 @@ namespace BreakoutExtreme.Components
             Debug.Assert(_protectTimed);
             _protectTime = _protectPeriod;
         }
+        public void RunBounceEffects()
+        {
+            Debug.Assert(_state == States.Protecting);
+            _sounder.Play(Sounder.Sounds.Wall);
+        }
         public void Update()
         {
             if (Globals.Paused)
@@ -79,6 +85,7 @@ namespace BreakoutExtreme.Components
             Debug.Assert(bounds.Height == Globals.GameBlockSize);
             _state = States.Active;
             _collider = new(bounds, this, _collideAction);
+            _sounder = Globals.Runner.GetSounder();
 
             {
                 var spikesTotal = (int)Math.Floor(bounds.Width / Globals.GameBlockSize);
