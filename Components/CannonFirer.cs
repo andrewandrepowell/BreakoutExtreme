@@ -51,7 +51,10 @@ namespace BreakoutExtreme.Components
                     _firing = false;
                 }
 
-                while (!_firing && _time <= 0 && _delayTime <= 0)
+                var playArea = _parent._parent;
+                while (!_firing && _time <= 0 && _delayTime <= 0 && 
+                       (playArea.State == PlayArea.States.GameRunning ||
+                        playArea.State == PlayArea.States.PlayerTakingAim))
                 {
                     Debug.Assert(_period > 0);
                     Fire();

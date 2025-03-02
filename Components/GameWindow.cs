@@ -211,7 +211,9 @@ namespace BreakoutExtreme.Components
                     ID = "credits",
                     Text = 
                     "Andrew Powell - Game Design, Programming, and Art\n" +
-                    "Tools:\n" +
+                    "\nAsset Packs:\n" +
+                    "1000 Retro Sound Effects - tinyurl.com/2huzyy9c\n" +
+                    "\nTools:\n" +
                     "MonoGame / KNI - Game Engine\n" +
                     "MonoGame Extended - ECS, Collisions, Particle Effects, and More\n" +
                     "Gum - UI and Menus"

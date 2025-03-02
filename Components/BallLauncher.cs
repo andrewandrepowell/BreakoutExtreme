@@ -255,7 +255,8 @@ namespace BreakoutExtreme.Components
                         }
                     }
                     {
-                        if (_parent.State == States.Active && node.Other.Parent is Paddle paddle)
+                        if (_parent.State == States.Active && node.Other.Parent is Paddle paddle && 
+                            paddle.State == Paddle.States.Active)
                         {
                             paddle.RunBounceEffects();
                         }
@@ -267,7 +268,8 @@ namespace BreakoutExtreme.Components
                         }
                     }
                     {
-                        if (_parent.State == States.Active && node.Other.Parent is Ball ball)
+                        if (_parent.State == States.Active && 
+                            node.Other.Parent is Ball ball && ball.State == States.Active)
                         {
                             ball.RunBounceEffects();
                         }
