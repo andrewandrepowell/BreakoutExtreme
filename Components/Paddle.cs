@@ -145,6 +145,7 @@ namespace BreakoutExtreme.Components
             _vanish.Start();
             _shake.Start();
             _shadow.Start();
+            _sounder.Play(Sounder.Sounds.PaddleBreak);
             _state = States.Destroying;
         }
         public void Reset(Entity entity)
