@@ -13,9 +13,9 @@ namespace BreakoutExtreme.Components
     {
         private readonly static ReadOnlyDictionary<Powers, Config> _powerConfigs = new(new Dictionary<Powers, Config>() 
         {
-            { Powers.EnlargePaddle, new(Animater.Animations.PowerEnlargePaddle, Animater.Animations.PowerEnlargePaddleDead, 250) },
-            { Powers.Protection, new(Animater.Animations.PowerProtection, Animater.Animations.PowerProtectionDead, 500) },
-            { Powers.NewBall, new(Animater.Animations.PowerNewBall, Animater.Animations.PowerNewBallDead, 1000) },
+            { Powers.EnlargePaddle, new(Animater.Animations.PowerEnlargePaddle, Animater.Animations.PowerEnlargePaddleDead, 1000) },
+            { Powers.Protection, new(Animater.Animations.PowerProtection, Animater.Animations.PowerProtectionDead, 1250) },
+            { Powers.NewBall, new(Animater.Animations.PowerNewBall, Animater.Animations.PowerNewBallDead, 1750) },
             { Powers.Empowered, new(Animater.Animations.PowerEmpoweredLaser, Animater.Animations.PowerEmpoweredLaserDead, 1500) }
         });
         private readonly static RectangleF _bounds = new Rectangle(Globals.PlayAreaBlockBounds.X, Globals.PlayAreaBlockBounds.Y, 1, 1).ToBounds();
