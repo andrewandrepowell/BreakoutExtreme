@@ -1,6 +1,10 @@
 ﻿using Microsoft.Xna.Framework.Graphics;
 using MonoGameGum.GueDeriving;
 using Microsoft.Xna.Framework;
+using RenderingLibrary;
+using MonoGame.Extended;
+using System;
+using System.Diagnostics;
 
 namespace BreakoutExtreme.Components
 {
@@ -9,8 +13,15 @@ namespace BreakoutExtreme.Components
         public class Scroller : IInteractable
         {
             private readonly static Color _textColor = Color.Black;
+            private readonly static Size _size = new(8, 22);
             private readonly ContainerRuntime _containerRuntime;
-            
+            private RectangleF _bounds;
+            private bool _running;
+            private bool _held;
+            private Action<object, float> _action;
+            private object _parent;
+            private const float _threshold = 4;
+
             // Container runtimes.
             private readonly TextRuntime _textRuntime;
             private readonly ContainerRuntime _containerARuntime;
@@ -25,14 +36,94 @@ namespace BreakoutExtreme.Components
 
             // Container C runtimes.
             private readonly SpriteRuntime _spriteRuntime;
-            public bool Running { get; set; } = false;
+            public bool Running
+            {
+                get => _running;
+                set
+                {
+                    _running = value;
+                    if (_running)
+                    {
+                        UpdateBounds();
+                    }
+                    else
+                    {
+                        _held = false;
+                    }
+                }
+            }
+            public Action<object, float> Action
+            {
+                get => _action;
+                set => _action = value;
+            }
+            public object Parent
+            {
+                get => _parent;
+                set => _parent = value;
+            }
+            public float Percent
+            {
+                get => _spriteRuntime.X;
+                set
+                {
+                    Debug.Assert(value >= 0 && value <= 100);
+                    _spriteRuntime.X = value;
+                }
+            }
             public ContainerRuntime GetContainerRuntime() => _containerRuntime;
+            public string Text
+            {
+                get => _textRuntime.Text;
+                set => _textRuntime.Text = value;
+            }
+            public void UpdateBounds()
+            {
+                var fullX = _spriteRuntime.GetAbsoluteX();
+                var fullY = _spriteRuntime.GetAbsoluteY();
+                var fullWidth = _spriteRuntime.GetAbsoluteWidth();
+                var fullHeight = _spriteRuntime.GetAbsoluteHeight();
+                _bounds = new(
+                    x: fullX + (fullWidth - _size.Width) / 2,
+                    y: fullY + (fullHeight - _size.Height) / 2,
+                    width: _size.Width,
+                    height: _size.Height);
+            }
             public void Update()
             {
+                if (_running)
+                {
+                    var controlStates = Globals.ControlState;
+                    var pressed = controlStates.CursorSelectState == Controller.SelectStates.Pressed;
+                    var released = controlStates.CursorSelectState == Controller.SelectStates.Released || controlStates.CursorSelectState == Controller.SelectStates.None;
 
+                    if (_held)
+                    {
+                        UpdateBounds();
+                        var centerX = _bounds.BoundingRectangle.Center.X;
+                        var diffX = controlStates.CursorPosition.X - centerX;
+                        if (Math.Abs(diffX) > _threshold)
+                        {
+                            var containerX = _containerCRuntime.GetAbsoluteX();
+                            var containerWidth = _containerCRuntime.GetAbsoluteWidth();
+                            var percentPerPixel = 100 / containerWidth;
+                            var newPercent = MathHelper.Clamp((controlStates.CursorPosition.X - containerX) * percentPerPixel, 0, 100);
+                            Percent = newPercent;
+                            _action?.Invoke(_parent, Percent);
+                        }
+                    }
+
+                    if (!_held && pressed && _bounds.Contains(controlStates.CursorPosition))
+                        _held = true;
+                    if (_held && released)
+                        _held = false;
+                }
             }
             public Scroller()
             {
+                _running = false;
+                _held = false;
+
                 _spriteRuntime = new()
                 {
                     Texture = Globals.ContentManager.Load<Texture2D>("animations/bar_0"),

@@ -204,7 +204,7 @@ namespace BreakoutExtreme.Components
                 var optionsWindow = new Menus.Window()
                 {
                     ID = "options",
-                    Text = "Options - TBA"
+                    Text = "Options"
                 };
                 var creditsWindow = new Menus.Window()
                 {
@@ -228,8 +228,18 @@ namespace BreakoutExtreme.Components
                     Text = "Options",
                     Action = (object o) => _menus.Goto("options")
                 };
-                var masterVolumeScroller = new Menus.Scroller();
-                var sfxVolumeScroller = new Menus.Scroller();
+                var masterVolumeScroller = new Menus.Scroller()
+                {
+                    Text = "Master Volume"
+                };
+                var musicVolume = new Menus.Scroller()
+                {
+                    Text = "Music Volume"
+                };
+                var sfxVolumeScroller = new Menus.Scroller()
+                {
+                    Text = "SFX Volume"
+                };
                 var creditsButton = new Menus.Button()
                 {
                     Text = "Credits",
@@ -266,6 +276,7 @@ namespace BreakoutExtreme.Components
                 mainWindow.Add(restartButton);
                 helpWindow.Add(helpBackButton);
                 optionsWindow.Add(masterVolumeScroller);
+                optionsWindow.Add(musicVolume);
                 optionsWindow.Add(sfxVolumeScroller);
                 optionsWindow.Add(optionsBackButton);
                 creditsWindow.Add(creditsBackButton);
