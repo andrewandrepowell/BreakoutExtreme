@@ -68,6 +68,21 @@ namespace BreakoutExtreme
             Debug.Assert(_initialized);
             Paused = false;
         }
+        public static void UpdateMasterVolume(float newVolume)
+        {
+            Debug.Assert(newVolume >= 0 && newVolume <= 1);
+            MasterVolume = newVolume;
+        }
+        public static void UpdateMusicVolume(float newVolume)
+        {
+            Debug.Assert(newVolume >= 0 && newVolume <= 1);
+            MusicVolume = newVolume;
+        }
+        public static void UpdateSFXVolume(float newVolume)
+        {
+            Debug.Assert(newVolume >= 0 && newVolume <= 1);
+            SFXVolume = newVolume;
+        }
         public static void Update(GameTime gameTime)
         {
             Debug.Assert(_initialized);

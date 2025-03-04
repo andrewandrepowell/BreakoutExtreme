@@ -14,6 +14,7 @@ namespace BreakoutExtreme.Components
         private readonly Button _menuButton;
         private readonly Dimmer _dimmer;
         private readonly Menus _menus;
+        private readonly Sounder _sounder;
         private const float _menuLockPeriod = 0.25f;
         private float _menuLockTime;
         private int _score = 0;
@@ -109,8 +110,8 @@ namespace BreakoutExtreme.Components
         }
         public GameWindow()
         {
-            // Finally, instantiate the play area.
             _playArea = Globals.Runner.CreatePlayArea(this);
+            _sounder = Globals.Runner.GetSounder();
 
             // Create background area for UI.
             {
@@ -221,35 +222,70 @@ namespace BreakoutExtreme.Components
                 var helpButton = new Menus.Button()
                 {
                     Text = "Help",
-                    Action = (object o) => _menus.Goto("help")
+                    Action = (object o) => 
+                    {
+                        if (_menus.Busy)
+                            return;
+                        _menus.Goto("help"); 
+                    }
                 };
                 var optionsButton = new Menus.Button()
                 {
                     Text = "Options",
-                    Action = (object o) => _menus.Goto("options")
+                    Action = (object o) => 
+                    {
+                        if (_menus.Busy)
+                            return;
+                        _menus.Goto("options"); 
+                    }
                 };
                 var masterVolumeScroller = new Menus.Scroller()
                 {
-                    Text = "Master Volume"
+                    Text = "Master Volume",
+                    Percent = Globals.MasterVolume * 100,
+                    Action = (object o, float percent) =>
+                    {
+                        Globals.UpdateMasterVolume(percent / 100);
+                        _sounder.UpdateVolume();
+                    }
                 };
                 var musicVolume = new Menus.Scroller()
                 {
-                    Text = "Music Volume"
+                    Text = "Music Volume",
+                    Percent = Globals.MusicVolume * 100,
+                    Action = (object o, float percent) =>
+                    {
+                        Globals.UpdateMusicVolume(percent / 100);
+                        _sounder.UpdateVolume();
+                    }
                 };
                 var sfxVolumeScroller = new Menus.Scroller()
                 {
-                    Text = "SFX Volume"
+                    Text = "SFX Volume",
+                    Percent = Globals.SFXVolume * 100,
+                    Action = (object o, float percent) =>
+                    {
+                        Globals.UpdateSFXVolume(percent / 100);
+                        _sounder.UpdateVolume();
+                    }
                 };
                 var creditsButton = new Menus.Button()
                 {
                     Text = "Credits",
-                    Action = (object o) => _menus.Goto("credits")
+                    Action = (object o) => 
+                    {
+                        if (_menus.Busy)
+                            return;
+                        _menus.Goto("credits"); 
+                    }
                 };
                 var restartButton = new Menus.Button()
                 {
                     Text = "Restart",
                     Action = (object o) =>
                     {
+                        if (_menus.Busy)
+                            return;
                         CloseMenu();
                         _playArea.Unload();
                         Reset();
@@ -258,17 +294,32 @@ namespace BreakoutExtreme.Components
                 var helpBackButton = new Menus.Button()
                 {
                     Text = "Back",
-                    Action = (object o) => _menus.Goto(_menus.PrevID)
+                    Action = (object o) =>
+                    {
+                        if (_menus.Busy)
+                            return;
+                        _menus.Goto(_menus.PrevID);
+                    }
                 };
                 var optionsBackButton = new Menus.Button()
                 {
                     Text = "Back",
-                    Action = (object o) => _menus.Goto(_menus.PrevID)
+                    Action = (object o) =>
+                    {
+                        if (_menus.Busy)
+                            return;
+                        _menus.Goto(_menus.PrevID);
+                    }
                 };
                 var creditsBackButton = new Menus.Button()
                 {
                     Text = "Back",
-                    Action = (object o) => _menus.Goto(_menus.PrevID)
+                    Action = (object o) =>
+                    {
+                        if (_menus.Busy)
+                            return;
+                        _menus.Goto(_menus.PrevID);
+                    }
                 };
                 mainWindow.Add(helpButton);
                 mainWindow.Add(optionsButton);
