@@ -26,7 +26,7 @@ namespace BreakoutExtreme.Components
             private readonly ContainerRuntime _containerRuntime;
             private RunningStates _state;
             private float _shiftTime;
-            private Bag<Button> _buttons;
+            private Bag<IInteractable> _interactables;
             private RectangleF _bounds;
             public ContainerRuntime GetContainerRuntime() => _containerRuntime;
             public string Text
@@ -42,8 +42,8 @@ namespace BreakoutExtreme.Components
                 _containerRuntime.Visible = true;
                 _containerRuntime.X = 0;
                 _fgNineSliceRuntime.Alpha = 0;
-                for (var i = 0; i < _buttons.Count; i++)
-                    _buttons[i].Running = true;
+                for (var i = 0; i < _interactables.Count; i++)
+                    _interactables[i].Running = true;
                 UpdateBounds();
                 _state = RunningStates.Running;
             }
@@ -53,8 +53,8 @@ namespace BreakoutExtreme.Components
                 _containerRuntime.Visible = false;
                 _containerRuntime.X = _shiftAmount;
                 _fgNineSliceRuntime.Alpha = 255;
-                for (var i = 0; i < _buttons.Count; i++)
-                    _buttons[i].Running = false;
+                for (var i = 0; i < _interactables.Count; i++)
+                    _interactables[i].Running = false;
                 _state = RunningStates.Waiting;
             }
             public void Start() 
@@ -63,8 +63,8 @@ namespace BreakoutExtreme.Components
                 _containerRuntime.Visible = true;
                 _containerRuntime.X = -_shiftAmount;
                 _fgNineSliceRuntime.Alpha = 255;
-                for (var i = 0; i < _buttons.Count; i++)
-                    _buttons[i].Running = false;
+                for (var i = 0; i < _interactables.Count; i++)
+                    _interactables[i].Running = false;
                 _state = RunningStates.Starting;
             }
             public void Stop() 
@@ -73,16 +73,16 @@ namespace BreakoutExtreme.Components
                 _containerRuntime.Visible = true;
                 _containerRuntime.X = 0;
                 _fgNineSliceRuntime.Alpha = 0;
-                for (var i = 0; i < _buttons.Count; i++)
-                    _buttons[i].Running = false;
+                for (var i = 0; i < _interactables.Count; i++)
+                    _interactables[i].Running = false;
                 _state = RunningStates.Stopping;
             }
-            public void Add(Button button)
+            public void Add(IInteractable interactable)
             {
                 Debug.Assert(_state == RunningStates.Waiting);
-                button.Running = false;
-                _buttons.Add(button);
-                _stackContainerRuntime.Children.Add(button.GetContainerRuntime());
+                interactable.Running = false;
+                _interactables.Add(interactable);
+                _stackContainerRuntime.Children.Add(interactable.GetContainerRuntime());
             }
             public void UpdateBounds()
             {
@@ -119,12 +119,12 @@ namespace BreakoutExtreme.Components
                         ForceStop();
                 }
 
-                for (var i = 0; i < _buttons.Count; i++)
-                    _buttons[i].Update();
+                for (var i = 0; i < _interactables.Count; i++)
+                    _interactables[i].Update();
             }
             public Window()
             {
-                _buttons = [];
+                _interactables = [];
 
                 _containerRuntime = new ContainerRuntime()
                 {

@@ -13,7 +13,7 @@ namespace BreakoutExtreme.Components
 {
     public partial class Menus
     {
-        public class Button
+        public class Button : IInteractable
         {
             private const float _pressedPeriod = 0.5f;
             private readonly static States[] _states = Enum.GetValues<States>();
@@ -91,7 +91,7 @@ namespace BreakoutExtreme.Components
                     if (controlStates.CursorSelectState == Controller.SelectStates.Pressed && _bounds.Contains(controlStates.CursorPosition))
                     {
                         _pressedTime = _pressedPeriod;
-                        if (_action != null) _action(_parent);
+                        _action?.Invoke(_parent);
                         _sounder.Play(Sounder.Sounds.Menu);
                         _state = States.Pressed;
                         UpdateStateProperties();

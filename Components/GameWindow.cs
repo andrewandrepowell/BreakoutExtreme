@@ -228,6 +228,8 @@ namespace BreakoutExtreme.Components
                     Text = "Options",
                     Action = (object o) => _menus.Goto("options")
                 };
+                var masterVolumeScroller = new Menus.Scroller();
+                var sfxVolumeScroller = new Menus.Scroller();
                 var creditsButton = new Menus.Button()
                 {
                     Text = "Credits",
@@ -263,6 +265,8 @@ namespace BreakoutExtreme.Components
                 mainWindow.Add(creditsButton);
                 mainWindow.Add(restartButton);
                 helpWindow.Add(helpBackButton);
+                optionsWindow.Add(masterVolumeScroller);
+                optionsWindow.Add(sfxVolumeScroller);
                 optionsWindow.Add(optionsBackButton);
                 creditsWindow.Add(creditsBackButton);
                 _menus.Add(mainWindow);
