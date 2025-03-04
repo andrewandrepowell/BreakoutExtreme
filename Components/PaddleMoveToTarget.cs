@@ -11,7 +11,7 @@ namespace BreakoutExtreme.Components
             private readonly Paddle _parent = parent;
             public bool Running { get; private set; } = false;
             public float Target { get; private set; }
-            public float Threshold = 16;
+            public float Threshold = 8;
             public float Acceleration = 7000;
             public void Start(float x)
             {
