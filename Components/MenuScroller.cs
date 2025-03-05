@@ -13,9 +13,7 @@ namespace BreakoutExtreme.Components
         public class Scroller : IInteractable
         {
             private readonly static Color _textColor = Color.Black;
-            private readonly static Size _spriteSize = new(8, 22);
             private readonly ContainerRuntime _containerRuntime;
-            private RectangleF _spriteBounds;
             private RectangleF _containerCBounds;
             private bool _running;
             private bool _held;
@@ -45,7 +43,6 @@ namespace BreakoutExtreme.Components
                     _running = value;
                     if (_running)
                     {
-                        UpdateSpriteBounds();
                         UpdateContainerCBounds();
                     }
                     else
@@ -79,18 +76,6 @@ namespace BreakoutExtreme.Components
                 get => _textRuntime.Text;
                 set => _textRuntime.Text = value;
             }
-            private void UpdateSpriteBounds()
-            {
-                var fullX = _spriteRuntime.GetAbsoluteX();
-                var fullY = _spriteRuntime.GetAbsoluteY();
-                var fullWidth = _spriteRuntime.GetAbsoluteWidth();
-                var fullHeight = _spriteRuntime.GetAbsoluteHeight();
-                _spriteBounds = new(
-                    x: fullX + (fullWidth - _spriteSize.Width) / 2,
-                    y: fullY + (fullHeight - _spriteSize.Height) / 2,
-                    width: _spriteSize.Width,
-                    height: _spriteSize.Height);
-            }
             private void UpdateContainerCBounds()
             {
                 _containerCBounds = new(
@@ -109,8 +94,7 @@ namespace BreakoutExtreme.Components
 
                     if (_held)
                     {
-                        UpdateSpriteBounds();
-                        var centerX = _spriteBounds.BoundingRectangle.Center.X;
+                        var centerX = _spriteRuntime.GetAbsoluteCenterX();
                         var diffX = controlStates.CursorPosition.X - centerX;
                         if (Math.Abs(diffX) > _threshold)
                         {
