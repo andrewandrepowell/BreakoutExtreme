@@ -742,3 +742,9 @@
 /processorParam:TextureFormat=Color
 /build:animations/scroll_0.png
 
+#begin music/taking_it_back_0.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:music/taking_it_back_0.wav
+

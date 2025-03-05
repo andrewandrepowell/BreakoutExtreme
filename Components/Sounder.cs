@@ -27,9 +27,10 @@ namespace BreakoutExtreme.Components
         { 
             Brick, BrickBreak, Paddle, Wall, Laser, Empower, Whistle, 
             Cannon, Explosion, BallBreak, PaddleBreak, Launch, Menu,
-            Pause,Resume,
+            Pause, Resume,
             SplashDrop, SplashVanish, 
-            PowerRevealed, PowerAcquired
+            PowerRevealed, PowerAcquired,
+            TakingItBack
         }
         private enum SoundSamples 
         { 
@@ -44,6 +45,7 @@ namespace BreakoutExtreme.Components
             SplashDrop0, SplashVanish0,
             Cannon0, Cannon1, Cannon2,
             Explosion0, Explosion1, Explosion2, Explosion3, Explosion4,
+            TakingItBack0,
         }
         private class SoundNode(SoundSampleNode[] Nodes, SoundConfig Config)
         {
@@ -60,7 +62,7 @@ namespace BreakoutExtreme.Components
                     _currentNode.Config.Volume *
                     Globals.MasterVolume *
                     (_config.SoundType == SoundTypes.SFX ? Globals.SFXVolume : 
-                    (_config.SoundType == SoundTypes.Music ? Globals.MasterVolume : 1)));
+                    (_config.SoundType == SoundTypes.Music ? Globals.MusicVolume : 1)));
             }
             public void Play(bool ignoreDelay = false)
             {
@@ -103,7 +105,7 @@ namespace BreakoutExtreme.Components
             }
             public void Update()
             {
-                if (Globals.Paused)
+                if (Globals.Paused && _config.SoundType == SoundTypes.SFX)
                     return;
                 if ((_config.Repeat || (_config.Delay && !_hasPlayed)) && _playing && _currentNode.SoundEffectInstance.State != SoundState.Playing && (!_config.Delay || _delayTime <= 0))
                     Play(ignoreDelay: true);
@@ -163,6 +165,7 @@ namespace BreakoutExtreme.Components
             { SoundSamples.Menu0, new("sounds/menu_0", 0.1f) },
             { SoundSamples.Pause0, new("sounds/pause_0", 0.1f) },
             { SoundSamples.Resume0, new("sounds/resume_0", 0.1f) },
+            { SoundSamples.TakingItBack0, new("music/taking_it_back_0", 0.1f) },
         });
         private readonly static ReadOnlyDictionary<Sounds, SoundConfig> _soundConfigs = new(new Dictionary<Sounds, SoundConfig>() 
         {
@@ -183,6 +186,7 @@ namespace BreakoutExtreme.Components
             { Sounds.Menu, new(SoundTypes.SFX, [SoundSamples.Menu0], true) },
             { Sounds.Pause, new(SoundTypes.SFX, [SoundSamples.Pause0], true) },
             { Sounds.Resume, new(SoundTypes.SFX, [SoundSamples.Resume0], true) },
+            { Sounds.TakingItBack, new(SoundTypes.Music, [SoundSamples.TakingItBack0], Repeat: true) },
             { Sounds.SplashDrop, new(SoundTypes.SFX, [SoundSamples.SplashDrop0], true, Delay: true, DelayPeriod: 2f) },
             { Sounds.SplashVanish, new(SoundTypes.SFX, [SoundSamples.SplashVanish0], true, Delay: true, DelayPeriod: 3.5f) },
         });

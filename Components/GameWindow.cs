@@ -113,6 +113,11 @@ namespace BreakoutExtreme.Components
             _playArea = Globals.Runner.CreatePlayArea(this);
             _sounder = Globals.Runner.GetSounder();
 
+            // Play background music.
+            {
+                _sounder.Play(Sounder.Sounds.TakingItBack);
+            }
+
             // Create background area for UI.
             {
                 var topPatch = Globals.Runner.CreateNinePatcher();
@@ -213,7 +218,8 @@ namespace BreakoutExtreme.Components
                     Text = 
                     "Andrew Powell - Game Design, Programming, and Art\n" +
                     "\nAsset Packs:\n" +
-                    "1000 Retro Sound Effects - tinyurl.com/2huzyy9c\n" +
+                    "SubspaceAudio - 1000 Retro Sound Effects\n" +
+                    "Elv Games - 8-Bit Battle Music 3\n" +
                     "\nTools:\n" +
                     "MonoGame / KNI - Game Engine\n" +
                     "MonoGame Extended - ECS, Collisions, Particle Effects, and More\n" +
