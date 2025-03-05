@@ -1,5 +1,6 @@
 ﻿using System.Diagnostics;
 using System;
+using MonoGame.Extended;
 
 namespace BreakoutExtreme.Components
 {
@@ -136,6 +137,11 @@ namespace BreakoutExtreme.Components
                     _cannons.Destroy();
                     _bombs.Destroy();
                 }
+
+                // Decrement timers
+                var timeElapsed = Globals.GameTime.GetElapsedSeconds();
+                if (_intenseTime > 0)
+                    _intenseTime -= timeElapsed;
             }
         }
     }

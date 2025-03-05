@@ -6,6 +6,8 @@ using RenderingLibrary;
 using MonoGame.Extended.ECS;
 using BreakoutExtreme.Utility;
 using System.Diagnostics;
+using System.Collections.ObjectModel;
+using System.Collections.Generic;
 
 namespace BreakoutExtreme.Components
 {
@@ -18,11 +20,18 @@ namespace BreakoutExtreme.Components
         private readonly Features.Vanish _vanish;
         private readonly Features.FloatUp _floatUp;
         private readonly Features.Flash _flash;
+        private readonly Features.Shake _shake;
         private Entity _entity;
         private bool _running;
         private bool _initialized;
         private Color _textColor = Color.Black;
         private string _text = "H";
+        private record IntenseConfig(Color TextColor, bool Shake);
+        private static ReadOnlyDictionary<bool, IntenseConfig> _intenseConfigs = new(new Dictionary<bool, IntenseConfig>() 
+        {
+            { false, new(Color.Black, false) },
+            { true, new(Color.Red, true) }
+        });
         private void UpdateContainerSize()
         {
             _containerRuntime.Width = Size.Width;
@@ -30,9 +39,9 @@ namespace BreakoutExtreme.Components
         }
         private void UpdateTextRuntimeColor()
         {
-            _textRuntime.Red = TextColor.R;
-            _textRuntime.Green = TextColor.G;
-            _textRuntime.Blue = TextColor.B;
+            _textRuntime.Red = _textColor.R;
+            _textRuntime.Green = _textColor.G;
+            _textRuntime.Blue = _textColor.B;
         }
         private void UpdateTextRuntimeText()
         {
@@ -44,18 +53,6 @@ namespace BreakoutExtreme.Components
 #pragma warning disable CA1822
         public Size Size => _size;
 #pragma warning restore CA1822
-        public Color TextColor
-        {
-            get => _textColor;
-            set
-            {
-                Debug.Assert(_initialized);
-                if (_textColor == value)
-                    return;
-                _textColor = value;
-                UpdateTextRuntimeColor();
-            }
-        }
         public string Text
         {
             get => _text;
@@ -84,12 +81,19 @@ namespace BreakoutExtreme.Components
             if (_running && !_vanish.Running && _floatUp.State == RunningStates.Running)
                 _running = false;
         }
-        public void Reset(Entity entity)
+        public void Reset(Entity entity, bool intense = false)
         {
             Debug.Assert(!_initialized);
+            var intenseConfig = _intenseConfigs[intense];
             _entity = entity;
             _vanish.Start();
             _floatUp.Start();
+            if (intenseConfig.Shake)
+                _shake.Start();
+            else
+                _shake.Stop();
+            _textColor = intenseConfig.TextColor;
+            UpdateTextRuntimeColor();
             _initialized = true;
             _running = true;
         }
@@ -135,6 +139,8 @@ namespace BreakoutExtreme.Components
                 _flash = new() { Color = Color.White };
                 _flash.Start();
                 _gumDrawer.ShaderFeatures.Add(_flash);
+                _shake = new();
+                _gumDrawer.ShaderFeatures.Add(_shake);
             }
         }
     }

@@ -146,12 +146,12 @@ namespace BreakoutExtreme.Components
             entity.Attach(gumDrawer);
             return button;
         }
-        public ScorePopup CreateScorePopup()
+        public ScorePopup CreateScorePopup(bool intense = false)
         {
             Debug.Assert(_initialized);
             var entity = _world.CreateEntity();
             _scorePopupPool.RemoveFromFront(out var scorePopup);
-            scorePopup.Reset(entity);
+            scorePopup.Reset(entity, intense);
             var gumDrawer = scorePopup.GetGumDrawer();
             entity.Attach(scorePopup);
             entity.Attach(gumDrawer);

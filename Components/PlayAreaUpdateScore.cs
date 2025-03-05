@@ -4,13 +4,28 @@ namespace BreakoutExtreme.Components
 {
     public partial class PlayArea
     {
-        public void UpdateScore(Vector2 position)
+        private const float _intensePeriod = 1;
+        private float _intenseTime;
+        public void UpdateScore(Vector2 position, bool bomb = false)
         {
-            var scorePopup = Globals.Runner.CreateScorePopup();
-            scorePopup.Text = "+1";
+            bool intense;
+            int increment;
+            if (bomb)
+            { 
+                intense = false;
+                increment = 1;
+            }
+            else
+            {
+                intense = _intenseTime > 0;
+                increment = 1 + _parent.LevelsCleared + (intense ? 1 : 0);
+            }
+            var scorePopup = Globals.Runner.CreateScorePopup(intense);
+            scorePopup.Text = $"+{increment}";
             scorePopup.GetGumDrawer().Position = position;
+            _intenseTime = _intensePeriod;
             _scorePopups.Add(scorePopup);
-            _parent.Score++;
+            _parent.Score += increment;
         }
         public void UpdateScore(Cannon cannon)
         {
@@ -25,7 +40,7 @@ namespace BreakoutExtreme.Components
         public void UpdateScore(Bomb bomb)
         {
             var collider = bomb.GetCollider();
-            UpdateScore(collider.Position);
+            UpdateScore(collider.Position, true);
         }
     }
 }

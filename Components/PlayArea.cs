@@ -118,6 +118,8 @@ namespace BreakoutExtreme.Components
             _cannons.Clear();
             _paddle = null;
 
+            _intenseTime = 0;
+
             State = States.Unloaded;
         }
         public void GameStart()
