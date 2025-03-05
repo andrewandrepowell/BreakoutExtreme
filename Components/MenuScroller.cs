@@ -13,9 +13,10 @@ namespace BreakoutExtreme.Components
         public class Scroller : IInteractable
         {
             private readonly static Color _textColor = Color.Black;
-            private readonly static Size _size = new(8, 22);
+            private readonly static Size _spriteSize = new(8, 22);
             private readonly ContainerRuntime _containerRuntime;
-            private RectangleF _bounds;
+            private RectangleF _spriteBounds;
+            private RectangleF _containerCBounds;
             private bool _running;
             private bool _held;
             private Action<object, float> _action;
@@ -44,7 +45,8 @@ namespace BreakoutExtreme.Components
                     _running = value;
                     if (_running)
                     {
-                        UpdateBounds();
+                        UpdateSpriteBounds();
+                        UpdateContainerCBounds();
                     }
                     else
                     {
@@ -77,17 +79,25 @@ namespace BreakoutExtreme.Components
                 get => _textRuntime.Text;
                 set => _textRuntime.Text = value;
             }
-            public void UpdateBounds()
+            private void UpdateSpriteBounds()
             {
                 var fullX = _spriteRuntime.GetAbsoluteX();
                 var fullY = _spriteRuntime.GetAbsoluteY();
                 var fullWidth = _spriteRuntime.GetAbsoluteWidth();
                 var fullHeight = _spriteRuntime.GetAbsoluteHeight();
-                _bounds = new(
-                    x: fullX + (fullWidth - _size.Width) / 2,
-                    y: fullY + (fullHeight - _size.Height) / 2,
-                    width: _size.Width,
-                    height: _size.Height);
+                _spriteBounds = new(
+                    x: fullX + (fullWidth - _spriteSize.Width) / 2,
+                    y: fullY + (fullHeight - _spriteSize.Height) / 2,
+                    width: _spriteSize.Width,
+                    height: _spriteSize.Height);
+            }
+            private void UpdateContainerCBounds()
+            {
+                _containerCBounds = new(
+                    x: _containerCRuntime.GetAbsoluteX(),
+                    y: _containerCRuntime.GetAbsoluteY(),
+                    width: _containerCRuntime.GetAbsoluteWidth(),
+                    height: _containerCRuntime.GetAbsoluteHeight());
             }
             public void Update()
             {
@@ -99,8 +109,8 @@ namespace BreakoutExtreme.Components
 
                     if (_held)
                     {
-                        UpdateBounds();
-                        var centerX = _bounds.BoundingRectangle.Center.X;
+                        UpdateSpriteBounds();
+                        var centerX = _spriteBounds.BoundingRectangle.Center.X;
                         var diffX = controlStates.CursorPosition.X - centerX;
                         if (Math.Abs(diffX) > _threshold)
                         {
@@ -113,7 +123,7 @@ namespace BreakoutExtreme.Components
                         }
                     }
 
-                    if (!_held && pressed && _bounds.Contains(controlStates.CursorPosition))
+                    if (!_held && pressed && _containerCBounds.Contains(controlStates.CursorPosition))
                         _held = true;
                     if (_held && released)
                         _held = false;
