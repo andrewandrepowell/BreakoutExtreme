@@ -52,6 +52,7 @@
     <Compile Include="Components\MenuTypes.cs" />
     <Compile Include="Components\PaddleEmpowered.cs" />
     <Compile Include="Components\PaddleEnlarge.cs" />
+    <Compile Include="Components\PlayAreaUpdateMagnitudes.cs" />
     <Compile Include="Components\PlayAreaUpdateScore.cs" />
     <Compile Include="Components\Power.cs" />
     <Compile Include="Components\Sounder.cs" />

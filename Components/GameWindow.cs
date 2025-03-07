@@ -20,6 +20,7 @@ namespace BreakoutExtreme.Components
         private int _score = 0;
         private int _highScore = 0;
         private int _levelsCleared = 0;
+        private float _gameTimeElapsed = 0;
         private void UpdateScorePanel()
         {
             _scorePanel.Text = $"{_score}";
@@ -87,6 +88,7 @@ namespace BreakoutExtreme.Components
             set => _remainingBallsPanel.RemainingBalls = value;
         }
         public static int MaximumBalls => RemainingBallsPanel.MaximumBalls;
+        public float GameTimeElapsed => _gameTimeElapsed;
         public void DropBall()
         {
             _remainingBallsPanel.FlashNewBall = false;
@@ -100,12 +102,12 @@ namespace BreakoutExtreme.Components
         public void Reset()
         {
             Debug.Assert(!_playArea.Loaded);
-            if (Score > HighScore)
-                HighScore = Score;
+            if (Score > HighScore) HighScore = Score;
             Score = 0;
             _remainingBallsPanel.FlashNewBall = false;
             RemainingBalls = 3;
             LevelsCleared = 0;
+            _gameTimeElapsed = 0;
             _playArea.GameStart();
         }
         public GameWindow()
@@ -348,6 +350,8 @@ namespace BreakoutExtreme.Components
         }
         public void Update()
         {
+            var timeElapsed = Globals.GameTime.GetElapsedSeconds();
+
             // For now, loop through the levels.
             if (!_playArea.Loaded && (RemainingBalls > 0 || _playArea.BallInPlay))
             {
@@ -384,7 +388,10 @@ namespace BreakoutExtreme.Components
 
             // A timer is put on opening/closing the menu to prevent unintended actions when closing/opening the main menu.
             if (_menuLockTime > 0)
-                _menuLockTime -= Globals.GameTime.GetElapsedSeconds();
+                _menuLockTime -= timeElapsed;
+
+            // Track the game time elapsed for current game.
+            if (!Globals.Paused) _gameTimeElapsed += timeElapsed;
         }
     }
 }

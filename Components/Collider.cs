@@ -73,7 +73,11 @@ namespace BreakoutExtreme.Components
                 var displacement = Velocity * elapsedTime;
 #if DEBUG
                 var displacementMagnitude = displacement.Length();
-                Debug.Assert(displacementMagnitude <= Globals.GameHalfBlockSize);
+                if (displacementMagnitude > Globals.GameBlockSize)
+                {
+                    Console.WriteLine($"Current Velocity: {Velocity}, Acceleration: {Acceleration}, AccelMag: {Acceleration.Length()}");
+                    Debug.Assert(false);
+                }
 #endif
                 Position += displacement;
             }

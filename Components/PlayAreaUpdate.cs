@@ -56,7 +56,7 @@ namespace BreakoutExtreme.Components
                                 var ball = _balls[0];
                                 Debug.Assert(_paddle.Attached);
                                 _paddle.Detach();
-                                ball.StartLaunch();
+                                ball.StartLaunch(_ballMagnitude);
                                 State = States.GameRunning;
                             }
                         }
@@ -128,6 +128,16 @@ namespace BreakoutExtreme.Components
                     Unload();
                 }
 
+                // Update magnitudes of all active balls and the paddle in play.
+                if (State == States.GameRunning)
+                {
+                    while (_updateMagnitudeTime <= 0)
+                    {
+                        UpdateMagnitudes();
+                        _updateMagnitudeTime += _timeToUpdateMagnitudes;
+                    }
+                }
+
                 // Remove any destroyed objects.
                 {
                     _balls.Destroy();
@@ -142,6 +152,8 @@ namespace BreakoutExtreme.Components
                 var timeElapsed = Globals.GameTime.GetElapsedSeconds();
                 if (_intenseTime > 0)
                     _intenseTime -= timeElapsed;
+                if (_updateMagnitudeTime > 0)
+                    _updateMagnitudeTime -= timeElapsed;
             }
         }
     }

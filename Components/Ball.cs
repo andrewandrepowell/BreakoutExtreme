@@ -63,6 +63,11 @@ namespace BreakoutExtreme.Components
         public States State => _state;
         public bool LaunchRunning => _launcher.Running;
         public bool Destroyed => _state == States.Destroyed;
+        public float LaunchMagnitude
+        {
+            get => _launcher.Magnitude;
+            set => _launcher.Magnitude = value;
+        }
         public void Attach()
         {
             Debug.Assert(_initialized);
@@ -75,18 +80,9 @@ namespace BreakoutExtreme.Components
             Debug.Assert(_state == States.Attached);
             _state = States.Active;
         }
-        public void StartLaunch(Vector2? acceleration = null)
-        {
-            Debug.Assert(_initialized);
-            Debug.Assert(_state == States.Active);
-            _launcher.Start(acceleration);
-        }
-        public void StopLaunch()
-        {
-            Debug.Assert(_initialized);
-            Debug.Assert(_state == States.Active);
-            _launcher.Stop();
-        }
+        public void StartLaunch(Vector2? acceleration = null) => _launcher.Start(acceleration);
+        public void StartLaunch(float magnitude) => _launcher.Start(magnitude);
+        public void StopLaunch() => _launcher.Stop();
         public void RunBounceEffects()
         {
             Debug.Assert(_initialized);

@@ -4,7 +4,6 @@ using MonoGame.Extended;
 using System.Diagnostics;
 using System;
 using MonoGame.Extended.Collections;
-using System.Reflection.Metadata;
 
 
 namespace BreakoutExtreme.Components
@@ -26,12 +25,30 @@ namespace BreakoutExtreme.Components
                 _horizontalLimitVector.X);
             private readonly Ball _parent = parent;
             private readonly Deque<Brick> _powerBricks = [];
+            private Vector2 _acceleration = new(0, -5000);
             private const float _bounceLockPeriod = (float)1 / 30;
             private float _bounceLockTime;
             private bool _bounceLocked => _bounceLockTime > 0;
             private void LockBounce() => _bounceLockTime = _bounceLockPeriod;
             public bool Running { get; private set; } = false;
-            public Vector2 Acceleration = new(0, -5000);
+            public Vector2 Acceleration
+            {
+                get => _acceleration;
+                set
+                {
+                    Debug.Assert(!value.EqualsWithTolerence(Vector2.Zero));
+                    _acceleration = value;
+                }
+            }
+            public float Magnitude
+            {
+                get => Acceleration.Length();
+                set
+                {
+                    Debug.Assert(value > 0);
+                    Acceleration = Acceleration.NormalizedCopy() * value;
+                }
+            }
             public static void ServiceApplyDamage(
                 Collider.CollideNode node, 
                 PlayArea playArea, 
@@ -279,6 +296,7 @@ namespace BreakoutExtreme.Components
             public void Start(Vector2? acceleration = null)
             {
                 Debug.Assert(_parent._initialized);
+                Debug.Assert(_parent._state == States.Active);
                 Debug.Assert(!_parent._particler.Running);
                 Debug.Assert(!Running);
                 _parent._particler.Start();
@@ -290,9 +308,15 @@ namespace BreakoutExtreme.Components
                 Debug.Assert(!Acceleration.EqualsWithTolerence(Vector2.Zero));
                 Running = true;
             }
+            public void Start(float magnitude)
+            {
+                Start();
+                Magnitude = magnitude;
+            }
             public void Stop()
             {
                 Debug.Assert(_parent._initialized);
+                Debug.Assert(_parent._state == States.Active);
                 Debug.Assert(_parent._particler.Running);
                 Debug.Assert(Running);
                 var collider = _parent._collider;

@@ -4,7 +4,6 @@ using System.Linq;
 using System.Diagnostics;
 using BreakoutExtreme.Utility;
 using Microsoft.Xna.Framework;
-using static BreakoutExtreme.Components.Bomb;
 
 namespace BreakoutExtreme.Components
 {
@@ -66,6 +65,13 @@ namespace BreakoutExtreme.Components
             Debug.Assert(_scorePopups.Count == 0);
             Debug.Assert(_lasers.Count == 0);
             Debug.Assert(_cannons.Count == 0);
+
+            // Reset timers.
+            _intenseTime = 0;
+            _updateMagnitudeTime = 0;
+
+            // Reset magnitudes.
+            UpdateMagnitudes();
 
             // Load all the components of the level.
             {
