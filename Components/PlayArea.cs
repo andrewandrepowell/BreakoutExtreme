@@ -60,7 +60,12 @@ namespace BreakoutExtreme.Components
         public void Load(Levels level)
         {
             Debug.Assert(!Loaded);
+            Debug.Assert(_paddle == null);
             Debug.Assert(_balls.Count == 0);
+            Debug.Assert(_bricks.Count == 0);
+            Debug.Assert(_scorePopups.Count == 0);
+            Debug.Assert(_lasers.Count == 0);
+            Debug.Assert(_cannons.Count == 0);
 
             // Load all the components of the level.
             {
