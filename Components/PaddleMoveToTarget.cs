@@ -9,10 +9,19 @@ namespace BreakoutExtreme.Components
         public class MoveToTarget(Paddle parent)
         {
             private readonly Paddle _parent = parent;
+            private float _acceleration = 7000;
             public bool Running { get; private set; } = false;
             public float Target { get; private set; }
             public float Threshold = 8;
-            public float Acceleration = 7000;
+            public float Acceleration
+            {
+                get => _acceleration;
+                set
+                {
+                    Debug.Assert(value > 0);
+                    _acceleration = value;
+                }
+            }
             public void Start(float x)
             {
                 Debug.Assert(!Running);

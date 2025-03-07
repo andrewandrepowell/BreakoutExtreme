@@ -70,9 +70,6 @@ namespace BreakoutExtreme.Components
             _intenseTime = 0;
             _updateMagnitudeTime = 0;
 
-            // Reset magnitudes.
-            UpdateMagnitudes();
-
             // Load all the components of the level.
             {
                 var area = _levelAreas[level];
@@ -98,6 +95,8 @@ namespace BreakoutExtreme.Components
                 var ball = _balls[0];
                 _paddle.Spawn();
             }
+
+            UpdateMagnitudes();
 
             _level = level;
             State = States.Loaded;

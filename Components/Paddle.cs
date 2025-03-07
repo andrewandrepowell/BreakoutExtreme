@@ -98,6 +98,11 @@ namespace BreakoutExtreme.Components
             _attached = false;
         }
         public float TargetThreshold => _moveToTarget.Threshold;
+        public float AccelerationToTarget
+        {
+            get => _moveToTarget.Acceleration;
+            set => _moveToTarget.Acceleration = value;
+        }
         public void StartMoveToTarget(float x)
         {
             Debug.Assert(_initialized);
