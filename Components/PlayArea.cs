@@ -4,6 +4,7 @@ using System.Linq;
 using System.Diagnostics;
 using BreakoutExtreme.Utility;
 using Microsoft.Xna.Framework;
+using static BreakoutExtreme.Components.Bomb;
 
 namespace BreakoutExtreme.Components
 {
@@ -116,6 +117,7 @@ namespace BreakoutExtreme.Components
             _scorePopups.Clear();
             _lasers.Clear();
             _cannons.Clear();
+            _bombs.Clear();
             _paddle = null;
 
             _intenseTime = 0;

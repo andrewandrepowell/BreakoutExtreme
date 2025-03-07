@@ -70,7 +70,7 @@ namespace BreakoutExtreme.Components
                 if (_state == States.Detonating && !_parent._shake.Running)
                 {
                     Debug.Assert(_parent._state == Bomb.States.Detonating);
-                    _parent._collider.Bounds = new CircleF(_parent._collider.Position, Bomb._bounds.Radius);
+                    _parent._collider.Bounds = new CircleF(_parent._collider.Position, _bounds.Radius);
                     _parent._animater.Play(_parent._configNode.Active);
                     _parent._particler.Stop();
                     _parent._sounder.Stop(Sounder.Sounds.Explosion);
