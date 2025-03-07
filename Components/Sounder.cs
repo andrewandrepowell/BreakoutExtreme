@@ -7,13 +7,14 @@ using MonoGame.Extended.Collections;
 using System.Linq;
 using BreakoutExtreme.Utility;
 using MonoGame.Extended;
+using Microsoft.Xna.Framework;
 
 
 namespace BreakoutExtreme.Components
 {
     public class Sounder : IUpdate
     {
-        private const float _volumeA = 1000;
+        private const float _volumeA = 10000;
         private const float _volumeB = 1 / _volumeA;
         private readonly static float _volumeC = (float)(20 * Math.Log10(_volumeB));
         public static float ConvertVolumeForSEI(float volume)
@@ -58,11 +59,12 @@ namespace BreakoutExtreme.Components
             private bool _hasPlayed = false;
             public void UpdateVolume()
             {
-                _currentNode.SoundEffectInstance.Volume = ConvertVolumeForSEI(
-                    _currentNode.Config.Volume *
+                var newVolume = _currentNode.Config.Volume * ConvertVolumeForSEI(
                     Globals.MasterVolume *
-                    (_config.SoundType == SoundTypes.SFX ? Globals.SFXVolume : 
+                    (_config.SoundType == SoundTypes.SFX ? Globals.SFXVolume :
                     (_config.SoundType == SoundTypes.Music ? Globals.MusicVolume : 1)));
+                newVolume = MathHelper.Clamp(newVolume, 0, 1);
+                _currentNode.SoundEffectInstance.Volume = newVolume;
             }
             public void Play(bool ignoreDelay = false)
             {
@@ -152,7 +154,7 @@ namespace BreakoutExtreme.Components
             { SoundSamples.Whistle0, new("sounds/whistle_0", 0.1f) },
             { SoundSamples.PowerRevealed0, new("sounds/power_revealed_0", 0.1f) },
             { SoundSamples.PowerAcquired0, new("sounds/power_acquired_0", 0.1f) },
-            { SoundSamples.SplashDrop0, new("sounds/splash_drop_0", 0.1f) },
+            { SoundSamples.SplashDrop0, new("sounds/splash_drop_0", 1f) },
             { SoundSamples.SplashVanish0, new("sounds/splash_vanish_0", 0.1f) },
             { SoundSamples.Launch0, new("sounds/launch_0", 0.1f) },
             { SoundSamples.Explosion0, new("sounds/explosion_0", 0.1f) },
@@ -160,12 +162,12 @@ namespace BreakoutExtreme.Components
             { SoundSamples.Explosion2, new("sounds/explosion_2", 0.1f) },
             { SoundSamples.Explosion3, new("sounds/explosion_3", 0.1f) },
             { SoundSamples.Explosion4, new("sounds/explosion_4", 0.1f) },
-            { SoundSamples.BallBreak0, new("sounds/ball_break_0", 0.1f) },
-            { SoundSamples.PaddleBreak0, new("sounds/paddle_break_0", 0.1f) },
+            { SoundSamples.BallBreak0, new("sounds/ball_break_0", 1f) },
+            { SoundSamples.PaddleBreak0, new("sounds/paddle_break_0", 1f) },
             { SoundSamples.Menu0, new("sounds/menu_0", 0.1f) },
             { SoundSamples.Pause0, new("sounds/pause_0", 0.1f) },
             { SoundSamples.Resume0, new("sounds/resume_0", 0.1f) },
-            { SoundSamples.TakingItBack0, new("music/taking_it_back_0", 0.1f) },
+            { SoundSamples.TakingItBack0, new("music/taking_it_back_0", 0.05f) },
         });
         private readonly static ReadOnlyDictionary<Sounds, SoundConfig> _soundConfigs = new(new Dictionary<Sounds, SoundConfig>() 
         {
