@@ -30,6 +30,8 @@ namespace BreakoutExtreme.Components
         private Ball _attachedBall;
         private bool _attached;
         private Sounder _sounder;
+        private float _lockedYPosition;
+        private bool _lockedY;
         private void ServiceCollision(Collider.CollideNode node)
         {
             if (!_initialized)
@@ -42,7 +44,7 @@ namespace BreakoutExtreme.Components
             {
                 var ballCollider = ball.GetCollider();
                 ballCollider.Position = new Vector2(
-                    x: ballCollider.Position.X,
+                    x: ballCollider.Position.X + (_collider.Velocity.X == 0? node.PenetrationVector.X:0),
                     y: ballCollider.Position.Y + node.PenetrationVector.Y);
 
                 if (_collider.Velocity.X != 0)
@@ -51,6 +53,13 @@ namespace BreakoutExtreme.Components
                         x: _collider.Position.X - node.PenetrationVector.X,
                         y: _collider.Position.Y);
                 }
+            }
+            if (_lockedY && _collider.Position.Y != _lockedYPosition)
+            {
+#if DEBUG
+                Console.WriteLine($"Paddle's Y Position changed. Correction Applied.");
+#endif
+                _collider.Position = new(_collider.Position.X, _lockedYPosition);
             }
             _moveToTarget.ServiceCollision(node);
         }
@@ -136,6 +145,12 @@ namespace BreakoutExtreme.Components
             _shadow.Start();
             _state = States.Despawning;
         }
+        public void LockY()
+        {
+            Debug.Assert(!_lockedY);
+            _lockedYPosition = _collider.Position.Y;
+            _lockedY = true;
+        }
         public void Destroy()
         {
             Debug.Assert(_initialized);
@@ -160,6 +175,7 @@ namespace BreakoutExtreme.Components
             _floatUp.Stop();
             _shake.Stop();
             _state = States.Active;
+            _lockedY = false;
             _initialized = true;
             UpdateSizeConfig();
         }
@@ -184,6 +200,7 @@ namespace BreakoutExtreme.Components
             _animater.ShaderFeatures.Add(_shake);
             _particler.ShaderFeatures.Add(_particlerGlow);
             _sounder = Globals.Runner.GetSounder();
+            _lockedY = false;
             _initialized = false;
         }
         public void RemoveEntity()

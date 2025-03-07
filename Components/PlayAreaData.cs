@@ -29,6 +29,7 @@ namespace BreakoutExtreme.Components
                     var paddle = Globals.Runner.CreatePaddle();
                     var collider = paddle.GetCollider();
                     collider.Position = position;
+                    paddle.LockY();
                     Debug.Assert(playArea._paddle == null);
                     playArea._paddle = paddle;
                 }
