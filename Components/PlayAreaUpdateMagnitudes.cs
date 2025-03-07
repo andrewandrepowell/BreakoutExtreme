@@ -7,7 +7,7 @@ namespace BreakoutExtreme.Components
     public partial class PlayArea
     {
         private const float _timeToUpdateMagnitudes = 10;
-        private const float _timeToReachMaxMagnitudes = 60 * 10;
+        private const float _timeToReachMaxMagnitudes = 60 * 15;
         private const float _ballMinMagnitude = 5000;
         private const float _ballMaxMagnitude = 2 * _ballMinMagnitude;
         private const float _paddleMinMagnitude = 7000;
