@@ -1,6 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using MonoGame.Extended;
 using System.Diagnostics;
+using System;
 
 namespace BreakoutExtreme.Components
 {
@@ -8,12 +9,15 @@ namespace BreakoutExtreme.Components
     {
         private const float _timeToUpdateMagnitudes = 10;
         private const float _timeToReachMaxMagnitudes = 60 * 3;
+        private const float _ballHueOffsetMin = 0.0f;
+        private const float _ballHueOffsetMax = 0.5f;
         private const float _ballMinMagnitude = 5000;
         private const float _ballMaxMagnitude = 2 * _ballMinMagnitude;
         private const float _paddleMinMagnitude = 7000;
         private const float _paddleMaxMagnitude = 2 * _paddleMinMagnitude;
         private float _updateMagnitudeTime;
         private float _ballMagnitude;
+        private float _ballHueOffset;
         private void UpdateMagnitudes()
         {
             Debug.Assert(_paddle != null);
@@ -22,12 +26,14 @@ namespace BreakoutExtreme.Components
             var ratio = MathHelper.Clamp(_timeElapsedSinceLaunch / _timeToReachMaxMagnitudes, 0, 1);
             _ballMagnitude = MathHelper.Lerp(_ballMinMagnitude, _ballMaxMagnitude, ratio);
             _paddle.AccelerationToTarget = MathHelper.Lerp(_paddleMinMagnitude, _paddleMaxMagnitude, ratio);
+            _ballHueOffset = MathHelper.Lerp(_ballHueOffsetMin, _ballHueOffsetMax, ratio);
             for (var i = 0; i < _balls.Count; i++)
             {
                 var ball = _balls[i];
-                if (ball.State == Ball.States.Active)
-                    ball.LaunchMagnitude = _ballMagnitude;
+                ball.HueOffset = _ballHueOffset;
+                ball.LaunchMagnitude = _ballMagnitude;
             }
         }
+        public float BallHueOffset => _ballHueOffset;
     }
 }

@@ -47,5 +47,9 @@ namespace BreakoutExtreme.Shaders
         {
 
         }
+        public virtual void UpdateShaderNode(AlterHSVNode node)
+        {
+
+        }
     }
 }

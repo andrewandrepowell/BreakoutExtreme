@@ -59,9 +59,6 @@ namespace BreakoutExtreme.Components
                                     _paddle.Detach();
                                     ball.StartLaunch(_ballMagnitude);
                                 }
-                                {
-                                    _timeElapsedSinceLaunch = 0;
-                                }
                                 State = States.GameRunning;
                             }
                         }
@@ -71,8 +68,7 @@ namespace BreakoutExtreme.Components
                 // SPAWN NEW BALL STATE
                 if (State == States.GameRunning && _balls.Count == 0 && _parent.RemainingBalls > 0)
                 {
-                    var ball = Globals.Runner.CreateBall(this);
-                    _balls.Add(ball);
+                    CreateBall();
                     _parent.DropBall();
                     State = States.SpawnNewBall;
                 }
@@ -99,7 +95,12 @@ namespace BreakoutExtreme.Components
                         ball.Spawn();
                         _paddle.Attach(ball);
                     }
-
+                    {
+                        _intenseTime = 0;
+                        _updateMagnitudeTime = 0;
+                        _timeElapsedSinceLaunch = 0;
+                        UpdateMagnitudes();
+                    }
                     State = States.PlayerTakingAim;
                 }
 

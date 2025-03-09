@@ -5,6 +5,7 @@ using System;
 using BreakoutExtreme.Utility;
 using System.Linq;
 using System.Threading.Tasks;
+using System.Diagnostics;
 
 namespace BreakoutExtreme.Shaders
 {
@@ -153,6 +154,23 @@ namespace BreakoutExtreme.Shaders
             Effect = Globals.ContentManager.Load<Effect>($"effects/surround_blur_0");
             SpriteTextureDimensions = Effect.Parameters["SpriteTextureDimensions"];
             Color = Effect.Parameters["Color"];
+        }
+    }
+    public class AlterHSVNode
+    {
+        public readonly Effect Effect;
+        public readonly EffectParameter HSVOffset;
+        public void Configure(Vector3 hsvOffset)
+        {
+            Debug.Assert(hsvOffset.X >= -1 && hsvOffset.X <= 1);
+            Debug.Assert(hsvOffset.Y >= -1 && hsvOffset.Y <= 1);
+            Debug.Assert(hsvOffset.Z >= -1 && hsvOffset.Z <= 1);
+            HSVOffset.SetValue(hsvOffset);
+        }
+        public AlterHSVNode()
+        {
+            Effect = Globals.ContentManager.Load<Effect>($"effects/alter_hsv_0");
+            HSVOffset = Effect.Parameters["HSVOffset"];
         }
     }
 }

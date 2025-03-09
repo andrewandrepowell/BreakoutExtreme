@@ -67,18 +67,12 @@ namespace BreakoutExtreme.Components
             private bool _hasPlayed = false;
             public void UpdateVolume()
             {
-                //var newVolume =  ConvertVolumeForSEI(
-                //    _currentNode.Config.Volume *
-                //    Globals.MasterVolume *
-                //    (_config.SoundType == SoundTypes.SFX ? Globals.SFXVolume :
-                //    (_config.SoundType == SoundTypes.Music ? Globals.MusicVolume : 1)));
                 var inputVolume =
                     0.2f * _currentNode.Config.Volume + 
                     0.4f * Globals.MasterVolume + 
                     0.4f * (_config.SoundType == SoundTypes.SFX ? Globals.SFXVolume :
                     (_config.SoundType == SoundTypes.Music ? Globals.MusicVolume : 1));
                 var newVolume = ConvertVolumeForSEI(MathHelper.Clamp(inputVolume, 0, 1));
-                Console.WriteLine($"New Volume: {newVolume}");
                 _currentNode.SoundEffectInstance.Volume = newVolume;
             }
             public void Play(bool ignoreDelay = false)

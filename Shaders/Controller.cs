@@ -11,6 +11,7 @@ namespace BreakoutExtreme.Shaders
         private readonly HighlightCanvasItemNode _highlightCanvasItemNode = new();
         private readonly MaskBlurNode _maskBlurNode = new();
         private readonly SurroundBlurNode _surroundBlurNode = new();
+        private readonly AlterHSVNode _alterHSVNode = new();
         public void Begin(Feature feature)
         {
             Effect effect = null;
@@ -39,6 +40,10 @@ namespace BreakoutExtreme.Shaders
                 case Scripts.SurroundBlur:
                     feature.UpdateShaderNode(_surroundBlurNode);
                     effect = _surroundBlurNode.Effect;
+                    break;
+                case Scripts.AlterHSV:
+                    feature.UpdateShaderNode(_alterHSVNode);
+                    effect = _alterHSVNode.Effect; 
                     break;
             }
             Globals.SpriteBatch.Begin(effect: effect, samplerState: SamplerState.PointClamp);

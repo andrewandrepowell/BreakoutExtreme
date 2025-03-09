@@ -97,6 +97,7 @@
     <Compile Include="Components\GumUI.cs" />
     <Compile Include="Components\Texturer.cs" />
     <Compile Include="Components\Wall.cs" />
+    <Compile Include="Features\AlterHSV.cs" />
     <Compile Include="Features\Appear.cs" />
     <Compile Include="Features\Cracks.cs" />
     <Compile Include="Features\Dash.cs" />

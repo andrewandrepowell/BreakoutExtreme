@@ -67,10 +67,6 @@ namespace BreakoutExtreme.Components
             Debug.Assert(_lasers.Count == 0);
             Debug.Assert(_cannons.Count == 0);
 
-            // Reset timers.
-            _intenseTime = 0;
-            _updateMagnitudeTime = 0;
-
             // Load all the components of the level.
             {
                 var area = _levelAreas[level];
@@ -96,8 +92,6 @@ namespace BreakoutExtreme.Components
                 var ball = _balls[0];
                 _paddle.Spawn();
             }
-
-            UpdateMagnitudes();
 
             _level = level;
             State = States.Loaded;

@@ -748,3 +748,9 @@
 /processorParam:Quality=Best
 /build:music/taking_it_back_0.wav
 
+#begin effects/alter_hsv_0.fx
+/importer:EffectImporter
+/processor:EffectProcessor
+/processorParam:DebugMode=Auto
+/build:effects/alter_hsv_0.fx
+

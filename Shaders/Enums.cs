@@ -7,6 +7,7 @@
         Pattern,
         HighlightCanvasItem,
         MaskBlur,
-        SurroundBlur
+        SurroundBlur,
+        AlterHSV
     }
 }

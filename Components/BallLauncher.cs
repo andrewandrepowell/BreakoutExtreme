@@ -100,6 +100,7 @@ namespace BreakoutExtreme.Components
                                 var ballCollider = ball.GetCollider();
                                 var acceleration = (Vector2?)(collider.Acceleration.EqualsWithTolerence(Vector2.Zero) ? null : -collider.Acceleration);
                                 ballCollider.Position = brickCollider.Position + (Vector2)(brickCollider.Size / 2);
+                                ball.HueOffset = playArea.BallHueOffset;
                                 ball.StartLaunch(acceleration);
                                 ball.Spawn();
                             }

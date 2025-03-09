@@ -20,6 +20,7 @@ namespace BreakoutExtreme.Components
         private readonly Features.Flash _flash;
         private readonly Features.LimitedFlash _limitedFlash;
         private readonly Features.FloatUp _floatUp;
+        private readonly Features.AlterHSV _alterHSV;
         private readonly Launcher _launcher;
         private readonly Destroyer _destroyer;
         private PlayArea _parent;
@@ -28,6 +29,9 @@ namespace BreakoutExtreme.Components
         private States _state;
         private Sounder _sounder;
         private bool _initialized;
+        private float _hueOffset;
+        private float[] _particlerHues;
+
         private void ServiceCollision(Collider.CollideNode node)
         {
             if (State != States.Active || !_initialized)
@@ -126,12 +130,38 @@ namespace BreakoutExtreme.Components
             _particler.Stop();
             _floatUp.Stop();
             _state = States.Active;
+            HueOffset = 0;
             _initialized = true;
+        }
+        public float HueOffset
+        {
+            get => _hueOffset;
+            set
+            {
+                Debug.Assert(value >= -1 && value <= 1);
+                _hueOffset = value;
+                _alterHSV.Hue = value;
+                {
+                    var particleEffect = _particler.GetParticleEffect();
+                    for (var i = 0; i < particleEffect.Emitters.Count; i++)
+                    {
+                        var emitter = particleEffect.Emitters[i];
+                        var color = emitter.Parameters.Color.Min;
+                        emitter.Parameters.Color = new HslColor(
+                            h: (_particlerHues[i] + value * 360.0f) % 360.0f,
+                            s: color.S,
+                            l: color.L);
+                    }
+                }
+            }
         }
         public Ball()
         {
             _initialized = false;
-            _animater = new();
+            _animater = new() { ShowBase = false };
+            _alterHSV = new();
+            _alterHSV.Start();
+            _animater.ShaderFeatures.Add(_alterHSV);
             _vanish = new();
             _animater.ShaderFeatures.Add(_vanish);
             _shake = new();
@@ -144,6 +174,16 @@ namespace BreakoutExtreme.Components
             _animater.ShaderFeatures.Add(_floatUp);
             _collider = new(bounds: _bounds, parent: this, action: _collideAction);
             _particler = new(Particler.Particles.BallTrail) { Disposable = false };
+            {
+                var particleEffect = _particler.GetParticleEffect();
+                _particlerHues = new float[particleEffect.Emitters.Count];
+                for (var i = 0; i < particleEffect.Emitters.Count; i++)
+                {
+                    var emitter = particleEffect.Emitters[i];
+                    var hsl = emitter.Parameters.Color.Min;
+                    _particlerHues[i] = hsl.H;
+                }
+            }
             _launcher = new Launcher(this);
             _destroyer = new Destroyer(this);
             _sounder = Globals.Runner.GetSounder();
