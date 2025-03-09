@@ -11,23 +11,43 @@ namespace BreakoutExtreme.Components
     public class Controller
     {
         private readonly ControlState _controlState = new();
+        private readonly static Keys[] _leftKeys = [Keys.Left, Keys.A];
+        private readonly static Keys[] _rightKeys = [Keys.Right, Keys.D];
+        private readonly static Keys[] _fireKeys = [Keys.Space];
+        private readonly static Keys[] _pauseKeys = [Keys.Enter, Keys.Escape, Keys.Back];
         private Vector2 _mousePosition = Vector2.Zero, _touchPosition = Vector2.Zero;
         private ButtonState _mouseLeftButtonState = ButtonState.Released;
         private bool _touchPressed = false;
+        private bool _keyFiredHeld = false;
+        private bool _keyPausedHeld = false;
         private static Vector2 TransformPosition(Vector2 position) => (position - Globals.GameWindowToResizeOffset) / Globals.GameWindowToResizeScalar;
         public RectangleF PaddleBox = RectangleF.Empty;
         public Vector2 PaddlePosition = Vector2.Zero;
         public float PaddleCursorThreshold = 8;
         public enum SelectStates { None, Pressed, Held, Released }
-        public enum Inputs { Mouse, Touch }
+        public enum Inputs { Mouse, Touch, Keyboard }
         public class ControlState
         {
             public Vector2 CursorPosition { get; private set; } = Vector2.Zero;
             public SelectStates CursorSelectState { get; private set; } = SelectStates.None;
-            public void Update(Vector2 cursorPosition, SelectStates cursorSelectState)
+            public Inputs Input { get; private set; } = Inputs.Mouse;
+            public bool KeyFired { get; private set; } = false;
+            public bool KeyPaused { get; private set; } = false;
+            public bool KeyLeft { get; private set; } = false;
+            public bool KeyRight { get; private set; } = false;
+            public void Update(
+                Inputs input,
+                Vector2 cursorPosition, 
+                SelectStates cursorSelectState,
+                bool keyFired, bool keyPaused, bool keyLeft, bool keyRight)
             {
+                Input = input;
                 CursorPosition = cursorPosition;
                 CursorSelectState = cursorSelectState;
+                KeyFired = keyFired;
+                KeyPaused = keyPaused;
+                KeyLeft = keyLeft;
+                KeyRight = keyRight;
             }
         }
         public ControlState GetControlState() => _controlState;
@@ -38,6 +58,36 @@ namespace BreakoutExtreme.Components
             {
                 MouseState mouseState = Mouse.GetState();
                 TouchCollection touchCollection = TouchPanel.GetState();
+                KeyboardState keyboardState = Keyboard.GetState();
+
+                // Determine keyboard input.
+                bool keyFiredHeld = false;
+                bool keyFiredPressed = false;
+                bool keyPausedHeld = false;
+                bool keyPausedPressed = false;
+                bool keyLeftHeld = false;
+                bool keyRightHeld = false;
+                {
+                    for (var i = 0; i < _fireKeys.Length; i++)
+                        if (keyboardState.IsKeyDown(_fireKeys[i]))
+                            keyFiredHeld = true;
+                    for (var i = 0; i < _pauseKeys.Length; i++)
+                        if (keyboardState.IsKeyDown(_pauseKeys[i]))
+                            keyPausedHeld = true;
+                    for (var i = 0; i < _leftKeys.Length; i++)
+                        if (keyboardState.IsKeyDown(_leftKeys[i]))
+                            keyLeftHeld = true;
+                    for (var i = 0; i < _rightKeys.Length; i++)
+                        if (keyboardState.IsKeyDown(_rightKeys[i]))
+                            keyRightHeld = true;
+
+                    keyFiredPressed = keyFiredHeld & !_keyFiredHeld;
+                    _keyFiredHeld = keyFiredHeld;
+
+                    keyPausedPressed = keyPausedHeld & !_keyPausedHeld;
+                    _keyPausedHeld = keyPausedHeld;
+                }
+
 
                 var cursorPosition = _controlState.CursorPosition;
                 var cursorSelectState = _controlState.CursorSelectState;
@@ -48,6 +98,8 @@ namespace BreakoutExtreme.Components
                         Input = Inputs.Mouse;
                     else if (touchCollection.Count > 0)
                         Input = Inputs.Touch;
+                    else if (keyFiredHeld || keyPausedHeld || keyLeftHeld || keyRightHeld)
+                        Input = Inputs.Keyboard;
                 }
 
                 // Mouse controls.
@@ -98,7 +150,6 @@ namespace BreakoutExtreme.Components
                             _touchPosition = touchPosition;
                         }
                     }
-
                     
                     {
                         if (touchPressed && !_touchPressed)
@@ -121,11 +172,16 @@ namespace BreakoutExtreme.Components
                     }
                 }
 
-                Globals.Logger.Message = $"Cursor Position: {cursorPosition}. Cursor Select State: {cursorSelectState}";
+                Globals.Logger.Message = $"Cursor Position: {cursorPosition}. Cursor Select State: {cursorSelectState}. Input: {Input}";
 
                 _controlState.Update(
+                    input: Input,
                     cursorPosition: cursorPosition,
-                    cursorSelectState: cursorSelectState);
+                    cursorSelectState: cursorSelectState,
+                    keyFired: keyFiredPressed,
+                    keyPaused: keyPausedPressed,
+                    keyLeft: keyLeftHeld,
+                    keyRight: keyRightHeld);
             }
         }
     }

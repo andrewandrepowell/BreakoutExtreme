@@ -29,13 +29,13 @@ namespace BreakoutExtreme.Components
         {
             _highScorePanel.Text = $"{_highScore}";
         }
-        private void OpenMenu()
+        private void OpenMenu(string id = "main")
         {
             MenuLock();
             Globals.Pause();
             _dimmer.Start();
             _menus.Start();
-            _menus.Goto("main");
+            _menus.Goto(id);
         }
         private void CloseMenu()
         {
@@ -193,7 +193,7 @@ namespace BreakoutExtreme.Components
                 var mainWindow = new Menus.Window() 
                 { 
                     ID  = "main", 
-                    Text = "Welcome to Break Out Extreme! Check the help to learn how to play!"
+                    Text = "Welcome to Break Out Extreme!\nCheck the help to learn how to play!"
                 };
                 var helpWindow = new Menus.Window()
                 {
@@ -205,9 +205,11 @@ namespace BreakoutExtreme.Components
                     "\n" +
                     "Drag the Paddle to bounce the Ball away from the Spikes!\n" +
                     "\n" +
-                    "Tap the Paddle to fire a Laser to destroy Bombs!\n" +
+                    "Tap / Click the Paddle to fire a Laser to destroy Bombs!\n" +
                     "\n" +
-                    "Clear Levels by breaking all Bricks with the Ball!\n"
+                    "Clear Levels by breaking all Bricks with the Ball!\n" +
+                    "\n" +
+                    "(Keyboard controls are implemented but not recommended)"
                 };
                 var optionsWindow = new Menus.Window()
                 {
@@ -306,7 +308,7 @@ namespace BreakoutExtreme.Components
                     {
                         if (_menus.Busy)
                             return;
-                        _menus.Goto(_menus.PrevID);
+                        _menus.Goto("main");
                     }
                 };
                 var optionsBackButton = new Menus.Button()
@@ -346,11 +348,12 @@ namespace BreakoutExtreme.Components
             }
 
             Reset(); // Start the game.
-            OpenMenu(); // Have the menu opened at game start.
+            OpenMenu("help"); // Have the menu opened at game start.
         }
         public void Update()
         {
             var timeElapsed = Globals.GameTime.GetElapsedSeconds();
+            var controlState = Globals.ControlState;
 
             // For now, loop through the levels.
             if (!_playArea.Loaded && (RemainingBalls > 0 || _playArea.BallInPlay))
@@ -381,10 +384,15 @@ namespace BreakoutExtreme.Components
                 Reset();
 
             // Clicking anywhere closes the menu.
-            if (Globals.Paused && 
-                Globals.ControlState.CursorSelectState == Controller.SelectStates.Pressed && 
-                !MenuLocked && !_menus.IsCursorInWindow() && !_menus.Busy)
+            if (Globals.Paused &&
+                ((controlState.Input != Controller.Inputs.Keyboard && controlState.CursorSelectState == Controller.SelectStates.Pressed && !_menus.IsCursorInWindow()) ||
+                 (controlState.Input == Controller.Inputs.Keyboard && (controlState.KeyFired || controlState.KeyPaused))) && 
+                !MenuLocked && !_menus.Busy)
                 CloseMenu();
+
+            // Menu can be opened up with keyboard.
+            if (!Globals.Paused && controlState.Input == Controller.Inputs.Keyboard && controlState.KeyPaused && !MenuLocked && !_menus.Busy)
+                OpenMenu();
 
             // A timer is put on opening/closing the menu to prevent unintended actions when closing/opening the main menu.
             if (_menuLockTime > 0)

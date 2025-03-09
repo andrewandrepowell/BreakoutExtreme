@@ -10,30 +10,46 @@ namespace BreakoutExtreme.Components
         {
             if (Loaded && !Globals.Paused)
             {
+                var controlState = Globals.ControlState;
+                var keyInput = controlState.Input == Controller.Inputs.Keyboard;
+
                 // Apply user control
                 {
-                    var controlState = Globals.ControlState;
                     var cursorInPlayArea = Globals.PlayAreaBounds.Top <= controlState.CursorPosition.Y && Globals.PlayAreaBounds.Bottom >= controlState.CursorPosition.Y;
                     var cursorSelected = controlState.CursorSelectState == Controller.SelectStates.Pressed || controlState.CursorSelectState == Controller.SelectStates.Held;
                     var cursorReleased = controlState.CursorSelectState == Controller.SelectStates.Released;
+                    var keyLeftSelected = keyInput && controlState.KeyLeft;
+                    var keyRightSelected = keyInput && controlState.KeyRight;
+                    var keyFired = keyInput && controlState.KeyFired;
+                    var keyDirectionSelected = keyLeftSelected || keyRightSelected;
 
                     // When game ending or level clearing, the paddle isn't available, so don't run paddle control.
-                    if (State != States.Clearing && State != States.GameEnding && cursorInPlayArea && !_parent.MenuLocked)
+                    if (State != States.Clearing && State != States.GameEnding && (cursorInPlayArea || keyInput) && !_parent.MenuLocked)
                     {
                         var paddleCenter = _paddle.GetCollider().Bounds.BoundingRectangle.Center;
-                        var cursorX = controlState.CursorPosition.X;
+                        var cursorX = 
+                            keyLeftSelected ? Globals.PlayAreaBounds.Left:
+                            keyRightSelected ? Globals.PlayAreaBounds.Right: controlState.CursorPosition.X;
                         var cursorReachedTarget = Math.Abs(paddleCenter.X - cursorX) <= _paddle.TargetThreshold;
 
                         // Stop moving the paddle around.
-                        if (_paddle.RunningMoveToTarget && ((cursorSelected && cursorReachedTarget) || cursorReleased))
+                        if (_paddle.RunningMoveToTarget && 
+                            (((cursorSelected || keyDirectionSelected) && cursorReachedTarget) || 
+                             (cursorReleased || (keyInput && !keyDirectionSelected))))
+                        {
+                            Console.WriteLine("Stopped");
                             _paddle.StopMoveToTarget();
+                        }
 
                         // Start moving the paddle around to cursor.
-                        if (!_paddle.RunningMoveToTarget && cursorSelected && !cursorReachedTarget)
+                        if (!_paddle.RunningMoveToTarget && (cursorSelected || keyDirectionSelected) && !cursorReachedTarget)
+                        {
+                            Console.WriteLine("Moving");
                             _paddle.StartMoveToTarget(cursorX);
+                        }
 
                         // Execute laser firing logic.
-                        if (State == States.GameRunning && cursorReleased)
+                        if (State == States.GameRunning && (cursorReleased || controlState.KeyFired))
                         {
                             var laser = Globals.Runner.CreateLaser(this, _paddle.Empowered);
                             var collider = laser.GetCollider();
@@ -43,7 +59,9 @@ namespace BreakoutExtreme.Components
                         }
 
                         // GAME RUNNING STATE
-                        if (State == States.PlayerTakingAim && !_gameStart.Running && !_parent.MenuLocked && Globals.ControlState.CursorSelectState == Controller.SelectStates.Released)
+                        if (State == States.PlayerTakingAim && !_gameStart.Running && !_parent.MenuLocked && 
+                            ((!keyInput && controlState.CursorSelectState == Controller.SelectStates.Released) || 
+                             (keyInput && controlState.KeyFired)))
                         {
                             var bricksActive = true;
                             for (var i = 0; i < _bricks.Count; i++)

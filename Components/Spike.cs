@@ -47,6 +47,7 @@ namespace BreakoutExtreme.Components
         public void Protect()
         {
             Debug.Assert(_state == States.Active);
+            _flash.Start();
             _animater.SpriteEffect = _edgeConfig.SpriteEffect;
             _animater.Play(_edgeConfig.SolidifyingAnimation);
             _state = States.Protecting;
