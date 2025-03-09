@@ -52,11 +52,16 @@ namespace BreakoutExtreme.Components
                             }
                             if (bricksActive)
                             {
-                                Debug.Assert(_balls.Count == 1);
-                                var ball = _balls[0];
-                                Debug.Assert(_paddle.Attached);
-                                _paddle.Detach();
-                                ball.StartLaunch(_ballMagnitude);
+                                {
+                                    Debug.Assert(_balls.Count == 1);
+                                    var ball = _balls[0];
+                                    Debug.Assert(_paddle.Attached);
+                                    _paddle.Detach();
+                                    ball.StartLaunch(_ballMagnitude);
+                                }
+                                {
+                                    _timeElapsedSinceLaunch = 0;
+                                }
                                 State = States.GameRunning;
                             }
                         }
@@ -154,6 +159,8 @@ namespace BreakoutExtreme.Components
                     _intenseTime -= timeElapsed;
                 if (_updateMagnitudeTime > 0)
                     _updateMagnitudeTime -= timeElapsed;
+                if (State == States.GameRunning)
+                    _timeElapsedSinceLaunch += timeElapsed;
             }
         }
     }

@@ -23,6 +23,7 @@ namespace BreakoutExtreme.Components
         private Paddle _paddle = null;
         private Levels _level = Levels.Test;
         private bool _ballInPlay = false;
+        private float _timeElapsedSinceLaunch;
         public bool Loaded => State != States.Unloaded;
         static PlayArea()
         {
