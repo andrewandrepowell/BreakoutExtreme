@@ -8,6 +8,8 @@ namespace BreakoutExtreme.Components
     {
         private const float _timeToUpdateMagnitudes = 10;
         private const float _timeToReachMaxMagnitudes = 60 * 15;
+        private const float _minTimeToReachMaxMagnitudes = 60 * 1;
+        private const float _maxTimeToReachMaxMagnitudes = 60 * 3;
         private const float _ballMinMagnitude = 5000;
         private const float _ballMaxMagnitude = 2 * _ballMinMagnitude;
         private const float _paddleMinMagnitude = 7000;

@@ -14,15 +14,23 @@ namespace BreakoutExtreme.Components
 {
     public class Sounder : IUpdate
     {
-        private const float _volumeA = 10000;
-        private const float _volumeB = 1 / _volumeA;
-        private readonly static float _volumeC = (float)(20 * Math.Log10(_volumeB));
-        public static float ConvertVolumeForSEI(float volume)
+        private const float _volumeMinDB = -90;
+        public static float ConvertVolumeForSEI(float normalizedDB)
         {
-            Debug.Assert(volume >= 0 && volume <= 1);
-            var y = (float)(-(20 * Math.Log10(Math.Max(volume, _volumeB)) - _volumeC) / _volumeC);
-            return y;
+            Debug.Assert(normalizedDB >= 0 && normalizedDB <= 1);
+            var db = MathHelper.Lerp(_volumeMinDB, 0, normalizedDB);
+            var vol = MathHelper.Clamp((float)Math.Pow(10, db / 20), 0, 1);
+            return vol;
         }
+        //private const float _volumeA = 10000;
+        //private const float _volumeB = 1 / _volumeA;
+        //private readonly static float _volumeC = (float)(20 * Math.Log10(_volumeB));
+        //public static float ConvertVolumeForSEI(float volume)
+        //{
+        //    Debug.Assert(volume >= 0 && volume <= 1);
+        //    var y = (float)(-(20 * Math.Log10(Math.Max(volume, _volumeB)) - _volumeC) / _volumeC);
+        //    return y;
+        //}
         public enum SoundTypes { SFX, Music }
         public enum Sounds 
         { 
@@ -59,11 +67,18 @@ namespace BreakoutExtreme.Components
             private bool _hasPlayed = false;
             public void UpdateVolume()
             {
-                var newVolume = _currentNode.Config.Volume * ConvertVolumeForSEI(
-                    Globals.MasterVolume *
-                    (_config.SoundType == SoundTypes.SFX ? Globals.SFXVolume :
-                    (_config.SoundType == SoundTypes.Music ? Globals.MusicVolume : 1)));
-                newVolume = MathHelper.Clamp(newVolume, 0, 1);
+                //var newVolume =  ConvertVolumeForSEI(
+                //    _currentNode.Config.Volume *
+                //    Globals.MasterVolume *
+                //    (_config.SoundType == SoundTypes.SFX ? Globals.SFXVolume :
+                //    (_config.SoundType == SoundTypes.Music ? Globals.MusicVolume : 1)));
+                var inputVolume =
+                    0.2f * _currentNode.Config.Volume + 
+                    0.4f * Globals.MasterVolume + 
+                    0.4f * (_config.SoundType == SoundTypes.SFX ? Globals.SFXVolume :
+                    (_config.SoundType == SoundTypes.Music ? Globals.MusicVolume : 1));
+                var newVolume = ConvertVolumeForSEI(MathHelper.Clamp(inputVolume, 0, 1));
+                Console.WriteLine($"New Volume: {newVolume}");
                 _currentNode.SoundEffectInstance.Volume = newVolume;
             }
             public void Play(bool ignoreDelay = false)
@@ -122,52 +137,52 @@ namespace BreakoutExtreme.Components
         private record SoundSampleNode(SoundEffectInstance SoundEffectInstance, SoundSampleConfig Config);
         private readonly static ReadOnlyDictionary<SoundSamples, SoundSampleConfig> _soundSampleConfigs = new(new Dictionary<SoundSamples, SoundSampleConfig>() 
         {
-            { SoundSamples.Brick0, new("sounds/brick_0", 0.5f) },
-            { SoundSamples.Brick1, new("sounds/brick_1", 0.5f) },
-            { SoundSamples.Brick2, new("sounds/brick_2", 0.5f) },
-            { SoundSamples.Brick3, new("sounds/brick_3", 0.5f) },
-            { SoundSamples.Brick4, new("sounds/brick_4", 0.5f) },
-            { SoundSamples.BrickBreak0, new("sounds/brick_break_0", 0.5f) },
-            { SoundSamples.BrickBreak1, new("sounds/brick_break_1", 0.5f) },
-            { SoundSamples.BrickBreak2, new("sounds/brick_break_2", 0.5f) },
-            { SoundSamples.BrickBreak3, new("sounds/brick_break_3", 0.5f) },
-            { SoundSamples.BrickBreak4, new("sounds/brick_break_4", 0.5f) },
-            { SoundSamples.Paddle0, new("sounds/paddle_0", 0.5f) },
-            { SoundSamples.Paddle1, new("sounds/paddle_1", 0.5f) },
-            { SoundSamples.Paddle2, new("sounds/paddle_2", 0.5f) },
-            { SoundSamples.Paddle3, new("sounds/paddle_3", 0.5f) },
-            { SoundSamples.Paddle4, new("sounds/paddle_4", 0.5f) },
-            { SoundSamples.Laser0, new("sounds/laser_0", 0.5f) },
-            { SoundSamples.Laser1, new("sounds/laser_1", 0.5f) },
-            { SoundSamples.Laser2, new("sounds/laser_2", 0.5f) },
-            { SoundSamples.Laser3, new("sounds/laser_3", 0.5f) },
-            { SoundSamples.Laser4, new("sounds/laser_4", 0.5f) },
-            { SoundSamples.Empower0, new("sounds/empower_0", 0.5f) },
-            { SoundSamples.Empower1, new("sounds/empower_1", 0.5f) },
-            { SoundSamples.Empower2, new("sounds/empower_2", 0.5f) },
-            { SoundSamples.Empower3, new("sounds/empower_3", 0.5f) },
+            { SoundSamples.Brick0, new("sounds/brick_0", 0.75f) },
+            { SoundSamples.Brick1, new("sounds/brick_1", 0.75f) },
+            { SoundSamples.Brick2, new("sounds/brick_2", 0.75f) },
+            { SoundSamples.Brick3, new("sounds/brick_3", 0.75f) },
+            { SoundSamples.Brick4, new("sounds/brick_4", 0.75f) },
+            { SoundSamples.BrickBreak0, new("sounds/brick_break_0", 0.75f) },
+            { SoundSamples.BrickBreak1, new("sounds/brick_break_1", 0.75f) },
+            { SoundSamples.BrickBreak2, new("sounds/brick_break_2", 0.75f) },
+            { SoundSamples.BrickBreak3, new("sounds/brick_break_3", 0.75f) },
+            { SoundSamples.BrickBreak4, new("sounds/brick_break_4", 0.75f) },
+            { SoundSamples.Paddle0, new("sounds/paddle_0", 0.75f) },
+            { SoundSamples.Paddle1, new("sounds/paddle_1", 0.75f) },
+            { SoundSamples.Paddle2, new("sounds/paddle_2", 0.75f) },
+            { SoundSamples.Paddle3, new("sounds/paddle_3", 0.75f) },
+            { SoundSamples.Paddle4, new("sounds/paddle_4", 0.75f) },
+            { SoundSamples.Laser0, new("sounds/laser_0", 0.75f) },
+            { SoundSamples.Laser1, new("sounds/laser_1", 0.75f) },
+            { SoundSamples.Laser2, new("sounds/laser_2", 0.75f) },
+            { SoundSamples.Laser3, new("sounds/laser_3", 0.75f) },
+            { SoundSamples.Laser4, new("sounds/laser_4", 0.75f) },
+            { SoundSamples.Empower0, new("sounds/empower_0", 0.75f) },
+            { SoundSamples.Empower1, new("sounds/empower_1", 0.75f) },
+            { SoundSamples.Empower2, new("sounds/empower_2", 0.75f) },
+            { SoundSamples.Empower3, new("sounds/empower_3", 0.75f) },
             { SoundSamples.Empower4, new("sounds/empower_4", 0.5f) },
-            { SoundSamples.Cannon0, new("sounds/cannon_0", 0.1f) },
-            { SoundSamples.Cannon1, new("sounds/cannon_1", 0.1f) },
-            { SoundSamples.Cannon2, new("sounds/cannon_2", 0.1f) },
+            { SoundSamples.Cannon0, new("sounds/cannon_0", 0.5f) },
+            { SoundSamples.Cannon1, new("sounds/cannon_1", 0.5f) },
+            { SoundSamples.Cannon2, new("sounds/cannon_2", 0.5f) },
             { SoundSamples.Wall0, new("sounds/wall_0", 0.5f) },
             { SoundSamples.Whistle0, new("sounds/whistle_0", 0.5f) },
             { SoundSamples.PowerRevealed0, new("sounds/power_revealed_0", 1f) },
             { SoundSamples.PowerAcquired0, new("sounds/power_acquired_0", 1f) },
             { SoundSamples.SplashDrop0, new("sounds/splash_drop_0", 1f) },
-            { SoundSamples.SplashVanish0, new("sounds/splash_vanish_0", 0.5f) },
-            { SoundSamples.Launch0, new("sounds/launch_0", 0.1f) },
-            { SoundSamples.Explosion0, new("sounds/explosion_0", 0.1f) },
-            { SoundSamples.Explosion1, new("sounds/explosion_1", 0.1f) },
-            { SoundSamples.Explosion2, new("sounds/explosion_2", 0.1f) },
-            { SoundSamples.Explosion3, new("sounds/explosion_3", 0.1f) },
-            { SoundSamples.Explosion4, new("sounds/explosion_4", 0.1f) },
+            { SoundSamples.SplashVanish0, new("sounds/splash_vanish_0", 1f) },
+            { SoundSamples.Launch0, new("sounds/launch_0", 0.5f) },
+            { SoundSamples.Explosion0, new("sounds/explosion_0", 0.5f) },
+            { SoundSamples.Explosion1, new("sounds/explosion_1", 0.5f) },
+            { SoundSamples.Explosion2, new("sounds/explosion_2", 0.5f) },
+            { SoundSamples.Explosion3, new("sounds/explosion_3", 0.5f) },
+            { SoundSamples.Explosion4, new("sounds/explosion_4", 0.5f) },
             { SoundSamples.BallBreak0, new("sounds/ball_break_0", 1f) },
             { SoundSamples.PaddleBreak0, new("sounds/paddle_break_0", 1f) },
-            { SoundSamples.Menu0, new("sounds/menu_0", 0.1f) },
-            { SoundSamples.Pause0, new("sounds/pause_0", 0.1f) },
-            { SoundSamples.Resume0, new("sounds/resume_0", 0.1f) },
-            { SoundSamples.TakingItBack0, new("music/taking_it_back_0", 0.05f) },
+            { SoundSamples.Menu0, new("sounds/menu_0", 1f) },
+            { SoundSamples.Pause0, new("sounds/pause_0", 0.5f) },
+            { SoundSamples.Resume0, new("sounds/resume_0", 0.5f) },
+            { SoundSamples.TakingItBack0, new("music/taking_it_back_0", 0.3f) },
         });
         private readonly static ReadOnlyDictionary<Sounds, SoundConfig> _soundConfigs = new(new Dictionary<Sounds, SoundConfig>() 
         {
@@ -192,7 +207,7 @@ namespace BreakoutExtreme.Components
             { Sounds.SplashDrop, new(SoundTypes.SFX, [SoundSamples.SplashDrop0], true, Delay: true, DelayPeriod: 2f) },
             { Sounds.SplashVanish, new(SoundTypes.SFX, [SoundSamples.SplashVanish0], true, Delay: true, DelayPeriod: 3.5f) },
         });
-        private Bag<SoundNode> _soundNodeValues = [];
+        private readonly Bag<SoundNode> _soundNodeValues = [];
         private readonly Dictionary<Sounds, SoundNode> _soundNodes = [];
         private readonly Dictionary<SoundSamples, SoundSampleNode> _soundSampleNodes = [];
         private void Load(SoundSamples soundSample)
