@@ -138,6 +138,7 @@ namespace BreakoutExtreme.Components
                 pulsePeriod: 2,
                 pulseRepeating: true,
                 appearVanishPeriod: 1);
+            _animater.Visibility = 1;
             _animater.Play(_config.ActiveAnimation);
             _vanish.Stop();
             _shake.Stop();
@@ -165,6 +166,7 @@ namespace BreakoutExtreme.Components
             }
             if ((_state == States.Despawning || _state == States.Destroying) && !_vanish.Running && !_glower.Running)
             {
+                _animater.Visibility = 0;
                 _shake.Stop();
                 _state = States.Destroyed;
             }
