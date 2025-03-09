@@ -27,10 +27,16 @@ namespace BreakoutExtreme.Components
         private Color _textColor = Color.Black;
         private string _text = "H";
         private record IntenseConfig(Color TextColor, bool Shake);
+        private record SpeedUpConfig(Color FlashColor, float FlashPeriod);
         private static ReadOnlyDictionary<bool, IntenseConfig> _intenseConfigs = new(new Dictionary<bool, IntenseConfig>() 
         {
             { false, new(Color.Black, false) },
             { true, new(Color.Red, true) }
+        });
+        private static ReadOnlyDictionary<bool, SpeedUpConfig> _speedUpConfigs = new(new Dictionary<bool, SpeedUpConfig>()
+        {
+            { false, new(Color.White, (float)1 / 15) },
+            { true, new(Color.LightCyan, (float)1 / 30) }
         });
         private void UpdateContainerSize()
         {
@@ -69,6 +75,7 @@ namespace BreakoutExtreme.Components
         public void RemoveEntity()
         {
             Debug.Assert(_initialized);
+            _flash.Stop();
             _initialized = false;
             Globals.Runner.RemoveEntity(_entity);
         }
@@ -81,10 +88,11 @@ namespace BreakoutExtreme.Components
             if (_running && !_vanish.Running && _floatUp.State == RunningStates.Running)
                 _running = false;
         }
-        public void Reset(Entity entity, bool intense = false)
+        public void Reset(Entity entity, bool intense = false, bool speedUp = false)
         {
             Debug.Assert(!_initialized);
             var intenseConfig = _intenseConfigs[intense];
+            var speedUpConfig = _speedUpConfigs[speedUp];
             _entity = entity;
             _vanish.Start();
             _floatUp.Start();
@@ -92,6 +100,9 @@ namespace BreakoutExtreme.Components
                 _shake.Start();
             else
                 _shake.Stop();
+            _flash.Period = speedUpConfig.FlashPeriod;
+            _flash.Color = speedUpConfig.FlashColor;
+            _flash.Start();
             _textColor = intenseConfig.TextColor;
             UpdateTextRuntimeColor();
             _initialized = true;
@@ -136,8 +147,7 @@ namespace BreakoutExtreme.Components
                 _floatUp = new() { Period = 1 };
                 _floatUp.Start();
                 _gumDrawer.ShaderFeatures.Add(_floatUp);
-                _flash = new() { Color = Color.White };
-                _flash.Start();
+                _flash = new();
                 _gumDrawer.ShaderFeatures.Add(_flash);
                 _shake = new();
                 _gumDrawer.ShaderFeatures.Add(_shake);

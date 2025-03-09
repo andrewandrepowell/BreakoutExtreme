@@ -9,18 +9,21 @@ namespace BreakoutExtreme.Components
         public void UpdateScore(Vector2 position, bool bomb = false)
         {
             bool intense;
+            bool speedUp;
             int increment;
             if (bomb)
             { 
                 intense = false;
+                speedUp = false;
                 increment = 1;
             }
             else
             {
                 intense = _intenseTime > 0;
-                increment = 1 + _parent.LevelsCleared + (intense ? 1 : 0);
+                speedUp = _timeElapsedSinceLaunch >= _timeToReachSpeedUp;
+                increment = 1 + _parent.LevelsCleared + (intense ? 1 : 0) + (speedUp ? 1 : 0);
             }
-            var scorePopup = Globals.Runner.CreateScorePopup(intense);
+            var scorePopup = Globals.Runner.CreateScorePopup(intense, speedUp);
             scorePopup.Text = $"+{increment}";
             scorePopup.GetGumDrawer().Position = position;
             _intenseTime = _intensePeriod;

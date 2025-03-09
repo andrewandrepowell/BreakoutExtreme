@@ -37,6 +37,16 @@ namespace BreakoutExtreme.Features
                 _delayPeriod = value;
             }
         }
+        public float ShiftMaxDistance
+        {
+            get => _shiftMaxDistance;
+            set
+            {
+                Debug.Assert(!Running);
+                Debug.Assert(value >= 0);
+                _shiftMaxDistance = value;
+            }
+        }
         public void Start()
         {
             _shiftTime = 0;
