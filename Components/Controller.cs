@@ -172,7 +172,7 @@ namespace BreakoutExtreme.Components
                     }
                 }
 
-                Globals.Logger.Message = $"Cursor Position: {cursorPosition}. Cursor Select State: {cursorSelectState}. Input: {Input}";
+                //Globals.Logger.Message = $"Cursor Position: {cursorPosition}. Cursor Select State: {cursorSelectState}. Input: {Input}";
 
                 _controlState.Update(
                     input: Input,
