@@ -117,6 +117,7 @@
     <Compile Include="Features\Shine.cs" />
     <Compile Include="Features\Vanish.cs" />
     <Compile Include="Globals.cs" />
+    <Compile Include="Loader.cs" />
     <Compile Include="Pages\Index.razor.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="BreakoutExtremeGame.cs" />

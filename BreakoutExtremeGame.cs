@@ -8,6 +8,7 @@ using BreakoutExtreme.Components;
 using System;
 using System.Collections.Generic;
 using BreakoutExtreme.Utility;
+using Microsoft.Extensions.Logging;
 
 namespace BreakoutExtreme
 {
@@ -23,6 +24,7 @@ namespace BreakoutExtreme
         private Controller _controller;
         private Runner _runner;
         private Texter _logger;
+        private Loader _loader;
         
         public BreakoutExtremeGame()
         {
@@ -52,25 +54,37 @@ namespace BreakoutExtreme
             try
             {
 #endif
+                _loader = new Loader(messageAction: (string message) => _logger.Message = message);
+                _loader.Add(
+                    action: () => _runner.Initialize(),
+                    message: "Initializing Runner");
+                _loader.Add(
+                    action: () => _runner.CreateGameWindow(),
+                    message: "Creating Game Window");
+                _loader.Add(
+                    action: () => Texter.Load(),
+                    message: "Loading Texter Fonts...");
+                _loader.Add(
+                    action: () => Animater.Load(),
+                    message: "Loading Animations...");
+                _loader.Add(
+                    action: () => Particler.Load(),
+                    message: "Loading Particles...");
+                _loader.Add(
+                    action: () => Sounder.Load(),
+                    message: "Loading Sounds...");
+                _loader.Start();
+
                 _spriteBatch = new SpriteBatch(GraphicsDevice);
                 _controller = new Controller();
                 _runner = new Runner();
-
                 Globals.Initialize(
-                    spriteBatch: _spriteBatch, 
+                    spriteBatch: _spriteBatch,
                     contentManager: Content,
                     controlState: _controller.GetControlState(),
                     runner: _runner);
 
-                _runner.Initialize();
-                _runner.CreateGameWindow();
-
-                Texter.Load();
-                Animater.Load();
-                Particler.Load();
-                Sounder.Load();
-
-                _logger = new() { Color = Color.Yellow };
+                _logger = new() { Color = Color.White };
                 Globals.Initialize(_logger);
 #if DEBUG
             }
@@ -104,9 +118,16 @@ namespace BreakoutExtreme
             try
             {
 #endif
-                Globals.Update(gameTime);
-                _controller.Update();
-                _runner.Update();
+                if (_loader.Loaded)
+                {
+                    Globals.Update(gameTime);
+                    _controller.Update();
+                    _runner.Update();
+                }
+                else
+                {
+                    _loader.Update();
+                }
                 _logger.Position = _logger.Size / 2;
                 base.Update(gameTime);
 #if DEBUG
@@ -132,7 +153,9 @@ namespace BreakoutExtreme
             {
 #endif
                 GraphicsDevice.Clear(Color.Black);
-                _runner.Draw();
+
+                if (_loader.Loaded)
+                    _runner.Draw();
 
                 _spriteBatch.Begin();
                 _logger.Draw();
