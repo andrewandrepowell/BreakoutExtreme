@@ -12,8 +12,8 @@ namespace BreakoutExtreme.Components
         private const float _ballHueOffsetMax = 0.5f;
         private const float _ballMinMagnitude = 5000;
         private const float _ballMaxMagnitude = 2 * _ballMinMagnitude;
-        private const float _paddleMinMagnitude = 7000;
-        private const float _paddleMaxMagnitude = 2 * _paddleMinMagnitude;
+        private const float _paddleMinMagnitude = 8000;
+        private const float _paddleMaxMagnitude = 14000;
         private float _updateMagnitudeTime;
         private float _ballMagnitude;
         private float _ballHueOffset;

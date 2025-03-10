@@ -21,7 +21,7 @@ namespace BreakoutExtreme.Components
             {
                 intense = _intenseTime > 0;
                 speedUp = _timeElapsedSinceLaunch >= _timeToReachSpeedUp;
-                increment = 1 + _parent.LevelsCleared + (intense ? 1 : 0) + (speedUp ? 1 : 0);
+                increment = (1 + _parent.LevelsCleared) * 10 * (intense ? 2 : 1) * (speedUp ? 2 : 1);
             }
             var scorePopup = Globals.Runner.CreateScorePopup(intense, speedUp);
             scorePopup.Text = $"+{increment}";

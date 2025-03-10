@@ -147,7 +147,7 @@ namespace BreakoutExtreme.Components
                 var label = Globals.Runner.CreateLabel(Globals.HighScoreLabelBlockBounds.Size.ToSize() * Globals.GameBlockSize);
                 var gumDrawer = label.GetGumDrawer();
                 gumDrawer.Position = (gumDrawer.Size / 2).ToVector2() + Globals.HighScoreLabelBlockBounds.Location.ToVector2() * Globals.GameBlockSize;
-                label.Text = "High Score:";
+                label.Text = "High:";
             }
             {
                 _highScorePanel = Globals.Runner.CreatePanel();

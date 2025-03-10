@@ -17,10 +17,10 @@ namespace BreakoutExtreme
         public const int GameHalfBlockSize = GameBlockSize / 2;
         public static readonly Rectangle GameWindowBlockBounds = new(0, 0, 22, 40);
         public static readonly Rectangle PlayAreaBlockBounds = new(0, 5, 22, 35);
-        public static readonly Rectangle ScoreLabelBlockBounds = new(1, 1, 5, 2);
-        public static readonly Rectangle ScorePanelBlockBounds = new(6, 1, 5, 2);
-        public static readonly Rectangle HighScoreLabelBlockBounds = new(1, 3, 5, 2);
-        public static readonly Rectangle HighScorePanelBlockBounds = new(6, 3, 5, 2);
+        public static readonly Rectangle ScoreLabelBlockBounds = new(1, 1, 3, 2);
+        public static readonly Rectangle ScorePanelBlockBounds = new(4, 1, 7, 2);
+        public static readonly Rectangle HighScoreLabelBlockBounds = new(1, 3, 3, 2);
+        public static readonly Rectangle HighScorePanelBlockBounds = new(4, 3, 7, 2);
         public static readonly Rectangle BallsRemainingLabelBlockBounds = new(12, 1, 5, 2);
         public static readonly Rectangle BallsRemainingPanelBlockBounds = new(12, 3, 5, 2);
         public static readonly Rectangle MenuButtonBlockBounds = new(17, 1, 5, 4);
