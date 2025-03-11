@@ -14,8 +14,10 @@ namespace BreakoutExtreme.Components
             var entity = _world.CreateEntity();
             var tutorialPopup = new TutorialPopup();
             tutorialPopup.Reset();
+            // Temporary fix for:
+            // https://github.com/andrewandrepowell/BreakoutExtreme/issues/4
+            _updates.Add(tutorialPopup);
             var gumDrawer = tutorialPopup.GetGumDrawer();
-            entity.Attach(tutorialPopup);
             entity.Attach(gumDrawer);
             return tutorialPopup;
         }

@@ -2,6 +2,7 @@
 using MonoGame.Extended.Collisions;
 using MonoGame.Extended.ECS;
 using MonoGame.Extended.Collections;
+using BreakoutExtreme.Utility;
 using System.Diagnostics;
 
 namespace BreakoutExtreme.Components
@@ -23,6 +24,7 @@ namespace BreakoutExtreme.Components
         readonly private Deque<Shadow> _shadowPool = new();
         readonly private Deque<Shadower> _shadowerPool = new();
         readonly private Deque<Power> _powerPool = new();
+        readonly private Bag<IUpdate> _updates = new();
         readonly private Sounder _sounder = new();
         private bool _initialized = false;
         public Sounder GetSounder() => _sounder;
@@ -113,7 +115,6 @@ namespace BreakoutExtreme.Components
                 worldBuilder.AddSystem(new RemoveSystem<Cannon>());
                 worldBuilder.AddSystem(new RemoveSystem<Power>());
 
-                //worldBuilder.AddSystem(new UpdateSystem<TutorialPopup>());
                 worldBuilder.AddSystem(new UpdateSystem<Paddle>());
                 worldBuilder.AddSystem(new UpdateSystem<Ball>());
                 worldBuilder.AddSystem(new UpdateSystem<Brick>());
@@ -142,6 +143,11 @@ namespace BreakoutExtreme.Components
             Debug.Assert(_initialized);
             _sounder.Update();
             _world.Update(Globals.GameTime);
+
+            // Temporary fix for:
+            // https://github.com/andrewandrepowell/BreakoutExtreme/issues/4
+            for (var i = 0; i < _updates.Count; i++)
+                _updates[i].Update();
         }
         public void Draw()
         {

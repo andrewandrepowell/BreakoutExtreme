@@ -95,7 +95,6 @@ namespace BreakoutExtreme.Components
 
             // Run a tutorial message if one exists for the specified level.
             {
-                Debug.Assert(_tutorialPopup.State == RunningStates.Waiting);
                 if (_levelTutorialMessages.TryGetValue(level, out var message))
                 {
                     _tutorialPopup.Text = message;
@@ -134,8 +133,6 @@ namespace BreakoutExtreme.Components
             _cannons.Clear();
             _bombs.Clear();
             _paddle = null;
-
-            _intenseTime = 0;
 
             State = States.Unloaded;
         }
