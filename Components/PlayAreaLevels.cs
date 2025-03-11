@@ -50,7 +50,7 @@ namespace BreakoutExtreme.Components
                 "______________________" +
                 "______________________" +
                 "__S_______C________S__" +
-                "___S______________2___" +
+                "___S______________S___" +
                 "____S____M_M_____S____" +
                 "_____S__L__L____S_____" +
                 "_____S__________S_____" +
@@ -467,7 +467,7 @@ namespace BreakoutExtreme.Components
         private static readonly ReadOnlyDictionary<Levels, string> _levelTutorialMessages = new(new Dictionary<Levels, string>() 
         {
             { Levels.Beginner0, "Drag the paddle to move it!\nTap (click) the Paddle to start!" },
-            { Levels.Beginner1, "Rapidly tap to fire laser and destroy bombs!" }
+            { Levels.Beginner1, "Rapidly tap (click) to fire laser and destroy bombs!" },
         });
     }
 }

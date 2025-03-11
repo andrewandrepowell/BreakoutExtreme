@@ -8,6 +8,7 @@ namespace BreakoutExtreme.Components
 {
     public class TutorialPopup : IUpdate
     {
+        private const float _delayPeriod = 3.5f;
         private const float _runPeriod = 15;
         private readonly static Color _textColor = Color.Black;
         private float _runTime;
@@ -16,6 +17,7 @@ namespace BreakoutExtreme.Components
         private readonly GumDrawer _gumDrawer;
         private RunningStates _state;
         private bool _initialized;
+        private readonly Features.FloatUp _floatUp;
         private readonly Features.Appear _appear;
         private readonly Features.Vanish _vanish;
         private readonly Features.Shine _shine;
@@ -36,6 +38,8 @@ namespace BreakoutExtreme.Components
             _gumDrawer.Visibility = 1;
             _appear.Start();
             _vanish.Stop();
+            _floatUp.DelayPeriod = _delayPeriod;
+            _floatUp.Stop();
             _runTime = 0;
             _state = RunningStates.Starting;
         }
@@ -45,6 +49,8 @@ namespace BreakoutExtreme.Components
             _gumDrawer.Visibility = 1;
             _appear.Stop();
             _vanish.Start();
+            _floatUp.DelayPeriod = 0;
+            _floatUp.Start();
             _runTime = 0;
             _state = RunningStates.Stopping;
         }
@@ -54,6 +60,7 @@ namespace BreakoutExtreme.Components
             _gumDrawer.Visibility = 1;
             _appear.Stop();
             _vanish.Stop();
+            _floatUp.ForceStop();
             _runTime = _runPeriod;
             _state = RunningStates.Running;
         }
@@ -63,6 +70,7 @@ namespace BreakoutExtreme.Components
             _gumDrawer.Visibility = 0;
             _appear.Stop();
             _vanish.Stop();
+            _floatUp.ForceStart();
             _runTime = 0;
             _state = RunningStates.Waiting;
         }
@@ -76,9 +84,9 @@ namespace BreakoutExtreme.Components
         public void Update()
         {
             Debug.Assert(_initialized);
-            if (_state == RunningStates.Starting && !_appear.Running)
+            if (_state == RunningStates.Starting && !_appear.Running && _floatUp.State == RunningStates.Waiting)
                 ForceStart();
-            if (_state == RunningStates.Stopping && !_vanish.Running)
+            if (_state == RunningStates.Stopping && !_vanish.Running && _floatUp.State == RunningStates.Running)
                 ForceStop();
             if (_state == RunningStates.Running)
             {
@@ -124,11 +132,13 @@ namespace BreakoutExtreme.Components
                 Layer = Layers.Shadow,
             };
             _vanish = new();
-            _appear = new() { DelayPeriod = 3.5f };
+            _appear = new() { DelayPeriod = _delayPeriod };
+            _floatUp = new();
             _shine = new();
             _gumDrawer.ShaderFeatures.Add(_vanish);
             _gumDrawer.ShaderFeatures.Add(_appear);
             _gumDrawer.ShaderFeatures.Add(_shine);
+            _gumDrawer.ShaderFeatures.Add(_floatUp);
         }
     }
 }
