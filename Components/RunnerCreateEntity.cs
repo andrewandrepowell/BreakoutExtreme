@@ -8,6 +8,17 @@ namespace BreakoutExtreme.Components
 {
     public partial class Runner
     {
+        public TutorialPopup CreateTutorialPopup()
+        {
+            Debug.Assert(_initialized);
+            var entity = _world.CreateEntity();
+            var tutorialPopup = new TutorialPopup();
+            tutorialPopup.Reset();
+            var gumDrawer = tutorialPopup.GetGumDrawer();
+            entity.Attach(tutorialPopup);
+            entity.Attach(gumDrawer);
+            return tutorialPopup;
+        }
         public Power CreatePower(Powers powerEnum, PlayArea parent)
         {
             Debug.Assert(_initialized);

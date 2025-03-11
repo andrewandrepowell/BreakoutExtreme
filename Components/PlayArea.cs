@@ -20,6 +20,7 @@ namespace BreakoutExtreme.Components
         private readonly Splasher _cleared;
         private readonly Splasher _gameEnd;
         private readonly Splasher _gameStart;
+        private readonly TutorialPopup _tutorialPopup;
         private Paddle _paddle = null;
         private Levels _level = Levels.Test;
         private bool _ballInPlay = false;
@@ -82,7 +83,6 @@ namespace BreakoutExtreme.Components
                 }
             }
 
-            // Determine displacement for future balls.
             // Attaching the ball to the paddle occurs in later state.
             // Spawn the paddle.
             {
@@ -91,6 +91,16 @@ namespace BreakoutExtreme.Components
 
                 var ball = _balls[0];
                 _paddle.Spawn();
+            }
+
+            // Run a tutorial message if one exists for the specified level.
+            {
+                Debug.Assert(_tutorialPopup.State == RunningStates.Waiting);
+                if (_levelTutorialMessages.TryGetValue(level, out var message))
+                {
+                    _tutorialPopup.Text = message;
+                    _tutorialPopup.Start();
+                }
             }
 
             _level = level;
@@ -200,6 +210,12 @@ namespace BreakoutExtreme.Components
                 _cleared = Globals.Runner.CreateSplasher(Splasher.Splashes.Cleared);
                 _gameEnd = Globals.Runner.CreateSplasher(Splasher.Splashes.GameEnd);
                 _gameStart = Globals.Runner.CreateSplasher(Splasher.Splashes.GameStart);
+            }
+
+            // Create the tutorial pop up message.
+            {
+                _tutorialPopup = Globals.Runner.CreateTutorialPopup();
+                _tutorialPopup.GetGumDrawer().Position = Globals.PlayAreaBounds.Center;
             }
         }
     }

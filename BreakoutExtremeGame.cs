@@ -63,16 +63,16 @@ namespace BreakoutExtreme
                     message: "Creating Game Window");
                 _loader.Add(
                     action: () => Texter.Load(),
-                    message: "Loading Texter Fonts...");
+                    message: "Loading Texter Fonts");
                 _loader.Add(
                     action: () => Animater.Load(),
-                    message: "Loading Animations...");
+                    message: "Loading Animations");
                 _loader.Add(
                     action: () => Particler.Load(),
-                    message: "Loading Particles...");
+                    message: "Loading Particles");
                 _loader.Add(
                     action: () => Sounder.Load(),
-                    message: "Loading Sounds...");
+                    message: "Loading Sounds");
                 _loader.Start();
 
                 _spriteBatch = new SpriteBatch(GraphicsDevice);

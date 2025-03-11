@@ -96,6 +96,7 @@
     <Compile Include="Components\Texter.cs" />
     <Compile Include="Components\GumUI.cs" />
     <Compile Include="Components\Texturer.cs" />
+    <Compile Include="Components\TutorialPopup.cs" />
     <Compile Include="Components\Wall.cs" />
     <Compile Include="Features\AlterHSV.cs" />
     <Compile Include="Features\Appear.cs" />

@@ -12,12 +12,21 @@ namespace BreakoutExtreme.Components
         private static GumBatch _gumBatch;
         private static BitmapFont _montserratSmall;
         private static BitmapFont _montserratLarge;
+        private static BitmapFont _montserrateLarger;
         public static BitmapFont MontserratSmall
         {
             get
             {
                 Debug.Assert(_initialized);
                 return _montserratSmall;
+            }
+        }
+        public static BitmapFont MontserratLarger
+        {
+            get
+            {
+                Debug.Assert(_initialized);
+                return _montserrateLarger;
             }
         }
         public static BitmapFont MontserratLarge
@@ -45,6 +54,7 @@ namespace BreakoutExtreme.Components
 #pragma warning disable CA1806
                 _montserratSmall = new BitmapFont("fonts/montserrat/montserrat_0.fnt", SystemManagers.Default);
                 _montserratLarge = new BitmapFont("fonts/montserrat/montserrat_1.fnt", SystemManagers.Default);
+                _montserrateLarger = new BitmapFont("fonts/montserrat/montserrat_2.fnt", SystemManagers.Default);
                 Globals.ContentManager.Load<Texture2D>("animations/panel_0");
                 Globals.ContentManager.Load<Texture2D>("animations/button_0");
                 Globals.ContentManager.Load<Texture2D>("animations/button_1");

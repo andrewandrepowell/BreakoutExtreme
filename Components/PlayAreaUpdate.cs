@@ -37,14 +37,12 @@ namespace BreakoutExtreme.Components
                             (((cursorSelected || keyDirectionSelected) && cursorReachedTarget) || 
                              (cursorReleased || (keyInput && !keyDirectionSelected))))
                         {
-                            Console.WriteLine("Stopped");
                             _paddle.StopMoveToTarget();
                         }
 
                         // Start moving the paddle around to cursor.
                         if (!_paddle.RunningMoveToTarget && (cursorSelected || keyDirectionSelected) && !cursorReachedTarget)
                         {
-                            Console.WriteLine("Moving");
                             _paddle.StartMoveToTarget(cursorX);
                         }
 
@@ -76,6 +74,11 @@ namespace BreakoutExtreme.Components
                                     Debug.Assert(_paddle.Attached);
                                     _paddle.Detach();
                                     ball.StartLaunch(_ballMagnitude);
+                                }
+                                {
+                                    if (_tutorialPopup.State == Utility.RunningStates.Starting ||
+                                        _tutorialPopup.State == Utility.RunningStates.Running)
+                                        _tutorialPopup.Stop();
                                 }
                                 State = States.GameRunning;
                             }

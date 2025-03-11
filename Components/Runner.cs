@@ -113,6 +113,7 @@ namespace BreakoutExtreme.Components
                 worldBuilder.AddSystem(new RemoveSystem<Cannon>());
                 worldBuilder.AddSystem(new RemoveSystem<Power>());
 
+                //worldBuilder.AddSystem(new UpdateSystem<TutorialPopup>());
                 worldBuilder.AddSystem(new UpdateSystem<Paddle>());
                 worldBuilder.AddSystem(new UpdateSystem<Ball>());
                 worldBuilder.AddSystem(new UpdateSystem<Brick>());
