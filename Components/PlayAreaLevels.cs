@@ -466,7 +466,7 @@ namespace BreakoutExtreme.Components
         });
         private static readonly ReadOnlyDictionary<Levels, string> _levelTutorialMessages = new(new Dictionary<Levels, string>() 
         {
-            { Levels.Beginner0, "Drag the paddle to move it!\nTap (click) the Paddle to start!" },
+            { Levels.Beginner0, "Touch (click) and hold to move the paddle!\nTap (click) the Paddle to start!" },
             { Levels.Beginner1, "Rapidly tap (click) to fire laser and destroy bombs!" },
         });
     }

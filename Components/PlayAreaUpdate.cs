@@ -20,8 +20,9 @@ namespace BreakoutExtreme.Components
                     var cursorReleased = controlState.CursorSelectState == Controller.SelectStates.Released;
                     var keyLeftSelected = keyInput && controlState.KeyLeft;
                     var keyRightSelected = keyInput && controlState.KeyRight;
-                    var keyFired = keyInput && controlState.KeyFired;
-                    var keyDirectionSelected = keyLeftSelected || keyRightSelected;
+                    var keyDirectionSelected = (keyLeftSelected && _keyLeft && !_keyRight) ^ (keyRightSelected && _keyRight && !_keyLeft);
+                    _keyLeft = keyLeftSelected;
+                    _keyRight = keyRightSelected;
 
                     // When game ending or level clearing, the paddle isn't available, so don't run paddle control.
                     if (State != States.Clearing && State != States.GameEnding && (cursorInPlayArea || keyInput) && !_parent.MenuLocked)

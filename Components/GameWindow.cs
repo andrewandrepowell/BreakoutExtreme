@@ -203,7 +203,7 @@ namespace BreakoutExtreme.Components
                     "\n" +
                     "Resume / Start the game by tapping the screen outside of the menu!\n" +
                     "\n" +
-                    "Drag the Paddle to bounce the Ball away from the Spikes!\n" +
+                    "Touch / click and hold to move the Paddle and bounce the Ball away from the Spikes!\n" +
                     "\n" +
                     "Tap / Click the Paddle to fire a Laser to destroy Bombs!\n" +
                     "\n" +
